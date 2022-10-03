@@ -155,8 +155,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
         Assert.assertEquals(notifications.getNotificationMessage(), NARROW_RECO_NOTIFICATION);
-        driver.navigate().refresh(); //TODO po rozwiązaniu OSSWEB-19982 usunąć refresh całej strony i przywrócić refresh tabelki
-//        newInventoryViewPage.refreshMainTable();
+        newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "open-network-inconsistencies-view");

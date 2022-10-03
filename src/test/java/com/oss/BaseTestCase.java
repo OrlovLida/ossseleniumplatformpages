@@ -74,7 +74,6 @@ public class BaseTestCase implements IHookable {
                 LOGGER.warn("Cannot logout. Exception occured: {}", e.getMessage());
             }
             DelayUtils.sleep(5000);
-            driver.close();
             driver.quit();
         }
     }

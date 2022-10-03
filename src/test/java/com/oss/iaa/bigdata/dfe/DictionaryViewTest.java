@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
@@ -24,6 +25,8 @@ public class DictionaryViewTest extends BaseTestCase {
     private static final String ENTRIES_VALUE = "Test Value";
     private static final String ADD_WIZARD_TEST_ID = "add-prompt-id_prompt-card";
     private static final String EDIT_WIZARD_TEST_ID = "edit-prompt-id_prompt-card";
+    private static final String DICTIONARY_CATEGORY = "Selenium Tests";
+    private static final String CATEGORY_COLUMN = "Category";
 
     private static final Logger log = LoggerFactory.getLogger(DictionaryViewTest.class);
 
@@ -32,11 +35,14 @@ public class DictionaryViewTest extends BaseTestCase {
     private String updatedDictionaryName;
 
     @BeforeClass
-    public void goToDictionaryView() {
-        dictionaryPage = DictionaryPage.goToPage(driver, BASIC_URL);
-
+    public void setNames() {
         dictionaryName = ConstantsDfe.createName() + "_DictTest";
         updatedDictionaryName = dictionaryName + "_updated";
+    }
+
+    @BeforeMethod
+    public void goToDictionaryView() {
+        dictionaryPage = DictionaryPage.goToPage(driver, BASIC_URL);
     }
 
     @Test(priority = 1, testName = "Add new Dictionary", description = "Add new Dictionary")
@@ -44,14 +50,22 @@ public class DictionaryViewTest extends BaseTestCase {
     public void addDictionary() {
         dictionaryPage.clickAddNewDictionary();
         DictionaryPopupPage dictionaryWizard = new DictionaryPopupPage(driver, webDriverWait, ADD_WIZARD_TEST_ID);
-        dictionaryWizard.fillDictionaryPopup(dictionaryName, DICTIONARY_DESCRIPTION);
+        dictionaryWizard.fillDictionaryPopup(dictionaryName, DICTIONARY_DESCRIPTION, DICTIONARY_CATEGORY);
         dictionaryWizard.clickSave();
         boolean dictionaryIsCreated = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
 
         Assert.assertTrue(dictionaryIsCreated);
     }
 
-    @Test(priority = 2, testName = "Create Entries", description = "Create Entries")
+    @Test(priority = 2, testName = "Category Search", description = "Category Search")
+    @Description("Category Search")
+    public void categorySearchTest() {
+        dictionaryPage.setCategorySearch(DICTIONARY_CATEGORY);
+        dictionaryPage.selectFirstDictionaryInTable();
+        Assert.assertEquals(dictionaryPage.getValueFromColumn(CATEGORY_COLUMN), DICTIONARY_CATEGORY);
+    }
+
+    @Test(priority = 3, testName = "Create Entries", description = "Create Entries")
     @Description("Create Entries")
     public void createEntries() {
         boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
@@ -64,14 +78,14 @@ public class DictionaryViewTest extends BaseTestCase {
             entryWizard.clickSave();
             boolean entryIsCreated = dictionaryPage.entryExistsIntoTable(ENTRIES_KEY);
 
-            Assert.assertTrue(entryIsCreated);
+            Assert.assertTrue(entryIsCreated, "Entry with key: " + ENTRIES_KEY + " doesn't exist");
         } else {
-            log.error("Entry with key: {} doesn't exist", ENTRIES_KEY);
+            log.error("Dictionary with name: {} doesn't exist", dictionaryName);
             Assert.fail();
         }
     }
 
-    @Test(priority = 3, testName = "Delete Entries", description = "Delete Entries")
+    @Test(priority = 4, testName = "Delete Entries", description = "Delete Entries")
     @Description("Delete Entries")
     public void deleteEntries() {
         boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
@@ -97,7 +111,7 @@ public class DictionaryViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 4, testName = "Edit Dictionary", description = "Edit Dictionary")
+    @Test(priority = 5, testName = "Edit Dictionary", description = "Edit Dictionary")
     @Description("Edit Dictionary")
     public void editDictionary() {
         boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(dictionaryName);
@@ -116,7 +130,7 @@ public class DictionaryViewTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 5, testName = "Delete Dictionary", description = "Delete Dictionary")
+    @Test(priority = 6, testName = "Delete Dictionary", description = "Delete Dictionary")
     @Description("Delete Dictionary")
     public void deleteDictionary() {
         boolean dictionaryExists = dictionaryPage.dictionaryExistsIntoTable(updatedDictionaryName);

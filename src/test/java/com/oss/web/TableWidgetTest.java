@@ -307,8 +307,19 @@ public class TableWidgetTest extends BaseTestCase {
         Assertions.assertThat(selectedRows).hasSize(1);
         Assertions.assertThat(selectedObjectCount).isEqualTo(ONE_SELECTED);
     }
-
     @Test(priority = 18)
+    public void selectAllRows(){
+        inventoryViewPage.getMainTable().selectAllRows();
+        Assertions.assertThat(inventoryViewPage.getSelectedRows()).hasSize(50);
+        inventoryViewPage.getMainTable().getPagination().goOnNextPage();
+        Assertions.assertThat(inventoryViewPage.getSelectedRows()).isEmpty();
+        inventoryViewPage.getMainTable().getPagination().goOnFirstPage();
+        List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
+        inventoryViewPage.getMainTable().unselectAllRows();
+        Assertions.assertThat(selectedRows).hasSize(50);
+    }
+
+    @Test(priority = 19)
     public void maximizeAndMinimize() {
         Card mainTableCard = Card.createCard(driver, webDriverWait, MAIN_TABLE_CARD);
         mainTableCard.maximizeCard();
@@ -317,7 +328,7 @@ public class TableWidgetTest extends BaseTestCase {
         Assertions.assertThat(mainTableCard.isCardMaximized()).isFalse();
     }
 
-    @Test(priority = 19)
+    @Test(priority = 20)
     public void makeLinkPattern() {
         String id = inventoryViewPage.getMainTable().getCellValue(0, ID_COLUMN_ID);
         inventoryViewPage.getMainTable().setLinkPattern(ID_COLUMN_ID, VIEWS_MANAGEMENT_VIEWS_INVENTORY_VIEW_ULR + "{type}?id={%s}");
@@ -328,7 +339,7 @@ public class TableWidgetTest extends BaseTestCase {
         Assertions.assertThat(id).isEqualTo(id1);
     }
 
-    @Test(priority = 20)
+    @Test(priority = 21)
     public void resizeColumnAndRefresh() {
         tableWidget = inventoryViewPage.getMainTable();
         int defaultSize = tableWidget.getFirstColumnSize();
@@ -345,7 +356,7 @@ public class TableWidgetTest extends BaseTestCase {
         Assertions.assertThat(defColWidth).isEqualTo(DEFAULT_WIDTH_200);
     }
 
-    @Test(priority = 21)
+    @Test(priority = 22)
     public void resizeColumnAndOverwriteDefaultWidth() {
         int offset = 400;
         tableWidget.resizeColumn(2, offset);

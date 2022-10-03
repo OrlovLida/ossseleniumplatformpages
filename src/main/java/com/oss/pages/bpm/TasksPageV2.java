@@ -7,17 +7,23 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.attributechooser.AttributesChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.bpm.taskforms.IPDTaskFormPage;
+import com.oss.pages.bpm.taskforms.KDTaskFormPage;
 import com.oss.pages.platform.HomePage;
+
+import io.qameta.allure.Step;
 
 /**
  * @author Paweł Rother
  */
 
 public class TasksPageV2 extends BasePage {
+
     public static final String READY_FOR_INTEGRATION_TASK = "Ready for Integration";
     public static final String IMPLEMENTATION_TASK = "Implementation";
     public static final String SCOPE_DEFINITION_TASK = "Scope definition";
@@ -27,9 +33,9 @@ public class TasksPageV2 extends BasePage {
     public static final String HIGH_LEVEL_PLANNING_TASK = "High Level Planning";
     public static final String CORRECT_DATA_TASK = "Correct data";
     public static final String UPDATE_REQUIREMENTS_TASK = "Update Requirements";
+    public static final String TABS_TASKS_VIEW_ID = "bpm_task_graphql_view_tasksTabsCard";
     private static final Logger log = LoggerFactory.getLogger(TasksPageV2.class);
     private static final String TABLE_TASKS_ID = "bpm_task_graphql_view_tasksTableWidget";
-    private static final String TABS_TASKS_VIEW_ID = "bpm_task_graphql_view_tasksTabsWidget";
     private static final String PROCESS_CODE = "Process Code";
     private static final String NAME = "Name";
     private static final String ASSIGNEE = "Assignee";
@@ -42,6 +48,7 @@ public class TasksPageV2 extends BasePage {
     private static final String ASSIGNEE_INPUT_ID = "assigneeUser_OSF";
     private static final String STATUS_INPUT_ID = "state";
     private static final String FINISHED_STATUS = "Finished";
+
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String TASKS = "Tasks";
     private static final String PROCESS_OPERATIONS = "Process Operations";
@@ -74,6 +81,13 @@ public class TasksPageV2 extends BasePage {
         tasksTable.clearAllFilters();
     }
 
+    @Step("Checking is task started")
+    public boolean isTaskStarted(String processCode, String taskName) {
+        findTask(processCode, taskName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return !getTableWidget().getCellValue(0, ASSIGNEE).isEmpty();
+    }
+
     public void findTask(String processCode, String taskName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
@@ -100,17 +114,17 @@ public class TasksPageV2 extends BasePage {
 
     public void startTask(String processCode, String taskName) {
         findTask(processCode, taskName);
-        getTaskForm().startTask();
+        getIPDTaskForm().startTask();
     }
 
     public void completeTask(String processCode, String taskName) {
         findTask(processCode, taskName);
-        getTaskForm().completeTask();
+        getIPDTaskForm().completeTask();
     }
 
     public void setupIntegration(String processCode) {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
-        getTaskForm().setupIntegration();
+        getIPDTaskForm().setupIntegration();
     }
 
     public String startTaskByUsernameAndTaskName(String username, String taskName) {
@@ -128,17 +142,17 @@ public class TasksPageV2 extends BasePage {
 
     public void changeTransitionAndCompleteTask(String processCode, String taskName, String transition) {
         findTask(processCode, taskName);
-        getTaskForm().setTransition(transition);
-        getTaskForm().completeTask();
+        getIPDTaskForm().setTransition(transition);
+        getIPDTaskForm().completeTask();
     }
 
     public void addFile(String processCode, String taskName, String filePath) {
         findTask(processCode, taskName);
-        getTaskForm().attachFile(filePath);
+        getIPDTaskForm().attachFile(filePath);
     }
 
     public List<String> getListOfAttachments() {
-        return getTaskForm().getListOfAttachments();
+        return getIPDTaskForm().getListOfAttachments();
     }
 
     public void showCompletedTasks() {
@@ -150,7 +164,7 @@ public class TasksPageV2 extends BasePage {
     }
 
     public String getIPCodeByProcessName(String processIPName) {
-        TableInterface ipTable = getTaskForm().getIPTable();
+        TableInterface ipTable = getIPDTaskForm().getIPTable();
         int rowNumber = ipTable.getRowNumber(processIPName, NAME);
         return ipTable.getCellValue(rowNumber, CODE_LABEL);
     }
@@ -181,11 +195,35 @@ public class TasksPageV2 extends BasePage {
         return ipCode;
     }
 
+    public void setQuickFilter(String filterName) {
+        getTableWidget().setQuickFilter(filterName);
+    }
+
+    public List<String> getAppliedQuickFilters() {
+        return getTableWidget().getAppliedQuickFilters();
+    }
+
+    public AttributesChooser getAttributesChooser() {
+        return getTableWidget().getAttributesChooser();
+    }
+
+    public List<String> getActiveColumnHeaders() {
+        return getTableWidget().getActiveColumnHeaders();
+    }
+
+    public void selectFirstTask() {
+        getTableWidget().selectFirstRow();
+    }
+
+    public String getColumnValueFromFirstRow(String columnId) {
+        return getTableWidget().getCellValue(0, columnId);
+    }
+
     private String getIPCodeFromCompletedNRP(String nrpCode) {
         showCompletedTasks();
         findTask(nrpCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.sleep(3000);
-        TableInterface ipTable = getTaskForm().getIPTable();
+        TableInterface ipTable = getIPDTaskForm().getIPTable();
         String ipCode = ipTable.getCellValue(0, CODE_LABEL);
         TableWidget table = getTableWidget();
         table.unselectAllRows();
@@ -195,15 +233,19 @@ public class TasksPageV2 extends BasePage {
     }
 
     public void clickPerformConfigurationButton() {
-        getTaskForm().clickPerformConfigurationButton();
+        getIPDTaskForm().clickPerformConfigurationButton();
     }
 
     public void clickPlanViewButton() {
-        getTaskForm().clickPlanViewButton();
+        getIPDTaskForm().clickPlanViewButton();
     }
 
-    private IPDTaskFormPage getTaskForm() {
+    public IPDTaskFormPage getIPDTaskForm() {
         return IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID);
+    }
+
+    public KDTaskFormPage getKDTaskForm() {
+        return KDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID);
     }
 
     public void startAndCompleteTask(String processCode, String taskName) {

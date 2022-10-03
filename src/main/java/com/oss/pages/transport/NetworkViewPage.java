@@ -215,8 +215,14 @@ public class NetworkViewPage extends BasePage {
     public void selectObjectInViewContent(String name, String value) {
         waitForPageToLoad();
         TableInterface table = OldTable.createById(driver, wait, LEFT_PANEL_TAB_ID);
-
         table.selectRowByAttributeValueWithLabel(name, value);
+    }
+
+    @Step("Unselect object in view content")
+    public void unselectObjectInViewContent(String name, String value) {
+        waitForPageToLoad();
+        OldTable table = OldTable.createById(driver, wait, LEFT_PANEL_TAB_ID);
+        table.unselectRow(name, value);
     }
 
     @Step("Select object in View content")

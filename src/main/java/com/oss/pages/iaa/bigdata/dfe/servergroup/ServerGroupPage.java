@@ -52,7 +52,7 @@ public class ServerGroupPage extends BaseDfePage {
 
     @Step("I select found Server Group")
     public void selectFoundServerGroup() {
-        getTable(driver, wait).selectRow(0);
+        getTable().selectRow(0);
     }
 
     @Step("Select Details tab")
@@ -83,7 +83,7 @@ public class ServerGroupPage extends BaseDfePage {
     @Step("Check name in details tab")
     public String checkNameInPropertyPanel() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return checkValueInPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
+        return getValueFromPropertyPanel(PROPERTY_PANEL_ID, NAME_PROPERTY);
     }
 
     @Override

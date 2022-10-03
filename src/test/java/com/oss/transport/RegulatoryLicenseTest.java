@@ -75,7 +75,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     private SoftAssert softAssert;
     private NewInventoryViewPage newInventoryViewPage;
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
 
     @BeforeClass
     public void openConsole() {
@@ -187,10 +187,11 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         checkIfMicrowaveChannelsTabIsEmpty();
     }
 
-    @Test(priority = 10)
+    @Test(priority = 11)
     @Step("Remove Regulatory License")
     public void removeRegulatoryLicense() {
         deleteRegulatoryLicense();
+        waitForPageToLoad();
         checkRegulatoryLicenseRemoval();
     }
 
@@ -260,14 +261,6 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     @Step("Click assign object button")
     private RegulatoryLicenseAssignmentWizardPage clickAssign() {
         newInventoryViewPage.callAction(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_REGULATORY_LICENSE_TO_OBJECT_ACTION_ID);
-        return new RegulatoryLicenseAssignmentWizardPage(driver);
-    }
-
-    @Step("Click detach object button")
-    private RegulatoryLicenseAssignmentWizardPage clickDetach(String objectType) {
-        newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, objectType);
-        waitForPageToLoad();
-        newInventoryViewPage.clickConfirmationRemovalButton();
         return new RegulatoryLicenseAssignmentWizardPage(driver);
     }
 
@@ -361,43 +354,39 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     }
 
     private void detachLocationFromRegulatoryLicense() {
-        callActionInLocationsTab(ActionsContainer.EDIT_GROUP_ID, DETACH_LOCATION_FROM_REGULATORY_LICENSE_ACTION_ID);
+        callActionInLocationsTab();
         newInventoryViewPage.clickConfirmationBox(LOCATION_DETACHMENT_CLOSE_BUTTON_ID);
     }
 
     private void detachMicrowaveAntennaFromRegulatoryLicense() {
-        callActionInMicrowaveAntennasTab(ActionsContainer.EDIT_GROUP_ID, DETACH_MICROWAVE_ANTENNA_FROM_REGULATORY_LICENSE_ACTION_ID);
+        callActionInMicrowaveAntennasTab();
         newInventoryViewPage.clickConfirmationBox(MICROWAVE_ANTENNA_DETACHMENT_CLOSE_BUTTON_ID);
     }
 
     private void detachMicrowaveLinkFromRegulatoryLicense() {
-        callActionInMicrowaveLinksTab(ActionsContainer.EDIT_GROUP_ID, DETACH_MICROWAVE_LINK_FROM_REGULATORY_LICENSE_ACTION_ID);
+        callActionInMicrowaveLinksTab();
         newInventoryViewPage.clickConfirmationBox(MICROWAVE_LINK__DETACHMENT_CLOSE_BUTTON_ID);
     }
 
     private void detachMicrowaveChannelFromRegulatoryLicense() {
-        callActionInMicrowaveChannelsTab(ActionsContainer.EDIT_GROUP_ID, DETACH_MICROWAVE_CHANNEL_FROM_REGULATORY_LICENSE_ACTION_ID);
+        callActionInMicrowaveChannelsTab();
         newInventoryViewPage.clickConfirmationBox(MICROWAVE_CHANNEL_DETACHMENT_CLOSE_BUTTON_ID);
     }
 
-    private NewInventoryViewPage callActionInLocationsTab(String groupId, String actionId) {
-        getLocationsTable().callAction(groupId, actionId);
-        return new NewInventoryViewPage(driver, webDriverWait);
+    private void callActionInLocationsTab() {
+        getLocationsTable().callAction(ActionsContainer.EDIT_GROUP_ID, DETACH_LOCATION_FROM_REGULATORY_LICENSE_ACTION_ID);
     }
 
-    private NewInventoryViewPage callActionInMicrowaveAntennasTab(String groupId, String actionId) {
-        getMicrowaveAntennasTable().callAction(groupId, actionId);
-        return new NewInventoryViewPage(driver, webDriverWait);
+    private void callActionInMicrowaveAntennasTab() {
+        getMicrowaveAntennasTable().callAction(ActionsContainer.EDIT_GROUP_ID, DETACH_MICROWAVE_ANTENNA_FROM_REGULATORY_LICENSE_ACTION_ID);
     }
 
-    private NewInventoryViewPage callActionInMicrowaveLinksTab(String groupId, String actionId) {
-        getMicrowaveLinksTable().callAction(groupId, actionId);
-        return new NewInventoryViewPage(driver, webDriverWait);
+    private void callActionInMicrowaveLinksTab() {
+        getMicrowaveLinksTable().callAction(ActionsContainer.EDIT_GROUP_ID, DETACH_MICROWAVE_LINK_FROM_REGULATORY_LICENSE_ACTION_ID);
     }
 
-    private NewInventoryViewPage callActionInMicrowaveChannelsTab(String groupId, String actionId) {
-        getMicrowaveChannelsTable().callAction(groupId, actionId);
-        return new NewInventoryViewPage(driver, webDriverWait);
+    private void callActionInMicrowaveChannelsTab() {
+        getMicrowaveChannelsTable().callAction(ActionsContainer.EDIT_GROUP_ID, DETACH_MICROWAVE_CHANNEL_FROM_REGULATORY_LICENSE_ACTION_ID);
     }
 
     @Step("Delete Regulatory License")

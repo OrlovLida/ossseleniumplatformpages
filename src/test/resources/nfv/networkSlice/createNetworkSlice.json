@@ -11,6 +11,7 @@
         "value": "UNLOCKED"
       }
     ],
+    "resourceSpecificationId": "NetworkSlice",
     "description": "NETWORK-SLICE-EDIT-DESCRIPTION",
     "masterRelations": [
     ],

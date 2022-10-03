@@ -18,6 +18,10 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.pages.BasePage;
+import com.oss.pages.bpm.taskforms.IPDTaskFormPage;
+import com.oss.pages.bpm.taskforms.KDTaskFormPage;
+
+import io.qameta.allure.Step;
 
 /**
  * @author Gabriela Kasza
@@ -86,36 +90,43 @@ public class TasksPage extends BasePage {
 
     public void changeTransitionAndCompleteTask(String processCode, String taskName, String transition) {
         findTask(processCode, taskName);
-        getTaskForm().setTransition(transition);
-        getTaskForm().completeTask();
+        getIPDTaskForm().setTransition(transition);
+        getIPDTaskForm().completeTask();
+    }
+
+    @Step("Checking is task started")
+    public boolean isTaskStarted(String processCode, String taskName) {
+        findTask(processCode, taskName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return !getOldTable().getCellValue(0, ASSIGNEE).isEmpty();
     }
 
     public void startTask(String processCode, String taskName) {
         findTask(processCode, taskName);
-        getTaskForm().startTask();
+        getIPDTaskForm().startTask();
     }
 
     public void completeTask(String processCode, String taskName) {
         findTask(processCode, taskName);
-        getTaskForm().completeTask();
+        getIPDTaskForm().completeTask();
     }
 
     public void setupIntegration(String processCode) {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
-        getTaskForm().setupIntegration();
+        getIPDTaskForm().setupIntegration();
     }
 
     public void addFile(String processCode, String taskName, String filePath) {
         findTask(processCode, taskName);
-        getTaskForm().attachFile(filePath);
+        getIPDTaskForm().attachFile(filePath);
     }
 
     public void clickPerformConfigurationButton() {
-        getTaskForm().clickPerformConfigurationButton();
+        getIPDTaskForm().clickPerformConfigurationButton();
     }
 
     public void clickPlanViewButton() {
-        getTaskForm().clickPlanViewButton();
+        getIPDTaskForm().clickPlanViewButton();
     }
 
     public void showCompletedTasks() {
@@ -123,7 +134,7 @@ public class TasksPage extends BasePage {
     }
 
     public String getIPCodeByProcessName(String processIPName) {
-        TableInterface ipTable = getTaskForm().getIPTable();
+        TableInterface ipTable = getIPDTaskForm().getIPTable();
         int rowNumber = ipTable.getRowNumber(processIPName, NAME);
         return ipTable.getCellValue(rowNumber, CODE_LABEL);
     }
@@ -150,7 +161,7 @@ public class TasksPage extends BasePage {
         showCompletedTasks();
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
         DelayUtils.sleep(3000);
-        TableInterface ipTable = getTaskForm().getIPTable();
+        TableInterface ipTable = getIPDTaskForm().getIPTable();
         String ipCode = ipTable.getCellValue(0, CODE_LABEL);
         startTask(ipCode, SCOPE_DEFINITION_TASK);
         completeTask(ipCode, SCOPE_DEFINITION_TASK);
@@ -159,7 +170,7 @@ public class TasksPage extends BasePage {
     }
 
     public List<String> getListOfAttachments() {
-        return getTaskForm().getListOfAttachments();
+        return getIPDTaskForm().getListOfAttachments();
     }
 
     public void clearFilter() {
@@ -189,7 +200,11 @@ public class TasksPage extends BasePage {
         return processCode;
     }
 
-    private IPDTaskFormPage getTaskForm() {
+    public IPDTaskFormPage getIPDTaskForm() {
         return IPDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID);
+    }
+
+    public KDTaskFormPage getKDTaskForm() {
+        return KDTaskFormPage.create(driver, wait, TABS_TASKS_VIEW_ID);
     }
 }

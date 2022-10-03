@@ -1,13 +1,5 @@
 package com.oss.transport.infrastructure.planning;
 
-import com.comarch.oss.planning.api.dto.PlannedObjectIdDTO;
-import com.comarch.oss.planning.api.dto.PlannedObjectIdDTO.PerspectiveEnum;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
-
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -18,6 +10,15 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
+
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.UriBuilder;
+
+import com.comarch.oss.planning.api.dto.PlannedObjectIdDTO;
+import com.comarch.oss.planning.api.dto.PlannedObjectIdDTO.PerspectiveEnum;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 
 public final class PlanningContext implements Serializable {
 
@@ -61,17 +62,6 @@ public final class PlanningContext implements Serializable {
                     plannedObject.getProject().orElseThrow(() -> new IllegalStateException("Project id not set in planned object."));
             return PlanningContext.projectContext(projectId);
         }
-    }
-
-    @Deprecated
-    public static PlanningContext projectContext(Optional<Long> projectId) {
-        return projectId.map(PlanningContext::new).orElseGet(() -> new PlanningContext(Perspective.LIVE));
-    }
-
-    public PlanningContext() {
-        /**
-         * Planning context can be set later using QueryParam.
-         */
     }
 
     public PlanningContext(Long pProjectId) {
