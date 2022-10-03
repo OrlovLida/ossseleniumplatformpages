@@ -13,7 +13,7 @@ import com.comarch.oss.addressinventory.api.dto.AddressItemSearchResultDTO;
 import com.comarch.oss.addressinventory.api.dto.AddressItemTypeDTO;
 import com.google.common.collect.ImmutableList;
 import com.jayway.restassured.http.ContentType;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 
 public class AddressItemClient {
 

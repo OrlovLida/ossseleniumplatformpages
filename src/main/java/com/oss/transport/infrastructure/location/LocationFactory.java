@@ -11,7 +11,7 @@ import com.comarch.oss.locationinventory.api.dto.SublocationDTO;
 import com.google.common.collect.Lists;
 import com.oss.transport.infrastructure.address.AddressClient;
 import com.oss.transport.infrastructure.address.AddressItemClient;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 import com.oss.transport.infrastructure.ObjectIdentifier;
 import com.oss.transport.infrastructure.RefId;
 import com.oss.transport.infrastructure.planning.PlanningContext;

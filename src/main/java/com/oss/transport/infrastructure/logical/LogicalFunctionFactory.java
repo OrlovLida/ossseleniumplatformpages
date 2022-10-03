@@ -11,7 +11,7 @@ import com.comarch.oss.resourcecatalog.logical.function.model.api.dto.LogicalFun
 import com.comarch.oss.resourcecatalog.logical.function.model.api.dto.LogicalFunctionModelResponseDTO;
 import com.comarch.oss.resourcecatalog.logical.function.model.api.dto.LogicalFunctionModelViewDTO;
 import com.comarch.oss.resourcecatalog.logical.function.model.api.dto.ModelStructureDTO;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 import com.oss.transport.infrastructure.planning.PlanningContext;
 import com.oss.transport.infrastructure.resource.catalog.control.ResourceCatalogClient;
 

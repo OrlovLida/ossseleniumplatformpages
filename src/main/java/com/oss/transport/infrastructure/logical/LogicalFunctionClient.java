@@ -8,7 +8,7 @@ import com.comarch.oss.logical.function.api.dto.LogicalFunctionTypeViewDTO;
 import com.comarch.oss.logical.function.api.dto.LogicalFunctionViewDTO;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.ValidatableResponse;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 import com.oss.transport.infrastructure.planning.PlanningContext;
 
 import javax.ws.rs.core.Response.Status;

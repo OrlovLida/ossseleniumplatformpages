@@ -1,4 +1,4 @@
-package com.oss.transport.infrastructure;
+package com.oss.serviceClient;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -146,7 +146,7 @@ public class EnvironmentRequestClient {
     }
 
     private String getUrl(Map<String, Object> pathParams, Map<String, Object> queryParams, PlanningContext planningContext,
-            LinkDTO linkDTO) {
+                          LinkDTO linkDTO) {
         UriBuilder uriBuilder = UriBuilder.fromPath(linkDTO.getHref());
         planningContext.applyPlanningContext(uriBuilder);
         uriBuilder = fillUriBuilderWithPathParams(pathParams, uriBuilder);
