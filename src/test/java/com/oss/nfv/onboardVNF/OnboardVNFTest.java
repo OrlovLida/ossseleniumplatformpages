@@ -1,5 +1,6 @@
 package com.oss.nfv.onboardVNF;
 
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 
 import com.oss.nfv.common.SideMenuService;
@@ -23,6 +24,7 @@ public class OnboardVNFTest extends BaseOnboardVNFTest {
     @Description("Got to VNF Package Onboarding wizard")
     public void openOnboardVNFWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //given
         SideMenuService.goToVNFPackageOnboardingWizard(driver, webDriverWait);
         //then

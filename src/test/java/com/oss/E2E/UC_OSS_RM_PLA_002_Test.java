@@ -60,7 +60,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private static final String PASSWORD = "cisco";
     private static final String COMMAND_TIMEOUT = "20";
     private static final String CONNECTION_TIMEOUT = "20";
-    private static final String IP_ADDRESS_WIZARD_MODE = "Existing address selection";
+    private static final String IP_ADDRESS_WIZARD_MODE = "New address selection";
     private static final String IP_NETWORK = "E2ESeleniumTest";
     private static final String TEMPLATE_EXECUTION_NOTIFICATION = "Script execution finished";
     private static final String BOOKMARKS = "Bookmarks";
@@ -178,7 +178,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
-                .address(ADDRESS).subnet("10.10.20.0/24 [" + IP_NETWORK + "]").isPrimary("false").wizardMode(IP_ADDRESS_WIZARD_MODE).build();
+                .wizardMode(IP_ADDRESS_WIZARD_MODE).subnet("10.10.20.0/24 [" + IP_NETWORK + "]").address(ADDRESS).isPrimary("false").build();
         ipAddressAssignmentWizardPage.assignMoToIPAddress(ipAddressAssignmentWizardProperties);
         waitForPageToLoad();
     }
@@ -207,7 +207,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.clickNext();
         waitForPageToLoad();
-        connectionWizardPage.selectConnectionTermination("1_1");
+        connectionWizardPage.selectConnectionTermination("1.1_1");
         waitForPageToLoad();
         connectionWizardPage.terminateCardComponent("No Card/Component");
         waitForPageToLoad();
@@ -215,7 +215,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.terminateTerminationPort(PORT_NAME);
         waitForPageToLoad();
-        connectionWizardPage.selectConnectionTermination("1_2");
+        connectionWizardPage.selectConnectionTermination("1.1_2");
         waitForPageToLoad();
         connectionWizardPage.terminateCardComponent("No Card/Component");
         waitForPageToLoad();

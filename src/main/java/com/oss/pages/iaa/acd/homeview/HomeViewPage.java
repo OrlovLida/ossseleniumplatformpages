@@ -60,11 +60,11 @@ public class HomeViewPage extends BaseACDPage {
     @Step("Set value of Issue Id multiSearch")
     public void setValueOfIssueIdSearch() {
 
-        if (Boolean.TRUE.equals(isMultiSearchFilled("id"))) {
+        if (isMultiSearchFilled("id")) {
             clearAttributeValue("id");
         }
 
-        if (Boolean.FALSE.equals(isDataInScenarioTable())) {
+        if (!isDataInScenarioTable()) {
             log.info("Table doesn't have data for chosen filters. Issue ID cannot be set");
         } else {
             String firstIdInTable = table.getCellValue(0, "Issue Id");

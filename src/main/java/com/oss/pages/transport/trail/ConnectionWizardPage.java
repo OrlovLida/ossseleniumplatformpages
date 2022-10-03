@@ -15,7 +15,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class ConnectionWizardPage extends BasePage {
 
-    private static final String WIZARD_ID = "trailWizardId";
+    private static final String WIZARD_ID = "trailWizardId_prompt-card";
     private static final String NAME_ID = "trailNameComponent";
     private static final String TERMINATE_CARD_ID = "terminationFormCardComponent";
     private static final String TERMINATE_PORT_ID = "terminationFormPortComponent";
@@ -61,10 +61,10 @@ public class ConnectionWizardPage extends BasePage {
         wizard.clickAccept();
     }
 
-    @Step("Select connection termination by position = {position}")
-    public void selectConnectionTermination(String dataGuid) {
+    @Step("Select connection termination by dataPath = {dataPath}")
+    public void selectConnectionTermination(String dataPath) {
         TreeComponent treeComponent = wizard.getTreeComponent();
-        treeComponent.toggleNodeByPath(dataGuid);
+        treeComponent.toggleNodeByPath(dataPath);
     }
 
     @Step("Terminate Card/Component")

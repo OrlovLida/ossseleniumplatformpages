@@ -11,6 +11,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.nfv.networkslice.NetworkSliceWizardFirstStep;
 import com.oss.pages.nfv.networkslice.NetworkSliceWizardPage;
@@ -86,6 +87,7 @@ public class EditNetworkSliceTest extends BaseTestCase {
         //given
         NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "NetworkSlice");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //when
         searchForNetworkSlice(inventoryViewPage);
         selectNetworkSliceInTree(inventoryViewPage);
