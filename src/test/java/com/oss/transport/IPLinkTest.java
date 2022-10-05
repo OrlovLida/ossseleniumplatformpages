@@ -226,7 +226,7 @@ public class IPLinkTest extends BaseTestCase {
 
     private void updateTermination(String type) {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.selectObjectInDetailsTab("Type", type);
+        networkViewPage.selectTermination("Type", type);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.modifyTermination();
         ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);

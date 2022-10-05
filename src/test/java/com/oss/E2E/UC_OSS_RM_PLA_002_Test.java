@@ -69,6 +69,9 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private static final String NAME = "Name";
     private static final String LEFT = "left";
     private static final String RIGHT = "right";
+    private static final String TYPE_COLUMN_ID = "col-type";
+    private static final String VALIDATION_RESULT_TYPE = "INCOMPLETE_ROUTING_STATUS";
+    private static final String SUPPRESSION_REASON = "Unnecessary in this scenario";
     String URL = "";
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SoftAssert softAssert;
@@ -235,7 +238,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel("bottom");
         waitForPageToLoad();
-        networkViewPage.supressValidationResult("Unnecessary in this scenario");
+        networkViewPage.suppressValidationResult(TYPE_COLUMN_ID, VALIDATION_RESULT_TYPE, SUPPRESSION_REASON);
         networkViewPage.hideDockedPanel("bottom");
     }
 

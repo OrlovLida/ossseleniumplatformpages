@@ -95,7 +95,9 @@ public class IPLinkTest extends BaseTestCase {
     @Description("Open network view in live perspective")
     public void init() {
         networkView = new NetworkViewPage(driver);
-        networkView.openNetworkView();
+
+        //Use SideMenu class to open Network View
+        //networkView.openNetworkView();
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
     }
 

@@ -42,7 +42,8 @@ public class MPLSNetworkTest extends BaseTestCase {
     @BeforeClass
     public void init() {
         networkView = new NetworkViewPage(driver);
-        networkView.openNetworkView();
+        //Use SideMenu class to open Network View
+        //networkView.openNetworkView();
     }
 
     @Test(priority = 1)
@@ -171,8 +172,9 @@ public class MPLSNetworkTest extends BaseTestCase {
 
     @Test(priority = 13)
     public void removeTrailFromRouting() {
-        networkView.selectTrailInRouting(IP_LINK);
-        networkView.removeSelectedTrailsFromRouting();
+        //Adapt method call to changes
+        //networkView.selectConnectionInRouting(IP_LINK);
+        networkView.deleteSelectedConnectionsFromRouting();
         Assertions.assertThat(networkView.isObjectInRouting1stLevel(IP_LINK)).isFalse();
     }
 
@@ -180,7 +182,7 @@ public class MPLSNetworkTest extends BaseTestCase {
     public void deleteTrails() {
         networkView.selectObject(MPLS_NETWORK_2);
         networkView.selectObject(IP_LINK);
-        networkView.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_TRAIL_ACTION, ConfirmationBox.PROCEED);
+        networkView.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID, ConfirmationBox.PROCEED);
         Assertions.assertThat(networkView.isObjectInViewContent(MPLS_NETWORK)).isFalse();
         Assertions.assertThat(networkView.isObjectInViewContent(MPLS_NETWORK_2)).isFalse();
         Assertions.assertThat(networkView.isObjectInViewContent(IP_LINK)).isFalse();
