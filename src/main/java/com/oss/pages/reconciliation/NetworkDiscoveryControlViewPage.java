@@ -156,6 +156,11 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         notifications.clearAllNotification();
     }
 
+    @Step("Count reconciliation states")
+    public int countReconciliationStates() {
+        return OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).countRows("Type");
+    }
+
     @Step("Move from Network Discovery Control View to Network Inconsistencies View in context of selected CM Domain")
     public void moveToNivFromNdcv() {
         TabsInterface ndcvTabs = getTabsInterface();
@@ -229,7 +234,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     }
 
     public List<String> getTabsLabels() {
-        return TabsWidget.createById(driver, wait,  RECONCILIATION_TAB_ID).getTabLabels();
+        return TabsWidget.createById(driver, wait,  "narComponent_networkDiscoveryControlViewIdcmDomainDetailsWindowId").getTabLabels();
     }
 
     private void logIssues(String type) {

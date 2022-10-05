@@ -1,5 +1,7 @@
 package com.oss.reconciliation.notifications;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -11,7 +13,8 @@ import com.oss.pages.reconciliation.notifications.SubscriptionConfigurationPage;
 
 public class NotificationSubscriptionTest extends BaseTestCase {
 
-    private static final String CM_DOMAIN_NAME = "Notification_test_AG";
+    private static final Logger LOG = LoggerFactory.getLogger(NotificationSubscriptionTest.class);
+    private static final String CM_DOMAIN_NAME = "AT-SYS-NOTIFICATION-SUBSCRIPTIONS-TEST";
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SubscriptionConfigurationPage subscriptionConfigurationPage;
 //    private List<String> tabLabelsList = Collections.singletonList("Notification subscriptions");
@@ -26,12 +29,12 @@ public class NotificationSubscriptionTest extends BaseTestCase {
     public void openViewAndSelect() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-        System.out.println(networkDiscoveryControlViewPage.getTabsLabels());
-        Assert.assertFalse(networkDiscoveryControlViewPage.getTabsLabels().contains("Notifications"));
-        networkDiscoveryControlViewPage.moveToSubscriptionConfiguration();
-
-        subscriptionConfigurationPage = new SubscriptionConfigurationPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        LOG.info("Checking amount of reconciliation states");
+//        Assert.assertEquals(networkDiscoveryControlViewPage.countReconciliationStates(), 2);
+//        LOG.info("Tab Labels on NetworkElementDiscoveryViewPage are: " + networkDiscoveryControlViewPage.getTabsLabels());
+//        Assert.assertFalse(networkDiscoveryControlViewPage.getTabsLabels().contains("Notifications"));
+        networkDiscoveryControlViewPage.moveToSubscriptionConfiguration();
     }
 
 //    @Test(priority = 2)
@@ -54,9 +57,14 @@ public class NotificationSubscriptionTest extends BaseTestCase {
     @Test(priority = 3)
     public void getNotificationAttributes() throws InterruptedException {
         subscriptionConfigurationPage = new SubscriptionConfigurationPage(driver);
-        subscriptionConfigurationPage.selectFirstNodeOnTree();
-        Thread.sleep(10000);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        subscriptionConfigurationPage.selectFirstNodeOnTree();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Thread.sleep(25000);
+        LOG.info("Checking how many Notification Subscriptions there are");
+        LOG.info("Notification Subscriptions amount is: " + subscriptionConfigurationPage.countNotificationSubscriptions());
+        Assert.assertEquals(subscriptionConfigurationPage.countNotificationSubscriptions(), 3);
+        LOG.info("Searching for subscription");
         subscriptionConfigurationPage.searchForSubscription("Update");
         System.out.println("Column headers: " + subscriptionConfigurationPage.getColumnHeaders());
         subscriptionConfigurationPage.selectFirstSubscription();
@@ -67,8 +75,22 @@ public class NotificationSubscriptionTest extends BaseTestCase {
 //        subscriptionConfigurationPage.addRows("DM_RecoControl_NotificationSubscription.totalCapacity");
 //        Assert.assertEquals(subscriptionConfigurationPage.getTabLabels(), tabLabelsList);
 
+
+    }
+
+    @Test(priority = 4)
+    public void checkEnabledNotification() {
+
+    }
+
+    @Test(priority = 5)
+    public void checkHoldNotification() {
+        System.out.println(subscriptionConfigurationPage.getState());
+        System.out.println(subscriptionConfigurationPage.getBufferStatePercent());
+        System.out.println(subscriptionConfigurationPage.getNewestNotification());
+        System.out.println(subscriptionConfigurationPage.getOldestNotification());
         //Check if buffer is 0 and clear it
-        Assert.assertTrue(subscriptionConfigurationPage.isBufferZeroPercent());
+        Assert.assertFalse(subscriptionConfigurationPage.isBufferZeroPercent());
         subscriptionConfigurationPage.clearBuffer();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         subscriptionConfigurationPage.refreshPage();
@@ -77,11 +99,10 @@ public class NotificationSubscriptionTest extends BaseTestCase {
 
         //Check if there is no Properties in Tabs
         Assert.assertFalse(subscriptionConfigurationPage.getTabLabels().contains("Properties"));
+    }
 
-        //Print attributes
-        System.out.println(subscriptionConfigurationPage.getState());
-        System.out.println(subscriptionConfigurationPage.getOccupancyPercent());
-        System.out.println(subscriptionConfigurationPage.getNewestNotification());
-        System.out.println(subscriptionConfigurationPage.getOldestNotification());
+    @Test(priority = 6)
+    public void checkDisabledNotification() {
+
     }
 }
