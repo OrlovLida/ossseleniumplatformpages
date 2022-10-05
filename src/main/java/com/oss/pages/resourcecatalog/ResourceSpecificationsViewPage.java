@@ -1,5 +1,7 @@
 package com.oss.pages.resourcecatalog;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -11,6 +13,7 @@ import com.oss.pages.BasePage;
 public class ResourceSpecificationsViewPage extends BasePage {
 
     private static final String RESOURCE_SPECIFICATIONS_TREE_TABLE_ID = "rsTreeTableId";
+    private static final String SPECIFICATION_NAME_COLUMN = "Specification Name";
 
     private final OldTreeTableWidget treeTable;
 
@@ -36,5 +39,13 @@ public class ResourceSpecificationsViewPage extends BasePage {
 
     public void callActionByLabel(String groupLabel, String actionLabel) {
         this.treeTable.callActionByLabel(groupLabel, actionLabel);
+    }
+
+    public List<String> getAllVisibleSpecificationNames() {
+        return this.treeTable.getAllVisibleNodes(SPECIFICATION_NAME_COLUMN);
+    }
+
+    public void setPageSize(int pageOption) {
+        this.treeTable.setPageSize(pageOption);
     }
 }

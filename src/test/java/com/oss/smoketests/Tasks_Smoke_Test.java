@@ -45,7 +45,7 @@ public class Tasks_Smoke_Test extends BaseTestCase {
     private static final String PROCESS_INSTANCE_ATTRIBUTE = "Process instance ID";
 
     @Test(priority = 1, description = "Open Tasks View")
-    @Description("Open  Tasks View")
+    @Description("Open Tasks View")
     public void openTasksView() {
         waitForPageToLoad();
         checkErrorPage();
