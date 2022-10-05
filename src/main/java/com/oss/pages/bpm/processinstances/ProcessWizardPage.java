@@ -281,7 +281,7 @@ public class ProcessWizardPage extends BasePage {
             wizard.setComponentValue(checkBoxId, "true");
             DelayUtils.sleep();
         } catch (TimeoutException e) {
-            throw new TimeoutException(String.format(CHECKBOX_NOT_PRESENT_EXCEPTION, checkBoxId));
+            throw new NoSuchElementException(String.format(CHECKBOX_NOT_PRESENT_EXCEPTION, checkBoxId));
         }
     }
 
