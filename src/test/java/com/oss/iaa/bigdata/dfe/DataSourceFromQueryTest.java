@@ -61,7 +61,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
     public void editDataSourceFromQuery() {
         boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
-            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.selectFirstDataSourceInTable();
             dataSourcePage.clickEditDS();
             DataSourceStepWizardPage dsStepWizard = new DataSourceStepWizardPage(driver, webDriverWait);
             dsStepWizard.getBasicInfoStep().fillBasicInformationStep(updatedDataSourceName);
@@ -82,7 +82,7 @@ public class DataSourceFromQueryTest extends BaseTestCase {
     public void deleteDataSourceFromQuery() {
         boolean dataSourceExists = dataSourcePage.dataSourceExistIntoTable(dataSourceName);
         if (dataSourceExists) {
-            dataSourcePage.selectFoundDataSource();
+            dataSourcePage.selectFirstDataSourceInTable();
             dataSourcePage.clickDeleteDS();
             dataSourcePage.clickConfirmDelete();
             boolean dataSourceIsDeleted = !dataSourcePage.dataSourceExistIntoTable(dataSourceName);

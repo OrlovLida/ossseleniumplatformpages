@@ -110,6 +110,7 @@ public abstract class BaseSearchPage extends BaseSDPage {
 
     @Step("Count number of visible issues")
     public int countIssuesInTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return getIssueTable().getRowsNumber();
     }
 

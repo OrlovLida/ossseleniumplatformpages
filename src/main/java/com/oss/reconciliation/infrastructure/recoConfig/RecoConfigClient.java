@@ -1,7 +1,7 @@
 package com.oss.reconciliation.infrastructure.recoConfig;
 
 import com.jayway.restassured.http.ContentType;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 
 /**
  * Created by Artur Grzelak on 2022-06-10

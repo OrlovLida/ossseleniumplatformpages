@@ -41,7 +41,7 @@ public abstract class BaseDashboardPage extends BaseSDPage {
         return attributeValue;
     }
 
-    @Step("get row number for issue with {id}")
+    @Step("Get row number for issue with {id}")
     public int getRowForIssueWithID(String id) {
         return getTable().getRowNumber(id, ID_UPPERCASE_ATTRIBUTE);
     }
@@ -53,7 +53,7 @@ public abstract class BaseDashboardPage extends BaseSDPage {
         return OldTable.createById(driver, wait, getTableID());
     }
 
-    @Step("I check if Table exists")
+    @Step("Check if Table exists")
     public boolean checkIfTableExists() {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I check if table exists");

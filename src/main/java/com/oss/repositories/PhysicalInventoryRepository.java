@@ -10,6 +10,7 @@ import com.comarch.oss.physicalinventory.api.dto.PluggableModuleDTO;
 import com.comarch.oss.physicalinventory.api.dto.PortDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
 import com.comarch.oss.physicalinventory.api.dto.SearchResultDTO;
+import com.comarch.oss.resourcehierarchy.api.dto.ResourceHierarchyDTO;
 import com.oss.services.PhysicalInventoryClient;
 import com.oss.untils.Environment;
 
@@ -36,10 +37,11 @@ public class PhysicalInventoryRepository {
         return Long.valueOf(deviceId.substring(deviceId.lastIndexOf("/") + 1, deviceId.indexOf("?")));
     }
     
-    public void updateDeviceSerialNumber(long deviceId, String locationType, Long locationId, String serialNumber, Long deviceModelId,
+    public void updateDeviceSerialNumber(long deviceId,String deviceName, String locationType, Long locationId, String serialNumber, Long deviceModelId,
             String deviceModelType, long projectId) {
         PhysicalDeviceDTO build = PhysicalDeviceDTO.builder()
                 .serialNumber(serialNumber)
+                .name(deviceName)
                 .location(getLocation(locationId, locationType))
                 .deviceModel(getDeviceModelId(deviceModelId, deviceModelType))
                 .build();
@@ -166,5 +168,12 @@ public class PhysicalInventoryRepository {
                 .type(pluggableModuleType)
                 .build();
     }
-    
+
+    public ResourceHierarchyDTO getResourceHierarchy(String resourceType, String resourceId, String mode) {
+        return client.getResourceHierarchy(resourceType, resourceId, mode);
+    }
+
+    public PhysicalDeviceDTO getDevice(String deviceId) {
+        return client.getDevice(deviceId);
+    }
 }

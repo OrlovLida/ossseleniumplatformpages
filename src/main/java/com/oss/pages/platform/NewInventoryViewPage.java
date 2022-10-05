@@ -49,7 +49,7 @@ public class NewInventoryViewPage extends BasePage {
     private static final String DOWNLOAD_PROPERTY_CONFIG_ID = "propertyPanelDownload";
     private static final String SAVE_NEW_CONFIG_ID = "saveNewConfig";
     private static final String CHANGE_LABEL = "Change";
-    private static final String TABS_CONTAINER_ID = "DetailTabsWidget";
+    private static final String TABS_CONTAINER_ID = "DetailTabsCard";
     private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "HierarchyView";
     public static final String KEBAB_OBJECT_GROUP_ID = "frameworkObjectButtonsGroup";
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
@@ -152,7 +152,7 @@ public class NewInventoryViewPage extends BasePage {
         return filterValues;
     }
 
-    public List<String> getSavedFilters() {
+        public List<String> getSavedFilters() {
         return getAdvancedSearch().getSavedFilters();
     }
 
@@ -176,6 +176,14 @@ public class NewInventoryViewPage extends BasePage {
 
     public void unselectVisibilitySearchAttributes(List<String> attributeIds) {
         getMainTable().unselectVisibilitySearchAttributes(attributeIds);
+    }
+
+    public void setDefaultAdvanceSearchSettings() {
+        getMainTable().getAdvancedSearch().backToDefault();
+    }
+
+    public void changeAdvanceSearchAttributeOrder(String attributeId, int position) {
+        getMainTable().getAdvancedSearch().changeAttributesOrder(attributeId,position);
     }
 
     public List<String> getAllVisibleFilters() {

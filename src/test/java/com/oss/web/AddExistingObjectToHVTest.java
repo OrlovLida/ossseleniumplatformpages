@@ -58,7 +58,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private static final String RESOURCE_INVENTORY = "Resource Inventory";
     private static final String HIERARCHY_VIEW = "Hierarchy View";
     private static final String CHECKBOX_ROW_ID = "cell-row-0-col-checkbox";
-    private static final String THE_MAXIMUM_NUMBER_OF_OBJECTS_IS_500_ERROR_MESSAGE = "The maximum number of objects is 500.";
+    private static final String THE_MAXIMUM_NUMBER_OF_OBJECTS_IS_500_ERROR_MESSAGE = "The maximum number of all existing and new selected objects is 500";
     private final Environment env = Environment.getInstance();
     private String buildingId1;
     private String buildingId2;
@@ -150,10 +150,10 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         advancedSearch.clickAdd();
         SystemMessageContainer systemMessageContainer = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> errors = systemMessageContainer.getMessages();
+        systemMessageContainer.close();
         advancedSearch.clickCancel();
         Assertions.assertThat(errors).hasSize(1);
         Assertions.assertThat(errors.get(0).getText()).isEqualTo(THE_MAXIMUM_NUMBER_OF_OBJECTS_IS_500_ERROR_MESSAGE);
-        systemMessageContainer.close();
     }
 
     @Test(priority = 7)
@@ -206,6 +206,8 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         hierarchyView.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         AdvancedSearchWidget advancedSearch = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_ID);
         TableComponent tableComponent = advancedSearch.getTableComponent();
+        tableComponent.getPaginationComponent().changeRowsCount(50);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tableComponent.selectAll();
         advancedSearch.clickAdd();
         buildingId5 = createBuilding(BUILDING_NAME_5);
@@ -220,6 +222,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         deleteBuilding(buildingId3);
         deleteBuilding(buildingId4);
         deleteBuilding(buildingId5);
+        deleteBuilding(buildingId6);
     }
 
     private void addExistingObject(String objectName) {

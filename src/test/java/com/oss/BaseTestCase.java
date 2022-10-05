@@ -29,8 +29,8 @@ import com.oss.framework.components.mainheader.LoginPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.LoginPage;
-import com.oss.transport.infrastructure.Environment;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.Environment;
+import com.oss.serviceClient.EnvironmentRequestClient;
 import com.oss.utils.TestListener;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -74,7 +74,6 @@ public class BaseTestCase implements IHookable {
                 LOGGER.warn("Cannot logout. Exception occured: {}", e.getMessage());
             }
             DelayUtils.sleep(5000);
-            driver.close();
             driver.quit();
         }
     }

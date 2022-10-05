@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.ExportPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.KpiToolbarPanel;
 import com.oss.framework.iaa.widgets.dpe.toolbarpanel.LayoutPanel;
@@ -28,6 +29,8 @@ public class KpiToolbarPanelPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(KpiToolbarPanelPage.class);
     private static final String MANUAL_MODE = "Manual";
+    private static final String MULTIPLE_CHARTS_BY_CUSTOM_SELECT_ID = "custom-select-divide-chart-by-select";
+    private static final String COMMON_LEGEND_SWITCHER_ID = "commonLegend";
 
     private final KpiToolbarPanel kpiToolbarPanel;
 
@@ -52,6 +55,39 @@ public class KpiToolbarPanelPage extends BasePage {
     @Step("I change layout")
     public void changeLayout(LayoutPanel.LayoutType layoutType) {
         kpiToolbarPanel.openLayoutPanel().changeLayout(layoutType);
+    }
+
+    @Step("Set Common Legend switcher ON")
+    public void setCommonLegendOn() {
+        setCommonLegendSwitcher("true");
+        log.info("Setting Common Legend ON");
+    }
+
+    @Step("Set Common Legend switcher OFF")
+    public void setCommonLegendOff() {
+        setCommonLegendSwitcher("false");
+        log.info("Setting Common Legend OFF");
+    }
+
+    private void setCommonLegendSwitcher(String onOrOff) {
+        kpiToolbarPanel.openLayoutPanel();
+        ComponentFactory.create(COMMON_LEGEND_SWITCHER_ID, driver, wait).setSingleStringValue(onOrOff);
+    }
+
+    @Step("Set Multiple Charts By: {by}")
+    public void setMultipleChartsBy(String by) {
+        kpiToolbarPanel.openLayoutPanel();
+        ComponentFactory.create(MULTIPLE_CHARTS_BY_CUSTOM_SELECT_ID, driver, wait).setSingleStringValue(by);
+        log.info("Setting Multiple Charts by: {}", by);
+        waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Clear Multiple Charts By")
+    public void clearMultipleChartsBy() {
+        kpiToolbarPanel.openLayoutPanel();
+        ComponentFactory.create(MULTIPLE_CHARTS_BY_CUSTOM_SELECT_ID, driver, wait).clear();
+        log.info("Clearing Multiple Charts By");
+        waitForPageToLoad(driver, wait);
     }
 
     @Step("I set topN dimension in TopN panel")

@@ -9,7 +9,7 @@ import com.oss.pages.platform.LoginPage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.transport.infrastructure.ServicesClient.BASIC_URL;
+import static com.oss.serviceClient.ServicesClient.BASIC_URL;
 
 public class UsersPage extends BaseAdminPanelPage {
 
@@ -68,6 +68,7 @@ public class UsersPage extends BaseAdminPanelPage {
 
     @Step("Search for user: {userName}")
     public void searchForUser(String userName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         searchInTable(USERS_TABLE_ID, userName);
         log.info("Searching for user: {}", userName);
     }
@@ -79,6 +80,7 @@ public class UsersPage extends BaseAdminPanelPage {
 
     @Step("Select first row in Users table")
     public void selectFirstRowInUsersTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         selectFirstRowInTable(USERS_TABLE_ID);
         log.info("Selecting first row in Users table");
     }
@@ -86,11 +88,13 @@ public class UsersPage extends BaseAdminPanelPage {
     @Step("Click Reload button")
     public void clickReloadButton() {
         callActionInTable(USERS_TABLE_ID, RELOAD_BUTTON_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking Reload button");
     }
 
     @Step("Click Logout user from web sessions")
     public void clickLogoutUser() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         callActionInTable(USERS_TABLE_ID, LOGOUT_USER_BUTTON_ID);
         log.info("Clicking Logout user from web sessions button");
     }
@@ -102,10 +106,20 @@ public class UsersPage extends BaseAdminPanelPage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Log in user")
+    @Step("Open Login Page")
+    public void openLoginPage() {
+        new LoginPage(driver, BASIC_URL).open();
+        log.info("Opening Login Page");
+    }
+
+    @Step("Check if Login page is displayed")
+    public boolean isLoginPageOpened() {
+        return new LoginPage(driver, BASIC_URL).isLoginPageDisplayed();
+    }
+
+    @Step("Log in User")
     public void logInUser() {
-        new LoginPage(driver, USERS_PAGE_URL).open().login();
-        log.info("Logging user");
-        DelayUtils.waitForPageToLoad(driver, wait);
+        new LoginPage(driver, BASIC_URL).login();
+        log.info("Logging user to console");
     }
 }

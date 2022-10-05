@@ -202,7 +202,7 @@ public class TreeTableWidgetTest extends BaseTestCase {
         String nameFirstRow = plannersViewPage.getAttributeValue(NAME_COL_ID, 0);
         plannersViewPage.searchObject(nameFirstRow);
         List<TableRow> allRows = plannersViewPage.getRows();
-        Assert.assertEquals(treeTableWidget.getCellValueById(0, NAME_COL_ID), nameFirstRow);
+        Assert.assertEquals(treeTableWidget.getCellValue(0, NAME_COL_ID), nameFirstRow);
         plannersViewPage.clearFilters();
     }
 

@@ -21,7 +21,7 @@ import com.comarch.oss.resourcecatalog.logical.function.model.api.dto.LogicalFun
 import com.comarch.oss.resourcecatalog.logical.function.model.api.dto.LogicalFunctionModelViewDTO;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.ValidatableResponse;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;

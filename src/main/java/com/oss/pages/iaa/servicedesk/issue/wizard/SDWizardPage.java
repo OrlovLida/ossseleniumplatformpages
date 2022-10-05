@@ -22,6 +22,8 @@ import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
 
 import io.qameta.allure.Step;
 
+import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.COMMON_WIZARD_ID;
+
 public class SDWizardPage extends BaseSDPage {
 
     private static final Logger log = LoggerFactory.getLogger(SDWizardPage.class);
@@ -230,5 +232,9 @@ public class SDWizardPage extends BaseSDPage {
         ComponentFactory.create(switcherID, driver, wait)
                 .setSingleStringValue(Boolean.TRUE.toString());
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public IssueCSDIWizardPage openIssueCSDIWizardPage(){
+        return new IssueCSDIWizardPage(driver, wait, COMMON_WIZARD_ID);
     }
 }

@@ -1,6 +1,6 @@
 package com.oss.transport.infrastructure.navigation;
 
-import com.oss.transport.infrastructure.ServicesClient;
+import com.oss.serviceClient.ServicesClient;
 
 import java.util.ArrayList;
 import java.util.Arrays;

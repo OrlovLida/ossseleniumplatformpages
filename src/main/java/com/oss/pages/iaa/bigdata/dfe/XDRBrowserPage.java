@@ -27,7 +27,6 @@ public class XDRBrowserPage extends BaseDfePage {
     private static final String SEARCH_BUTTON_ID = "Search_Button-0";
     private static final String XDR_TABLE_ID = "xdrTableId";
     private static final String EXPORT_BUTTON = "tableExportButton";
-    private static final String ADVANCED_SEARCH_CLASS = "advanced-search_component";
 
     public XDRBrowserPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -77,24 +76,28 @@ public class XDRBrowserPage extends BaseDfePage {
 
     @Step("I check if XDR Table is empty")
     public boolean checkIfTableIsEmpty() {
-        return TableWidget.createById(driver, XDR_TABLE_ID, wait).hasNoData();
+        return getXDRTable().hasNoData();
     }
 
     @Step("I click on kebab menu and Export button")
     public void clickExport() {
-        TableWidget.createById(driver, XDR_TABLE_ID, wait).callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON);
+        getXDRTable().callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON);
     }
 
     @Step("I check if active filter contain {filter}")
     public boolean checkIfFilterExist(String filter) {
-        Multimap<String, String> activeFilters = AdvancedSearch.createByClass(driver, wait, ADVANCED_SEARCH_CLASS).getAppliedFilters();
+        Multimap<String, String> activeFilters = AdvancedSearch.createByWidgetId(driver, wait, getTableId()).getAppliedFilters();
         log.info("Checking if filter: {} is on the map", filter);
         return activeFilters.toString().contains(filter);
     }
 
+    private TableWidget getXDRTable() {
+        return TableWidget.createById(driver, getTableId(), wait);
+    }
+
     @Override
     public String getTableId() {
-        return null;
+        return XDR_TABLE_ID;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.oss.pages.platform;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
@@ -70,7 +71,7 @@ public class HierarchyViewPage extends BasePage {
 
     public void searchObject(String text) {
         TreeWidgetV2 treeWidgetV2 = getMainTree();
-        treeWidgetV2.typeIntoSearch(text);
+        treeWidgetV2.fullTextSearch(text);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -131,6 +132,14 @@ public class HierarchyViewPage extends BasePage {
     public void expandTreeNode(String label) {
         DelayUtils.waitForPageToLoad(driver, wait);
         getMainTree().expandNodeWithLabel(label);
+    }
+
+    public void collapseNodeByPath(String path) {
+        getMainTree().getNodeByPath(path).collapseNode();
+    }
+
+    public Set<String> getNodeChildrenByPath(String path) {
+        return getMainTree().getNodeChildrenByPath(path);
     }
 
     @Step("Select tree node by label - {label}")

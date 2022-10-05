@@ -3,6 +3,7 @@ package com.oss.nfv.networkService;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.nfv.networkservice.NetworkServiceWizardFirstStep;
 import com.oss.pages.nfv.networkservice.NetworkServiceWizardPage;
@@ -49,6 +50,7 @@ public class EditNetworkServiceTest extends BaseNetworkServiceTest {
     @Description("Go directly to Inventory View page, find NetworkService, select it on results and open NetworkService wizard from context menu")
     public void openEditNetworkServiceWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //given
         NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "LogicalFunction");
         //when

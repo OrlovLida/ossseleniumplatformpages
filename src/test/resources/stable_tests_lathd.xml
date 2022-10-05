@@ -25,5 +25,4 @@
             <class name="com.oss.transport.LoopbackInterfaceTest"/>
         </classes>
     </test>
-
 </suite>

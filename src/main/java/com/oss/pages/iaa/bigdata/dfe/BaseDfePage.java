@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.prompts.ConfirmationBox;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
@@ -40,7 +39,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         log.info("Opening page: {}", pageUrl);
     }
 
-    public OldTable getTable(WebDriver driver, WebDriverWait wait) {
+    public OldTable getTable() {
         return OldTable.createById(driver, wait, getTableId());
     }
 
@@ -48,7 +47,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
     public void attachFileToReport(String fileName) {
         FileDownload.attachDownloadedFileToReport(fileName);
         log.info("Attaching downloaded file to report");
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad(driver, wait);
     }
 
     @Step("Check if file is not empty")
@@ -59,7 +58,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
 
     @Step("Get category name")
     public String getCategoryName(int index) {
-        return getTable(driver, wait).getCellValue(index, CATEGORY_COLUMN_LABEL);
+        return getTable().getCellValue(index, CATEGORY_COLUMN_LABEL);
     }
 
     @Step("Search category")
@@ -69,12 +68,28 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
         log.debug("Filled category with: {}", category);
     }
 
-    @Step("Check if Table is empty")
-    public Boolean isTabTableEmpty(String tableId) {
-        log.info("Check if table with id: {} is empty", tableId);
+    @Step("Check if table is empty")
+    public boolean isTableEmpty() {
+        waitForPageToLoad(driver, wait);
+        return getTable().hasNoData();
+    }
+
+    @Step("Select first row in table")
+    public void selectFirstRowInTable() {
+        getTable().selectRow(0);
+    }
+
+    @Step("Get first value from column: {columnName}")
+    public String getValueFromColumn(String columnName) {
+        return getTable().getCellValue(0, columnName);
+    }
+
+    @Step("Check if Tab Table is empty")
+    public boolean isTabTableEmpty(String tabTableId) {
+        log.info("Check if tab table with id: {} is empty", tabTableId);
         waitForPageToLoad(driver, wait);
         return OldTable
-                .createById(driver, wait, tableId)
+                .createById(driver, wait, tabTableId)
                 .hasNoData();
     }
 
@@ -84,7 +99,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     protected int getNumberOfRowsInTable(String columnLabel) {
-        return getTable(driver, wait).countRows(columnLabel);
+        return getTable().countRows(columnLabel);
     }
 
     protected void clickContextActionAdd() {
@@ -100,7 +115,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
     }
 
     protected void clickContextAction(String actionLabel) {
-        getTable(driver, wait).callActionByLabel(actionLabel);
+        getTable().callActionByLabel(actionLabel);
         log.debug("Clicking context action: {}", actionLabel);
     }
 
@@ -120,6 +135,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
 
     protected void selectTab(String widgetId, String label) {
         TabsWidget.createById(driver, wait, widgetId).selectTabByLabel(label);
+        waitForPageToLoad(driver, wait);
     }
 
     protected void confirmDelete(String deleteLabel) {
@@ -157,7 +173,7 @@ public abstract class BaseDfePage extends BasePage implements BaseDfePageInterfa
                 .getCellValue(0, columnLabel);
     }
 
-    protected String checkValueInPropertyPanel(String propertyPanelId, String propertyName) {
+    protected String getValueFromPropertyPanel(String propertyPanelId, String propertyName) {
         String propertyValue = OldPropertyPanel.createById(driver, wait, propertyPanelId).getPropertyValue(propertyName);
         log.info("Value of: {} is: {}", propertyName, propertyValue);
         return propertyValue;

@@ -2,7 +2,7 @@ package com.oss.transport.infrastructure.servicecheck;
 
 import com.google.common.collect.ImmutableMap;
 import com.jayway.restassured.response.Response;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 
 import java.util.Map;
 

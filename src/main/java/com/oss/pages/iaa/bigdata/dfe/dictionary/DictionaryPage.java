@@ -5,6 +5,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.pages.iaa.bigdata.dfe.BaseDfePage;
 
@@ -29,6 +30,8 @@ public class DictionaryPage extends BaseDfePage {
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String DELETE_LABEL = "Delete";
     private static final String DELETE_ENTRIES_LABEL = "DELETE";
+    private static final String CATEGORY_SEARCH_ID = "category";
+    private static final String DICTIONARY_PROPERTY_PANEL_ID = "dictionaries/tabs/detailsAppId";
 
     public DictionaryPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -69,7 +72,7 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I select found Dictionary")
     public void selectFoundDictionary() {
-        getTable(driver, wait).selectRow(0);
+        getTable().selectRow(0);
     }
 
     @Step("I confirm the removal")
@@ -85,8 +88,12 @@ public class DictionaryPage extends BaseDfePage {
     @Step("I check if Entry: {entryName} exists into the table")
     public Boolean entryExistsIntoTable(String entryName) {
         waitForPageToLoad(driver, wait);
-        String textInTable = getEditableList().getRow(0).getCell(KEY_CELL_ID).getText();
-        return textInTable.equals(entryName);
+        return getTextFromEntry().equals(entryName);
+    }
+
+    @Step("Get text from entry")
+    public String getTextFromEntry() {
+        return getEditableList().getRow(0).getCell(KEY_CELL_ID).getText();
     }
 
     @Step("I check if Entry is deleted from the table")
@@ -97,6 +104,14 @@ public class DictionaryPage extends BaseDfePage {
 
     private EditableList getEditableList() {
         return EditableList.createById(driver, wait, LIST_ID);
+    }
+
+    public boolean isNoDataInEntriesTable() {
+        return getEditableList().hasNoData();
+    }
+
+    public int countDictionaries() {
+        return getTable().countRows(NAME_COLUMN_LABEL);
     }
 
     protected void clickEditableListAction(String editableListActionLabel) {
@@ -113,6 +128,28 @@ public class DictionaryPage extends BaseDfePage {
     public void clickDeleteEntry() {
         waitForPageToLoad(driver, wait);
         clickEditableListAction(DELETE_ENTRIES_LABEL);
+    }
+
+    @Step("Set category search")
+    public void setCategorySearch(String categoryName) {
+        ComponentFactory.create(CATEGORY_SEARCH_ID, driver, wait).setSingleStringValue(categoryName);
+        log.info("Setting category search to: {}", categoryName);
+        waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Select first Dictionary in table")
+    public void selectFirstDictionaryInTable() {
+        selectFirstRowInTable();
+    }
+
+    @Step("Select row: {row} in dictionary table")
+    public void selectRowInDictionaryTable(int row) {
+        getTable().selectRow(row);
+    }
+
+    @Step("Get value: {propertyName} form Dictionary Property Panel")
+    public String getValueFromDictionaryPropertyPanel(String propertyName) {
+        return getValueFromPropertyPanel(DICTIONARY_PROPERTY_PANEL_ID, propertyName);
     }
 
     @Override

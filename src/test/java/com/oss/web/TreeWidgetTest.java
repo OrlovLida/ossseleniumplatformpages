@@ -237,7 +237,7 @@ public class TreeWidgetTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         List<String> nodes = hierarchyViewPage.getVisibleNodesLabel();
-        Assertions.assertThat(nodes).doesNotContain(ROOM_3_UPDATE).isNotEmpty();
+        Assertions.assertThat(nodes).doesNotContain(PATH_ROOM_3).isNotEmpty();
     }
 
     @Test(priority = 11)
@@ -282,6 +282,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.clearFiltersOnMainTree();
     }
 
+
     @Test(priority = 14)
     public void clickInlineAction() {
         hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID);
@@ -290,17 +291,7 @@ public class TreeWidgetTest extends BaseTestCase {
     }
 
     @Test(priority = 15)
-    public void showOnHierarchyView() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID,
-                HierarchyViewPage.OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID);
-        List<Node> nodes = hierarchyViewPage.getMainTree().getVisibleNodes();
-        Assertions.assertThat(nodes).hasSize(1);
-    }
-
-    @Test(priority = 16)
     public void checkAvailabilityOsShowOnInventoryViewActionForDifferentType() {
-        hierarchyViewPage = HierarchyViewPage.openHierarchyViewPage(driver, BASIC_URL, "Location");
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         hierarchyViewPage.selectNodeByLabelsPath(LOCATION_NAME);
@@ -311,7 +302,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assert.assertFalse(CSSUtils.isElementPresent(driver, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID));
     }
 
-    @Test(priority = 17)
+    @Test(priority = 16)
     public void ShowOnInventoryViewActionForSameType() {
         hierarchyViewPage.unselectNodeByLabelsPath(PATH_DEVICE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -319,6 +310,16 @@ public class TreeWidgetTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         Assert.assertEquals(inventoryViewPage.getViewTitle(), INVENTORY_VIEW_TITLE);
+    }
+
+    @Test(priority = 17)
+    public void showOnHierarchyView() {
+        hierarchyViewPage = HierarchyViewPage.openHierarchyViewPage(driver, BASIC_URL, "Location");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID,
+                HierarchyViewPage.OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID);
+        List<Node> nodes = hierarchyViewPage.getMainTree().getVisibleNodes();
+        Assertions.assertThat(nodes).hasSize(1);
     }
 
     @Test(priority = 18)

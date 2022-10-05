@@ -1,4 +1,4 @@
-package com.oss.transport.infrastructure;
+package com.oss.serviceClient;
 
 public class User {
     
