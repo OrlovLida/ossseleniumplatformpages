@@ -82,7 +82,11 @@ public class ProcessWizardPage extends BasePage {
             "\"withProcessCreation\" option available only for Basic Program creation.";
     private static final String SCHEDULE_WITH_OTHER_OPTION_EXCEPTION = INVALID_PROPERTIES_SETTING +
             "Schedule creation is not available together with milestones, forecasts and multiple processes creation.";
-
+    private static final String PROCESS_ROLES_ASSIGNMENT_STEP = "Role assignment";
+    private static final String SCHEDULE_STEP = "Time schedule";
+    private static final String MILESTONES_ASSIGNMENT_STEP = "Milestones assignment";
+    private static final String FORECASTS_ASSIGNMENT_STEP = "Forecasts assignment";
+    private static final String LACK_OF_STEP_EXCEPTION = "Step %s is not visible on Process creation wizard";
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
@@ -167,7 +171,7 @@ public class ProcessWizardPage extends BasePage {
         if (driver.getPageSource().contains(FINISH_DUE_DATE_ID)) {
             wizardSecondStep.setComponentValue(FINISH_DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
         }
-        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+        return getSecondStepWizard();
     }
 
     protected Wizard definedBasicProgram(String programName, String programType, Long plusDays) {
@@ -176,7 +180,7 @@ public class ProcessWizardPage extends BasePage {
         if (driver.getPageSource().contains(DUE_DATE_ID)) {
             wizardSecondStep.setComponentValue(DUE_DATE_ID, LocalDate.now().plusDays(plusDays).toString());
         }
-        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+        return getSecondStepWizard();
     }
 
     public String createProcessIPD(String processName, Long plusDays, String processType) {
@@ -269,7 +273,7 @@ public class ProcessWizardPage extends BasePage {
             wizardFirstStep.waitForWizardToLoad();
         }
         wizardFirstStep.clickButtonById(ACCEPT_BUTTON);
-        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
+        return getSecondStepWizard();
     }
 
     protected void selectCheckbox(Wizard wizard, String checkBoxId) {
@@ -280,11 +284,6 @@ public class ProcessWizardPage extends BasePage {
             throw new TimeoutException(String.format(CHECKBOX_NOT_PRESENT_EXCEPTION, checkBoxId));
         }
     }
-
-//    private List<String> getProcessWizardSteps() {
-//      TODO
-//
-//    }
 
     /**
      * @deprecated Along with the 3.0.x version this method will be replaced by
@@ -299,26 +298,40 @@ public class ProcessWizardPage extends BasePage {
 
     public MilestonesStepWizardPage defineProcessAndGoToMilestonesStep(String processName, Long plusDays, String processType) {
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
-        selectCheckbox(processWizard, MILESTONE_ENABLED_CHECKBOX_ID);
-        DelayUtils.sleep();
-        processWizard.clickButtonById(NEXT_BUTTON);
-        return new MilestonesStepWizardPage(driver);
+        if (isStepVisible(MILESTONES_ASSIGNMENT_STEP)) {
+            processWizard.clickButtonById(NEXT_BUTTON);
+            return new MilestonesStepWizardPage(driver);
+        } else {
+            selectCheckbox(processWizard, MILESTONE_ENABLED_CHECKBOX_ID);
+            DelayUtils.sleep();
+            if (isStepVisible(MILESTONES_ASSIGNMENT_STEP)) {
+                processWizard.clickButtonById(NEXT_BUTTON);
+                return new MilestonesStepWizardPage(driver);
+            } else
+                throw new NoSuchElementException(String.format(LACK_OF_STEP_EXCEPTION, MILESTONES_ASSIGNMENT_STEP));
+        }
     }
 
     public ForecastsStepWizardPage defineProcessAndGoToForecastsStep(String processName, Long plusDays, String processType) {
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
         selectCheckbox(processWizard, FORECAST_ENABLED_CHECKBOX_ID);
         DelayUtils.sleep();
-        processWizard.clickButtonById(NEXT_BUTTON);
-        return new ForecastsStepWizardPage(driver);
+        if (isStepVisible(FORECASTS_ASSIGNMENT_STEP)) {
+            processWizard.clickButtonById(NEXT_BUTTON);
+            return new ForecastsStepWizardPage(driver);
+        } else
+            throw new NoSuchElementException(String.format(LACK_OF_STEP_EXCEPTION, FORECASTS_ASSIGNMENT_STEP));
     }
 
     public ScheduleStepWizardPage defineProcessAndGoToScheduleStep(String processName, Long plusDays, String processType) {
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
         selectCheckbox(processWizard, SCHEDULE_ENABLED_CHECKBOX_ID);
         DelayUtils.sleep();
-        processWizard.clickButtonById(NEXT_BUTTON);
-        return new ScheduleStepWizardPage(driver);
+        if (isStepVisible(SCHEDULE_STEP)) {
+            processWizard.clickButtonById(NEXT_BUTTON);
+            return new ScheduleStepWizardPage(driver);
+        } else
+            throw new NoSuchElementException(String.format(LACK_OF_STEP_EXCEPTION, SCHEDULE_STEP));
     }
 
     @Step("Defining simple DCP with process roles and waiting for information's about roles")
@@ -327,20 +340,28 @@ public class ProcessWizardPage extends BasePage {
     }
 
     public ProcessRolesStepWizardPage defineProcessAndGoToProcessRolesStep(String processName, Long plusDays, String processType) {
-        definedBasicProcess(processName, processType, plusDays).clickButtonById(NEXT_BUTTON);
-        return new ProcessRolesStepWizardPage(driver);
+        Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
+        if (isStepVisible(PROCESS_ROLES_ASSIGNMENT_STEP)) {
+            processWizard.clickNext();
+            return new ProcessRolesStepWizardPage(driver);
+        } else
+            throw new NoSuchElementException(String.format(LACK_OF_STEP_EXCEPTION, PROCESS_ROLES_ASSIGNMENT_STEP));
     }
 
     public void clickAcceptButton() {
-        Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CREATE_BUTTON);
+        getSecondStepWizard().clickButtonById(CREATE_BUTTON);
     }
 
     public void clickCancelButton() {
-        Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(CANCEL_BUTTON);
+        getSecondStepWizard().clickButtonById(CANCEL_BUTTON);
     }
 
     public void clickPreviousButton() {
-        Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2).clickButtonById(PREVIOUS_BUTTON);
+        getSecondStepWizard().clickButtonById(PREVIOUS_BUTTON);
+    }
+
+    private Wizard getSecondStepWizard() {
+        return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
 
     private void setProgramsToLink(List<String> programNamesList) {
@@ -352,6 +373,14 @@ public class ProcessWizardPage extends BasePage {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         return messages.get(0).getText();
+    }
+
+    private List<String> getProcessWizardSteps() {
+        return getSecondStepWizard().getWizardStepsTitles();
+    }
+
+    private boolean isStepVisible(String stepName) {
+        return getProcessWizardSteps().stream().anyMatch(s -> s.contains(stepName));
     }
 
     private String extractProcessCode(String message) {
