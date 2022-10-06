@@ -15,6 +15,9 @@ public class SubscriptionConfigurationPage extends BasePage {
     private static final String TREE_WIDGET_ID = "HierarchyTreeWidget";
     private static final String NOTIFICATION_SUBSCRIPTIONS_WIDGET_ID = "NotificationSubscriptionsWidget";
     private static final String CLEAR_BUFFER_ID = "narComponent_RecoControl_NotificationSubscriptionActionClearBufferId";
+    private static final String DISABLE_ID = "narComponent_RecoControl_NotificationSubscriptionActionDisableId";
+    private static final String ENABLE_ID = "narComponent_RecoControl_NotificationSubscriptionActionEnableId";
+    private static final String HOLD_ID = "narComponent_RecoControl_NotificationSubscriptionActionHoldId";
     private static final String BACK_TO_NDCV_WITH_SELECTED_SUBSCRIPTION_ID = "narComponent_RecoControl_CMDomainActionNetworkDiscoveryControlId";
     private static final String BACK_TO_NDCV_WITHOUT_SELECTED_SUBSCRIPTION_ID = "narComponent_RecoControl_CMDomainActionNetworkDiscoveryControlNoCtxId";
     private static final String TABS_WIDGET_ID = "TopDetailTabsWidget";
@@ -80,6 +83,18 @@ public class SubscriptionConfigurationPage extends BasePage {
         getTableWidget().callAction(CLEAR_BUFFER_ID);
     }
 
+    public void disable() {
+        getTableWidget().callAction(DISABLE_ID);
+    }
+
+    public void enable() {
+        getTableWidget().callAction(ENABLE_ID);
+    }
+
+    public void hold() {
+        getTableWidget().callAction(HOLD_ID);
+    }
+
     public boolean isBufferZeroPercent() {
         return "0%".equals(getBufferStatePercent());
     }
@@ -90,6 +105,10 @@ public class SubscriptionConfigurationPage extends BasePage {
 
     public void selectFirstSubscription() {
         getTableWidget().selectRow(0);
+    }
+
+    public boolean isDateFormatCorrect(String date) {
+        return date.matches("\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d\\:\\d\\d\\:\\d\\d");
     }
 
     private TableWidget getTableWidget() {

@@ -30,10 +30,10 @@ public class NotificationSubscriptionTest extends BaseTestCase {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        LOG.info("Checking amount of reconciliation states");
-//        Assert.assertEquals(networkDiscoveryControlViewPage.countReconciliationStates(), 2);
-//        LOG.info("Tab Labels on NetworkElementDiscoveryViewPage are: " + networkDiscoveryControlViewPage.getTabsLabels());
-//        Assert.assertFalse(networkDiscoveryControlViewPage.getTabsLabels().contains("Notifications"));
+        LOG.info("Checking amount of reconciliation states");
+        Assert.assertEquals(networkDiscoveryControlViewPage.countReconciliationStates(), 2);
+        LOG.info("Tab Labels on NetworkElementDiscoveryViewPage are: " + networkDiscoveryControlViewPage.getTabsLabels());
+        Assert.assertFalse(networkDiscoveryControlViewPage.getTabsLabels().contains("Notifications"));
         networkDiscoveryControlViewPage.moveToSubscriptionConfiguration();
     }
 
@@ -46,7 +46,7 @@ public class NotificationSubscriptionTest extends BaseTestCase {
 //        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
 //        networkDiscoveryControlViewPage.moveToSubscriptionConfiguration();
 //        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        subscriptionConfigurationPage.selectFirstItem();
+//        subscriptionConfigurationPage.selectFirstSubscription();
 //        subscriptionConfigurationPage.goBackToNDCVWithSelectedSubscription();
 //        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 //        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -75,6 +75,10 @@ public class NotificationSubscriptionTest extends BaseTestCase {
 //        subscriptionConfigurationPage.addRows("DM_RecoControl_NotificationSubscription.totalCapacity");
 //        Assert.assertEquals(subscriptionConfigurationPage.getTabLabels(), tabLabelsList);
 
+        // Dodac przelaczanie miedzy Enable/Disable/Hold -> enable(), disable(), hold()
+        // Sprawdzane wzorca na Newest Oldest Notification -> isDateFormatCorrect(String)
+
+        // Wszystkie kombinacje zmian
 
     }
 
