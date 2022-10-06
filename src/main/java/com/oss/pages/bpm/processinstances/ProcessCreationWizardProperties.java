@@ -12,40 +12,50 @@ import java.util.List;
  */
 @Getter
 public class ProcessCreationWizardProperties {
-    private final List<Milestone> milestoneList;
-    private final Integer processAmount;
-    private final List<String> programNamesList;
-    private final List<Forecast> forecastsList;
     private final String cronExpression;
     private final ScheduleProperties scheduleProperties;
+
     private final String processName;
     private final String processType;
     private final Long processPlusDays;
+    private final Integer processAmount;
+    private final List<String> programNamesList;
+    private final List<Milestone> processMilestoneList;
+    private final List<Forecast> processForecastsList;
+    private final Forecast processMainForecast;
+    private final Multimap<String, String> processRolesList;
 
     private final String programName;
     private final String programType;
     private final Long programPlusDays;
-
-    private final String processWithProgramName;
-    private final String processWithProgramType;
-    private final Long processWithProgramDays;
-    private final Multimap<String, String> processRolesList;
+    private final List<Milestone> programMilestoneList;
+    private final List<Forecast> programForecastsList;
+    private final Forecast programMainForecast;
+    private final Multimap<String, String> programRolesList;
 
     private final boolean isProcessCreation;
     private final boolean isProgramCreation;
-    private final boolean isMilestonesCreation;
-    private final boolean isForecastsCreation;
-    private final boolean isScheduleCreation;
+    private final boolean isProcessMilestonesCreation;
+    private final boolean isProcessForecastsCreation;
     private final boolean isProcessRolesAssignment;
+    private final boolean isProgramMilestonesCreation;
+    private final boolean isProgramForecastsCreation;
+    private final boolean isProgramRolesAssignment;
+    private final boolean isScheduleCreation;
     private final boolean isMultipleProcessesCreation;
     private final boolean isProgramsToLink;
     private final boolean isProgramWithProcessCreation;
 
+
     ProcessCreationWizardProperties(ProcessCreationWizardPropertiesBuilder builder) {
-        this.milestoneList = builder.milestoneList;
+        this.processMilestoneList = builder.processMilestoneList;
+        this.programMilestoneList = builder.programMilestoneList;
         this.processAmount = builder.processAmount;
         this.programNamesList = builder.programNamesList;
-        this.forecastsList = builder.forecastsList;
+        this.processForecastsList = builder.processForecastsList;
+        this.processMainForecast = builder.processMainForecast;
+        this.programForecastsList = builder.programForecastsList;
+        this.programMainForecast = builder.programMainForecast;
         this.cronExpression = builder.cronExpression;
         this.scheduleProperties = builder.scheduleProperties;
         this.processName = builder.processName;
@@ -54,17 +64,18 @@ public class ProcessCreationWizardProperties {
         this.programName = builder.programName;
         this.programType = builder.programType;
         this.programPlusDays = builder.programPlusDays;
-        this.processWithProgramName = builder.processWithProgramName;
-        this.processWithProgramType = builder.processWithProgramType;
-        this.processWithProgramDays = builder.processWithProgramDays;
         this.processRolesList = builder.processRolesList;
+        this.programRolesList = builder.programRolesList;
 
         this.isProcessCreation = builder.isProcessCreation;
         this.isProgramCreation = builder.isProgramCreation;
-        this.isMilestonesCreation = builder.isMilestonesCreation;
-        this.isForecastsCreation = builder.isForecastsCreation;
-        this.isScheduleCreation = builder.isScheduleCreation;
+        this.isProcessMilestonesCreation = builder.isProcessMilestonesCreation;
+        this.isProcessForecastsCreation = builder.isProcessForecastsCreation;
         this.isProcessRolesAssignment = builder.isProcessRolesAssignment;
+        this.isProgramMilestonesCreation = builder.isProgramMilestonesCreation;
+        this.isProgramForecastsCreation = builder.isProgramForecastsCreation;
+        this.isProgramRolesAssignment = builder.isProgramRolesAssignment;
+        this.isScheduleCreation = builder.isScheduleCreation;
         this.isMultipleProcessesCreation = builder.isMultipleProcessesCreation;
         this.isProgramsToLink = builder.isProgramsToLink;
         this.isProgramWithProcessCreation = builder.isProgramWithProcessCreation;
@@ -76,29 +87,39 @@ public class ProcessCreationWizardProperties {
 
     public static class ProcessCreationWizardPropertiesBuilder {
 
-        private List<Milestone> milestoneList;
-        private Integer processAmount;
-        private List<String> programNamesList;
-        private List<Forecast> forecastsList;
         private String cronExpression;
         private ScheduleProperties scheduleProperties;
+
         private String processName;
         private String processType;
         private Long processPlusDays;
+        private Integer processAmount;
+        private List<String> programNamesList;
+
+        private List<Milestone> processMilestoneList;
+        private List<Forecast> processForecastsList;
+        private Forecast processMainForecast;
+        private Multimap<String, String> processRolesList;
+
         private String programName;
         private String programType;
         private Long programPlusDays;
-        private String processWithProgramName;
-        private String processWithProgramType;
-        private Long processWithProgramDays;
-        private Multimap<String, String> processRolesList;
+
+        private List<Milestone> programMilestoneList;
+        private List<Forecast> programForecastsList;
+        private Forecast programMainForecast;
+        private Multimap<String, String> programRolesList;
 
         private boolean isProcessCreation = false;
         private boolean isProgramCreation = false;
-        private boolean isMilestonesCreation = false;
-        private boolean isForecastsCreation = false;
-        private boolean isScheduleCreation = false;
+        private boolean isProcessMilestonesCreation = false;
+        private boolean isProcessForecastsCreation = false;
         private boolean isProcessRolesAssignment = false;
+
+        private boolean isProgramMilestonesCreation = false;
+        private boolean isProgramForecastsCreation = false;
+        private boolean isProgramRolesAssignment = false;
+        private boolean isScheduleCreation = false;
         private boolean isMultipleProcessesCreation = false;
         private boolean isProgramsToLink = false;
         private boolean isProgramWithProcessCreation = false;
@@ -122,21 +143,49 @@ public class ProcessCreationWizardProperties {
             return this;
         }
 
-        public ProcessCreationWizardPropertiesBuilder withMilestones(List<Milestone> milestoneList) {
-            this.isMilestonesCreation = true;
-            this.milestoneList = milestoneList;
-            return this;
-        }
-
         public ProcessCreationWizardPropertiesBuilder withProgramsToLink(List<String> programNamesList) {
             this.isProgramsToLink = true;
             this.programNamesList = programNamesList;
             return this;
         }
 
-        public ProcessCreationWizardPropertiesBuilder withForecasts(List<Forecast> forecastsList) {
-            this.isForecastsCreation = true;
-            this.forecastsList = forecastsList;
+        public ProcessCreationWizardPropertiesBuilder withProcessMilestones(List<Milestone> milestoneList) {
+            this.isProcessMilestonesCreation = true;
+            this.processMilestoneList = milestoneList;
+            return this;
+        }
+
+
+        public ProcessCreationWizardPropertiesBuilder withProcessForecast(Forecast mainForecast, List<Forecast> forecastsList) {
+            this.isProcessForecastsCreation = true;
+            this.processForecastsList = forecastsList;
+            this.processMainForecast = mainForecast;
+            return this;
+        }
+
+        public ProcessCreationWizardPropertiesBuilder withProcessForecasts(Forecast mainForecast) {
+            this.isProcessForecastsCreation = true;
+            this.processMainForecast = mainForecast;
+            return this;
+        }
+
+        public ProcessCreationWizardPropertiesBuilder withProgramMilestones(List<Milestone> milestoneList) {
+            this.isProgramMilestonesCreation = true;
+            this.programMilestoneList = milestoneList;
+            return this;
+        }
+
+
+        public ProcessCreationWizardPropertiesBuilder withProgramForecast(Forecast mainForecast, List<Forecast> forecastsList) {
+            this.isProgramForecastsCreation = true;
+            this.programForecastsList = forecastsList;
+            this.programMainForecast = mainForecast;
+            return this;
+        }
+
+        public ProcessCreationWizardPropertiesBuilder withProgramForecasts(Forecast mainForecast) {
+            this.isProgramForecastsCreation = true;
+            this.programMainForecast = mainForecast;
             return this;
         }
 
@@ -160,15 +209,21 @@ public class ProcessCreationWizardProperties {
 
         public ProcessCreationWizardPropertiesBuilder withProcessCreation(String processName, String processType, Long plusDays) {
             this.isProgramWithProcessCreation = true;
-            this.processWithProgramName = processName;
-            this.processWithProgramType = processType;
-            this.processWithProgramDays = plusDays;
+            this.processName = processName;
+            this.processType = processType;
+            this.processPlusDays = plusDays;
             return this;
         }
 
         public ProcessCreationWizardPropertiesBuilder withProcessRolesAssignment(Multimap<String, String> processRolesList) {
             this.isProcessRolesAssignment = true;
             this.processRolesList = processRolesList;
+            return this;
+        }
+
+        public ProcessCreationWizardPropertiesBuilder withProgramRolesAssignment(Multimap<String, String> programRolesList) {
+            this.isProgramRolesAssignment = true;
+            this.programRolesList = programRolesList;
             return this;
         }
 

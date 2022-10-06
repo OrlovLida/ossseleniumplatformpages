@@ -5,6 +5,9 @@ import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import org.openqa.selenium.WebDriver;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author Paweł Rother
  */
@@ -23,6 +26,11 @@ public class MilestonesStepWizardPage extends ProcessWizardPage {
     public Milestone addMilestoneRow(Milestone milestone) {
         MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, ADD_MILESTONE_LIST);
         return milestoneWizardPage.addMilestoneRow(milestone);
+    }
+
+    public List<Milestone> addMilestones(List<Milestone> milestones) {
+        MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, ADD_MILESTONE_LIST);
+        return milestones.stream().map(milestoneWizardPage::addMilestoneRow).collect(Collectors.toList());
     }
 
     public Milestone editPredefinedMilestone(Milestone milestone, int row) {

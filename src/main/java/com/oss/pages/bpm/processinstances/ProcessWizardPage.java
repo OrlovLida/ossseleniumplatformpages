@@ -298,40 +298,28 @@ public class ProcessWizardPage extends BasePage {
 
     public MilestonesStepWizardPage defineProcessAndGoToMilestonesStep(String processName, Long plusDays, String processType) {
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
-        if (isStepVisible(MILESTONES_ASSIGNMENT_STEP)) {
-            processWizard.clickButtonById(NEXT_BUTTON);
-            return new MilestonesStepWizardPage(driver);
-        } else {
+        if (!isStepVisible(MILESTONES_ASSIGNMENT_STEP)) {
             selectCheckbox(processWizard, MILESTONE_ENABLED_CHECKBOX_ID);
             DelayUtils.sleep();
-            if (isStepVisible(MILESTONES_ASSIGNMENT_STEP)) {
-                processWizard.clickButtonById(NEXT_BUTTON);
-                return new MilestonesStepWizardPage(driver);
-            } else
-                throw new NoSuchElementException(String.format(LACK_OF_STEP_EXCEPTION, MILESTONES_ASSIGNMENT_STEP));
         }
+        processWizard.clickButtonById(NEXT_BUTTON);
+        return new MilestonesStepWizardPage(driver);
     }
 
     public ForecastsStepWizardPage defineProcessAndGoToForecastsStep(String processName, Long plusDays, String processType) {
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
         selectCheckbox(processWizard, FORECAST_ENABLED_CHECKBOX_ID);
         DelayUtils.sleep();
-        if (isStepVisible(FORECASTS_ASSIGNMENT_STEP)) {
-            processWizard.clickButtonById(NEXT_BUTTON);
-            return new ForecastsStepWizardPage(driver);
-        } else
-            throw new NoSuchElementException(String.format(LACK_OF_STEP_EXCEPTION, FORECASTS_ASSIGNMENT_STEP));
+        processWizard.clickButtonById(NEXT_BUTTON);
+        return new ForecastsStepWizardPage(driver);
     }
 
     public ScheduleStepWizardPage defineProcessAndGoToScheduleStep(String processName, Long plusDays, String processType) {
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
         selectCheckbox(processWizard, SCHEDULE_ENABLED_CHECKBOX_ID);
         DelayUtils.sleep();
-        if (isStepVisible(SCHEDULE_STEP)) {
-            processWizard.clickButtonById(NEXT_BUTTON);
-            return new ScheduleStepWizardPage(driver);
-        } else
-            throw new NoSuchElementException(String.format(LACK_OF_STEP_EXCEPTION, SCHEDULE_STEP));
+        processWizard.clickButtonById(NEXT_BUTTON);
+        return new ScheduleStepWizardPage(driver);
     }
 
     @Step("Defining simple DCP with process roles and waiting for information's about roles")
@@ -394,58 +382,149 @@ public class ProcessWizardPage extends BasePage {
         throw new NoSuchElementException(CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION + message);
     }
 
-//    public void createInstance(ProcessCreationWizardProperties properties) {
-//        if (properties.isProcessCreation() && properties.isProgramCreation())
-//            throw new IllegalArgumentException(BASIC_PROGRAM_AND_PROCESS_EXCEPTION);
-//
-//        if (properties.isProcessCreation()) {
-//
-//            if (properties.isProgramWithProcessCreation())
-//                throw new IllegalArgumentException(CREATE_PROGRAM_WITH_PROCESS_EXCEPTION);
-//
-//            Wizard processWizard = definedBasicProcess(properties.getProcessName(), properties.getProcessType(),
-//                    properties.getProcessPlusDays());
-//
-//            if (properties.isProgramsToLink()) {
-//                setProgramsToLink(properties.getProgramNamesList());
-//            }
-//
-//            if (properties.isScheduleCreation()) {
-//
-//                if (properties.isMultipleProcessesCreation() || properties.isForecastsCreation() ||
-//                        properties.isMilestonesCreation())
-//                    throw new IllegalArgumentException(SCHEDULE_WITH_OTHER_OPTION_EXCEPTION);
-//
-//                selectCheckbox(processWizard, SCHEDULE_ENABLED_CHECKBOX_ID);
-//                processWizard.clickNext();
-//
-//                if (properties.isProcessRolesAssignment()) {
-//                    ProcessRolesStepWizardPage processRolesStepWizardPage = new ProcessRolesStepWizardPage(driver);
-//                    processRolesStepWizardPage.addPlanners(properties.getProcessRolesList());
-//                    processWizard.clickNext();
-//                }
-//                ScheduleStepWizardPage scheduleStepWizardPage = new ScheduleStepWizardPage(driver);
-//                if (properties.getCronExpression() != null) {
-//                    scheduleStepWizardPage.setCRONExpression(properties.getCronExpression());
-//                } else {
-//                    scheduleStepWizardPage.setSchedule(properties.getScheduleProperties());
-//                }
-//                scheduleStepWizardPage.clickAcceptButton();
-//            } else {
-//
-//
-//            }
-//
-//
-//        } else if (properties.isProgramCreation()) {
-//            if (properties.isScheduleCreation())
-//                throw new IllegalArgumentException(PROGRAM_WITH_SCHEDULE_EXCEPTION);
-//            if (properties.isProgramsToLink())
-//                throw new IllegalArgumentException(PROGRAM_TO_LINK_EXCEPTION);
-//
-//        } else
-//            throw new IllegalArgumentException(NO_BASIC_PROCESS_PROGRAM_EXCEPTION);
-//    }
+    public void createInstance(ProcessCreationWizardProperties properties) {
+        if (properties.isProcessCreation() && properties.isProgramCreation())
+            throw new IllegalArgumentException(BASIC_PROGRAM_AND_PROCESS_EXCEPTION);
+
+        if (properties.isProcessCreation()) {
+
+            if (properties.isProgramWithProcessCreation())
+                throw new IllegalArgumentException(CREATE_PROGRAM_WITH_PROCESS_EXCEPTION);
+
+            Wizard processWizard = definedBasicProcess(properties.getProcessName(), properties.getProcessType(),
+                    properties.getProcessPlusDays());
+
+            if (properties.isProgramsToLink()) {
+                setProgramsToLink(properties.getProgramNamesList());
+            }
+
+            if (properties.isScheduleCreation()) {
+
+                if (properties.isMultipleProcessesCreation() || properties.isProcessForecastsCreation() ||
+                        properties.isProcessMilestonesCreation())
+                    throw new IllegalArgumentException(SCHEDULE_WITH_OTHER_OPTION_EXCEPTION);
+
+                selectCheckbox(processWizard, SCHEDULE_ENABLED_CHECKBOX_ID);
+
+                proceedRolesStep(processWizard, properties, false);
+                proceedScheduleStep(processWizard, properties);
+                clickAcceptButton();
+
+            } else
+                proceedProcessSteps(processWizard, properties);
+
+        } else if (properties.isProgramCreation()) {
+            if (properties.isScheduleCreation())
+                throw new IllegalArgumentException(PROGRAM_WITH_SCHEDULE_EXCEPTION);
+
+            if (properties.isProgramsToLink())
+                throw new IllegalArgumentException(PROGRAM_TO_LINK_EXCEPTION);
+
+            Wizard programWizard = definedBasicProgram(properties.getProgramName(), properties.getProgramType(),
+                    properties.getProgramPlusDays());
+
+            if (properties.isProgramForecastsCreation())
+                selectCheckbox(programWizard, FORECAST_ENABLED_CHECKBOX_ID);
+
+            if (properties.isProgramMilestonesCreation() && !isStepVisible(MILESTONES_ASSIGNMENT_STEP))
+                selectCheckbox(programWizard, MILESTONE_ENABLED_CHECKBOX_ID);
+
+            if (properties.isProgramWithProcessCreation())
+                selectCheckbox(programWizard, CREATE_PROCESS_CHECKBOX_ID);
+
+            proceedRolesStep(programWizard, properties, true);
+            proceedMilestonesStep(programWizard, properties, true);
+            proceedForecastsStep(programWizard, properties, true);
+
+            clickAcceptButton();
+
+            if (properties.isProgramWithProcessCreation()) {
+                Wizard processWizard = definedBasicProcess(properties.getProcessName(), properties.getProcessType(),
+                        properties.getProcessPlusDays());
+
+                proceedProcessSteps(processWizard, properties);
+            }
+        } else
+            throw new IllegalArgumentException(NO_BASIC_PROCESS_PROGRAM_EXCEPTION);
+    }
+
+    private void proceedForecastsStep(Wizard processWizard, ProcessCreationWizardProperties properties, boolean isForProgram) {
+        if (properties.isProgramForecastsCreation() || properties.isProcessForecastsCreation()) {
+            processWizard.clickNext();
+            ForecastsStepWizardPage forecastsStepWizardPage = new ForecastsStepWizardPage(driver);
+            if (isForProgram) {
+                forecastsStepWizardPage.setProcessForecast(properties.getProgramMainForecast());
+                if (properties.getProgramForecastsList() != null) {
+                    forecastsStepWizardPage.addForecasts(properties.getProgramForecastsList());
+                }
+            } else {
+                forecastsStepWizardPage.setProcessForecast(properties.getProcessMainForecast());
+                if (properties.getProcessForecastsList() != null) {
+                    forecastsStepWizardPage.addForecasts(properties.getProcessForecastsList());
+                }
+            }
+        }
+    }
+
+    private void proceedMilestonesStep(Wizard processWizard, ProcessCreationWizardProperties properties, boolean isForProgram) {
+        if (properties.isProgramMilestonesCreation() || properties.isProcessMilestonesCreation()) {
+            processWizard.clickNext();
+            MilestonesStepWizardPage milestonesStepWizardPage = new MilestonesStepWizardPage(driver);
+            if (isForProgram)
+                milestonesStepWizardPage.addMilestones(properties.getProgramMilestoneList());
+            else
+                milestonesStepWizardPage.addMilestones(properties.getProcessMilestoneList());
+        } else {
+            if (isStepVisible(MILESTONES_ASSIGNMENT_STEP))
+                processWizard.clickNext();
+        }
+    }
+
+    private void proceedRolesStep(Wizard processWizard, ProcessCreationWizardProperties properties, boolean isForProgram) {
+        if (properties.isProcessRolesAssignment() || properties.isProgramRolesAssignment()) {
+            if (isStepVisible(PROCESS_ROLES_ASSIGNMENT_STEP)) {
+                processWizard.clickNext();
+                ProcessRolesStepWizardPage processRolesStepWizardPage = new ProcessRolesStepWizardPage(driver);
+                if (isForProgram)
+                    processRolesStepWizardPage.addPlanners(properties.getProgramRolesList());
+                else
+                    processRolesStepWizardPage.addPlanners(properties.getProcessRolesList());
+            } else
+                throw new NoSuchElementException(String.format(LACK_OF_STEP_EXCEPTION, PROCESS_ROLES_ASSIGNMENT_STEP));
+        }
+    }
+
+    private void proceedScheduleStep(Wizard processWizard, ProcessCreationWizardProperties properties) {
+        processWizard.clickNext();
+        ScheduleStepWizardPage scheduleStepWizardPage = new ScheduleStepWizardPage(driver);
+        if (properties.getCronExpression() != null) {
+            scheduleStepWizardPage.setCRONExpression(properties.getCronExpression());
+        } else {
+            scheduleStepWizardPage.setSchedule(properties.getScheduleProperties());
+        }
+    }
+
+    private void proceedMultipleProcesses(Wizard processWizard, ProcessCreationWizardProperties properties) {
+        if (properties.isMultipleProcessesCreation()) {
+            selectCheckbox(processWizard, CREATE_MULTIPLE_CHECKBOX_ID);
+            processWizard.setComponentValue(NUMBER_OF_PROCESSES_ID, String.valueOf(properties.getProcessAmount()));
+        }
+    }
+
+    private void proceedProcessSteps(Wizard processWizard, ProcessCreationWizardProperties properties) {
+        proceedMultipleProcesses(processWizard, properties);
+
+        if (properties.isProcessForecastsCreation())
+            selectCheckbox(processWizard, FORECAST_ENABLED_CHECKBOX_ID);
+
+        if (properties.isProcessMilestonesCreation() && !isStepVisible(MILESTONES_ASSIGNMENT_STEP))
+            selectCheckbox(processWizard, MILESTONE_ENABLED_CHECKBOX_ID);
+
+        proceedRolesStep(processWizard, properties, false);
+        proceedMilestonesStep(processWizard, properties, false);
+        proceedForecastsStep(processWizard, properties, false);
+        clickAcceptButton();
+    }
 
     /**
      * @deprecated Along with the 3.0.x version this method will be replaced by

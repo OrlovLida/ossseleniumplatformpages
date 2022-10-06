@@ -6,6 +6,9 @@ import com.oss.pages.bpm.forecasts.ForecastAttributes;
 import com.oss.pages.bpm.forecasts.ForecastWizardPage;
 import org.openqa.selenium.WebDriver;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * @author Paweł Rother
  */
@@ -26,6 +29,11 @@ public class ForecastsStepWizardPage extends ProcessWizardPage {
     public ForecastAttributes addForecastRow(Forecast forecast) {
         ForecastWizardPage forecastWizardPage = new ForecastWizardPage(driver, ADD_FORECAST_LIST);
         return forecastWizardPage.addForecastRow(forecast);
+    }
+
+    public List<ForecastAttributes> addForecasts(List<Forecast> forecasts) {
+        ForecastWizardPage forecastWizardPage = new ForecastWizardPage(driver, ADD_FORECAST_LIST);
+        return forecasts.stream().map(forecastWizardPage::addForecastRow).collect(Collectors.toList());
     }
 
     public ForecastAttributes setProcessForecast(Forecast forecast) {
