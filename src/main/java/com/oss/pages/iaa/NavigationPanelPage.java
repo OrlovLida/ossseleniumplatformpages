@@ -27,6 +27,7 @@ public class NavigationPanelPage extends BasePage {
         WebDriverWait wait = new WebDriverWait(driver, 90);
         driver.get(baseURL);
         log.info("Opening Home Page");
+        DelayUtils.waitForPageToLoad(driver, wait);
         return new NavigationPanelPage(driver, wait);
     }
 
