@@ -121,24 +121,36 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         deviceWizard.setQuantity(DEVICE_WIZARD_NOT_ALLOWED_QUANTITY_VALUE);
         validateQuantityMessage();
         validateIfCorrectFieldsAreGreyedOut();
-        tryToMoveToNextStep();
     }
 
     @Test(priority = 3)
+    public void fulfillFirstStepInWizard() {
+        deviceWizard.setEquipmentType(EQUIPMENT_TYPE_VALUE);
+        deviceWizard.setModel(MODEL_VALUE);
+        tryToMoveToNextStep();
+    }
+
+    @Test(priority = 4)
     public void increaseQuantityToAllowedValue() {
         deviceWizard.setQuantity(DEVICE_WIZARD_ALLOWED_QUANTITY_VALUE);
         checkNumberOfWizardSteps();
         validateIfCorrectFieldsAreGreyedOut();
+        deviceWizard.next();
     }
 
-    @Test(priority = 4)
+    @Test(priority = 5)
+    public void fulfillSecondStepInWizard() {
+        deviceWizard.setPreciseLocation(testLocationId);
+        deviceWizard.next();
+    }
+
+    @Test(priority = 6)
     public void setSpecificAttributesForDevices() {
-        fillMandatoryAttributesAndMoveToLastStep();
         fillSpecificAttributesForDevices();
         deviceWizard.accept();
     }
 
-    @Test(priority = 5, dependsOnMethods = {"setSpecificAttributesForDevices"})
+    @Test(priority = 7, dependsOnMethods = {"setSpecificAttributesForDevices"})
     public void openHierarchyViewFromActiveLink() {
         validateSystemMessage();
         clickSystemMessageLink();
@@ -146,25 +158,21 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 6, dependsOnMethods = {"openHierarchyViewFromActiveLink"})
+    @Test(priority = 8, dependsOnMethods = {"openHierarchyViewFromActiveLink"})
     public void checkNumberOfDevicesOnHierarchyView() {
         Assert.assertEquals(getMainTreeSize(), NUMBER_OF_CREATED_DEVICES);
     }
 
-    @Test(priority = 7, dependsOnMethods = {"checkNumberOfDevicesOnHierarchyView"})
-    public void checkCreatedDevices() {
+    @Test(priority = 9, dependsOnMethods = {"checkNumberOfDevicesOnHierarchyView"})
+    public void checkCreatedDevicesStructures() {
         List<String> createdDevicesIds = getCreatedDevicesIds();
-        String chassisId;
+        createdDevicesIds.forEach(this::performStructureValidation);
+    }
 
-        for(String deviceId:createdDevicesIds) {
-            chassisId = getFirstChassisIdFromHierarchy(deviceId);
-
-            validateDeviceStructure(deviceId, chassisId);
-            selectDeviceOnHierarchyView(deviceId);
-            loadPropertyPanelAttributesAndValues();
-            validateDeviceAttributesAndValues(deviceId);
-            selectDeviceOnHierarchyView(deviceId);
-        }
+    @Test(priority = 10, dependsOnMethods = {"checkCreatedDevicesStructures"})
+    public void checkCreatedDevicesAttributes() {
+        List<String> createdDevicesIds = getCreatedDevicesIds();
+        createdDevicesIds.forEach(this::performSelectionWithValidation);
         softAssert.assertAll();
     }
 
@@ -322,15 +330,6 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         Assert.assertEquals(deviceWizard.countNumberOfSteps(), initialNumberOfSteps + 1);
     }
 
-    @Step("Set values for all mandatory attributes in wizard and move to last step")
-    private void fillMandatoryAttributesAndMoveToLastStep() {
-        deviceWizard.setEquipmentType(EQUIPMENT_TYPE_VALUE);
-        deviceWizard.setModel(MODEL_VALUE);
-        deviceWizard.next();
-        deviceWizard.setPreciseLocation(testLocationId);
-        deviceWizard.next();
-    }
-
     @Step("Select device on Hierarchy View")
     private void selectDeviceOnHierarchyView(String devicePath) {
         hierarchyViewPage.getMainTree().getNodeByPath(devicePath).toggleNode();
@@ -375,6 +374,18 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         return getIdFromString(driver.getCurrentUrl()).stream()
                 .map(Object::toString)
                 .collect(Collectors.toList());
+    }
+
+    private void performSelectionWithValidation(String deviceId) {
+        selectDeviceOnHierarchyView(deviceId);
+        loadPropertyPanelAttributesAndValues();
+        validateDeviceAttributesAndValues(deviceId);
+        selectDeviceOnHierarchyView(deviceId);
+    }
+
+    private void performStructureValidation(String deviceId) {
+        String chassisId = getFirstChassisIdFromHierarchy(deviceId);
+        validateDeviceStructure(deviceId, chassisId);
     }
 
     private ResourceHierarchyDTO getResourceHierarchyAPI(String deviceId) {
