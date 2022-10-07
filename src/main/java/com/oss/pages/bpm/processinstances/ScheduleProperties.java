@@ -3,7 +3,6 @@ package com.oss.pages.bpm.processinstances;
 import lombok.Getter;
 
 import java.time.DayOfWeek;
-import java.time.LocalTime;
 import java.time.Month;
 import java.util.Optional;
 import java.util.Set;
@@ -20,7 +19,7 @@ public class ScheduleProperties {
     protected static final String YEARLY_SCHEDULE = "Yearly";
 
     private final String scheduleType;
-    private final LocalTime time;
+    private final int plusMinutes;
     private final Optional<Long> plusDays;
     private final Optional<Integer> repeatDaysCycle;
     private final Optional<Set<DayOfWeek>> repeatDayOfWeek;
@@ -32,7 +31,7 @@ public class ScheduleProperties {
 
     ScheduleProperties(SchedulePropertiesBuilder builder) {
         this.scheduleType = builder.scheduleType;
-        this.time = builder.time;
+        this.plusMinutes = builder.plusMinutes;
         this.plusDays = builder.plusDays;
         this.repeatDaysCycle = builder.repeatDaysCycle;
         this.repeatDayOfWeek = builder.repeatDayOfWeek;
@@ -50,7 +49,7 @@ public class ScheduleProperties {
     public static class SchedulePropertiesBuilder {
 
         private String scheduleType;
-        private LocalTime time;
+        private int plusMinutes;
         private Optional<Long> plusDays;
         private Optional<Integer> repeatDaysCycle;
         private Optional<Set<DayOfWeek>> repeatDayOfWeek;
@@ -63,46 +62,46 @@ public class ScheduleProperties {
         SchedulePropertiesBuilder() {
         }
 
-        public SchedulePropertiesBuilder setSingleSchedule(Long plusDaysForDate, LocalTime time) {
+        public SchedulePropertiesBuilder setSingleSchedule(Long plusDaysForDate, int plusMinutes) {
             this.settingsAmount++;
             this.scheduleType = SINGLE_SCHEDULE;
             this.plusDays = Optional.ofNullable(plusDaysForDate);
-            this.time = time;
+            this.plusMinutes = plusMinutes;
             return this;
         }
 
-        public SchedulePropertiesBuilder setDailySchedule(int repeatDaysCycle, LocalTime time) {
+        public SchedulePropertiesBuilder setDailySchedule(int repeatDaysCycle, int plusMinutes) {
             this.settingsAmount++;
             this.scheduleType = DAILY_SCHEDULE;
             this.repeatDaysCycle = Optional.of(repeatDaysCycle);
-            this.time = time;
+            this.plusMinutes = plusMinutes;
             return this;
         }
 
-        public SchedulePropertiesBuilder setWeeklySchedule(Set<DayOfWeek> repeatDayOfWeek, LocalTime time) {
+        public SchedulePropertiesBuilder setWeeklySchedule(Set<DayOfWeek> repeatDayOfWeek, int plusMinutes) {
             this.settingsAmount++;
             this.scheduleType = WEEKLY_SCHEDULE;
             this.repeatDayOfWeek = Optional.ofNullable(repeatDayOfWeek);
-            this.time = time;
+            this.plusMinutes = plusMinutes;
             return this;
         }
 
-        public SchedulePropertiesBuilder setMonthlySchedule(int repeatMonthsCycle, int repeatDay, LocalTime time) {
+        public SchedulePropertiesBuilder setMonthlySchedule(int repeatMonthsCycle, int repeatDay, int plusMinutes) {
             this.settingsAmount++;
             this.scheduleType = MONTHLY_SCHEDULE;
             this.repeatMonthsCycle = Optional.of(repeatMonthsCycle);
             this.repeatDay = Optional.of(repeatDay);
-            this.time = time;
+            this.plusMinutes = plusMinutes;
             return this;
         }
 
-        public SchedulePropertiesBuilder setYearlySchedule(int repeatYearsCycle, Month repeatMonth, int repeatDay, LocalTime time) {
+        public SchedulePropertiesBuilder setYearlySchedule(int repeatYearsCycle, Month repeatMonth, int repeatDay, int plusMinutes) {
             this.settingsAmount++;
             this.scheduleType = YEARLY_SCHEDULE;
             this.repeatYearsCycle = Optional.of(repeatYearsCycle);
             this.repeatMonth = Optional.ofNullable(repeatMonth);
             this.repeatDay = Optional.of(repeatDay);
-            this.time = time;
+            this.plusMinutes = plusMinutes;
             return this;
         }
 

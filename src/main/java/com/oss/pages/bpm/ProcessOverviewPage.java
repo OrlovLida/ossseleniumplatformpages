@@ -1,5 +1,6 @@
 package com.oss.pages.bpm;
 
+import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
@@ -22,8 +23,9 @@ import java.util.stream.Collectors;
  * @author Paweł Rother
  */
 public class ProcessOverviewPage extends BasePage {
+    public static final String NAME_LABEL = "Name";
     private static final String PROCESS_VIEW = "bpm_processes_view_processes";
-    private static final String PROCESS_TABS = "bpm_processes_view_process-details-tabs-container";
+    private static final String PROCESS_TABS = "process-details-window";
     private static final String MILESTONE_TAB = "bpm_processes_view_milestones-tab";
     private static final String MILESTONE_LIST = "bpm_processes_view_process-milestones-list";
     private static final String ADD_MILESTONES_LIST_ID = "CREATE_MILESTONES_EDITABLE_LIST_ID";
@@ -36,11 +38,17 @@ public class ProcessOverviewPage extends BasePage {
     private static final String ADD_MILESTONES_WIZARD_ID = "WIZARD_APP_ID";
     private static final String CODE_LABEL = "Code";
     private static final String STATUS_LABEL = "Status";
-    private static final String NAME_LABEL = "Name";
     private static final String REFRESH_TABLE_ID = "refresh-table";
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String NETWORK_PLANNING = "Network Planning";
     private static final String PROCESS_OVERVIEW = "Process Overview";
+    private static final String RELOAD_TABLE_ACTION_ID = "refresh-table";
+    private static final String FORECAST_TAB = "bpm_processes_view_forecast-tab";
+    private static final String PROCESS_ROLES_TAB = "bpm_processes_view_roles-tab";
+    private static final String PROCESS_ROLES_LIST = "bpm_processes_view_process-roles-parameters-tab";
+    private static final String FORECAST_LIST = "bpm_processes_view_process-forecast-list";
+    private static final String GROUPS_LABEL = "Groups";
+
 
     public ProcessOverviewPage(WebDriver driver) {
         super(driver);
@@ -105,6 +113,12 @@ public class ProcessOverviewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
         table.selectRowByAttributeValueWithLabel(attributeName, value);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public ProcessOverviewPage selectProcess(String attributeName, String value) {
+        findProcess(attributeName, value);
+        return this;
     }
 
     public String getMilestoneValue(String milestoneName, String attributeName) {
@@ -112,11 +126,44 @@ public class ProcessOverviewPage extends BasePage {
         return milestoneList.getRow(NAME_LABEL, milestoneName).getValue(attributeName);
     }
 
+    public String getProcessRoleGroups(String processRoleName) {
+        CommonList milestoneList = CommonList.create(driver, wait, PROCESS_ROLES_LIST);
+        return milestoneList.getRow(NAME_LABEL, processRoleName).getValue(GROUPS_LABEL);
+    }
+
+    public String getForecastValue(String forecastName, String attributeName) {
+        CommonList list = CommonList.create(driver, wait, FORECAST_LIST);
+        return list.getRow(NAME_LABEL, forecastName).getValue(attributeName);
+    }
+
+    /**
+     * @deprecated Along with the 3.0.x version this method will be replaced by
+     * {@link #openMilestoneTab()}
+     */
+    @Deprecated
     public void selectMilestoneTab(String processAttributeName, String value) {
         findProcess(processAttributeName, value);
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsWidget milestoneTab = TabsWidget.createById(driver, wait, PROCESS_TABS);
         milestoneTab.selectTabById(MILESTONE_TAB);
+    }
+
+    public ProcessOverviewPage openMilestoneTab() {
+        return openTab(MILESTONE_TAB);
+    }
+
+    public ProcessOverviewPage openProcessRolesTab() {
+        return openTab(PROCESS_ROLES_TAB);
+    }
+
+    public ProcessOverviewPage openForecastsTab() {
+        return openTab(FORECAST_TAB);
+    }
+
+    private ProcessOverviewPage openTab(String tabId) {
+        TabsWidget tabsWidget = TabsWidget.createById(driver, wait, PROCESS_TABS);
+        tabsWidget.selectTabById(tabId);
+        return this;
     }
 
     public void callAction(String actionId) {
@@ -172,4 +219,9 @@ public class ProcessOverviewPage extends BasePage {
         return openProcessCreationWizard().createSimpleDCPV2();
     }
 
+    public void reloadTable() {
+        TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.callAction(OldActionsContainer.KEBAB_GROUP_ID, RELOAD_TABLE_ACTION_ID);
+    }
 }

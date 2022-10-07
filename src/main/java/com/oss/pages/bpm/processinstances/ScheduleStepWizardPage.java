@@ -7,6 +7,7 @@ import org.openqa.selenium.WebDriver;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -90,16 +91,16 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
                 scheduleProperties.getPlusDays().ifPresent(plusDays ->
                         setInputValue(SCHEDULE_SINGLE_DATE_INPUT_ID, LocalDate.now().plusDays(plusDays).toString()));
 
-                setInputValue(SCHEDULE_SINGLE_TIME_INPUT_ID,
-                        scheduleProperties.getTime().format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
+                LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
+                setInputValue(SCHEDULE_SINGLE_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
             } else if (scheduleProperties.getScheduleType().equals(DAILY_SCHEDULE)) {
 
                 scheduleProperties.getRepeatDaysCycle().ifPresent(repeatDaysCycle ->
                         setInputValue(SCHEDULE_DAILY_REPEAT_DAYS_CYCLE_INPUT_ID, String.valueOf(repeatDaysCycle)));
 
-                setInputValue(SCHEDULE_DAILY_TIME_INPUT_ID,
-                        scheduleProperties.getTime().format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
+                LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
+                setInputValue(SCHEDULE_DAILY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
             } else if (scheduleProperties.getScheduleType().equals(WEEKLY_SCHEDULE)) {
 
@@ -109,8 +110,8 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
                     }
                 });
 
-                setInputValue(SCHEDULE_WEEKLY_TIME_INPUT_ID,
-                        scheduleProperties.getTime().format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
+                LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
+                setInputValue(SCHEDULE_WEEKLY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
             } else if (scheduleProperties.getScheduleType().equals(MONTHLY_SCHEDULE)) {
 
@@ -120,8 +121,8 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
                 scheduleProperties.getRepeatMonthsCycle().ifPresent(repeatMonthsCycle ->
                         setInputValue(SCHEDULE_MONTHLY_REPEAT_MONTHS_CYCLE_INPUT_ID, String.valueOf(repeatMonthsCycle)));
 
-                setInputValue(SCHEDULE_MONTHLY_TIME_INPUT_ID,
-                        scheduleProperties.getTime().format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
+                LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
+                setInputValue(SCHEDULE_MONTHLY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
             } else if (scheduleProperties.getScheduleType().equals(YEARLY_SCHEDULE)) {
 
@@ -134,8 +135,8 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
                 scheduleProperties.getRepeatDay().ifPresent(repeatDay ->
                         setInputValue(SCHEDULE_YEARLY_REPEAT_DAY_INPUT_ID, String.valueOf(repeatDay)));
 
-                setInputValue(SCHEDULE_YEARLY_TIME_INPUT_ID,
-                        scheduleProperties.getTime().format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
+                LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
+                setInputValue(SCHEDULE_YEARLY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
             } else
                 throw new IllegalArgumentException(WRONG_SCHEDULE_TYPE_EXCEPTION);
             return this;
@@ -176,7 +177,10 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
     private Input getInputComponent(String componentId) {
         Input component;
         try {
-            component = wizard.getComponent(componentId);
+            if (componentId.equals(SCHEDULE_TYPE_INPUT_ID))
+                component = wizard.getComponent(SCHEDULE_TYPE_INPUT_ID, Input.ComponentType.COMBOBOX);
+            else
+                component = wizard.getComponent(componentId);
         } catch (NoSuchElementException e) {
             LOGGER.error(NO_ELEMENT_EXCEPTION, componentId);
             throw e;

@@ -108,7 +108,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         milestonesStepWizardPage.clickAcceptButton();
 
         // then
-        processOverviewPage.selectMilestoneTab(NAME_LABEL, processName);
+        processOverviewPage.selectProcess(NAME_LABEL, processName).openMilestoneTab();
         // Status
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         String statusMilestone1 = processOverviewPage.getMilestoneValue(nameMilestone1, STATUS_LABEL);
@@ -185,7 +185,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         Milestone milestone3_updated = milestonesStepWizardPage.editPredefinedMilestone(milestone3, 3);
         milestonesStepWizardPage.clickAcceptButton();
 
-        processOverviewPage.selectMilestoneTab(NAME_LABEL, processName);
+        processOverviewPage.selectProcess(NAME_LABEL, processName).openMilestoneTab();
         String nameMilestone1 = milestone1_updated.getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
         String nameMilestone2 = milestone2_updated.getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
         String nameMilestone3 = milestone3_updated.getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
@@ -261,7 +261,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         milestonesStepWizardPage.addMilestoneRow(milestone2);
         milestonesStepWizardPage.clickAcceptButton();
 
-        processOverviewPage.selectMilestoneTab(NAME_LABEL, processName);
+        processOverviewPage.selectProcess(NAME_LABEL, processName).openMilestoneTab();
 
         String nameMilestone1 = milestone1.getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
         String nameMilestone2 = milestone2.getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
@@ -326,7 +326,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
 
         processOverviewPage.addMilestonesForProcess(processDCPCode, milestones);
 
-        processOverviewPage.selectMilestoneTab(CODE_LABEL, processDCPCode);
+        processOverviewPage.selectProcess(CODE_LABEL, processDCPCode).openMilestoneTab();
 
         String nameMilestone1 = milestones.get(0).getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
         String nameMilestone2 = milestones.get(1).getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));

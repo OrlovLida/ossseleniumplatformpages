@@ -12,6 +12,22 @@ import java.util.List;
  */
 @Getter
 public class ProcessCreationWizardProperties {
+    private static final String INVALID_PROPERTIES_SETTING = "Invalid ProcessCreationWizardProperties settings \n";
+    private static final String PROGRAM_TO_LINK_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "\"withProgramsToLink\" is available only with Basic Process creation";
+    private static final String BASIC_PROGRAM_AND_PROCESS_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "Both of \"basicProcess\" and \"basicProgram\" options set in properties. \n" +
+            "If you want to create process with program use \"withProcessCreation\" method together with \"basicProgram\" in Properties builder.";
+    private static final String PROGRAM_WITH_SCHEDULE_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "Creating basic Program with a schedule is not available.";
+    private static final String NO_BASIC_PROCESS_PROGRAM_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "There is no set basic process or basic program creation.";
+    private static final String CREATE_PROGRAM_WITH_PROCESS_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "\"withProcessCreation\" option available only for Basic Program creation.";
+    private static final String SCHEDULE_WITH_OTHER_OPTION_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "Schedule creation is not available together with milestones, forecasts and multiple processes creation.";
+
+
     private final String cronExpression;
     private final ScheduleProperties scheduleProperties;
 
@@ -228,6 +244,20 @@ public class ProcessCreationWizardProperties {
         }
 
         public ProcessCreationWizardProperties build() {
+            if (isProcessCreation && isProgramCreation)
+                throw new IllegalArgumentException(BASIC_PROGRAM_AND_PROCESS_EXCEPTION);
+            if (isProcessCreation && isProgramWithProcessCreation)
+                throw new IllegalArgumentException(CREATE_PROGRAM_WITH_PROCESS_EXCEPTION);
+            if (isScheduleCreation && isProgramCreation)
+                throw new IllegalArgumentException(PROGRAM_WITH_SCHEDULE_EXCEPTION);
+            if (isScheduleCreation && (isProcessForecastsCreation || isProcessMilestonesCreation || isMultipleProcessesCreation))
+                throw new IllegalArgumentException(SCHEDULE_WITH_OTHER_OPTION_EXCEPTION);
+            if (isProgramCreation && isProgramsToLink)
+                throw new IllegalArgumentException(PROGRAM_TO_LINK_EXCEPTION);
+            if (!isProcessCreation && !isProgramCreation)
+                throw new IllegalArgumentException(NO_BASIC_PROCESS_PROGRAM_EXCEPTION);
+
+
             return new ProcessCreationWizardProperties(this);
         }
     }

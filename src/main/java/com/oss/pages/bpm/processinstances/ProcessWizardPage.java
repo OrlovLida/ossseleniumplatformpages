@@ -35,6 +35,8 @@ import java.util.List;
  */
 public class ProcessWizardPage extends BasePage {
 
+    public static final String NRP = "Network Resource Process";
+    public static final String DCP = "Data Correction Process";
     protected static final String NEXT_BUTTON = "wizard-next-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     protected static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
     protected static final String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_prompt-card";
@@ -54,8 +56,6 @@ public class ProcessWizardPage extends BasePage {
     private static final String CANCEL_BUTTON = "wizard-cancel-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String INVENTORY_PROCESS = "Inventory Processes";
     private static final String LATEST = "Latest";
-    private static final String NRP = "Network Resource Process";
-    private static final String DCP = "Data Correction Process";
     private static final String CREATE_GROUP_ACTION_ID = "create";
     private static final String START_PROCESS_ACTION_ID = "start-process";
     private static final String FORECAST_ENABLED_CHECKBOX_ID = "forecastsEnabledCheckboxId";
@@ -68,20 +68,6 @@ public class ProcessWizardPage extends BasePage {
 
     private static final String PROCESSES_OUT_OF_RANGE_EXCEPTION = "Number of Processes must be between 1 and 300";
     private static final String CHECKBOX_NOT_PRESENT_EXCEPTION = "Checkbox %s is not present in the wizard.";
-    private static final String INVALID_PROPERTIES_SETTING = "Invalid ProcessCreationWizardProperties settings \n";
-    private static final String PROGRAM_TO_LINK_EXCEPTION = INVALID_PROPERTIES_SETTING +
-            "\"withProgramsToLink\" is available only with Basic Process creation";
-    private static final String BASIC_PROGRAM_AND_PROCESS_EXCEPTION = INVALID_PROPERTIES_SETTING +
-            "Both of \"basicProcess\" and \"basicProgram\" options set in properties. \n" +
-            "If you want to create process with program use \"withProcessCreation\" method together with \"basicProgram\" in Properties builder.";
-    private static final String PROGRAM_WITH_SCHEDULE_EXCEPTION = INVALID_PROPERTIES_SETTING +
-            "Creating basic Program with a schedule is not available.";
-    private static final String NO_BASIC_PROCESS_PROGRAM_EXCEPTION = INVALID_PROPERTIES_SETTING +
-            "There is no set basic process or basic program creation.";
-    private static final String CREATE_PROGRAM_WITH_PROCESS_EXCEPTION = INVALID_PROPERTIES_SETTING +
-            "\"withProcessCreation\" option available only for Basic Program creation.";
-    private static final String SCHEDULE_WITH_OTHER_OPTION_EXCEPTION = INVALID_PROPERTIES_SETTING +
-            "Schedule creation is not available together with milestones, forecasts and multiple processes creation.";
     private static final String PROCESS_ROLES_ASSIGNMENT_STEP = "Role assignment";
     private static final String SCHEDULE_STEP = "Time schedule";
     private static final String MILESTONES_ASSIGNMENT_STEP = "Milestones assignment";
@@ -383,13 +369,7 @@ public class ProcessWizardPage extends BasePage {
     }
 
     public void createInstance(ProcessCreationWizardProperties properties) {
-        if (properties.isProcessCreation() && properties.isProgramCreation())
-            throw new IllegalArgumentException(BASIC_PROGRAM_AND_PROCESS_EXCEPTION);
-
         if (properties.isProcessCreation()) {
-
-            if (properties.isProgramWithProcessCreation())
-                throw new IllegalArgumentException(CREATE_PROGRAM_WITH_PROCESS_EXCEPTION);
 
             Wizard processWizard = definedBasicProcess(properties.getProcessName(), properties.getProcessType(),
                     properties.getProcessPlusDays());
@@ -400,26 +380,15 @@ public class ProcessWizardPage extends BasePage {
 
             if (properties.isScheduleCreation()) {
 
-                if (properties.isMultipleProcessesCreation() || properties.isProcessForecastsCreation() ||
-                        properties.isProcessMilestonesCreation())
-                    throw new IllegalArgumentException(SCHEDULE_WITH_OTHER_OPTION_EXCEPTION);
-
                 selectCheckbox(processWizard, SCHEDULE_ENABLED_CHECKBOX_ID);
 
                 proceedRolesStep(processWizard, properties, false);
                 proceedScheduleStep(processWizard, properties);
                 clickAcceptButton();
-
             } else
                 proceedProcessSteps(processWizard, properties);
 
         } else if (properties.isProgramCreation()) {
-            if (properties.isScheduleCreation())
-                throw new IllegalArgumentException(PROGRAM_WITH_SCHEDULE_EXCEPTION);
-
-            if (properties.isProgramsToLink())
-                throw new IllegalArgumentException(PROGRAM_TO_LINK_EXCEPTION);
-
             Wizard programWizard = definedBasicProgram(properties.getProgramName(), properties.getProgramType(),
                     properties.getProgramPlusDays());
 
@@ -444,8 +413,7 @@ public class ProcessWizardPage extends BasePage {
 
                 proceedProcessSteps(processWizard, properties);
             }
-        } else
-            throw new IllegalArgumentException(NO_BASIC_PROCESS_PROGRAM_EXCEPTION);
+        }
     }
 
     private void proceedForecastsStep(Wizard processWizard, ProcessCreationWizardProperties properties, boolean isForProgram) {
