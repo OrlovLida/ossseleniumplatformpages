@@ -12,7 +12,7 @@ import io.qameta.allure.Description;
 public class FMNavigationPanelTest extends BaseTestCase {
 
     private static final String FAULT_MANAGEMENT_CATEGORY = "Fault Management";
-    private static final String DASHBOARD_SUBCATEGORY = "Dashboard";
+    private static final String DASHBOARD_SUBCATEGORY = "FM Dashboard";
     private static final String FILTER_MANAGER_SUBCATEGORY = "Filter Manager";
     private static final String KEDB_CONFIGURATION_SUBCATEGORY = "KEDB Configuration";
     private static final String KEDB_LIBRARY_SUBCATEGORY = "KEDB Library";
