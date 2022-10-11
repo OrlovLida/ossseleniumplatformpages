@@ -29,6 +29,7 @@ import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.PHYSICAL_DEV
 
 public class IPAddressAssignmentWizardPage extends BasePage {
     private static final String WIZARD_ID = "ipHostAssignmentWizardWidgetId";
+    private static final String SUMMARY_WIZARD_ID = "ipHostAssignmentWizardSummaryId";
     private static final String MODE_COMPONENT_ID = "hostAssignmentWizardMainStepWizardModeComponentId";
     private static final String IP_ADDRESS_MANUAL_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepAddressManualModeFieldComponentId";
     private static final String IP_ADDRESS_AUTOMATIC_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepAddressAutomaticModeFieldComponentId";
@@ -50,6 +51,8 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     private static final String IS_IN_NAT_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID = "hostAssignmentWizardOppositeAssignmentStepIsInNatFieldComponentId";
     private static final String ROLE_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID = "hostAssignmentWizardOppositeAssignmentStepRoleSearchFieldComponentId";
     private static final String DESCRIPTION_OPPOSTE_ASSIGNMENT_STEP_COMPONENT_ID = "hostAssignmentWizardOppositeAssignmentStepDescriptionFieldComponentId";
+    private static final String ASSIGN_BUTTON = "wizard-submit-button-ipHostAssignmentWizardWidgetId";
+    private static final String CLOSE_BUTTON = "hostAssignmentWizardSummaryStepButtonsComponentId-0";
 
     public IPAddressAssignmentWizardPage(WebDriver driver) {
         super(driver);
@@ -57,15 +60,14 @@ public class IPAddressAssignmentWizardPage extends BasePage {
 
     public void assignMoToIPAddress(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         assignIPAddressMainStep(ipAddressAssignmentWizardProperties);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getWizard().clickNext();
+        assignIPAddressAssignmentStep();
         assignIPAddressSummaryStep();
     }
 
     public void assignIPAddress(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties) {
         assignIPAddressMainStep(ipAddressAssignmentWizardProperties);
         assignIPAddressAssignmentStep(ipAddressAssignmentWizardProperties);
-        assignIPAddressSummaryStep();
+        assignIPAddressAssignmentStep();
     }
 
     public void assignIPAddress(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties,
@@ -73,7 +75,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
         assignIPAddressMainStep(ipAddressAssignmentWizardProperties);
         assignIPAddressAssignmentStep(ipAddressAssignmentWizardProperties);
         assignIPAddressOppositeAssignmentStep(oppositeSideIpAddressAssignmentWizardProperties);
-        assignIPAddressSummaryStep();
+        assignIPAddressAssignmentStep();
     }
 
     public void assignIPAddressFromIPAddressContext(IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties,
@@ -81,7 +83,7 @@ public class IPAddressAssignmentWizardPage extends BasePage {
         assignIPAddressMainStepWithoutMode(ipAddressAssignmentWizardProperties);
         assignIPAddressAssignmentStep(ipAddressAssignmentWizardProperties);
         assignIPAddressOppositeAssignmentStep(oppositeSideIpAddressAssignmentWizardProperties);
-        assignIPAddressSummaryStep();
+        assignIPAddressAssignmentStep();
     }
 
     @Step("Assign IP Address Main Step")
@@ -209,10 +211,20 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     @Step("Assign IP Address Summary Step")
     private void assignIPAddressSummaryStep() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getWizard().clickAccept();
+        getSummaryWizard().clickButtonById(CLOSE_BUTTON);
+    }
+
+    @Step("Assign IP Address Assignment Step")
+    private void assignIPAddressAssignmentStep() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getWizard().clickButtonById(ASSIGN_BUTTON);
     }
 
     private Wizard getWizard() {
         return Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    }
+
+    private Wizard getSummaryWizard(){
+        return Wizard.createByComponentId(driver, wait, SUMMARY_WIZARD_ID);
     }
 }
