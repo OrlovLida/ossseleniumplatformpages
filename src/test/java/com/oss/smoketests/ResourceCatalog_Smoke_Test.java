@@ -62,8 +62,10 @@ public class ResourceCatalog_Smoke_Test extends BaseTestCase {
     public boolean checkSpecification(String specificationName) {
         waitForPageToLoad();
         ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
-        resourceSpecificationsViewPage.setSearchText(specificationName);
+        resourceSpecificationsViewPage.clickClearAll();
+        resourceSpecificationsViewPage.searchByAttribute("name", specificationName);
         waitForPageToLoad();
+        resourceSpecificationsViewPage.collapseFirstNode();
         List<String> visibleRS = resourceSpecificationsViewPage.getAllVisibleSpecificationNames();
         return visibleRS.stream().anyMatch(rs -> rs.equals(specificationName));
     }

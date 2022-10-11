@@ -83,7 +83,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         table.callAction("Assign Location");
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createByComponentId(driver, wait, RAN_WIZARD_ID);
-        Input locationField = wizard.getComponent("location_OSF", ComponentType.SEARCH_FIELD);
+        Input locationField = wizard.getComponent("location", ComponentType.SEARCH_FIELD);
         locationField.setSingleStringValueContains(location);
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickAccept();

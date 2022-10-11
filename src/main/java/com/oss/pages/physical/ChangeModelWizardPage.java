@@ -11,9 +11,9 @@ import io.qameta.allure.Step;
 public class ChangeModelWizardPage extends BasePage {
     private static final String WIZARD_ID = "optional_prompt-card";
     private static final String SUBMIT_ID = "wizard-submit-button-changePhysicalDeviceModelWizard";
+    private static final String MODEL_SEARCH = "model";
 
     private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-    private static final String MODEL_SEARCH = "model_OSF";
 
     public ChangeModelWizardPage(WebDriver driver) {
         super(driver);
