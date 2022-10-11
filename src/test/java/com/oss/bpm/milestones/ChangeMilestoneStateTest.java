@@ -7,6 +7,7 @@ import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
+import com.oss.pages.bpm.milestones.EditMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneViewPage;
 import com.oss.pages.bpm.processinstances.MilestonesStepWizardPage;
@@ -19,9 +20,13 @@ import org.testng.annotations.Test;
 
 import java.time.LocalDate;
 
+import static com.oss.bpm.milestones.EditMilestoneTest.EDIT_MILESTONE_BUTTON;
+
 /**
  * @author Paweł Rother
- * <p>
+ */
+
+/**
  * Tests must be run by user without BPMMilestone.ADMIN user permissions:
  */
 
@@ -198,7 +203,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     @Description("Second Milestone Change State Flow:\n new → in progress → completed (not permitted).....{change user}.....in progress → completed")
     public void secondMilestoneFlow() {
         /**
-         * new → in progress → completed (not permitted).....{change user}.....in progress → completed
+         * new → in progress → completed (not permitted).....{change manual completion flag}.....in progress → completed
          */
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
@@ -215,15 +220,17 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         changeStateMilestoneWizardPage.accept();
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
                 -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
-        Assert.assertEquals(NOT_ALL_MILESTONE_CHANGED_STATE_MESSAGE + milestoneName2 + ".", message);
+        Assert.assertEquals(message, NOT_ALL_MILESTONE_CHANGED_STATE_MESSAGE + milestoneName2 + ".");
         String newModifyDate = milestoneViewPage.getMilestoneAttribute(MODIFY_DATE_ID);
         String newStateValue = milestoneViewPage.getMilestoneAttribute(STATE_ID);
-        Assert.assertEquals(startModifyDate, newModifyDate);
+        Assert.assertEquals(newModifyDate, startModifyDate);
         Assert.assertEquals(newStateValue, IN_PROGRESS_STATE);
 
-        // change user for admin and try again
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        changeStateMilestoneWizardPage.changeUser(BPM_ADMIN_USER_LOGIN, BPM_ADMIN_USER_PASSWORD);
+        // change isManualCompletion flag and try again
+        Milestone editManualCompletionMilestone = Milestone.builder().setIsManualCompletion("true").build();
+        milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
+        EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
+        editWizard.editMilestone(editManualCompletionMilestone);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(milestoneName2);
         changeMilestoneState(IN_PROGRESS_STATE, COMPLETED_STATE, false);
@@ -237,8 +244,6 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
          */
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        milestoneViewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         milestoneViewPage.selectMilestone(milestoneName3);
