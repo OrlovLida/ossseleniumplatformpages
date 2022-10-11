@@ -29,12 +29,12 @@ import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.PHYSICAL_DEV
 
 public class IPAddressAssignmentWizardPage extends BasePage {
     private static final String WIZARD_ID = "ipHostAssignmentWizardWidgetId";
-    private static final String SUMMARY_WIZARD_ID = "ipHostAssignmentWizardSummaryId";
+    private static final String SUMMARY_WIZARD_ID = "ipHostAssignmentWizardSummaryId_prompt-card";
     private static final String MODE_COMPONENT_ID = "hostAssignmentWizardMainStepWizardModeComponentId";
     private static final String IP_ADDRESS_MANUAL_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepAddressManualModeFieldComponentId";
     private static final String IP_ADDRESS_AUTOMATIC_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepAddressAutomaticModeFieldComponentId";
     private static final String IP_ADDRESS_RESERVED_MODE_COMPONENT_ID = "hostAssignmentWizardMainStepASIPHostAddressFieldComponentId_OSF";
-    private static final String IP_SUBNET_COMPONENT_ID = "hostAssignmentWizardMainStepSubnetFieldComponentId_OSF";
+    private static final String IP_SUBNET_COMPONENT_ID = "hostAssignmentWizardMainStepSubnetFieldComponentId";
     private static final String MASK_COMPONENT_ID = "hostAssignmentWizardMainStepMaskFieldComponentId";
     private static final String IP_NETWORK_COMPONENT_ID = "hostAssignmentWizardMainStepIPNetworkSearchFieldComponentId";
     private static final String IS_PRIMARY_COMPONENT_ID = "hostAssignmentWizardAssignmentStepIsPrimaryFieldComponentId";
@@ -209,13 +209,13 @@ public class IPAddressAssignmentWizardPage extends BasePage {
     }
 
     @Step("Assign IP Address Summary Step")
-    private void assignIPAddressSummaryStep() {
+    public void assignIPAddressSummaryStep() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getSummaryWizard().clickButtonById(CLOSE_BUTTON);
     }
 
     @Step("Assign IP Address Assignment Step")
-    private void assignIPAddressAssignmentStep() {
+    public void assignIPAddressAssignmentStep() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().clickButtonById(ASSIGN_BUTTON);
     }
