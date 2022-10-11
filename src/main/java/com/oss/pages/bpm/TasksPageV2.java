@@ -45,7 +45,7 @@ public class TasksPageV2 extends BasePage {
     private static final String PROCESS_CODE_INPUT_ID = "processInstanceCode";
     private static final String PROCESS_CODE_COLUMN_ID = "processInstanceCode";
     private static final String ASSIGNEE_COLUMN_ID = "assigneeUser.name";
-    private static final String ASSIGNEE_INPUT_ID = "assigneeUser_OSF";
+    private static final String ASSIGNEE_INPUT_ID = "assigneeUser";
     private static final String STATUS_INPUT_ID = "state";
     private static final String FINISHED_STATUS = "Finished";
 

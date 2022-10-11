@@ -27,13 +27,13 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
     private final static String COMBO_ATTRIBUTE = "LifecycleState.lifecycleState";
     private final static String COMBO_ATTRIBUTE_ID = "gsLifecycleState";
     private final static String COMBO_ATTRIBUTE_LABEL = "Lifecycle State";
-    private final static String OSF_ATTRIBUTE_LABEL = "director_OSF";
+    private final static String OSF_ATTRIBUTE_LABEL = "director";
     private final static int DEFAULT_ROW_INDEX = 0;
     private final static String FILTER_NAME = "WEB_TEST_FILTER";
     private static final String LAST_NAME_ID = "lastName";
     private static final String NATIONALITY_COLUMN_ID = "nationality";
     private static final String NATIONALITY_LABEL = "Nationality";
-    private static final String ACTORS_OSF_ID = "actors_OSF";
+    private static final String ACTORS_OSF_ID = "actors";
     private static final String DIRECTOR_LABEL = "Director";
     private static final String DIRECTOR_LAST_NAME_COLUMN_ID = "director.lastName";
     private static final String LAST_NAME_LABEL = "Last Name";
