@@ -20,12 +20,14 @@ public class SubscriptionConfigurationPage extends BasePage {
     private static final String HOLD_ID = "narComponent_RecoControl_NotificationSubscriptionActionHoldId";
     private static final String BACK_TO_NDCV_WITH_SELECTED_SUBSCRIPTION_ID = "narComponent_RecoControl_CMDomainActionNetworkDiscoveryControlId";
     private static final String BACK_TO_NDCV_WITHOUT_SELECTED_SUBSCRIPTION_ID = "narComponent_RecoControl_CMDomainActionNetworkDiscoveryControlNoCtxId";
-    private static final String TABS_WIDGET_ID = "TopDetailTabsWidget";
+    private static final String TABS_WIDGET_ID = "TopDetailCard";
     private static final String STATE_ID = "state";
-    private static final String BUFFER_STATE_PERCENT_ID = "bufferStatePercent";
+    private static final String CURRENT_OCCUPANCY_ID = "currentOccupancy";
+    private static final String OCCUPANCY_PERCENT_ID = "occupancyPercent";
     private static final String NEWEST_NOTIFICATION_ID = "newestNotificationTimestamp";
     private static final String OLDEST_NOTIFICATION_ID = "oldestNotificationTimestamp";
     private static final String REFRESH_BUTTON_ID = "refreshButton";
+    private static final String TOTAL_CAPACITY_ID = "totalCapacity";
 
     public SubscriptionConfigurationPage(WebDriver driver) {
         super(driver);
@@ -47,8 +49,16 @@ public class SubscriptionConfigurationPage extends BasePage {
         return getTableWidget().getCellValue(0, STATE_ID);
     }
 
-    public String getBufferStatePercent() {
-        return getTableWidget().getCellValue(0, BUFFER_STATE_PERCENT_ID);
+    public String getOccupancyPercent() {
+        return getTableWidget().getCellValue(0, OCCUPANCY_PERCENT_ID);
+    }
+
+    public String getCurrentOccupancy() {
+        return getTableWidget().getCellValue(0, CURRENT_OCCUPANCY_ID);
+    }
+
+    public String getTotalCapacity() {
+        return getTableWidget().getCellValue(0, TOTAL_CAPACITY_ID);
     }
 
     public String getNewestNotification() {
@@ -96,7 +106,7 @@ public class SubscriptionConfigurationPage extends BasePage {
     }
 
     public boolean isBufferZeroPercent() {
-        return "0%".equals(getBufferStatePercent());
+        return "0%".equals(getOccupancyPercent());
     }
 
     public void refreshPage() {

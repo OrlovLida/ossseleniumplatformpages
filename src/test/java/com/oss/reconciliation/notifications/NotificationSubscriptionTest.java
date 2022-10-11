@@ -15,9 +15,18 @@ public class NotificationSubscriptionTest extends BaseTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(NotificationSubscriptionTest.class);
     private static final String CM_DOMAIN_NAME = "AT-SYS-NOTIFICATION-SUBSCRIPTIONS-TEST";
+    private static final String ON_HOLD_STATE = "On hold";
+    private static final String DISABLED_STATE = "Disabled";
+    private static final String ENABLED_STATE = "Enabled";
+    private static final String S_0 = "0";
+    private static final String S_4 = "4";
+    private static final String S_0_PERCENT = "0%";
+    
+    private String newestNotification = null;
+    private String oldestNotification = null;
+    
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SubscriptionConfigurationPage subscriptionConfigurationPage;
-//    private List<String> tabLabelsList = Collections.singletonList("Notification subscriptions");
 
     @BeforeClass
     public void openConsole() {
@@ -37,76 +46,153 @@ public class NotificationSubscriptionTest extends BaseTestCase {
         networkDiscoveryControlViewPage.moveToSubscriptionConfiguration();
     }
 
-//    @Test(priority = 2)
-//    public void goBackToNDCV() {
-//        subscriptionConfigurationPage = new SubscriptionConfigurationPage(driver);
-//        subscriptionConfigurationPage.goBackToNDCVWithoutSelectedSubscription();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        networkDiscoveryControlViewPage = new NetworkDiscoveryControlViewPage(driver);
-//        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-//        networkDiscoveryControlViewPage.moveToSubscriptionConfiguration();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        subscriptionConfigurationPage.selectFirstSubscription();
-//        subscriptionConfigurationPage.goBackToNDCVWithSelectedSubscription();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-//        networkDiscoveryControlViewPage.moveToSubscriptionConfiguration();
-//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-//    }
+    @Test(priority = 2)
+    public void goBackToNDCV() {
+        subscriptionConfigurationPage = new SubscriptionConfigurationPage(driver);
+        subscriptionConfigurationPage.goBackToNDCVWithoutSelectedSubscription();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage = new NetworkDiscoveryControlViewPage(driver);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.moveToSubscriptionConfiguration();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        subscriptionConfigurationPage.selectFirstNodeOnTree();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        subscriptionConfigurationPage.goBackToNDCVWithSelectedSubscription();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.moveToSubscriptionConfiguration();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
 
     @Test(priority = 3)
-    public void getNotificationAttributes() throws InterruptedException {
+    public void getNotificationAttributes() {
         subscriptionConfigurationPage = new SubscriptionConfigurationPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         subscriptionConfigurationPage.selectFirstNodeOnTree();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Thread.sleep(25000);
         LOG.info("Checking how many Notification Subscriptions there are");
         LOG.info("Notification Subscriptions amount is: " + subscriptionConfigurationPage.countNotificationSubscriptions());
         Assert.assertEquals(subscriptionConfigurationPage.countNotificationSubscriptions(), 3);
-        LOG.info("Searching for subscription");
-        subscriptionConfigurationPage.searchForSubscription("Update");
-        System.out.println("Column headers: " + subscriptionConfigurationPage.getColumnHeaders());
-        subscriptionConfigurationPage.selectFirstSubscription();
-//        subscriptionConfigurationPage.addRows("DM_RecoControl_NotificationSubscription.currentOccupancy\n");
-//        subscriptionConfigurationPage.addRows("Newest notification");
-//        subscriptionConfigurationPage.addRows("DM_RecoControl_NotificationSubscription.occupancyPercent\n");
-//        subscriptionConfigurationPage.addRows("Oldest notification");
-//        subscriptionConfigurationPage.addRows("DM_RecoControl_NotificationSubscription.totalCapacity");
-//        Assert.assertEquals(subscriptionConfigurationPage.getTabLabels(), tabLabelsList);
 
-        // Dodac przelaczanie miedzy Enable/Disable/Hold -> enable(), disable(), hold()
-        // Sprawdzane wzorca na Newest Oldest Notification -> isDateFormatCorrect(String)
+        subscriptionConfigurationPage.addRows("DM_RecoControl_NotificationSubscription.currentOccupancy");
+        subscriptionConfigurationPage.addRows("Newest notification");
+        subscriptionConfigurationPage.addRows("DM_RecoControl_NotificationSubscription.occupancyPercent");
+        subscriptionConfigurationPage.addRows("Oldest notification");
+        subscriptionConfigurationPage.addRows("DM_RecoControl_NotificationSubscription.totalCapacity");
+        LOG.info("Column headers: " + subscriptionConfigurationPage.getColumnHeaders());
 
-        // Wszystkie kombinacje zmian
-
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertFalse(subscriptionConfigurationPage.getTabLabels().contains("Properties"));
     }
 
     @Test(priority = 4)
     public void checkEnabledNotification() {
+        LOG.info("Searching for subscription");
+        subscriptionConfigurationPage.searchForSubscription("Update");
+        subscriptionConfigurationPage.selectFirstSubscription();
+        
+        Assert.assertEquals(subscriptionConfigurationPage.getState(), ENABLED_STATE);
+        Assert.assertEquals(subscriptionConfigurationPage.getCurrentOccupancy(), S_0);
+        Assert.assertEquals(subscriptionConfigurationPage.getOccupancyPercent(), S_0_PERCENT);
+        Assert.assertEquals(subscriptionConfigurationPage.getTotalCapacity(), S_4);
+        
+        newestNotification = subscriptionConfigurationPage.getNewestNotification();
+        oldestNotification = subscriptionConfigurationPage.getOldestNotification();
+        Assert.assertFalse(subscriptionConfigurationPage.isDateFormatCorrect(newestNotification));
+        Assert.assertFalse(subscriptionConfigurationPage.isDateFormatCorrect(oldestNotification));
+        
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        subscriptionConfigurationPage.hold();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        subscriptionConfigurationPage.refreshPage();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        
+        Assert.assertEquals(subscriptionConfigurationPage.getState(), ON_HOLD_STATE);
+        Assert.assertEquals(subscriptionConfigurationPage.getCurrentOccupancy(), S_0);
+        Assert.assertEquals(subscriptionConfigurationPage.getOccupancyPercent(), S_0_PERCENT);
+        Assert.assertEquals(subscriptionConfigurationPage.getTotalCapacity(), S_4);
 
+        newestNotification = subscriptionConfigurationPage.getNewestNotification();
+        oldestNotification = subscriptionConfigurationPage.getOldestNotification();
+        Assert.assertFalse(subscriptionConfigurationPage.isDateFormatCorrect(newestNotification));
+        Assert.assertFalse(subscriptionConfigurationPage.isDateFormatCorrect(oldestNotification));
+        
+        subscriptionConfigurationPage.disable();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        subscriptionConfigurationPage.refreshPage();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        
+        Assert.assertEquals(subscriptionConfigurationPage.getState(), DISABLED_STATE);
+        Assert.assertEquals(subscriptionConfigurationPage.getCurrentOccupancy(), S_0);
+        Assert.assertEquals(subscriptionConfigurationPage.getOccupancyPercent(), S_0_PERCENT);
+        Assert.assertEquals(subscriptionConfigurationPage.getTotalCapacity(), S_4);
+
+        newestNotification = subscriptionConfigurationPage.getNewestNotification();
+        oldestNotification = subscriptionConfigurationPage.getOldestNotification();
+        Assert.assertFalse(subscriptionConfigurationPage.isDateFormatCorrect(newestNotification));
+        Assert.assertFalse(subscriptionConfigurationPage.isDateFormatCorrect(oldestNotification));
+        
+        subscriptionConfigurationPage.enable();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        subscriptionConfigurationPage.refreshPage();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertEquals(subscriptionConfigurationPage.getState(), ENABLED_STATE);
+        Assert.assertEquals(subscriptionConfigurationPage.getCurrentOccupancy(), S_0);
+        Assert.assertEquals(subscriptionConfigurationPage.getOccupancyPercent(), S_0_PERCENT);
+        Assert.assertEquals(subscriptionConfigurationPage.getTotalCapacity(), S_4);
+
+        newestNotification = subscriptionConfigurationPage.getNewestNotification();
+        oldestNotification = subscriptionConfigurationPage.getOldestNotification();
+        Assert.assertFalse(subscriptionConfigurationPage.isDateFormatCorrect(newestNotification));
+        Assert.assertFalse(subscriptionConfigurationPage.isDateFormatCorrect(oldestNotification));
+        
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 5)
     public void checkHoldNotification() {
-        System.out.println(subscriptionConfigurationPage.getState());
-        System.out.println(subscriptionConfigurationPage.getBufferStatePercent());
-//        System.out.println(subscriptionConfigurationPage.getNewestNotification());
-//        System.out.println(subscriptionConfigurationPage.getOldestNotification());
-        //Check if buffer is 0 and clear it
-//        Assert.assertFalse(subscriptionConfigurationPage.isBufferZeroPercent());
+        LOG.info("Searching for subscription");
+        subscriptionConfigurationPage.searchForSubscription("Create");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        subscriptionConfigurationPage.selectFirstSubscription();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertEquals(subscriptionConfigurationPage.getState(), ON_HOLD_STATE);
+        Assert.assertEquals(subscriptionConfigurationPage.getCurrentOccupancy(), "2");
+        Assert.assertEquals(subscriptionConfigurationPage.getOccupancyPercent(), "50%");
+        Assert.assertEquals(subscriptionConfigurationPage.getTotalCapacity(), S_4);
+       
+        newestNotification = subscriptionConfigurationPage.getNewestNotification();
+        oldestNotification = subscriptionConfigurationPage.getOldestNotification();
+        Assert.assertTrue(subscriptionConfigurationPage.isDateFormatCorrect(newestNotification));
+        Assert.assertTrue(subscriptionConfigurationPage.isDateFormatCorrect(oldestNotification));
+
+        Assert.assertFalse(subscriptionConfigurationPage.isBufferZeroPercent());
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         subscriptionConfigurationPage.clearBuffer();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         subscriptionConfigurationPage.refreshPage();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        
         Assert.assertTrue(subscriptionConfigurationPage.isBufferZeroPercent());
-
-        //Check if there is no Properties in Tabs
-        Assert.assertFalse(subscriptionConfigurationPage.getTabLabels().contains("Properties"));
+        Assert.assertEquals(subscriptionConfigurationPage.getCurrentOccupancy(), S_0);
     }
 
     @Test(priority = 6)
     public void checkDisabledNotification() {
+        LOG.info("Searching for subscription");
+        subscriptionConfigurationPage.searchForSubscription("Remove");
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        subscriptionConfigurationPage.selectFirstSubscription();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        
+        Assert.assertEquals(subscriptionConfigurationPage.getState(), DISABLED_STATE);
+        Assert.assertEquals(subscriptionConfigurationPage.getCurrentOccupancy(), S_0);
+        Assert.assertEquals(subscriptionConfigurationPage.getOccupancyPercent(), S_0_PERCENT);
+        Assert.assertEquals(subscriptionConfigurationPage.getTotalCapacity(), S_4);
 
+        newestNotification = subscriptionConfigurationPage.getNewestNotification();
+        oldestNotification = subscriptionConfigurationPage.getOldestNotification();
+        Assert.assertFalse(subscriptionConfigurationPage.isDateFormatCorrect(newestNotification));
+        Assert.assertFalse(subscriptionConfigurationPage.isDateFormatCorrect(oldestNotification));
     }
 }
