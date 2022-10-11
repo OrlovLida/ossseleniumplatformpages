@@ -23,7 +23,7 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
     private static final String CRON_EXPRESSION_INPUT = "sheduleCronExpressionFieldId";
     private static final String CRON_EXPRESSION_DESCRIPTION_INPUT_ID = "cronExpressionDescriptionId";
     private static final String NEXT_EXECUTIONS_INPUT_ID = "nextExecutionsId";
-    private static final String SCHEDULE_TYPE_INPUT_ID = "scheduleTypesComboboxFieldId";
+    private static final String SCHEDULE_TYPE_INPUT_ID = "scheduleTypesComboboxFieldId_scheduleType";
 
     private static final String SCHEDULE_SINGLE_DATE_INPUT_ID = "dateSingle";
     private static final String SCHEDULE_SINGLE_TIME_INPUT_ID = "timeSingle";
@@ -177,10 +177,7 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
     private Input getInputComponent(String componentId) {
         Input component;
         try {
-            if (componentId.equals(SCHEDULE_TYPE_INPUT_ID))
-                component = wizard.getComponent(SCHEDULE_TYPE_INPUT_ID, Input.ComponentType.COMBOBOX);
-            else
-                component = wizard.getComponent(componentId);
+            component = wizard.getComponent(componentId);
         } catch (NoSuchElementException e) {
             LOGGER.error(NO_ELEMENT_EXCEPTION, componentId);
             throw e;
