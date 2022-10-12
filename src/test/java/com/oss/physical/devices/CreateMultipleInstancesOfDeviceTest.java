@@ -159,7 +159,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
 
     @Test(priority = 9)
     public void setPreciseLocation() {
-        deviceWizard.setPreciseLocation(testLocationId);
+        deviceWizard.setFirstPreciseLocation(testLocationId);
     }
 
     @Test(priority = 10)
