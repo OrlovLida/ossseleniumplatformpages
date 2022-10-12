@@ -57,8 +57,8 @@ public class ResourceSpecificationsViewPage extends BasePage {
         this.treeTable.clickClearAll();
     }
 
-    public void collapseFirstNodeIfPresent() {
-        this.treeTable.collapseNodeIfPresent(0);
+    public void collapseFirstNode() {
+        this.treeTable.collapseNode(0);
     }
 
     public void setPageSize(int pageOption) {

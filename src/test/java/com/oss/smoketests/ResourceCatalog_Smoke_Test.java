@@ -64,7 +64,7 @@ public class ResourceCatalog_Smoke_Test extends BaseTestCase {
         resourceSpecificationsViewPage.clickClearAll();
         resourceSpecificationsViewPage.searchByAttribute(NAME_ATTRIBUTE, specificationName);
         waitForPageToLoad();
-        resourceSpecificationsViewPage.collapseFirstNodeIfPresent();
+        resourceSpecificationsViewPage.collapseFirstNode();
         return resourceSpecificationsViewPage.isSpecificationNamePresent(specificationName);
     }
 
