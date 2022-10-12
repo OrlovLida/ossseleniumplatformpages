@@ -192,13 +192,13 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
     }
 
     @Test(priority = 15, dependsOnMethods = {"checkNumberOfDevicesOnHierarchyView"})
-    public void checkCreatedDeviceStructures() {
+    public void checkStructuresOfCreatedDevices() {
         List<String> createdDevicesIds = getCreatedDevicesIds();
         createdDevicesIds.forEach(this::performStructureValidation);
     }
 
-    @Test(priority = 16, dependsOnMethods = {"checkCreatedDeviceStructures"})
-    public void checkCreatedDevicesAttributes() {
+    @Test(priority = 16, dependsOnMethods = {"checkStructuresOfCreatedDevices"})
+    public void checkAttributesOfCreatedDevices() {
         List<String> createdDevicesIds = getCreatedDevicesIds();
         createdDevicesIds.forEach(this::performSelectionWithValidation);
         softAssert.assertAll();
