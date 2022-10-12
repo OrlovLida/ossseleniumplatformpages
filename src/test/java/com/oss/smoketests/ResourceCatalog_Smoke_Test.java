@@ -1,7 +1,5 @@
 package com.oss.smoketests;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -29,6 +27,7 @@ public class ResourceCatalog_Smoke_Test extends BaseTestCase {
     private static final String PHYSICAL_DEVICE = "Physical Device";
     private static final String LOGICAL_FUNCTION = "Logical Function";
     private static final String TERMINATION_POINT = "Termination Point";
+    private static final String NAME_ATTRIBUTE = "name";
     private static final String LOG_PATTENR = "Checking if specification with name %s exists.";
 
     @Test(priority = 1, description = "Open Resource Catalog view")
@@ -63,11 +62,10 @@ public class ResourceCatalog_Smoke_Test extends BaseTestCase {
         waitForPageToLoad();
         ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         resourceSpecificationsViewPage.clickClearAll();
-        resourceSpecificationsViewPage.searchByAttribute("name", specificationName);
+        resourceSpecificationsViewPage.searchByAttribute(NAME_ATTRIBUTE, specificationName);
         waitForPageToLoad();
-        resourceSpecificationsViewPage.collapseFirstNode();
-        List<String> visibleRS = resourceSpecificationsViewPage.getAllVisibleSpecificationNames();
-        return visibleRS.stream().anyMatch(rs -> rs.equals(specificationName));
+        resourceSpecificationsViewPage.collapseFirstNodeIfPresent();
+        return resourceSpecificationsViewPage.isSpecificationNamePresent(specificationName);
     }
 
     private void checkErrorPage() {

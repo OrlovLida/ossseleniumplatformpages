@@ -45,6 +45,10 @@ public class ResourceSpecificationsViewPage extends BasePage {
         return this.treeTable.getAllVisibleNodes(SPECIFICATION_NAME_COLUMN);
     }
 
+    public boolean isSpecificationNamePresent(String value) {
+        return this.treeTable.isValuePresent(SPECIFICATION_NAME_COLUMN, value);
+    }
+
     public void searchByAttribute(String attributeId, String value) {
         this.treeTable.searchByAttribute(attributeId, value);
     }
@@ -53,8 +57,8 @@ public class ResourceSpecificationsViewPage extends BasePage {
         this.treeTable.clickClearAll();
     }
 
-    public void collapseFirstNode() {
-        this.treeTable.collapseNode(0);
+    public void collapseFirstNodeIfPresent() {
+        this.treeTable.collapseNodeIfPresent(0);
     }
 
     public void setPageSize(int pageOption) {
