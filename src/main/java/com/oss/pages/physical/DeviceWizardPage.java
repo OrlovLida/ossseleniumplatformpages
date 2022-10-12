@@ -133,7 +133,7 @@ public class DeviceWizardPage extends BasePage {
     @Step("Set Location choosing first")
     public void setFirstLocation(String location) {
         ObjectSearchField input = (ObjectSearchField) getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
-        input.chooseFirstResult(location);
+        input.setFirstResult(location);
     }
 
     @Step("Set Physical Location using contains")
@@ -145,7 +145,7 @@ public class DeviceWizardPage extends BasePage {
     @Step("Set Physical Location choosing first")
     public void setFirstPhysicalLocation(String physicalLocation) {
         ObjectSearchField input = (ObjectSearchField) getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
-        input.chooseFirstResult(physicalLocation);
+        input.setFirstResult(physicalLocation);
     }
 
     @Step("Set Precise Location using contains")
@@ -157,7 +157,7 @@ public class DeviceWizardPage extends BasePage {
     @Step("Set Precise Location choosing first")
     public void setFirstPreciseLocation(String preciseLocation) {
         ObjectSearchField input = (ObjectSearchField) getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
-        input.chooseFirstResult(preciseLocation);
+        input.setFirstResult(preciseLocation);
     }
 
     @Step("Set Available Mounting Positions")
