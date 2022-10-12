@@ -28,19 +28,18 @@ public class Network_View_Smoke_Test extends BaseTestCase {
     private static final String XID_IN_FILTERS = "XId";
     private static final int PAGE_SIZE_OPTION = 10;
     private static final int INDEX_OF_FIRST_ELEMENT_IN_TABLE = 0;
-    private final SoftAssert softAssert = new SoftAssert();
     private NetworkViewPage networkViewPage;
     private AdvancedSearchWidget advancedSearchWidget;
-    private String Xid;
-    private String Name;
+    private String xid;
+    private String name;
 
     @BeforeClass
     public void openWebConsole() {
         waitForPageToLoad();
     }
 
-    @Test(description = "Get to network view using tools on main page")
-    @Description("Get to network view using tools on main page")
+    @Test(description = "Go to network view using tools on main page")
+    @Description("Go to network view using tools on main page")
     public void openNetworkViewUsingToolsManager() {
         ToolsManagerWindow toolsManagerWindow = ToolsManagerWindow.create(driver, webDriverWait);
         toolsManagerWindow.openApplication(CATEGORY_NAME, VIEW_NAME);
@@ -54,49 +53,55 @@ public class Network_View_Smoke_Test extends BaseTestCase {
         advancedSearchWidget = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_WIDGET_ID);
     }
 
-    @Test(description = "Get XId and Identifier from last device on first page", dependsOnMethods = {"openNetworkViewUsingToolsManager", "openAddToView"})
+    @Test(priority = 1, description = "Get XId and Identifier from last device on first page", dependsOnMethods = {"openNetworkViewUsingToolsManager", "openAddToView"})
     @Description("Get XId and Identifier from last device on first page")
-    public void getLastDeviceOfFirstPageXIdAndIdentifier() {
+    public void getLastDeviceOfFirstPageXIdAndName() {
         TableComponent tableComponent = advancedSearchWidget.getTableComponent();
         waitForPageToLoad();
         tableComponent.getPaginationComponent().changeRowsCount(PAGE_SIZE_OPTION);
         int lastElement = tableComponent.getPaginationComponent().getRowsCount() - 1;
         waitForPageToLoad();
-        Xid = tableComponent.getCellValue(lastElement, XID_IN_ADVANCED_SEARCH);
-        Name = tableComponent.getCellValue(lastElement, NAME_IN_ADVANCED_SEARCH);
+        xid = tableComponent.getCellValue(lastElement, XID_IN_ADVANCED_SEARCH);
+        name = tableComponent.getCellValue(lastElement, NAME_IN_ADVANCED_SEARCH);
     }
 
-    @Test(description = "Insert data to filters", dependsOnMethods = {"openNetworkViewUsingToolsManager", "openAddToView", "getLastDeviceOfFirstPageXIdAndIdentifier"})
+    @Test(priority = 2, description = "Insert data to filters", dependsOnMethods = {"openNetworkViewUsingToolsManager", "openAddToView", "getLastDeviceOfFirstPageXIdAndName"})
     @Description("Insert data to filters")
     public void insertDataToFilters() {
-        advancedSearchWidget.setFilter(XID_IN_ADVANCED_SEARCH, Xid);
-        advancedSearchWidget.setFilter(NAME_IN_ADVANCED_SEARCH, Name);
+        SoftAssert softAssert = new SoftAssert();
+        advancedSearchWidget.setFilter(XID_IN_ADVANCED_SEARCH, xid);
+        advancedSearchWidget.setFilter(NAME_IN_ADVANCED_SEARCH, name);
         waitForPageToLoad();
         int numberOfObjectMatching = advancedSearchWidget.getTableComponent().getVisibleRows().size();
         softAssert.assertEquals(EXPECTED_NUMBER_OF_OBJECTS_MATCHING, numberOfObjectMatching);
         Multimap<String, String> expectedFilters = HashMultimap.create();
-        expectedFilters.put(XID_IN_FILTERS, Xid);
-        expectedFilters.put(NAME_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, Name);
+        expectedFilters.put(XID_IN_FILTERS, xid);
+        expectedFilters.put(NAME_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, name);
         softAssert.assertEquals(expectedFilters, advancedSearchWidget.getAppliedFilters());
+        softAssert.assertAll();
     }
 
-    @Test(description = "Add object to network view", dependsOnMethods = {"openNetworkViewUsingToolsManager", "openAddToView", "getLastDeviceOfFirstPageXIdAndIdentifier", "insertDataToFilters"})
+    @Test(priority = 3, description = "Add object to network view", dependsOnMethods = {"openNetworkViewUsingToolsManager", "openAddToView", "getLastDeviceOfFirstPageXIdAndName", "insertDataToFilters"})
     @Description("Add object to network view")
     public void addObjectsToView() {
+        SoftAssert softAssert = new SoftAssert();
         advancedSearchWidget.getTableComponent().clickRow(INDEX_OF_FIRST_ELEMENT_IN_TABLE);
         advancedSearchWidget.clickAdd();
         networkViewPage.expandViewContentPanel();
-        softAssert.assertTrue(networkViewPage.isObjectInViewContent(XID_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, Xid));
-        softAssert.assertTrue(networkViewPage.isObjectInViewContent(NAME_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, Name));
+        softAssert.assertTrue(networkViewPage.isObjectInViewContent(XID_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, xid));
+        softAssert.assertTrue(networkViewPage.isObjectInViewContent(NAME_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, name));
+        softAssert.assertAll();
     }
 
-    @Test(description = "Delete object from network view", dependsOnMethods = {"openNetworkViewUsingToolsManager", "openAddToView", "getLastDeviceOfFirstPageXIdAndIdentifier", "addObjectsToView"})
+    @Test(priority = 4, description = "Delete object from network view", dependsOnMethods = {"openNetworkViewUsingToolsManager", "openAddToView", "getLastDeviceOfFirstPageXIdAndName", "addObjectsToView"})
     @Description("Delete object from network view")
-    public void deleteObjectFromView() {
-        networkViewPage.selectObjectInViewContent(XID_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, Xid);
+    public void removeObjectFromView() {
+        SoftAssert softAssert = new SoftAssert();
+        networkViewPage.selectObjectInViewContent(XID_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, xid);
         networkViewPage.useContextAction(NetworkViewPage.DISPLAY_ACTION, NetworkViewPage.REMOVE_FROM_VIEW_ACTION);
-        softAssert.assertFalse(networkViewPage.isObjectInViewContent(XID_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, Xid));
-        softAssert.assertFalse(networkViewPage.isObjectInViewContent(NAME_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, Name));
+        softAssert.assertFalse(networkViewPage.isObjectInViewContent(XID_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, xid));
+        softAssert.assertFalse(networkViewPage.isObjectInViewContent(NAME_IN_OBJECTS_ON_VIEW_CONTENT_COLUMN_ID, name));
+        softAssert.assertAll();
     }
 
     private void waitForPageToLoad() {
