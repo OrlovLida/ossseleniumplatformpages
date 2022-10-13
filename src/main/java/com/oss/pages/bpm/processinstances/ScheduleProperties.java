@@ -1,7 +1,5 @@
 package com.oss.pages.bpm.processinstances;
 
-import lombok.Getter;
-
 import java.time.DayOfWeek;
 import java.time.Month;
 import java.util.Optional;
@@ -10,7 +8,6 @@ import java.util.Set;
 /**
  * @author Paweł Rother
  */
-@Getter
 public class ScheduleProperties {
     protected static final String SINGLE_SCHEDULE = "Single";
     protected static final String DAILY_SCHEDULE = "Daily";
@@ -20,13 +17,13 @@ public class ScheduleProperties {
 
     private final String scheduleType;
     private final int plusMinutes;
-    private final Optional<Long> plusDays;
-    private final Optional<Integer> repeatDaysCycle;
-    private final Optional<Set<DayOfWeek>> repeatDayOfWeek;
-    private final Optional<Integer> repeatDay;
-    private final Optional<Integer> repeatMonthsCycle;
-    private final Optional<Integer> repeatYearsCycle;
-    private final Optional<Month> repeatMonth;
+    private final long plusDays;
+    private final int repeatDaysCycle;
+    private final Set<DayOfWeek> repeatDayOfWeek;
+    private final int repeatDay;
+    private final int repeatMonthsCycle;
+    private final int repeatYearsCycle;
+    private final Month repeatMonth;
     private final int settingsAmount;
 
     ScheduleProperties(SchedulePropertiesBuilder builder) {
@@ -46,17 +43,57 @@ public class ScheduleProperties {
         return new SchedulePropertiesBuilder();
     }
 
+    public String getScheduleType() {
+        return this.scheduleType;
+    }
+
+    public int getPlusMinutes() {
+        return this.plusMinutes;
+    }
+
+    public Optional<Long> getPlusDays() {
+        return Optional.of(this.plusDays);
+    }
+
+    public Optional<Integer> getRepeatDaysCycle() {
+        return Optional.of(this.repeatDaysCycle);
+    }
+
+    public Optional<Set<DayOfWeek>> getRepeatDayOfWeek() {
+        return Optional.ofNullable(this.repeatDayOfWeek);
+    }
+
+    public Optional<Integer> getRepeatDay() {
+        return Optional.of(this.repeatDay);
+    }
+
+    public Optional<Integer> getRepeatMonthsCycle() {
+        return Optional.of(this.repeatMonthsCycle);
+    }
+
+    public Optional<Integer> getRepeatYearsCycle() {
+        return Optional.of(this.repeatYearsCycle);
+    }
+
+    public Optional<Month> getRepeatMonth() {
+        return Optional.ofNullable(this.repeatMonth);
+    }
+
+    public int getSettingsAmount() {
+        return this.settingsAmount;
+    }
+
     public static class SchedulePropertiesBuilder {
 
         private String scheduleType;
         private int plusMinutes;
-        private Optional<Long> plusDays;
-        private Optional<Integer> repeatDaysCycle;
-        private Optional<Set<DayOfWeek>> repeatDayOfWeek;
-        private Optional<Integer> repeatDay;
-        private Optional<Integer> repeatMonthsCycle;
-        private Optional<Integer> repeatYearsCycle;
-        private Optional<Month> repeatMonth;
+        private long plusDays;
+        private int repeatDaysCycle;
+        private Set<DayOfWeek> repeatDayOfWeek;
+        private int repeatDay;
+        private int repeatMonthsCycle;
+        private int repeatYearsCycle;
+        private Month repeatMonth;
         private int settingsAmount = 0;
 
         SchedulePropertiesBuilder() {
@@ -65,7 +102,7 @@ public class ScheduleProperties {
         public SchedulePropertiesBuilder setSingleSchedule(Long plusDaysForDate, int plusMinutes) {
             this.settingsAmount++;
             this.scheduleType = SINGLE_SCHEDULE;
-            this.plusDays = Optional.ofNullable(plusDaysForDate);
+            this.plusDays = plusDaysForDate;
             this.plusMinutes = plusMinutes;
             return this;
         }
@@ -73,7 +110,7 @@ public class ScheduleProperties {
         public SchedulePropertiesBuilder setDailySchedule(int repeatDaysCycle, int plusMinutes) {
             this.settingsAmount++;
             this.scheduleType = DAILY_SCHEDULE;
-            this.repeatDaysCycle = Optional.of(repeatDaysCycle);
+            this.repeatDaysCycle = repeatDaysCycle;
             this.plusMinutes = plusMinutes;
             return this;
         }
@@ -81,7 +118,7 @@ public class ScheduleProperties {
         public SchedulePropertiesBuilder setWeeklySchedule(Set<DayOfWeek> repeatDayOfWeek, int plusMinutes) {
             this.settingsAmount++;
             this.scheduleType = WEEKLY_SCHEDULE;
-            this.repeatDayOfWeek = Optional.ofNullable(repeatDayOfWeek);
+            this.repeatDayOfWeek = repeatDayOfWeek;
             this.plusMinutes = plusMinutes;
             return this;
         }
@@ -89,8 +126,8 @@ public class ScheduleProperties {
         public SchedulePropertiesBuilder setMonthlySchedule(int repeatMonthsCycle, int repeatDay, int plusMinutes) {
             this.settingsAmount++;
             this.scheduleType = MONTHLY_SCHEDULE;
-            this.repeatMonthsCycle = Optional.of(repeatMonthsCycle);
-            this.repeatDay = Optional.of(repeatDay);
+            this.repeatMonthsCycle = repeatMonthsCycle;
+            this.repeatDay = repeatDay;
             this.plusMinutes = plusMinutes;
             return this;
         }
@@ -98,9 +135,9 @@ public class ScheduleProperties {
         public SchedulePropertiesBuilder setYearlySchedule(int repeatYearsCycle, Month repeatMonth, int repeatDay, int plusMinutes) {
             this.settingsAmount++;
             this.scheduleType = YEARLY_SCHEDULE;
-            this.repeatYearsCycle = Optional.of(repeatYearsCycle);
-            this.repeatMonth = Optional.ofNullable(repeatMonth);
-            this.repeatDay = Optional.of(repeatDay);
+            this.repeatYearsCycle = repeatYearsCycle;
+            this.repeatMonth = repeatMonth;
+            this.repeatDay = repeatDay;
             this.plusMinutes = plusMinutes;
             return this;
         }

@@ -6,7 +6,6 @@ import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 /**
  * @author Paweł Rother
@@ -120,20 +119,20 @@ public class ForecastWizardPage extends BasePage {
         String leadTimeWeeksLong = list.getRow(row).getCellValue(BPM_FORECAST_LEAD_TIME_WEEKS_LONG);
         String workDaysLong = list.getRow(row).getCellValue(BPM_FORECAST_WORK_DAYS_LONG);
         return ForecastAttributes.builder()
-                .name(Optional.ofNullable(name))
-                .activityType(Optional.ofNullable(type))
-                .startDate(Optional.ofNullable(startDate))
-                .startWeek(Optional.ofNullable(startWeek))
-                .endDateShortWay(Optional.ofNullable(endDateShort))
-                .endWeekShortWay(Optional.ofNullable(endWeekShort))
-                .endDateLongWay(Optional.ofNullable(endDateLong))
-                .endWeekLongWay(Optional.ofNullable(endWeekLong))
-                .leadTimeDaysShortWay(Optional.ofNullable(leadTimeDaysShort))
-                .leadTimeWeeksShortWay(Optional.ofNullable(leadTimeWeeksShort))
-                .workDaysShortWay(Optional.ofNullable(workDaysShort))
-                .leadTimeDaysLongWay(Optional.ofNullable(leadTimeDaysLong))
-                .leadTimeWeeksLongWay(Optional.ofNullable(leadTimeWeeksLong))
-                .workDaysLongWay(Optional.ofNullable(workDaysLong))
+                .name(name)
+                .activityType(type)
+                .startDate(startDate)
+                .startWeek(startWeek)
+                .endDateShortWay(endDateShort)
+                .endWeekShortWay(endWeekShort)
+                .endDateLongWay(endDateLong)
+                .endWeekLongWay(endWeekLong)
+                .leadTimeDaysShortWay(leadTimeDaysShort)
+                .leadTimeWeeksShortWay(leadTimeWeeksShort)
+                .workDaysShortWay(workDaysShort)
+                .leadTimeDaysLongWay(leadTimeDaysLong)
+                .leadTimeWeeksLongWay(leadTimeWeeksLong)
+                .workDaysLongWay(workDaysLong)
                 .build();
     }
 

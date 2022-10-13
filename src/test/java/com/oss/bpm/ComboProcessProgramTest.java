@@ -1,6 +1,6 @@
 package com.oss.bpm;
 
-import com.google.common.collect.HashMultimap;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -8,6 +8,8 @@ import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.ProcessOverviewPage;
+import com.oss.pages.bpm.forecasts.Forecast;
+import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.processinstances.ProcessCreationWizardProperties;
 import com.oss.pages.bpm.processinstances.ScheduleProperties;
 import com.oss.utils.TestListener;
@@ -19,6 +21,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+import org.testng.collections.Lists;
 
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -33,25 +36,42 @@ public class ComboProcessProgramTest extends BaseTestCase {
     private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
     private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
     private static final String PROCESS_DEFINITION_NAME_ROLES = "audit_roles";
+    private static final String PROGRAM_DEFINITION_NAME_ROLES = "program_roles";
     private static final String ROLE_ID1 = "Audit Role 1";
     private static final String ROLE_ID2 = "Audit Role 2";
     private static final String PLANNING = "Planning";
     private static final String GENERAL_ENGINEERING = "General Engineering";
     private static final String PROCESS_SCHEDULED_MESSAGE = "Process %s was scheduled";
+    private static final String MILESTONE_DESCRIPTION_1 = "Milestone 1 - Selenium Test";
+    private static final String PROGRAM_ROLES_TASK_1 = "program_roles_1";
+    private static final String AUDIT_ROLES_TASK_1 = "audit_roles_1";
+    private static final String AUDIT_ROLES_TASK_2 = "audit_roles_1";
 
 
     private final Logger log = LoggerFactory.getLogger(ComboProcessProgramTest.class);
 
-
     private final String programName = "Selenium Test Program-" + (int) (Math.random() * 100001);
-
-    private final String milestoneName1 = "Milestone Update " + (int) (Math.random() * 100001);
-    private final String milestoneName2 = "Milestone Update " + (int) (Math.random() * 100001);
-    private final String milestoneDescription = "Milestone Update " + (Math.random() * 100001);
-
-    private final long plusDays = 5L;
+    private final long plus5Days = 5L;
+    private final long plus10Days = 10L;
     private final int plusMinutes = 2;
 
+    private final Multimap<String, String> processRoles = ImmutableMultimap.<String, String>builder()
+            .put(ROLE_ID1, PLANNING)
+            .put(ROLE_ID1, GENERAL_ENGINEERING)
+            .put(ROLE_ID2, PLANNING)
+            .build();
+
+    private final Forecast mainForecast = Forecast.builder()
+            .startPlusDays(0L)
+            .endPlusDaysShortWay(plus5Days)
+            .endPlusDaysLongWay(plus10Days)
+            .longWorkWeakLongWay(true)
+            .build();
+
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
 
     @BeforeClass
     public void openProcessInstancesPage() {
@@ -74,19 +94,13 @@ public class ComboProcessProgramTest extends BaseTestCase {
         final String processName = "Selenium Test Process-" + (int) (Math.random() * 100001);
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
 
-        ScheduleProperties scheduleProperties = ScheduleProperties.builder()
+        final ScheduleProperties scheduleProperties = ScheduleProperties.builder()
                 .setSingleSchedule(0L, plusMinutes).build();
 
-        Multimap<String, String> processRoles = HashMultimap.create();
-        processRoles.put(ROLE_ID1, PLANNING);
-        processRoles.put(ROLE_ID1, GENERAL_ENGINEERING);
-        processRoles.put(ROLE_ID2, PLANNING);
-
-        ProcessCreationWizardProperties processCreationWizardProperties = ProcessCreationWizardProperties.builder()
-                .basicProcess(processName, PROCESS_DEFINITION_NAME_ROLES, plusDays)
+        final ProcessCreationWizardProperties processCreationWizardProperties = ProcessCreationWizardProperties.builder()
+                .basicProcess(processName, PROCESS_DEFINITION_NAME_ROLES, plus5Days)
                 .withSchedule(scheduleProperties)
                 .withProcessRolesAssignment(processRoles)
-                .withProcessCreation(processName, PROCESS_DEFINITION_NAME_ROLES, plusDays)
                 .build();
 
         processOverviewPage.openProcessCreationWizard().createInstance(processCreationWizardProperties);
@@ -109,8 +123,57 @@ public class ComboProcessProgramTest extends BaseTestCase {
         Assert.assertEquals(processRoleGroups2, PLANNING);
     }
 
-    private void waitForPageToLoad() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    @Test(priority = 2, description = "Create Program and Processes with roles, milestones, forecasts")
+    @Description("Create Program and Processes with roles, milestones, forecasts")
+    public void createComboProgramWithComboProcess() {
+        final String programMilestoneName1 = "Milestone Update " + (int) (Math.random() * 100001);
+        final String programMilestoneName2 = "Milestone Update " + (int) (Math.random() * 100001);
+        final String processMilestoneName1 = "Milestone Update " + (int) (Math.random() * 100001);
+        final String processMilestoneName2 = "Milestone Update " + (int) (Math.random() * 100001);
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
+
+        final List<Milestone> programMilestones = Lists.newArrayList(
+                Milestone.builder()
+                        .setLeadTime("10")
+                        .setDescription(MILESTONE_DESCRIPTION_1)
+                        .setName(programMilestoneName1)
+                        .build(),
+
+                Milestone.builder()
+                        .setName(programMilestoneName2)
+                        .setRelatedTask(PROGRAM_ROLES_TASK_1)
+                        .setIsManualCompletion("true")
+                        .build());
+
+
+        final List<Milestone> processMilestones = Lists.newArrayList(
+                Milestone.builder()
+                        .setLeadTime("5")
+                        .setDescription(MILESTONE_DESCRIPTION_1)
+                        .setName(processMilestoneName1)
+                        .build(),
+
+                Milestone.builder()
+                        .setName(processMilestoneName2)
+                        .setRelatedTask(AUDIT_ROLES_TASK_1)
+                        .setIsManualCompletion("true")
+                        .build());
+
+        final List<Forecast> processForecasts = Lists.newArrayList(
+                Forecast.builder()
+                        .name(AUDIT_ROLES_TASK_1)
+                        .startPlusDays(0L)
+                        .endPlusDaysShortWay(plus5Days)
+                        .longWorkWeakShortWay(true)
+                        .build(),
+
+                Forecast.builder()
+                        .name(AUDIT_ROLES_TASK_2)
+                        .startPlusDays(0L)
+                        .endPlusDaysLongWay(plus10Days)
+                        .longWorkWeakLongWay(true)
+                        .build());
+
     }
 
 

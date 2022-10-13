@@ -256,8 +256,6 @@ public class ProcessCreationWizardProperties {
                 throw new IllegalArgumentException(PROGRAM_TO_LINK_EXCEPTION);
             if (!isProcessCreation && !isProgramCreation)
                 throw new IllegalArgumentException(NO_BASIC_PROCESS_PROGRAM_EXCEPTION);
-
-
             return new ProcessCreationWizardProperties(this);
         }
     }

@@ -3,26 +3,24 @@ package com.oss.pages.bpm.forecasts;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.Optional;
-
 /**
  * @author Paweł Rother
  */
 @Builder
 @Getter
 public class ForecastAttributes {
-    private final Optional<String> name;
-    private final Optional<String> activityType;
-    private final Optional<String> startDate;
-    private final Optional<String> startWeek;
-    private final Optional<String> endDateShortWay;
-    private final Optional<String> endDateLongWay;
-    private final Optional<String> endWeekShortWay;
-    private final Optional<String> endWeekLongWay;
-    private final Optional<String> leadTimeDaysShortWay;
-    private final Optional<String> leadTimeWeeksShortWay;
-    private final Optional<String> leadTimeDaysLongWay;
-    private final Optional<String> leadTimeWeeksLongWay;
-    private final Optional<String> workDaysShortWay;
-    private final Optional<String> workDaysLongWay;
+    private final String name;
+    private final String activityType;
+    private final String startDate;
+    private final String startWeek;
+    private final String endDateShortWay;
+    private final String endDateLongWay;
+    private final String endWeekShortWay;
+    private final String endWeekLongWay;
+    private final String leadTimeDaysShortWay;
+    private final String leadTimeWeeksShortWay;
+    private final String leadTimeDaysLongWay;
+    private final String leadTimeWeeksLongWay;
+    private final String workDaysShortWay;
+    private final String workDaysLongWay;
 }
