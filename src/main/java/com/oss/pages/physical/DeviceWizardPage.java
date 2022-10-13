@@ -3,6 +3,7 @@ package com.oss.pages.physical;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.ObjectSearchField;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
@@ -129,16 +130,34 @@ public class DeviceWizardPage extends BasePage {
                 .setSingleStringValueContains(location);
     }
 
+    @Step("Set Location choosing first")
+    public void setFirstLocation(String location) {
+        ObjectSearchField input = (ObjectSearchField) getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
+        input.setFirstResult(location);
+    }
+
     @Step("Set Physical Location using contains")
-    public void setPhysicalLocation(String preciseLocation) {
+    public void setPhysicalLocation(String physicalLocation) {
         getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                .setSingleStringValueContains(preciseLocation);
+                .setSingleStringValueContains(physicalLocation);
+    }
+
+    @Step("Set Physical Location choosing first")
+    public void setFirstPhysicalLocation(String physicalLocation) {
+        ObjectSearchField input = (ObjectSearchField) getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
+        input.setFirstResult(physicalLocation);
     }
 
     @Step("Set Precise Location using contains")
     public void setPreciseLocation(String preciseLocation) {
         getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
                 .setSingleStringValueContains(preciseLocation);
+    }
+
+    @Step("Set Precise Location choosing first")
+    public void setFirstPreciseLocation(String preciseLocation) {
+        ObjectSearchField input = (ObjectSearchField) getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
+        input.setFirstResult(preciseLocation);
     }
 
     @Step("Set Available Mounting Positions")

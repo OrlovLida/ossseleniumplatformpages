@@ -45,11 +45,11 @@ import io.qameta.allure.Step;
 public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
 
     private static final String DEVICE_WIZARD_DEFAULT_QUANTITY_VALUE = "1";
-    private static final String DEVICE_WIZARD_ALLOWED_QUANTITY_VALUE = "5";
+    private static final String DEVICE_WIZARD_LEGAL_QUANTITY_VALUE = "5";
     private static final int NUMBER_OF_CREATED_DEVICES = 5;
     private static final int NUMBER_OF_SLOTS_IN_DEVICE_STRUCTURE = 13;
     private static final int NUMBER_OF_CHASSIS_IN_DEVICE_STRUCTURE = 1;
-    private static final String DEVICE_WIZARD_NOT_ALLOWED_QUANTITY_VALUE = "21";
+    private static final String DEVICE_WIZARD_ILLEGAL_QUANTITY_VALUE = "21";
     private static final String EQUIPMENT_TYPE_VALUE = "DWDM Device";
     private static final String MODEL_VALUE = "Alcatel 1626LM Compact";
     private static final String NAME_ATTRIBUTE = "Name";
@@ -62,6 +62,8 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
     private static final String LIVE_PERSPECTIVE_TEXT = "Live";
     private static final String QUANTITY_FIELD_ID = "quantity_field_uuid";
     private static final String DEVICE_WIZARD_FIRST_STEP_TITLE = "1. Attributes";
+    private static final String DEVICE_WIZARD_SECOND_STEP_TITLE = "2. Locations";
+    private static final String DEVICE_WIZARD_THIRD_STEP_TITLE = "3. Specific Attributes";
     private static final String ADDRESS_TYPE = "Address";
 
     private static final String DEVICES_HAVE_BEEN_CREATED_MESSAGE = "Devices have been created successfully";
@@ -105,66 +107,100 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         availableNameValues = new LinkedList<>(Arrays.asList("testName1", "testName2", "testName3", "testName4", "testName5"));
         availableSerialNumberValues = new LinkedList<>(Arrays.asList("testSerialNumber1", "testSerialNumber2", "testSerialNumber3", "testSerialNumber4", "testSerialNumber5"));
         availableHostnameValues = new LinkedList<>(Arrays.asList("testHostname1", "testHostname2", "testHostname3", "testHostname4", "testHostname5"));
+        testLocationId = createPhysicalLocation();
         setLivePerspective();
-        openCreateDeviceWizardFromLeftSideMenu();
-        initialNumberOfSteps = deviceWizard.countNumberOfSteps();
-        testLocationId = createPhysicalLocationAPI();
     }
 
     @Test(priority = 1)
-    public void validateInitialQuantity() {
-        Assert.assertEquals(deviceWizard.getQuantity(), DEVICE_WIZARD_DEFAULT_QUANTITY_VALUE);
+    public void openDeviceWizardFromLeftSideMenu() {
+        openCreateDeviceWizardFromLeftSideMenu();
+        initialNumberOfSteps = deviceWizard.countNumberOfSteps();
     }
 
     @Test(priority = 2)
-    public void increaseQuantityToNotAllowedValue() {
-        deviceWizard.setQuantity(DEVICE_WIZARD_NOT_ALLOWED_QUANTITY_VALUE);
-        validateQuantityMessage();
-        validateIfCorrectFieldsAreGreyedOut();
-        tryToMoveToNextStep();
+    public void checkDefaultQuantity() {
+        Assert.assertEquals(deviceWizard.getQuantity(), DEVICE_WIZARD_DEFAULT_QUANTITY_VALUE);
     }
 
     @Test(priority = 3)
-    public void increaseQuantityToAllowedValue() {
-        deviceWizard.setQuantity(DEVICE_WIZARD_ALLOWED_QUANTITY_VALUE);
-        checkNumberOfWizardSteps();
-        validateIfCorrectFieldsAreGreyedOut();
+    public void setEquipmentType() {
+        deviceWizard.setEquipmentType(EQUIPMENT_TYPE_VALUE);
     }
 
     @Test(priority = 4)
+    public void setModel() {
+        deviceWizard.setModel(MODEL_VALUE);
+    }
+
+    @Test(priority = 5)
+    public void setQuantityToIllegalValue() {
+        deviceWizard.setQuantity(DEVICE_WIZARD_ILLEGAL_QUANTITY_VALUE);
+        checkIllegalQuantityValueMessage();
+        checkThatCorrectFieldsAreGreyedOut();
+    }
+
+    @Test(priority = 6)
+    public void checkThatMoveToNextStepIsBlocked() {
+        checkThatTransitionFromTheFirstToTheNextStepIsBlocked();
+    }
+
+    @Test(priority = 7)
+    public void setQuantityToLegalValue() {
+        deviceWizard.setQuantity(DEVICE_WIZARD_LEGAL_QUANTITY_VALUE);
+        checkNumberOfWizardSteps();
+        checkThatCorrectFieldsAreGreyedOut();
+    }
+
+    @Test(priority = 8)
+    public void moveToTheLocationsStep() {
+        deviceWizard.next();
+        Assert.assertEquals(deviceWizard.getCurrentStateTitle(), DEVICE_WIZARD_SECOND_STEP_TITLE);
+    }
+
+    @Test(priority = 9)
+    public void setPreciseLocation() {
+        deviceWizard.setFirstPreciseLocation(testLocationId);
+    }
+
+    @Test(priority = 10)
+    public void moveToTheSpecificAttributesStep() {
+        deviceWizard.next();
+        Assert.assertEquals(deviceWizard.getCurrentStateTitle(), DEVICE_WIZARD_THIRD_STEP_TITLE);
+    }
+
+    @Test(priority = 11)
     public void setSpecificAttributesForDevices() {
-        fillMandatoryAttributesAndMoveToLastStep();
         fillSpecificAttributesForDevices();
+    }
+
+    @Test(priority = 12)
+    public void submitDeviceWizard() {
         deviceWizard.accept();
     }
 
-    @Test(priority = 5, dependsOnMethods = {"setSpecificAttributesForDevices"})
+    @Test(priority = 13, dependsOnMethods = {"submitDeviceWizard"})
     public void openHierarchyViewFromActiveLink() {
-        validateSystemMessage();
+        checkSystemMessage();
         clickSystemMessageLink();
         closeSystemMessage();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 6, dependsOnMethods = {"openHierarchyViewFromActiveLink"})
+    @Test(priority = 14, dependsOnMethods = {"openHierarchyViewFromActiveLink"})
     public void checkNumberOfDevicesOnHierarchyView() {
         Assert.assertEquals(getMainTreeSize(), NUMBER_OF_CREATED_DEVICES);
     }
 
-    @Test(priority = 7, dependsOnMethods = {"checkNumberOfDevicesOnHierarchyView"})
-    public void checkCreatedDevices() {
+    @Test(priority = 15, dependsOnMethods = {"checkNumberOfDevicesOnHierarchyView"})
+    public void checkStructuresOfCreatedDevices() {
         List<String> createdDevicesIds = getCreatedDevicesIds();
-        String chassisId;
+        createdDevicesIds.forEach(this::performStructureValidation);
+    }
 
-        for(String deviceId:createdDevicesIds) {
-            chassisId = getFirstChassisIdFromHierarchy(deviceId);
-
-            validateDeviceStructure(deviceId, chassisId);
-            selectDeviceOnHierarchyView(deviceId);
-            loadPropertyPanelAttributesAndValues();
-            validateDeviceAttributesAndValues(deviceId);
-            selectDeviceOnHierarchyView(deviceId);
-        }
+    @Test(priority = 16, dependsOnMethods = {"checkStructuresOfCreatedDevices"})
+    public void checkAttributesOfCreatedDevices() {
+        List<String> createdDevicesIds = getCreatedDevicesIds();
+        createdDevicesIds.forEach(this::performSelectionWithValidation);
         softAssert.assertAll();
     }
 
@@ -185,21 +221,21 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         }
     }
 
-    @Step("Open Create Device wizard from left side menu")
+    @Step("Open Create Device Wizard from left side menu")
     private void openCreateDeviceWizardFromLeftSideMenu() {
         homePage.chooseFromLeftSideMenu("Create Physical Device", "Infrastructure Management", "Create Infrastructure");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Step("Validate if Name, Hostname and Serial Number fields are greyed out")
-    private void validateIfCorrectFieldsAreGreyedOut() {
+    @Step("Check that Name, Hostname and Serial Number fields are greyed out")
+    private void checkThatCorrectFieldsAreGreyedOut() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        validateField(NAME_FIELD_IN_WIZARD_ID);
-        validateField(HOSTNAME_FIELD_IN_WIZARD_ID);
-        validateField(SERIAL_NUMBER_FIELD_IN_WIZARD_ID);
+        checkThatFieldIsGreyedOut(NAME_FIELD_IN_WIZARD_ID);
+        checkThatFieldIsGreyedOut(HOSTNAME_FIELD_IN_WIZARD_ID);
+        checkThatFieldIsGreyedOut(SERIAL_NUMBER_FIELD_IN_WIZARD_ID);
     }
 
-    private void validateField(String fieldId) {
+    private void checkThatFieldIsGreyedOut(String fieldId) {
         TextField textField = (TextField) ComponentFactory.create(fieldId, Input.ComponentType.TEXT_FIELD, driver, webDriverWait);
         Input.MouseCursor mouseCursor = textField.cursor();
         Assert.assertEquals(mouseCursor, Input.MouseCursor.NOT_ALLOWED);
@@ -210,8 +246,8 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         SystemMessageContainer.create(driver, webDriverWait).clickMessageLink();
     }
 
-    @Step("Validate system message")
-    private void validateSystemMessage() {
+    @Step("Check system message")
+    private void checkSystemMessage() {
         Assert.assertTrue(getMessageWithText().isPresent());
     }
 
@@ -233,22 +269,24 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         }
     }
 
-    @Step("Check correctness of device structure")
-    private void validateDeviceStructure(String deviceId, String chassisId) {
+    @Step("Check number of components device structure")
+    private void checkNumberOfComponentsInDeviceStructure(String deviceId,
+                                                          String chassisId) {
         Assert.assertEquals(hierarchyViewPage.getNodeChildrenByPath(getChassisContainerPath(deviceId)).size(), NUMBER_OF_CHASSIS_IN_DEVICE_STRUCTURE);
         Assert.assertEquals(hierarchyViewPage.getNodeChildrenByPath(getSlotContainerPath(deviceId, chassisId)).size(), NUMBER_OF_SLOTS_IN_DEVICE_STRUCTURE);
         hierarchyViewPage.collapseNodeByPath(deviceId);
     }
 
     @Step("Check correctness of saved attributes for created device")
-    private void validateDeviceAttributesAndValues(String deviceId) {
-        validateAttribute(NAME_ATTRIBUTE, deviceId);
-        validateAttribute(SERIAL_NUMBER_ATTRIBUTE, deviceId);
-        validateAttribute(HOSTNAME_ATTRIBUTE, deviceId);
+    private void checkDeviceAttributesAndValues(String deviceId) {
+        validateAttributeValue(NAME_ATTRIBUTE, deviceId);
+        validateAttributeValue(SERIAL_NUMBER_ATTRIBUTE, deviceId);
+        validateAttributeValue(HOSTNAME_ATTRIBUTE, deviceId);
         validateIndex(deviceId);
     }
 
-    private void validateAttribute(String attributeName, String deviceId) {
+    private void validateAttributeValue(String attributeName,
+                                        String deviceId) {
         String attributeValue = getAttributeValue(attributeName);
         if (attributeValue != null) {
             List<String> availableAttributeValues = getAvailableValuesForAttribute(attributeName);
@@ -278,7 +316,10 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         }
     }
 
-    private void validateValue(String attributeName, String deviceId, @Nonnull String attributeValue, List<String> availableAttributeValues) {
+    private void validateValue(String attributeName,
+                               String deviceId,
+                               @Nonnull String attributeValue,
+                               List<String> availableAttributeValues) {
         if (availableAttributeValues.contains(attributeValue)) {
             availableAttributeValues.remove(attributeValue);
         } else {
@@ -322,29 +363,20 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         Assert.assertEquals(deviceWizard.countNumberOfSteps(), initialNumberOfSteps + 1);
     }
 
-    @Step("Set values for all mandatory attributes in wizard and move to last step")
-    private void fillMandatoryAttributesAndMoveToLastStep() {
-        deviceWizard.setEquipmentType(EQUIPMENT_TYPE_VALUE);
-        deviceWizard.setModel(MODEL_VALUE);
-        deviceWizard.next();
-        deviceWizard.setPreciseLocation(testLocationId);
-        deviceWizard.next();
-    }
-
     @Step("Select device on Hierarchy View")
     private void selectDeviceOnHierarchyView(String devicePath) {
         hierarchyViewPage.getMainTree().getNodeByPath(devicePath).toggleNode();
     }
 
-    @Step("Check if correct warning is displayed for Quantity")
-    private void validateQuantityMessage() {
+    @Step("Check that the correct warning is displayed for the quantity field")
+    private void checkIllegalQuantityValueMessage() {
         NumberField quantityField = (NumberField) ComponentFactory.create(QUANTITY_FIELD_ID, Input.ComponentType.NUMBER_FIELD, driver, webDriverWait);
         Assert.assertNotNull(quantityField.getMessages());
         Assert.assertEquals(quantityField.getMessages().get(0), VALUE_TOO_LARGE_MESSAGE);
     }
 
-    @Step("Try to move to next step when there is not allowed value for Quantity")
-    private void tryToMoveToNextStep() {
+    @Step("Check that the transition from the first to the next step of the wizard is blocked.")
+    private void checkThatTransitionFromTheFirstToTheNextStepIsBlocked() {
         deviceWizard.next();
         Assert.assertEquals(deviceWizard.getCurrentStateTitle(), DEVICE_WIZARD_FIRST_STEP_TITLE);
     }
@@ -353,7 +385,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         return hierarchyViewPage.getMainTree().getVisibleNodes().size();
     }
 
-    private String createPhysicalLocationAPI() {
+    private String createPhysicalLocation() {
         Long addressId = planningRepository.getFirstObjectWithType(ADDRESS_TYPE);
         return locationInventoryRepository.createLocation("testBuilding_" + getTimestamp(), TEST_LOCATION_TYPE, addressId);
     }
@@ -375,6 +407,18 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         return getIdFromString(driver.getCurrentUrl()).stream()
                 .map(Object::toString)
                 .collect(Collectors.toList());
+    }
+
+    private void performSelectionWithValidation(String deviceId) {
+        selectDeviceOnHierarchyView(deviceId);
+        loadPropertyPanelAttributesAndValues();
+        checkDeviceAttributesAndValues(deviceId);
+        selectDeviceOnHierarchyView(deviceId);
+    }
+
+    private void performStructureValidation(String deviceId) {
+        String chassisId = getFirstChassisIdFromHierarchy(deviceId);
+        checkNumberOfComponentsInDeviceStructure(deviceId, chassisId);
     }
 
     private ResourceHierarchyDTO getResourceHierarchyAPI(String deviceId) {
@@ -403,11 +447,13 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
                 .orElseThrow(RuntimeException::new);
     }
 
-    private String getChassisPath(String deviceId, String chassisId) {
+    private String getChassisPath(String deviceId,
+                                  String chassisId) {
         return deviceId + ".chassis." + chassisId;
     }
 
-    private String getSlotContainerPath(String deviceId, String chassisId) {
+    private String getSlotContainerPath(String deviceId,
+                                        String chassisId) {
         return getChassisPath(deviceId, chassisId) + ".slots";
     }
 

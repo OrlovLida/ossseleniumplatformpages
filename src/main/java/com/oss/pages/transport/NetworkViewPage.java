@@ -39,6 +39,8 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 public class NetworkViewPage extends BasePage {
 
     public static final String ATTRIBUTES_AND_TERMINATIONS_ACTION = "EDIT_Attributes and terminations-null";
+    public static final String DISPLAY_ACTION = "display_group";
+    public static final String REMOVE_FROM_VIEW_ACTION = "display_group_Remove from view-null";
     public static final String CREATE_DEVICE_ACTION = "CREATE_Create Physical Device-null";
     public static final String CREATE_OBJECTS_FROM_TEMPLATE_ACTION = "CREATE_Create Objects from Template-null";
     public static final String DELETE_TRAIL_ACTION = "Delete Trail";
@@ -61,7 +63,7 @@ public class NetworkViewPage extends BasePage {
     private static final String DELETE_BUTTON = "Delete";
     private static final String ADD_TO_GROUP_ACTION = "add_to_group";
     private static final String TRAIL_TYPE_COMBOBOX_ID = "trailTypeCombobox";
-    private static final String LEFT_PANEL_TAB_ID = "LeftPanelWidget";
+    private static final String LEFT_PANEL_TAB_ID = "logicalview";
     private static final String VALIDATION_RESULT_ID = "Validation Results";
     private static final String ROUTING_TABLE_APP_ID = "routing-table-app";
     private static final String TRAIL_TYPES_POPUP_ID = "trailTypesPopup_prompt-card";
@@ -189,6 +191,13 @@ public class NetworkViewPage extends BasePage {
     public void acceptTrailType() {
         Wizard wizard = Wizard.createByComponentId(driver, wait, TRAIL_TYPE_WIZARD_ID);
         wizard.clickButtonById("wizard-submit-button-trailTypeWizardWidget");
+    }
+
+    @Step("Is element in view content")
+    public boolean isObjectInViewContent(String columnID, String value) {
+        waitForPageToLoad();
+        OldTable table = OldTable.createById(driver, wait, LEFT_PANEL_TAB_ID);
+        return table.isValuePresent(columnID, value);
     }
 
     @Step("Open modify termination wizard")
