@@ -27,7 +27,7 @@ public class ProcessOverviewPage extends BasePage {
     public static final String NAME_LABEL = "Name";
     private static final String PROCESS_VIEW = "bpm_processes_view_processes";
     private static final String PROCESS_TABS = "process-details-window";
-    private static final String MILESTONE_TAB = "bpm_processes_view_milestones-tab";
+    private static final String MILESTONE_TAB_ID = "bpm_processes_view_milestones-tab";
     private static final String MILESTONE_LIST = "bpm_processes_view_process-milestones-list";
     private static final String ADD_MILESTONES_LIST_ID = "CREATE_MILESTONES_EDITABLE_LIST_ID";
     private static final String CREATE_MILESTONES_ACTION_ID = "create-milestones";
@@ -44,12 +44,14 @@ public class ProcessOverviewPage extends BasePage {
     private static final String NETWORK_PLANNING = "Network Planning";
     private static final String PROCESS_OVERVIEW = "Process Overview";
     private static final String RELOAD_TABLE_ACTION_ID = "refresh-table";
-    private static final String FORECAST_TAB = "bpm_processes_view_forecast-tab";
-    private static final String PROCESS_ROLES_TAB = "bpm_processes_view_roles-tab";
+    private static final String FORECAST_TAB_ID = "bpm_processes_view_forecast-tab";
+    private static final String PROCESS_ROLES_TAB_ID = "bpm_processes_view_roles-tab";
     private static final String PROCESS_ROLES_LIST = "bpm_processes_view_process-roles-parameters-tab";
     private static final String FORECAST_LIST = "bpm_processes_view_process-forecast-list";
     private static final String GROUPS_LABEL = "Groups";
     private static final String START_PROGRAM_ACTION_ID = "start-program";
+    private static final String RELATED_PROCESSES_TAB_ID = "bpm_processes_view_relations-tab";
+    private static final String RELATED_PROCESSES_LIST = "bpm_processes_view_related-processes-list";
 
 
     public ProcessOverviewPage(WebDriver driver) {
@@ -138,33 +140,49 @@ public class ProcessOverviewPage extends BasePage {
         return list.getRow(NAME_LABEL, forecastName).getValue(attributeName);
     }
 
+    public String getRelatedProcessValue(String relatedProcessName, String attributeName) {
+        CommonList list = CommonList.create(driver, wait, RELATED_PROCESSES_LIST);
+        return list.getRow(NAME_LABEL, relatedProcessName).getValue(attributeName);
+    }
+
+    public int getRelatedProcessesAmount() {
+        CommonList list = CommonList.create(driver, wait, RELATED_PROCESSES_LIST);
+        return list.getRows().size();
+    }
+
     /**
      * @deprecated Along with the 3.1.x version this method will be replaced by
      * {@link #openMilestoneTab()}
      */
     @Deprecated
+
     public void selectMilestoneTab(String processAttributeName, String value) {
         findProcess(processAttributeName, value);
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsWidget milestoneTab = TabsWidget.createById(driver, wait, PROCESS_TABS);
-        milestoneTab.selectTabById(MILESTONE_TAB);
+        milestoneTab.selectTabById(MILESTONE_TAB_ID);
     }
 
     public ProcessOverviewPage openMilestoneTab() {
-        return openTab(MILESTONE_TAB);
+        return openTab(MILESTONE_TAB_ID);
     }
 
     public ProcessOverviewPage openProcessRolesTab() {
-        return openTab(PROCESS_ROLES_TAB);
+        return openTab(PROCESS_ROLES_TAB_ID);
     }
 
     public ProcessOverviewPage openForecastsTab() {
-        return openTab(FORECAST_TAB);
+        return openTab(FORECAST_TAB_ID);
+    }
+
+    public ProcessOverviewPage openRelatedProcessesTab() {
+        return openTab(RELATED_PROCESSES_TAB_ID);
     }
 
     private ProcessOverviewPage openTab(String tabId) {
         TabsWidget tabsWidget = TabsWidget.createById(driver, wait, PROCESS_TABS);
         tabsWidget.selectTabById(tabId);
+        DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
