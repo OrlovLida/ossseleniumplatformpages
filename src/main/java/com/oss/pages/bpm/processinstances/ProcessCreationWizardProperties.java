@@ -172,14 +172,14 @@ public class ProcessCreationWizardProperties {
         }
 
 
-        public ProcessCreationWizardPropertiesBuilder withProcessForecast(Forecast mainForecast, List<Forecast> forecastsList) {
+        public ProcessCreationWizardPropertiesBuilder withProcessForecasts(Forecast mainForecast, List<Forecast> forecastsList) {
             this.isProcessForecastsCreation = true;
             this.processForecastsList = forecastsList;
             this.processMainForecast = mainForecast;
             return this;
         }
 
-        public ProcessCreationWizardPropertiesBuilder withProcessForecasts(Forecast mainForecast) {
+        public ProcessCreationWizardPropertiesBuilder withProcessForecast(Forecast mainForecast) {
             this.isProcessForecastsCreation = true;
             this.processMainForecast = mainForecast;
             return this;
@@ -192,14 +192,14 @@ public class ProcessCreationWizardProperties {
         }
 
 
-        public ProcessCreationWizardPropertiesBuilder withProgramForecast(Forecast mainForecast, List<Forecast> forecastsList) {
+        public ProcessCreationWizardPropertiesBuilder withProgramForecasts(Forecast mainForecast, List<Forecast> forecastsList) {
             this.isProgramForecastsCreation = true;
             this.programForecastsList = forecastsList;
             this.programMainForecast = mainForecast;
             return this;
         }
 
-        public ProcessCreationWizardPropertiesBuilder withProgramForecasts(Forecast mainForecast) {
+        public ProcessCreationWizardPropertiesBuilder withProgramForecast(Forecast mainForecast) {
             this.isProgramForecastsCreation = true;
             this.programMainForecast = mainForecast;
             return this;

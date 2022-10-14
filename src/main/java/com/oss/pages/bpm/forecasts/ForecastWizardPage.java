@@ -15,13 +15,13 @@ public class ForecastWizardPage extends BasePage {
     private static final String BPM_FORECAST_NAME_INPUT = "name";
 
     private static final String BPM_FORECAST_START_DATE = "startDate";
-    private static final String BPM_FORECAST_START_DATE_INPUT = "startDate";
+    private static final String BPM_FORECAST_START_DATE_INPUT = "startDate-DATE";
 
     private static final String BPM_FORECAST_END_DATE_SHORT = "endTimeOptimistic";
-    private static final String BPM_FORECAST_END_DATE_SHORT_INPUT = "endTimeOptimistic";
+    private static final String BPM_FORECAST_END_DATE_SHORT_INPUT = "endTimeOptimistic-DATE";
 
     private static final String BPM_FORECAST_END_DATE_LONG = "endTimePessimistic";
-    private static final String BPM_FORECAST_END_DATE_LONG_INPUT = "endTimePessimistic";
+    private static final String BPM_FORECAST_END_DATE_LONG_INPUT = "endTimePessimistic-DATE";
 
     private static final String BPM_FORECAST_WORK_DAYS_SHORT = "workingDaysOptimistic";
     private static final String BPM_FORECAST_WORK_DAYS_SHORT_INPUT = "workingDaysOptimistic";

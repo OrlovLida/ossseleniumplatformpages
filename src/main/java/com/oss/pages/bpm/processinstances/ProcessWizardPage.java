@@ -272,7 +272,7 @@ public class ProcessWizardPage extends BasePage {
     }
 
     /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by
+     * @deprecated Along with the 3.1.x version this method will be replaced by
      * {@link #defineProcessAndGoToMilestonesStep(String, Long, String)}.
      */
     @Description("Go to Milestone Step)")
@@ -495,7 +495,7 @@ public class ProcessWizardPage extends BasePage {
     }
 
     /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by
+     * @deprecated Along with the 3.1.x version this method will be replaced by
      * {@link MilestonesStepWizardPage}.
      */
     @Deprecated

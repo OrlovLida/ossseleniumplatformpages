@@ -5,7 +5,8 @@ import com.google.common.collect.Multimap;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.mainheader.ToolbarWidget;
+import com.oss.framework.components.mainheader.Notifications;
+import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.forecasts.Forecast;
@@ -18,7 +19,6 @@ import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.collections.Lists;
@@ -42,10 +42,14 @@ public class ComboProcessProgramTest extends BaseTestCase {
     private static final String PLANNING = "Planning";
     private static final String GENERAL_ENGINEERING = "General Engineering";
     private static final String PROCESS_SCHEDULED_MESSAGE = "Process %s was scheduled";
+    private static final String PROCESSES_CREATED_MESSAGE = "Processes from definition %s are being created...";
+    private static final String PROCESSES_LINKED_TO_PROGRAM_NOTIFICATION =
+            "%1$d out of %1$d processes from definition %2$s were created and linked with Program %3$s (%4$s). " +
+                    "Refresh table with processes to see them.";
     private static final String MILESTONE_DESCRIPTION_1 = "Milestone 1 - Selenium Test";
     private static final String PROGRAM_ROLES_TASK_1 = "program_roles_1";
     private static final String AUDIT_ROLES_TASK_1 = "audit_roles_1";
-    private static final String AUDIT_ROLES_TASK_2 = "audit_roles_1";
+    private static final String AUDIT_ROLES_TASK_2 = "audit_roles_2";
 
 
     private final Logger log = LoggerFactory.getLogger(ComboProcessProgramTest.class);
@@ -54,39 +58,37 @@ public class ComboProcessProgramTest extends BaseTestCase {
     private final long plus5Days = 5L;
     private final long plus10Days = 10L;
     private final int plusMinutes = 2;
-
     private final Multimap<String, String> processRoles = ImmutableMultimap.<String, String>builder()
             .put(ROLE_ID1, PLANNING)
             .put(ROLE_ID1, GENERAL_ENGINEERING)
             .put(ROLE_ID2, PLANNING)
             .build();
-
     private final Forecast mainForecast = Forecast.builder()
             .startPlusDays(0L)
             .endPlusDaysShortWay(plus5Days)
             .endPlusDaysLongWay(plus10Days)
             .longWorkWeakLongWay(true)
             .build();
-
+    private String programCode;
 
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @BeforeClass
-    public void openProcessInstancesPage() {
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        DelayUtils.sleep(3000);
-
-
-        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
-        }
-        processOverviewPage.clearAllColumnFilters();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }
+//    @BeforeClass
+//    public void openProcessInstancesPage() {
+//        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
+//        DelayUtils.sleep(3000);
+//
+//
+//        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
+//            processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
+//        }
+//        processOverviewPage.clearAllColumnFilters();
+//        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+//    }
 
     @Test(priority = 1, description = "Create Process with schedule and process roles")
     @Description("Create Process with schedule and process roles")
@@ -103,7 +105,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
                 .withProcessRolesAssignment(processRoles)
                 .build();
 
-        processOverviewPage.openProcessCreationWizard().createInstance(processCreationWizardProperties);
+        processOverviewPage.createInstance(processCreationWizardProperties);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
 
@@ -126,15 +128,17 @@ public class ComboProcessProgramTest extends BaseTestCase {
     @Test(priority = 2, description = "Create Program and Processes with roles, milestones, forecasts")
     @Description("Create Program and Processes with roles, milestones, forecasts")
     public void createComboProgramWithComboProcess() {
-        final String programMilestoneName1 = "Milestone Update " + (int) (Math.random() * 100001);
-        final String programMilestoneName2 = "Milestone Update " + (int) (Math.random() * 100001);
-        final String processMilestoneName1 = "Milestone Update " + (int) (Math.random() * 100001);
-        final String processMilestoneName2 = "Milestone Update " + (int) (Math.random() * 100001);
+        final String processName = "Selenium Test Process-" + (int) (Math.random() * 100001);
+        final String programMilestoneName1 = "Milestone Program 1." + (int) (Math.random() * 100001);
+        final String programMilestoneName2 = "Milestone Program 2." + (int) (Math.random() * 100001);
+        final String processMilestoneName1 = "Milestone Process 1." + (int) (Math.random() * 100001);
+        final String processMilestoneName2 = "Milestone Process 2." + (int) (Math.random() * 100001);
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
 
         final List<Milestone> programMilestones = Lists.newArrayList(
                 Milestone.builder()
                         .setLeadTime("10")
+                        .setIsActive("true")
                         .setDescription(MILESTONE_DESCRIPTION_1)
                         .setName(programMilestoneName1)
                         .build(),
@@ -149,14 +153,15 @@ public class ComboProcessProgramTest extends BaseTestCase {
         final List<Milestone> processMilestones = Lists.newArrayList(
                 Milestone.builder()
                         .setLeadTime("5")
+                        .setIsManualCompletion("true")
                         .setDescription(MILESTONE_DESCRIPTION_1)
                         .setName(processMilestoneName1)
                         .build(),
 
                 Milestone.builder()
                         .setName(processMilestoneName2)
+                        .setIsActive("true")
                         .setRelatedTask(AUDIT_ROLES_TASK_1)
-                        .setIsManualCompletion("true")
                         .build());
 
         final List<Forecast> processForecasts = Lists.newArrayList(
@@ -174,6 +179,32 @@ public class ComboProcessProgramTest extends BaseTestCase {
                         .longWorkWeakLongWay(true)
                         .build());
 
+        final ProcessCreationWizardProperties properties = ProcessCreationWizardProperties.builder()
+                .basicProgram(programName, PROGRAM_DEFINITION_NAME_ROLES, plus5Days)
+                .withProgramRolesAssignment(processRoles)
+                .withProgramMilestones(programMilestones)
+                .withProgramForecast(mainForecast)
+                .withProcessCreation(processName, PROCESS_DEFINITION_NAME_ROLES, plus5Days)
+                .withProcessForecasts(mainForecast, processForecasts)
+                .withMultipleProcesses(5)
+                .withProcessMilestones(processMilestones)
+                .withProcessRolesAssignment(processRoles)
+                .build();
+
+        processOverviewPage.createInstance(properties);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
+        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
+
+        Assertions.assertThat(messages).hasSize(1);
+        Assertions.assertThat(messages.get(0).getMessageType()).isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.get(0).getText(), String.format(PROCESSES_CREATED_MESSAGE, PROCESS_DEFINITION_NAME_ROLES));
+        systemMessage.close();
+        programCode = processOverviewPage.getProcessCode(programName);
+        waitForPageToLoad();
+        NotificationsInterface notifications = Notifications.create(driver, webDriverWait);
+        String notification = notifications.getNotificationMessage();
+        Assert.assertEquals(notification, String.format(PROCESSES_LINKED_TO_PROGRAM_NOTIFICATION, 5,
+                PROCESS_DEFINITION_NAME_ROLES, programName, programCode));
     }
 
 

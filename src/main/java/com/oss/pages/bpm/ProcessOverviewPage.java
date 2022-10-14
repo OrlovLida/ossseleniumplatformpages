@@ -11,6 +11,7 @@ import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
+import com.oss.pages.bpm.processinstances.ProcessCreationWizardProperties;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
 import org.openqa.selenium.WebDriver;
@@ -48,6 +49,7 @@ public class ProcessOverviewPage extends BasePage {
     private static final String PROCESS_ROLES_LIST = "bpm_processes_view_process-roles-parameters-tab";
     private static final String FORECAST_LIST = "bpm_processes_view_process-forecast-list";
     private static final String GROUPS_LABEL = "Groups";
+    private static final String START_PROGRAM_ACTION_ID = "start-program";
 
 
     public ProcessOverviewPage(WebDriver driver) {
@@ -137,7 +139,7 @@ public class ProcessOverviewPage extends BasePage {
     }
 
     /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by
+     * @deprecated Along with the 3.1.x version this method will be replaced by
      * {@link #openMilestoneTab()}
      */
     @Deprecated
@@ -205,6 +207,19 @@ public class ProcessOverviewPage extends BasePage {
         callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         return new ProcessWizardPage(driver);
+    }
+
+    public ProcessWizardPage openProgramCreationWizard() {
+        callAction(CREATE_GROUP_ACTION_ID, START_PROGRAM_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new ProcessWizardPage(driver);
+    }
+
+    public void createInstance(ProcessCreationWizardProperties properties) {
+        if (properties.isProcessCreation())
+            openProcessCreationWizard().createInstance(properties);
+        else if (properties.isProgramCreation())
+            openProgramCreationWizard().createInstance(properties);
     }
 
     public String createSimpleNRP() {
