@@ -13,17 +13,13 @@ import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.bpm.ProcessOverviewPage;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -42,7 +38,6 @@ public class ProcessWizardPage extends BasePage {
     protected static final String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_prompt-card";
     protected static final String PROCESS_NAME = "Selenium Test " + Math.random();
     private static final String CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION = "Cannot extract Process Code from message: ";
-    private static final String TABLE_PROCESSES = "bpm_processes_view_processes";
     private static final String PROCESS_WIZARD_STEP_1 = "bpm_processes_view_start-process-prompt_prompt-card";
     private static final String DOMAIN_ATTRIBUTE_ID = "domain-combobox";
     private static final String DEFINITION_ATTRIBUTE_ID = "definition-combobox";
@@ -50,14 +45,11 @@ public class ProcessWizardPage extends BasePage {
     private static final String PROCESS_NAME_ATTRIBUTE_ID = "processNameTextFieldId";
     private static final String FINISH_DUE_DATE_ID = "FINISHED_DUE_DATE";
     private static final String DUE_DATE_ID = "programDueDateId";
-    private static final String PREVIOUS_BUTTON = "wizard-previous-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
     private static final String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String CANCEL_BUTTON = "wizard-cancel-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String INVENTORY_PROCESS = "Inventory Processes";
     private static final String LATEST = "Latest";
-    private static final String CREATE_GROUP_ACTION_ID = "create";
-    private static final String START_PROCESS_ACTION_ID = "start-process";
     private static final String FORECAST_ENABLED_CHECKBOX_ID = "forecastsEnabledCheckboxId";
     private static final String SCHEDULE_ENABLED_CHECKBOX_ID = "scheduleEnabledCheckboxId";
     private static final String CREATE_PROCESS_CHECKBOX_ID = "createProcessesCheckboxId";
@@ -69,86 +61,11 @@ public class ProcessWizardPage extends BasePage {
     private static final String PROCESSES_OUT_OF_RANGE_EXCEPTION = "Number of Processes must be between 1 and 300";
     private static final String CHECKBOX_NOT_PRESENT_EXCEPTION = "Checkbox %s is not present in the wizard.";
     private static final String PROCESS_ROLES_ASSIGNMENT_STEP = "Role assignment";
-    private static final String SCHEDULE_STEP = "Time schedule";
     private static final String MILESTONES_ASSIGNMENT_STEP = "Milestones assignment";
-    private static final String FORECASTS_ASSIGNMENT_STEP = "Forecasts assignment";
     private static final String LACK_OF_STEP_EXCEPTION = "Step %s is not visible on Process creation wizard";
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
-    }
-
-    /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by {@link #createSimpleNRPV2()}.
-     * New method is adapted to run on views other than Process Instances View.
-     * As part of the method replacement, in tests where process creation is executed,
-     * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessOverviewPage#createSimpleNRP()} method
-     * which will open wizard and proceed process creation.
-     */
-    @Deprecated
-    public String createSimpleNRP() {
-        return createProcess(PROCESS_NAME, (long) 0, NRP);
-    }
-
-    /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by {@link #createSimpleDCPV2()}.
-     * New method is adapted to run on views other than Process Instances View.
-     * As part of the method replacement, in tests where process creation is executed,
-     * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessOverviewPage#createSimpleDCP()} method
-     * which will open wizard and proceed process creation.
-     */
-    @Deprecated
-    public String createSimpleDCP() {
-        return createProcess(PROCESS_NAME, (long) 0, DCP);
-    }
-
-    /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by {@link #createDCPWithPlusDays(Long)}.
-     * New method is adapted to run on views other than Process Instances View.
-     * As part of the method replacement, in tests where process creation is executed,
-     * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessOverviewPage#createDCPWithPlusDays(Long)} method
-     * which will open wizard and proceed process creation.
-     */
-    @Deprecated
-    public String createDCPPlusDays(Long plusDays) {
-        return createProcess(PROCESS_NAME, plusDays, DCP);
-    }
-
-    /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by {@link #createNRPWithPlusDays(Long)}.
-     * New method is adapted to run on views other than Process Instances View.
-     * As part of the method replacement, in tests where process creation is executed,
-     * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessOverviewPage#createNRPWithPlusDays(Long)} method
-     * which will open wizard and proceed process creation.
-     */
-    @Deprecated
-    public String createNRPPlusDays(Long plusDays) {
-        return createProcess(PROCESS_NAME, plusDays, NRP);
-    }
-
-    /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by {@link #createProcessIPD(String, Long, String)}.
-     * New method is adapted to run on views other than Process Instances View.
-     * As part of the method replacement, in tests where process creation is executed,
-     * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessOverviewPage#createProcessIPD(String, Long, String)} method
-     * which will open wizard and proceed process creation.
-     */
-    @Deprecated
-    public String createProcess(String processName, Long plusDays, String processType) {
-        TableInterface table = OldTable.createById(driver, wait, TABLE_PROCESSES);
-        table.callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
-        definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
-        return extractProcessCode(getProcessCreationMessage());
     }
 
     protected Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
@@ -279,7 +196,7 @@ public class ProcessWizardPage extends BasePage {
     @Deprecated
     public MilestoneStepWizard definedMilestoneInProcess(String processName, Long plusDays, String processType) {
         defineProcessAndGoToMilestonesStep(processName, plusDays, processType);
-        return new MilestoneStepWizard(driver, wait);
+        return new MilestoneStepWizard(driver);
     }
 
     public MilestonesStepWizardPage defineProcessAndGoToMilestonesStep(String processName, Long plusDays, String processType) {
@@ -330,10 +247,6 @@ public class ProcessWizardPage extends BasePage {
         getSecondStepWizard().clickButtonById(CANCEL_BUTTON);
     }
 
-    public void clickPreviousButton() {
-        getSecondStepWizard().clickButtonById(PREVIOUS_BUTTON);
-    }
-
     private Wizard getSecondStepWizard() {
         return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
@@ -374,9 +287,7 @@ public class ProcessWizardPage extends BasePage {
             Wizard processWizard = definedBasicProcess(properties.getProcessName(), properties.getProcessType(),
                     properties.getProcessPlusDays());
 
-            if (properties.isProgramsToLink()) {
-                setProgramsToLink(properties.getProgramNamesList());
-            }
+            proceedProgramsToLink(properties);
 
             if (properties.isScheduleCreation()) {
 
@@ -431,6 +342,12 @@ public class ProcessWizardPage extends BasePage {
                     forecastsStepWizardPage.addForecasts(properties.getProcessForecastsList());
                 }
             }
+        }
+    }
+
+    private void proceedProgramsToLink(ProcessCreationWizardProperties properties) {
+        if (properties.isProgramsToLink()) {
+            setProgramsToLink(properties.getProgramNamesList());
         }
     }
 
@@ -500,7 +417,7 @@ public class ProcessWizardPage extends BasePage {
      */
     @Deprecated
     public static class MilestoneStepWizard extends MilestonesStepWizardPage {
-        private MilestoneStepWizard(WebDriver driver, WebDriverWait wait) {
+        private MilestoneStepWizard(WebDriver driver) {
             super(driver);
         }
     }
