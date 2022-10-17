@@ -4,9 +4,9 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -71,11 +71,6 @@ public class PatchcordWizardPage extends BasePage {
     @Step("Click Create single-medium patchcord")
     public void clickCreateSingleMediumPatchcord() {
         getPatchcordTable().callActionByLabel("Create single-medium patchcord");
-    }
-
-    @Step("Click Proceed from Create single-medium patchcord wizard")
-    public void clickProceed() {
-        Wizard.createWizard(driver, wait).clickButtonByLabel("Proceed");
     }
 
     @Step("Selects first Patchcord from Patchcord table")

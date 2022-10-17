@@ -11,8 +11,8 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
 import com.oss.pages.bpm.TasksPage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.NewInventoryViewPage;
@@ -25,7 +25,7 @@ import io.qameta.allure.Description;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class IPPathTest extends BaseTestCase {
 
     private String processNRPCode;
@@ -139,7 +139,7 @@ public class IPPathTest extends BaseTestCase {
         newInventoryViewPage.searchObject(IP_PATH_NAME_2);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
-        Assert.assertEquals(IP_PATH_NAME_2, newInventoryViewPage.getMainTable().getCellValue(0, "Label"));
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Label"), IP_PATH_NAME_2);
         Assert.assertEquals(CAPACITY_VALUE_2 + "000000", newInventoryViewPage.getMainTable().getCellValue(0, "Capacity Value"));
     }
 
@@ -162,14 +162,14 @@ public class IPPathTest extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteTrailWizardActionId");
         waitForPageToLoad();
-        Wizard.createWizard(driver, webDriverWait).clickButtonByLabel("Delete");
+        Popup.create(driver, webDriverWait).clickButtonByLabel("Delete");
         checkMessageType();
         newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
     private void checkMessageType() {
-        Assert.assertEquals(MessageType.SUCCESS, (getFirstMessage().getMessageType()));
+        Assert.assertEquals((getFirstMessage().getMessageType()), MessageType.SUCCESS);
     }
 
     private void checkMessageContainsText(String message) {
