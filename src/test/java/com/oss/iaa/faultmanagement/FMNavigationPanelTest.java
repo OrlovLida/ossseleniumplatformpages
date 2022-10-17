@@ -17,7 +17,7 @@ public class FMNavigationPanelTest extends BaseTestCase {
     private static final String KEDB_CONFIGURATION_SUBCATEGORY = "KEDB Configuration";
     private static final String KEDB_LIBRARY_SUBCATEGORY = "KEDB Library";
     private static final String TAGGED_ALARM_LISTS_SUBCATEGORY = "Tagged Alarm Lists";
-    private static final String USER_PREFERENCES_SUBCATEGORY = "User Preferences";
+    private static final String USER_PREFERENCES_SUBCATEGORY = "FM User Preferences";
     private static final String ALARM_GENERATOR_SUBCATEGORY = "Alarm Generator";
 
     private static final String FM_DASHBOARD_URL_SUFFIX = "dashboard/predefined/id/_FaultManagement";

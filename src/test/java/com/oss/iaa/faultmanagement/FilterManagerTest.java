@@ -13,6 +13,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.iaa.faultmanagement.filtermanager.FMFilterManagerPage;
 import com.oss.utils.TestListener;
 
@@ -88,6 +89,7 @@ public class FilterManagerTest extends BaseTestCase {
             fmFilterManagerPage.expandFilterList(folderName);
             Assert.assertTrue(fmFilterManagerPage.checkIfFilterExists(name));
             fmFilterManagerPage.clickDeleteFilter(name);
+            DelayUtils.sleep(1000);
             Assert.assertFalse(fmFilterManagerPage.checkIfFilterExists(name));
 
         } catch (Exception e) {
