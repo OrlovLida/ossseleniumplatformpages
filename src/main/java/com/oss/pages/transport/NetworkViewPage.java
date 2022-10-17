@@ -363,8 +363,8 @@ public class NetworkViewPage extends BasePage {
     @Step("Add element quered in advanced search")
     public void queryElementAndAddItToView(String componentId, Input.ComponentType componentType, String value) {
         AdvancedSearchWidget advancedSearchWidget = AdvancedSearchWidget.createById(driver, wait, "advancedSearch");
-        advancedSearchWidget.getComponent(componentId, componentType).clearByAction();
-        advancedSearchWidget.getComponent(componentId, componentType).setSingleStringValue(value);
+        advancedSearchWidget.getComponent(componentId).clearByAction();
+        advancedSearchWidget.getComponent(componentId).setSingleStringValue(value);
         waitForPageToLoad();
         advancedSearchWidget.getTableComponent().selectRow(0);
         DelayUtils.sleep(500);

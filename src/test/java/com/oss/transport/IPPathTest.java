@@ -13,8 +13,8 @@ import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.IPPathWizardPage;
@@ -49,7 +49,7 @@ public class IPPathTest extends BaseTestCase {
     @Description("Create NRP Process")
     public void createProcessNRP() {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processNRPCode = processWizardPage.createSimpleNRP();
+        processNRPCode = processWizardPage.createSimpleNRPV2();
         checkMessageSize(1);
         checkMessageType();
         checkMessageContainsText(processNRPCode);
