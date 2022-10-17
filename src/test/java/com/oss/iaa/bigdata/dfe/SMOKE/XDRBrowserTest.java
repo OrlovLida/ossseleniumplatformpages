@@ -17,7 +17,6 @@ public class XDRBrowserTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(XDRBrowserTest.class);
 
     private XDRBrowserPage xdrBrowserPage;
-    private NotificationWrapperPage notificationWrapperPage;
     private static final String ETL_NAME = "t:SMOKE#ETLforKqis";
     private static final String DOWNLOADED_FILE = "*.csv";
 
@@ -40,7 +39,7 @@ public class XDRBrowserTest extends BaseTestCase {
     @Description("Export XDR File")
     public void exportXDRFile() {
         if (!xdrBrowserPage.checkIfTableIsEmpty()) {
-            notificationWrapperPage = new NotificationWrapperPage(driver);
+            NotificationWrapperPage notificationWrapperPage = new NotificationWrapperPage(driver);
             notificationWrapperPage.clearNotifications();
             xdrBrowserPage.clickExport();
             notificationWrapperPage.openNotificationPanel().waitForExportFinish();

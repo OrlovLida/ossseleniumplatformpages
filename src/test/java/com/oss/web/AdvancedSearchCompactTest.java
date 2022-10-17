@@ -257,8 +257,8 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
         TableComponent tableComponent = advancedSearchWidget.getTableComponent();
         String lastName = tableComponent.getCellValue(1, LAST_NAME_ID);
         String nationality = tableComponent.getCellValue(1, NATIONALITY_COLUMN_ID);
-        advancedSearchWidget.getComponent(LAST_NAME_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(lastName);
-        advancedSearchWidget.getComponent(NATIONALITY_COLUMN_ID, Input.ComponentType.MULTI_COMBOBOX)
+        advancedSearchWidget.getComponent(LAST_NAME_ID).setSingleStringValue(lastName);
+        advancedSearchWidget.getComponent(NATIONALITY_COLUMN_ID)
                 .setSingleStringValue(nationality);
         // when
         Multimap<String, String> visibleTags = advancedSearchWidget.getAppliedFilters();

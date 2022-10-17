@@ -2,7 +2,6 @@ package com.oss.pages.physical;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -15,16 +14,17 @@ public class CoolingZoneEditorWizardPage extends BasePage {
     }
 
     private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
-    private static final String SELECT_COOLING_ZONE_NAME = "cooling_zone_uid";
-    private static final String WIZARD_ID = "physical_device_cooling_zone_view_prompt-card";
+    private static final String SELECT_COOLING_ZONE_NAME = "coolingZone";
+    private static final String WIZARD_ID = "optional_prompt-card";
+    private static final String ACCEPT_ID = "wizard-submit-button-cooling-zone-assignment-wizard";
 
     @Step("Click Update")
-    public void clickUpdate() {
-        wizard.clickUpdate();
+    public void clickAccept() {
+        wizard.clickButtonById(ACCEPT_ID);
     }
 
     @Step("Select Cooling Zone to assign to device")
     public void selectNameFromList(String coolingZoneName) {
-        wizard.setComponentValue(SELECT_COOLING_ZONE_NAME, coolingZoneName, Input.ComponentType.SEARCH_FIELD);
+        wizard.setComponentValue(SELECT_COOLING_ZONE_NAME, coolingZoneName);
     }
 }

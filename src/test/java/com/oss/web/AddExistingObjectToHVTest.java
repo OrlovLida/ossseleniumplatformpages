@@ -185,7 +185,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         location.selectFirstRow();
         location.goToHierarchyViewForSelectedObject();
-        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         hierarchyViewPage.getMainTree().callActionById(ADD_OBJECT_BUTTON);
         AdvancedSearchWidget advancedSearch = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_ID);
         DelayUtils.sleep();

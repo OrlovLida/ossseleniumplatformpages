@@ -1,7 +1,5 @@
 package com.oss.iaa.bigdata.dfe.SMOKE;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Optional;
@@ -16,7 +14,6 @@ import io.qameta.allure.Description;
 
 public class LinkToXDRBrowserTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(LinkToXDRBrowserTest.class);
     private static final String ETL_NAME = "t:SMOKE#ETLforKqis";
     private static final String ETL_IN_XDR_FILTER = "t:SMOKE#DimHierSelenium.MAIN_TYPE";
     private static final String DIMENSION_IN_XDR_FILTER = "D3_01";
@@ -49,8 +46,7 @@ public class LinkToXDRBrowserTest extends BaseTestCase {
             Assert.assertTrue(xdrBrowserPage.checkIfFilterExist(ETL_IN_XDR_FILTER));
             Assert.assertTrue(xdrBrowserPage.checkIfFilterExist(DIMENSION_IN_XDR_FILTER));
         } catch (Exception e) {
-            log.error(e.getMessage());
-            Assert.fail();
+            Assert.fail(e.getMessage());
         }
     }
 }

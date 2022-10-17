@@ -2,7 +2,6 @@ package com.oss.web;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -120,24 +119,24 @@ public class TreeTableWidgetTest extends BaseTestCase {
         treeTableWidget.getPagination().goOnNextPage();
         Assert.assertTrue(treeTableWidget.getPagination().isFirstPageButtonPresent());
         Assert.assertTrue(treeTableWidget.getPagination().isPreviousPageButtonPresent());
-        Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), treeTableWidget.getPagination().getStep() + 1);
-        Assert.assertEquals(treeTableWidget.getPagination().getTopRageOfRows(), treeTableWidget.getPagination().getStep() * 2);
+        Assert.assertEquals(treeTableWidget.getPagination().getBottomRangeOfRows(), treeTableWidget.getPagination().getStep() + 1);
+        Assert.assertEquals(treeTableWidget.getPagination().getTopRangeOfRows(), treeTableWidget.getPagination().getStep() * 2);
     }
 
     @Test(priority = 10)
     public void goOnPreviousPage() {
         treeTableWidget.getPagination().goOnNextPage();
         treeTableWidget.getPagination().goOnPrevPage();
-        Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), treeTableWidget.getPagination().getStep() + 1);
-        Assert.assertEquals(treeTableWidget.getPagination().getTopRageOfRows(), treeTableWidget.getPagination().getStep() * 2);
+        Assert.assertEquals(treeTableWidget.getPagination().getBottomRangeOfRows(), treeTableWidget.getPagination().getStep() + 1);
+        Assert.assertEquals(treeTableWidget.getPagination().getTopRangeOfRows(), treeTableWidget.getPagination().getStep() * 2);
     }
 
     @Test(priority = 11)
     public void backToFirstPage() {
         treeTableWidget.getPagination().goOnFirstPage();
         treeTableWidget.getPagination().goOnPrevPage();
-        Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), 1);
-        Assert.assertEquals(treeTableWidget.getPagination().getTopRageOfRows(), treeTableWidget.getPagination().getStep());
+        Assert.assertEquals(treeTableWidget.getPagination().getBottomRangeOfRows(), 1);
+        Assert.assertEquals(treeTableWidget.getPagination().getTopRangeOfRows(), treeTableWidget.getPagination().getStep());
     }
 
     @Test(priority = 12)

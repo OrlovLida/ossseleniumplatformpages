@@ -1,24 +1,18 @@
 package com.oss.iaa.bigdata.dfe;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.bigdata.dfe.kqi.KqiPage;
 import com.oss.pages.iaa.bigdata.dfe.kqi.KqiWizardPage;
 import com.oss.pages.iaa.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({TestListener.class})
 public class KQIsTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(KQIsTest.class);
     private static final String VALUE_TYPE = "Number";
     private static final String UNIT_TYPE = "Minutes";
     private static final String FORMULA = "$[M:COUNT(t:SMOKE#ETLforKqis.ATTEMPTS_LONG)]";
@@ -43,7 +37,6 @@ public class KQIsTest extends BaseTestCase {
         kqiWizard.fillKQIWizard(kqisName, VALUE_TYPE, UNIT_TYPE, FORMULA);
         kqiWizard.clickAccept();
         boolean kqiIsCreated = kqisPage.kqiExistIntoTable(kqisName);
-
         Assert.assertTrue(kqiIsCreated);
     }
 
@@ -61,8 +54,7 @@ public class KQIsTest extends BaseTestCase {
 
             Assert.assertTrue(kqiIsEdited);
         } else {
-            log.error("KQI with name: {} doesn't exist", kqisName);
-            Assert.fail();
+            Assert.fail(String.format("KQI with name: %s doesn't exist", kqisName));
         }
     }
 
@@ -78,8 +70,7 @@ public class KQIsTest extends BaseTestCase {
 
             Assert.assertTrue(kqiIsDeleted);
         } else {
-            log.error("KQI with name: {} doesn't exist, cannot perform delete action", kqisName);
-            Assert.fail();
+            Assert.fail(String.format("KQI with name: %s doesn't exist, cannot perform delete action", kqisName));
         }
     }
 }

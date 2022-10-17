@@ -1,7 +1,5 @@
 package com.oss.iaa.bigdata.dfe.SMOKE;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -13,9 +11,9 @@ import io.qameta.allure.Description;
 
 public class EtlSmokeTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(EtlSmokeTest.class);
-    private EtlDataCollectionsPage etlDataCollectionsPage;
+    private static final String STATUS_SUCCESS = "Success";
     private static final String ETL_NAME = "t:SMOKE#ETLforMonitoring";
+    private EtlDataCollectionsPage etlDataCollectionsPage;
 
     @BeforeClass
     public void goToEtlDataCollectionsView() {
@@ -27,16 +25,15 @@ public class EtlSmokeTest extends BaseTestCase {
     public void checkIfEtlIsWorking() {
         boolean etlExists = etlDataCollectionsPage.etlProcessExistsIntoTable(ETL_NAME);
         if (etlExists) {
-            etlDataCollectionsPage.selectFoundEtlProcess();
+            etlDataCollectionsPage.selectFirstEtlInTable();
             etlDataCollectionsPage.selectExecutionHistoryTab();
             etlDataCollectionsPage.clickRefreshInTabTable();
 
             boolean ifRunsFresh = etlDataCollectionsPage.isIfRunsFresh();
             Assert.assertTrue(ifRunsFresh);
 
-            Assert.assertEquals(etlDataCollectionsPage.checkStatus(), "Success");
+            Assert.assertEquals(etlDataCollectionsPage.checkStatus(), STATUS_SUCCESS);
         } else {
-            log.info("Cannot find existing ETL {}", ETL_NAME);
             Assert.fail("Cannot find existing ETL " + ETL_NAME);
         }
     }

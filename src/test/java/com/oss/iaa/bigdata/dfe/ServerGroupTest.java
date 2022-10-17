@@ -1,10 +1,7 @@
 package com.oss.iaa.bigdata.dfe;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
@@ -13,14 +10,11 @@ import com.oss.pages.iaa.bigdata.dfe.servergroup.ServerGroupPopupPage;
 import com.oss.pages.iaa.bigdata.dfe.servergroup.ServerPopupPage;
 import com.oss.pages.iaa.bigdata.dfe.servergroup.ServersTabPage;
 import com.oss.pages.iaa.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({TestListener.class})
 public class ServerGroupTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(ServerGroupTest.class);
     private static final String PROTOCOL_TYPE = "SFTP";
     private static final String SERVERS_SERVER_NAME = "Selenium Test Server";
     private static final String SERVERS_SERVER_NAME_UPDATED = SERVERS_SERVER_NAME + "-updated";
@@ -50,7 +44,7 @@ public class ServerGroupTest extends BaseTestCase {
         ServerGroupPopupPage serverGroupPopupWizard = new ServerGroupPopupPage(driver, webDriverWait, ADD_WIZARD_ID);
         serverGroupPopupWizard.fillServerGroupPopup(serverGroupName, PROTOCOL_TYPE);
         serverGroupPopupWizard.clickSave();
-        Boolean serverGroupIsCreated = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
+        boolean serverGroupIsCreated = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
 
         Assert.assertTrue(serverGroupIsCreated);
     }
@@ -58,7 +52,7 @@ public class ServerGroupTest extends BaseTestCase {
     @Test(priority = 2, testName = "Add new server", description = "Add new server")
     @Description("Add new server")
     public void addServer() {
-        Boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
+        boolean serverGroupExists = serverGroupPage.serverGroupExistIntoTable(serverGroupName);
         if (serverGroupExists) {
             serverGroupPage.selectFoundServerGroup();
             serverGroupPage.selectServersTab();
@@ -72,8 +66,7 @@ public class ServerGroupTest extends BaseTestCase {
 
             Assert.assertTrue(serverCreated);
         } else {
-            log.error("Server group with name: {} doesn't exist, cannot add server", serverGroupName);
-            Assert.fail();
+            Assert.fail(String.format("Server group with name: %s doesn't exist, cannot add server", serverGroupName));
         }
     }
 
@@ -97,12 +90,10 @@ public class ServerGroupTest extends BaseTestCase {
 
                 Assert.assertTrue(isServerNameEdited);
             } else {
-                log.error("Server with name: {} doesn't exist.", SERVERS_SERVER_NAME);
-                Assert.fail();
+                Assert.fail(String.format("Server with name: %s doesn't exist.", SERVERS_SERVER_NAME));
             }
         } else {
-            log.error("Server group with name: {} doesn't exist.", serverGroupName);
-            Assert.fail();
+            Assert.fail(String.format("Server group with name: %s doesn't exist.", serverGroupName));
         }
     }
 
@@ -122,12 +113,10 @@ public class ServerGroupTest extends BaseTestCase {
 
                 Assert.assertTrue(serverDeleted);
             } else {
-                log.error("There is no existing server to delete");
-                Assert.fail();
+                Assert.fail("There is no existing server to delete");
             }
         } else {
-            log.error("Server with name: {} doesn't exist", SERVERS_SERVER_NAME);
-            Assert.fail();
+            Assert.fail(String.format("Server with name: %s doesn't exist", SERVERS_SERVER_NAME));
         }
     }
 
@@ -145,8 +134,7 @@ public class ServerGroupTest extends BaseTestCase {
 
             Assert.assertTrue(serverGroupIsEdited);
         } else {
-            log.error("Server group with name: {} doesn't exist", serverGroupName);
-            Assert.fail();
+            Assert.fail(String.format("Server group with name: %s doesn't exist", serverGroupName));
         }
     }
 
@@ -162,8 +150,7 @@ public class ServerGroupTest extends BaseTestCase {
 
             Assert.assertTrue(serverGroupIsDeleted);
         } else {
-            log.error("Server group with name: {} doesn't exist, cannot perform delete action", serverGroupName);
-            Assert.fail();
+            Assert.fail(String.format("Server group with name: %s doesn't exist, cannot perform delete action", serverGroupName));
         }
     }
 }

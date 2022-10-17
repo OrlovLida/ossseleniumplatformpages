@@ -34,7 +34,7 @@ public class ETLRegressionTests extends BaseTestCase {
     ) {
         boolean etlExists = etlDataCollectionsPage.etlProcessExistsIntoTable(etlName);
         if (etlExists) {
-            etlDataCollectionsPage.selectFoundEtlProcess();
+            etlDataCollectionsPage.selectFirstEtlInTable();
             etlDataCollectionsPage.selectFormatTab();
             Assert.assertFalse(etlDataCollectionsPage.isFormatTabTableEmpty());
         } else {
@@ -50,7 +50,7 @@ public class ETLRegressionTests extends BaseTestCase {
     ) {
         boolean etlExists = etlDataCollectionsPage.etlProcessExistsIntoTable(etlName);
         if (etlExists) {
-            etlDataCollectionsPage.selectFoundEtlProcess();
+            etlDataCollectionsPage.selectFirstEtlInTable();
             etlDataCollectionsPage.selectDetailsTab();
             Assert.assertEquals(etlDataCollectionsPage.checkNameInPropertyPanel(), etlName);
         } else {
@@ -67,7 +67,7 @@ public class ETLRegressionTests extends BaseTestCase {
     ) {
         boolean etlExists = etlDataCollectionsPage.etlProcessExistsIntoTable(etlName);
         if (etlExists) {
-            etlDataCollectionsPage.selectFoundEtlProcess();
+            etlDataCollectionsPage.selectFirstEtlInTable();
             etlDataCollectionsPage.selectMeasuresTab();
             Assert.assertFalse(etlDataCollectionsPage.isMeasuresTabTableEmpty());
         } else {

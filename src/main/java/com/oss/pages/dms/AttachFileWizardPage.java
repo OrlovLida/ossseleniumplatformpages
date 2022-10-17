@@ -33,8 +33,7 @@ public class AttachFileWizardPage extends BasePage {
     }
 
     public void attachFile(String filePath) {
-        Input input = addFileWizard.getComponent(FILE_COMPONENT_ID, Input.ComponentType.FILE_CHOOSER);
-        input.setSingleStringValue(filePath);
+        addFileWizard.setComponentValue(FILE_COMPONENT_ID, filePath);
     }
 
     public void nextButton() {
@@ -46,18 +45,18 @@ public class AttachFileWizardPage extends BasePage {
     }
 
     public void deleteFiles() {
-        Input input = addFileWizard.getComponent(FILE_COMPONENT_ID, Input.ComponentType.FILE_CHOOSER);
+        Input input = addFileWizard.getComponent(FILE_COMPONENT_ID);
         input.clear();
     }
 
     public List<String> getAttachmentName() {
-        Input input = addFileWizard.getComponent(FILE_COMPONENT_ID, Input.ComponentType.FILE_CHOOSER);
+        Input input = addFileWizard.getComponent(FILE_COMPONENT_ID);
         return input.getStringValues();
     }
 
     public void selectRadioButton(String label) {
         Input radio = Wizard.createByComponentId(driver, wait, WIZARD_ID)
-                .getComponent(RADIO_BUTTONS_ID, Input.ComponentType.RADIO_BUTTON);
+                .getComponent(RADIO_BUTTONS_ID);
         radio.setSingleStringValue(label);
         DelayUtils.sleep();
     }

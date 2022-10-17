@@ -1,7 +1,5 @@
 package com.oss.pages.iaa.faultmanagement.wamv;
 
-import java.util.List;
-
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +44,7 @@ public class Area3Page extends WAMVPage {
     private static final String CHECKBOX_SHOW_EMPTY_ID_PATTERN = "checkbox|%s|show-empty";
     private static final String ACTIVE_TAB_CLASS = "active";
     private static final String EDIT_BUTTON_KNOW_HOW_TAB_ID = "btn|know-how-mo-configurator|edit";
+    private static final String ADDITIONAL_TEXT_FIELD_ID = "TEXT_FIELD_COMPONENT-text|area3|additional-text";
 
     public Area3Page(WebDriver driver) {
         super(driver);
@@ -53,7 +52,6 @@ public class Area3Page extends WAMVPage {
 
     @Step("Selecting tab {tabId}")
     public void selectTabFromArea3(String tabId) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         TabsWidget.createById(driver, wait, AREA_3_ID).selectTabById(tabId);
         log.info("Selecting tab {}", tabId);
     }
@@ -165,7 +163,6 @@ public class Area3Page extends WAMVPage {
 
     @Step("I check if {tableId} table exists")
     public boolean checkIfTableExists(String tableId) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("I check if {} table exists", tableId);
         if (!getOldTable(tableId).hasNoData()) {
             log.info("Table exists and has some data");
@@ -181,7 +178,7 @@ public class Area3Page extends WAMVPage {
 
     @Step("I check if additional text is displayed")
     public boolean isAdditionalTextDisplayed(String expectedText, String windowId) {
-        List<String> text = ListApp.createFromParent(driver, wait, windowId).getValues();
+        String text = ListApp.createFromParent(driver, wait, windowId).getValueFromField(ADDITIONAL_TEXT_FIELD_ID);
         if (text.contains(expectedText)) {
             log.info("Expected additional text {} is displayed", expectedText);
             return true;

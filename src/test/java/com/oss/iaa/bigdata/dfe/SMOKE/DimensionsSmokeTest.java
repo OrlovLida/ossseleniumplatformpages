@@ -1,7 +1,5 @@
 package com.oss.iaa.bigdata.dfe.SMOKE;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -13,9 +11,9 @@ import io.qameta.allure.Description;
 
 public class DimensionsSmokeTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(DimensionsSmokeTest.class);
-    private DimensionsPage dimensionsPage;
     private static final String DIMENSION_NAME = "t:SMOKE#DimHierSelenium";
+    private static final String INFO_LOG = "Info";
+    private DimensionsPage dimensionsPage;
 
     @BeforeClass
     public void goToDimensionsView() {
@@ -27,14 +25,12 @@ public class DimensionsSmokeTest extends BaseTestCase {
     public void checkIfDimensionIsWorking() {
         boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(DIMENSION_NAME);
         if (dimensionExists) {
-            dimensionsPage.selectFoundDimension();
+            dimensionsPage.selectFirstDimensionInTable();
             dimensionsPage.selectLogsTab();
             dimensionsPage.refreshLogsTable();
-
-            boolean isLastLogTimeFresh = dimensionsPage.isLastLogTimeFromTimeColumnFresh();
-            Assert.assertTrue(isLastLogTimeFresh);
-
-            Assert.assertEquals(dimensionsPage.checkSeverity(), "Info");
+            Assert.assertFalse(dimensionsPage.isLogTabTableEmpty(), "Logs Table is empty!");
+            Assert.assertTrue(dimensionsPage.isLastLogTimeFromTimeColumnFresh());
+            Assert.assertEquals(dimensionsPage.checkSeverity(), INFO_LOG);
         } else {
             Assert.fail("Cannot find existing dimension " + DIMENSION_NAME);
         }
