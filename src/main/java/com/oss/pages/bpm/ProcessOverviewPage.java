@@ -106,11 +106,18 @@ public class ProcessOverviewPage extends BasePage {
         return processTable.getCellValue(index, CODE_LABEL);
     }
 
+    /**
+     * @deprecated Along with the 3.1.x version this method will be replaced by
+     * {@link #selectProcess(String)}
+     */
+    @Deprecated
     public void findProcess(String processCode) {
-        findProcess(CODE_LABEL, processCode);
+        selectProcess(CODE_LABEL, processCode);
     }
 
-    private void findProcess(String attributeName, String value) {
+    public ProcessOverviewPage selectProcess(String processCode) { return selectProcess(CODE_LABEL, processCode); }
+
+    public ProcessOverviewPage selectProcess(String attributeName, String value) {
         TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, value);
@@ -118,10 +125,6 @@ public class ProcessOverviewPage extends BasePage {
         table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
         table.selectRowByAttributeValueWithLabel(attributeName, value);
         DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    public ProcessOverviewPage selectProcess(String attributeName, String value) {
-        findProcess(attributeName, value);
         return this;
     }
 
@@ -157,7 +160,7 @@ public class ProcessOverviewPage extends BasePage {
     @Deprecated
 
     public void selectMilestoneTab(String processAttributeName, String value) {
-        findProcess(processAttributeName, value);
+        selectProcess(processAttributeName, value);
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsWidget milestoneTab = TabsWidget.createById(driver, wait, PROCESS_TABS);
         milestoneTab.selectTabById(MILESTONE_TAB_ID);
@@ -205,7 +208,7 @@ public class ProcessOverviewPage extends BasePage {
     }
 
     public List<Milestone> addMilestonesForProcess(String processCode, List<Milestone> milestones) {
-        findProcess(processCode);
+        selectProcess(processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
         callAction(CREATE_MILESTONES_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -252,9 +255,10 @@ public class ProcessOverviewPage extends BasePage {
         return openProcessCreationWizard().createSimpleDCPV2();
     }
 
-    public void reloadTable() {
+    public ProcessOverviewPage reloadTable() {
         TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.callAction(OldActionsContainer.KEBAB_GROUP_ID, RELOAD_TABLE_ACTION_ID);
+        return this;
     }
 }
