@@ -1,25 +1,19 @@
 package com.oss.iaa.bigdata.dfe.SMOKE;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.bigdata.dfe.AggregatePage;
-import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({TestListener.class})
 public class AggregatesSmokeTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(AggregatesSmokeTest.class);
-    private AggregatePage aggregatePage;
+    private static final String STATUS_SUCCESS = "Success";
     private static final String AGGREGATE_NAME = "t:SMOKE#AGGRForKqis";
-
+    private AggregatePage aggregatePage;
 
     @BeforeClass
     public void goToAggregateView() {
@@ -31,7 +25,7 @@ public class AggregatesSmokeTest extends BaseTestCase {
     public void checkIfAggregateIsWorking() {
         boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(AGGREGATE_NAME);
         if (aggregateExists) {
-            aggregatePage.selectFoundAggregate();
+            aggregatePage.selectFirstAggregateInTable();
             aggregatePage.selectExecutionHistoryTab();
             aggregatePage.clickRefreshInTabTable();
 
@@ -41,9 +35,8 @@ public class AggregatesSmokeTest extends BaseTestCase {
             boolean isIfRunsFresh = aggregatePage.isIfRunsFresh();
             Assert.assertTrue(isIfRunsFresh);
 
-            Assert.assertEquals(aggregatePage.checkStatus(), "Success");
+            Assert.assertEquals(aggregatePage.checkStatus(), STATUS_SUCCESS);
         } else {
-            log.info("Cannot find existing aggregate {}", AGGREGATE_NAME);
             Assert.fail("Cannot find existing aggregate " + AGGREGATE_NAME);
         }
     }

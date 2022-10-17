@@ -2,8 +2,6 @@ package com.oss.pages.iaa.bigdata.dfe;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.contextactions.ActionsContainer;
@@ -20,8 +18,7 @@ import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class XDRBrowserPage extends BaseDfePage {
 
-    private static final Logger log = LoggerFactory.getLogger(XDRBrowserPage.class);
-
+    private static final String XDR_BROWSER_VIEW_URL = "xdr-browser";
     private static final String ETL_NAME_COMBOBOX_ID = "etlProcessId";
     private static final String TIME_PERIOD_ID = "input_etlTime";
     private static final String SEARCH_BUTTON_ID = "Search_Button-0";
@@ -36,7 +33,7 @@ public class XDRBrowserPage extends BaseDfePage {
     public static XDRBrowserPage goToPage(WebDriver driver, String basicURL) {
         WebDriverWait wait = new WebDriverWait(driver, 45);
 
-        openDfePage(driver, basicURL, wait, "xdr-browser");
+        openDfePage(driver, basicURL, wait, XDR_BROWSER_VIEW_URL);
         return new XDRBrowserPage(driver, wait);
     }
 

@@ -13,6 +13,7 @@ import io.qameta.allure.Description;
 
 public class AggregatesRegressionTests extends BaseTestCase {
 
+    private static final String AGGREGATES_VIEW_TITLE = "Aggregates";
     private AggregatePage aggregatePage;
 
     @BeforeMethod
@@ -20,21 +21,21 @@ public class AggregatesRegressionTests extends BaseTestCase {
         aggregatePage = AggregatePage.goToPage(driver, BASIC_URL);
     }
 
-    @Test(priority = 1, testName = "Check if Aggregates View is opened", description = "Check if Aggregates View is opened")
+    @Test(priority = 1, testName = "Check Aggregates View", description = "Check if Aggregates View is opened")
     @Description("Check if Aggregates View is opened")
     public void checkAggregatesView() {
-        Assert.assertEquals(aggregatePage.getViewTitle(), "Aggregates");
+        Assert.assertEquals(aggregatePage.getViewTitle(), AGGREGATES_VIEW_TITLE);
     }
 
     @Parameters({"aggregateName"})
-    @Test(priority = 2, testName = "Check Aggregate Details Tab", description = "Check Aggregate Details Tab")
+    @Test(priority = 2, testName = "Check Details Tab", description = "Check Aggregate Details Tab")
     @Description("Check Aggregate Details Tab")
-    public void checkAggregatesDetailsTab(
+    public void checkDetailsTab(
             @Optional("t:SMOKE#AGGRforMonitoring") String aggregateName
     ) {
         boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(aggregateName);
         if (aggregateExists) {
-            aggregatePage.selectFoundAggregate();
+            aggregatePage.selectFirstAggregateInTable();
             aggregatePage.selectDetailsTab();
             Assert.assertEquals(aggregatePage.getNameFromPropertyPanel(), aggregateName);
         } else {
@@ -50,7 +51,7 @@ public class AggregatesRegressionTests extends BaseTestCase {
     ) {
         boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(aggregateName);
         if (aggregateExists) {
-            aggregatePage.selectFoundAggregate();
+            aggregatePage.selectFirstAggregateInTable();
             aggregatePage.selectConfigurationsTab();
             Assert.assertFalse(aggregatePage.isConfigurationsTabTableEmpty());
         } else {
@@ -66,7 +67,7 @@ public class AggregatesRegressionTests extends BaseTestCase {
     ) {
         boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(aggregateName);
         if (aggregateExists) {
-            aggregatePage.selectFoundAggregate();
+            aggregatePage.selectFirstAggregateInTable();
             aggregatePage.selectConfigurationsTab();
             Assert.assertTrue(aggregatePage.isRebuildStatusValid());
         } else {
@@ -82,7 +83,7 @@ public class AggregatesRegressionTests extends BaseTestCase {
     ) {
         boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(aggregateName);
         if (aggregateExists) {
-            aggregatePage.selectFoundAggregate();
+            aggregatePage.selectFirstAggregateInTable();
             aggregatePage.selectMeasuresTab();
             Assert.assertFalse(aggregatePage.isMeasuresTabTableEmpty());
         } else {

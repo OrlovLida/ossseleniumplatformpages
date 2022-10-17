@@ -1,7 +1,5 @@
 package com.oss.iaa.bigdata.dfe.SMOKE;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -13,9 +11,13 @@ import io.qameta.allure.Description;
 
 public class DataSourceSmokeTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(DataSourceSmokeTest.class);
-    private DataSourcePage dataSourcePage;
+    private static final String SEVERITY_INFO = "Info";
+    private static final String SEVERITY_ERROR = "Error";
+    private static final String SEVERITY_WARNING = "Warn";
+    private static final String SEVERITY_ALL = "All";
     private static final String DATA_SOURCE_NAME = "t:SMOKE#DSforKqis";
+    private static final String FAIL_MESSAGE = String.format("Data Source with name: %s doesn't exist", DATA_SOURCE_NAME);
+    private DataSourcePage dataSourcePage;
 
     @BeforeMethod
     public void goToDataSourceView() {
@@ -31,20 +33,18 @@ public class DataSourceSmokeTest extends BaseTestCase {
             dataSourcePage.selectLogsTab();
             dataSourcePage.refreshLogsTable();
             dataSourcePage.setValueInTimePeriodChooser(1, 2, 1);
-            dataSourcePage.setSeverity("Error");
+            dataSourcePage.setSeverity(SEVERITY_ERROR);
 
             Assert.assertTrue(dataSourcePage.isLogsTableEmpty(), "In logs tab is at least one log with status Error");
 
-            dataSourcePage.setSeverity("All");
-
+            dataSourcePage.setSeverity(SEVERITY_ALL);
             Assert.assertTrue(dataSourcePage.isIfRunsFresh());
 
             String actualStatus = dataSourcePage.checkStatus();
-            boolean statusIsAcceptable = actualStatus.equals("Info") || actualStatus.equals("Warn");
+            boolean statusIsAcceptable = actualStatus.equals(SEVERITY_INFO) || actualStatus.equals(SEVERITY_WARNING);
             Assert.assertTrue(statusIsAcceptable);
         } else {
-            log.error("Data Source with name: {} doesn't exist", DATA_SOURCE_NAME);
-            Assert.fail();
+            Assert.fail(FAIL_MESSAGE);
         }
     }
 
@@ -62,8 +62,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
 
             Assert.assertTrue(dataSourcePage.checkIfFileIsNotEmpty(fileName));
         } else {
-            log.error("Data Source with name: {} doesn't exist", DATA_SOURCE_NAME);
-            Assert.fail();
+            Assert.fail(FAIL_MESSAGE);
         }
     }
 
@@ -79,8 +78,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
 
             Assert.assertFalse(dataSourcePage.isShowFileTableEmpty(), "Show file Table is empty!");
         } else {
-            log.error("Data Source with name: {} doesn't exist", DATA_SOURCE_NAME);
-            Assert.fail();
+            Assert.fail(FAIL_MESSAGE);
         }
     }
 }

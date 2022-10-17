@@ -1,24 +1,18 @@
 package com.oss.iaa.bigdata.dfe;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.bigdata.dfe.problems.ProblemsPage;
 import com.oss.pages.iaa.bigdata.dfe.problems.ProblemsPopupPage;
 import com.oss.pages.iaa.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({TestListener.class})
 public class ProblemsViewTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(ProblemsViewTest.class);
     private static final String PROBLEM_DESCRIPTION = "Problem Selenium Test";
     private static final String ADD_WIZARD = "add-prompt-id_prompt-card";
     private static final String EDIT_WIZARD = "edit-prompt-id_prompt-card";
@@ -43,10 +37,6 @@ public class ProblemsViewTest extends BaseTestCase {
         problemsWizard.fillProblemsPopup(problemName, PROBLEM_DESCRIPTION);
         problemsWizard.clickSave();
         boolean problemIsCreated = problemsPage.problemExistsIntoTable(problemName);
-
-        if (!problemIsCreated) {
-            log.info("Cannot find created problem");
-        }
         Assert.assertTrue(problemIsCreated);
     }
 
@@ -61,11 +51,9 @@ public class ProblemsViewTest extends BaseTestCase {
             problemsWizard.fillName(updatedProblemName);
             problemsWizard.clickSave();
             boolean dictionaryIsCreated = problemsPage.problemExistsIntoTable(updatedProblemName);
-
             Assert.assertTrue(dictionaryIsCreated);
         } else {
-            log.error("Problem with name: {} doesn't exist", updatedProblemName);
-            Assert.fail();
+            Assert.fail(String.format("Problem with name: %s doesn't exist", updatedProblemName));
         }
     }
 
@@ -81,8 +69,7 @@ public class ProblemsViewTest extends BaseTestCase {
 
             Assert.assertTrue(problemDeleted);
         } else {
-            log.error("Problem with name: {} was not deleted", updatedProblemName);
-            Assert.fail();
+            Assert.fail(String.format("Problem with name: %s was not deleted", updatedProblemName));
         }
     }
 }

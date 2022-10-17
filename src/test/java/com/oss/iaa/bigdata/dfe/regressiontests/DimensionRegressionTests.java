@@ -36,7 +36,7 @@ public class DimensionRegressionTests extends BaseTestCase {
     ) {
         boolean dimensionExist = dimensionsPage.dimensionExistsIntoTable(dimensionName);
         if (dimensionExist) {
-            dimensionsPage.selectFoundDimension();
+            dimensionsPage.selectFirstDimensionInTable();
             dimensionsPage.selectDetailsTab();
             Assert.assertEquals(dimensionsPage.checkNameInPropertyPanel(), dimensionName);
         } else {
@@ -52,7 +52,7 @@ public class DimensionRegressionTests extends BaseTestCase {
     ) {
         boolean dimensionExist = dimensionsPage.dimensionExistsIntoTable(dimensionName);
         if (dimensionExist) {
-            dimensionsPage.selectFoundDimension();
+            dimensionsPage.selectFirstDimensionInTable();
             dimensionsPage.selectFormatTab();
             Assert.assertFalse(dimensionsPage.isFormatTabTableEmpty());
         } else {
@@ -68,7 +68,7 @@ public class DimensionRegressionTests extends BaseTestCase {
     ) {
         boolean dimensionExist = dimensionsPage.dimensionExistsIntoTable(dimensionName);
         if (dimensionExist) {
-            dimensionsPage.selectFoundDimension();
+            dimensionsPage.selectFirstDimensionInTable();
             dimensionsPage.selectUsedTab();
             Assert.assertFalse(dimensionsPage.isUsedInTabTableEmpty());
         } else {
@@ -84,7 +84,7 @@ public class DimensionRegressionTests extends BaseTestCase {
     ) {
         boolean dimensionExist = dimensionsPage.dimensionExistsIntoTable(dimensionName);
         if (dimensionExist) {
-            dimensionsPage.selectFoundDimension();
+            dimensionsPage.selectFirstDimensionInTable();
             dimensionsPage.selectDataTab();
             Assert.assertFalse(dimensionsPage.isDataTabTableEmpty());
         } else {
@@ -100,7 +100,7 @@ public class DimensionRegressionTests extends BaseTestCase {
     ) {
         boolean dimensionExist = dimensionsPage.dimensionExistsIntoTable(dimensionName);
         if (dimensionExist) {
-            dimensionsPage.selectFoundDimension();
+            dimensionsPage.selectFirstDimensionInTable();
             dimensionsPage.selectHierarchyTab();
             Assert.assertFalse(dimensionsPage.isHierarchyTabTableEmpty());
         } else {

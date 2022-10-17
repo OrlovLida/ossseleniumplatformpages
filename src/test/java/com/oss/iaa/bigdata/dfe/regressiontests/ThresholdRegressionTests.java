@@ -16,6 +16,11 @@ import io.qameta.allure.Description;
 public class ThresholdRegressionTests extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(ThresholdRegressionTests.class);
+    private static final String WORKING_STATUS = "Working";
+    private static final String STATUS_COLUMN = "Status";
+    private static final String ICON_SUCCESS = "SUCCESS";
+    private static final String YES = "Yes";
+    private static final String NO = "No";
     private ThresholdPage thresholdPage;
 
     @BeforeMethod
@@ -37,11 +42,10 @@ public class ThresholdRegressionTests extends BaseTestCase {
     ) {
         boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(thresholdName);
         if (thresholdExists) {
-            thresholdPage.selectFoundThreshold();
+            thresholdPage.selectFirstThresholdInTable();
             thresholdPage.selectDetailsTab();
             Assert.assertEquals(thresholdPage.checkNameInPropertyPanel(), thresholdName);
         } else {
-            log.info("Cannot find existing Threshold {}", thresholdName);
             Assert.fail("Cannot find existing Threshold " + thresholdName);
         }
     }
@@ -54,12 +58,10 @@ public class ThresholdRegressionTests extends BaseTestCase {
     ) {
         boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(thresholdName);
         if (thresholdExists) {
-            thresholdPage.selectFoundThreshold();
+            thresholdPage.selectFirstThresholdInTable();
             thresholdPage.selectConditionsTab();
-
             Assert.assertTrue(thresholdPage.isSimpleAndElseConditionInTable());
         } else {
-            log.info("Cannot find existing Threshold {}", thresholdName);
             Assert.fail("Cannot find existing Threshold " + thresholdName);
         }
     }
@@ -67,8 +69,8 @@ public class ThresholdRegressionTests extends BaseTestCase {
     @Test(priority = 4, testName = "Check 'Is Active' search", description = "Check 'Is Active' search")
     @Description("Check 'Is Active' search")
     public void checkActiveFunctionality() {
-        thresholdPage.chooseIsActive("Yes");
-        Assert.assertEquals(thresholdPage.getIsActive(0), "Yes");
+        thresholdPage.setIsActive(YES);
+        Assert.assertEquals(thresholdPage.getIsActive(0), YES);
     }
 
     @Parameters({"ProblemId"})
@@ -89,22 +91,28 @@ public class ThresholdRegressionTests extends BaseTestCase {
     ) {
         boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(thresholdName);
         if (thresholdExists) {
-            thresholdPage.selectFoundThreshold();
-            boolean activeThresholdExist = thresholdPage.isThresholdActive();
-            if (activeThresholdExist) {
+            thresholdPage.selectFirstThresholdInTable();
+            if (thresholdPage.isThresholdActive()) {
                 thresholdPage.clickDeactivateBatch();
                 thresholdPage.confirmDeactivationOrActivation();
-                Assert.assertEquals(thresholdPage.getIsActive(0), "No");
+                Assert.assertEquals(thresholdPage.getIsActive(0), NO);
                 thresholdPage.clickActivateBatch();
                 thresholdPage.confirmDeactivationOrActivation();
-                Assert.assertEquals(thresholdPage.getIsActive(0), "Yes");
+                Assert.assertEquals(thresholdPage.getIsActive(0), YES);
             } else {
                 log.info("Threshold {} is not active", thresholdName);
             }
         } else {
-            log.info("Cannot find existing Threshold {}", thresholdName);
             Assert.fail("Cannot find existing Threshold " + thresholdName);
         }
+    }
+
+    @Test(priority = 7, testName = "Status search", description = "Check Status Search on Thresholds View")
+    @Description("Check Status Search on Thresholds Vie")
+    public void statusSearch() {
+        thresholdPage.setStatusSearch(WORKING_STATUS);
+        thresholdPage.selectFirstThresholdInTable();
+        Assert.assertTrue(thresholdPage.getValueFromColumn(STATUS_COLUMN).contains(ICON_SUCCESS));
     }
 }
 

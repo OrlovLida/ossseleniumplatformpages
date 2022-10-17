@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
@@ -16,15 +14,11 @@ import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class AggregatePage extends BaseDfePage {
 
-    private static final Logger log = LoggerFactory.getLogger(AggregatePage.class);
-
     private static final String TABLE_ID = "aggregates-tableAppId";
-
     private static final String ADD_NEW_AGGREGATE_LABEL = "Add New Aggregate";
     private static final String EDIT_AGGREGATE_LABEL = "Edit Aggregate";
     private static final String DELETE_AGGREGATE_LABEL = "Delete Aggregate";
     private static final String SEARCH_INPUT_ID = "input_aggregates-tableSearchAppId";
-
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String DELETE_LABEL = "Delete";
     private static final String TABS_WIDGET_ID = "card-content_tabsId";
@@ -84,7 +78,7 @@ public class AggregatePage extends BaseDfePage {
     }
 
     @Step("I select found Aggregate")
-    public void selectFoundAggregate() {
+    public void selectFirstAggregateInTable() {
         getTable().selectRow(0);
     }
 
