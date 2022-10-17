@@ -101,7 +101,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         planningRepository = new PlanningRepository(Environment.getInstance());
         locationInventoryRepository = new LocationInventoryRepository(Environment.getInstance());
         deviceWizard = new DeviceWizardPage(driver);
-        hierarchyViewPage = new HierarchyViewPage(driver);
+        hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         softAssert = new SoftAssert();
         attributesLabelToValueMap = new HashMap<>();
         availableNameValues = new LinkedList<>(Arrays.asList("testName1", "testName2", "testName3", "testName4", "testName5"));

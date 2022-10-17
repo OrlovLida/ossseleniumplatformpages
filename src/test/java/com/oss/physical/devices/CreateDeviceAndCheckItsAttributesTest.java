@@ -54,7 +54,7 @@ public class CreateDeviceAndCheckItsAttributesTest extends BaseTestCase {
     private void init() {
         deviceWizard = new DeviceWizardPage(driver);
         softAssert = new SoftAssert();
-        hierarchyViewPage = new HierarchyViewPage(driver);
+        hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         attributesLabelToValueMap = new HashMap<>();
     }
 

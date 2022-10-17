@@ -886,7 +886,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     }
 
     private void addCardToPhysicalDevice(String modelName, String slotName) {
-        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         hierarchyViewPage.selectFirstObject();
         waitForPageToLoad();
         hierarchyViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_CARD_BUTTON_ID);

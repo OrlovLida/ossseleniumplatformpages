@@ -86,7 +86,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(DEVICE).selectFirstRow();
         newInventoryViewPage.callAction(SHOW_ON_GROUP_ID, HIERARCHY_VIEW_ID);
-        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         hierarchyViewPage.selectNodeByLabelsPath(LABEL_PATH);
         hierarchyViewPage.callAction(CREATE_GROUP_ID, CREATE_VLAN_ACTION_ID);
         waitForPageToLoad();
