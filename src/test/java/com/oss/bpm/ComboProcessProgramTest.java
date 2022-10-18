@@ -40,6 +40,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
     private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
     private static final String PROCESS_DEFINITION_NAME_ROLES = "audit_roles";
     private static final String PROGRAM_DEFINITION_NAME_ROLES = "program_roles";
+    private static final String PROGRAM_DEFINITION_NAME = " audit_program";
     private static final String ROLE_ID1 = "Audit Role 1";
     private static final String ROLE_ID2 = "Audit Role 2";
     private static final String PLANNING = "Planning";
@@ -282,6 +283,60 @@ public class ComboProcessProgramTest extends BaseTestCase {
         Assert.assertEquals(processOverviewPage.getRelatedProcessesAmount(), 1);
         String relatedProgramRelationRole = processOverviewPage.getRelatedProcessValue(programName, RELATION_ROLE_LABEL);
         Assert.assertEquals(relatedProgramRelationRole, PARENT);
+    }
+
+    @Test(priority = 3, description = "Create Process with roles, milestones, forecasts linked to Programs")
+    @Description("Create Process with roles, milestones, forecasts linked to Programs")
+    public void createComboProcessLinkedToPrograms() {
+        String processName = "Selenium Test Process-" + (int) (Math.random() * 100001);
+        String programName1 = "Selenium Test Program-" + (int) (Math.random() * 100001);
+        final String processMilestoneName1 = "Milestone Process 1." + (int) (Math.random() * 100001);
+        final String processMilestoneName2 = "Milestone Process 2." + (int) (Math.random() * 100001);
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
+
+        final List<Milestone> processMilestones = Lists.newArrayList(
+                Milestone.builder()
+                        .setLeadTime("5")
+                        .setIsManualCompletion("true")
+                        .setDescription(MILESTONE_DESCRIPTION_1)
+                        .setName(processMilestoneName1)
+                        .build(),
+
+                Milestone.builder()
+                        .setName(processMilestoneName2)
+                        .setIsActive("true")
+                        .setRelatedTask(AUDIT_ROLES_TASK_1)
+                        .build());
+
+        final List<Forecast> processForecasts = Lists.newArrayList(
+                Forecast.builder()
+                        .name(AUDIT_ROLES_TASK_1)
+                        .startPlusDays(0L)
+                        .endPlusDaysShortWay(plus5Days)
+                        .longWorkWeakShortWay(true)
+                        .build(),
+
+                Forecast.builder()
+                        .name(AUDIT_ROLES_TASK_2)
+                        .startPlusDays(0L)
+                        .endPlusDaysLongWay(plus10Days)
+                        .longWorkWeakLongWay(true)
+                        .build());
+
+        ProcessCreationWizardProperties properties = ProcessCreationWizardProperties.builder()
+                .basicProcess(processName, PROCESS_DEFINITION_NAME_ROLES, plus5Days)
+                .withProcessMilestones(processMilestones)
+                .withProcessForecasts(mainForecast, processForecasts)
+                .withProcessRolesAssignment(processRoles)
+                .withProgramsToLink(Lists.newArrayList(processName, programName1))
+                .build();
+
+        String programCode1 = processOverviewPage.openProgramCreationWizard()
+                .createProgram(programName1, plus5Days, PROGRAM_DEFINITION_NAME);
+
+        processOverviewPage.createInstance(properties);
+
+
     }
 
 
