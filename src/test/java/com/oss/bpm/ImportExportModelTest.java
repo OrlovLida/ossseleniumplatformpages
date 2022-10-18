@@ -8,7 +8,6 @@ import com.oss.pages.bpm.processmodels.ProcessModelsPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.testng.Assert;
-import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
@@ -41,6 +40,7 @@ public class ImportExportModelTest extends BaseTestCase {
     private static final String OTHER_GROUP_ID = "other";
     private static final String IMPORT_ID = "import";
     private static final String IMPORT_PATH = "bpm/bpm_selenium_test_process.bar";
+    private final String modelKeyword = "Selenium " + (int) (Math.random() * 100001);
 
     @BeforeClass
     public void openBrw() {
@@ -75,6 +75,7 @@ public class ImportExportModelTest extends BaseTestCase {
             throw new RuntimeException(CANNOT_LOAD_FILE_EXCEPTION, e);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        processModelsPage.selectModelByName(MODEL_NAME).setKeywordForSelectedModel(modelKeyword);
     }
 
     @Test(priority = 2, description = "Export model to BAR", dependsOnMethods = {"importModel"})
@@ -82,9 +83,8 @@ public class ImportExportModelTest extends BaseTestCase {
     public void exportModelBar() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.chooseDomain(DOMAIN);
+        processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).exportSelectedModelAsBAR();
         //export bar
-        processModelsPage.exportModelAsBAR(MODEL_NAME);
         try {
             Assert.assertTrue(processModelsPage.isFileDownloaded(FILE_NAME + BAR_EXTENSION));
         } catch (IOException e) {
@@ -97,9 +97,8 @@ public class ImportExportModelTest extends BaseTestCase {
     public void exportModelXml() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.chooseDomain(DOMAIN);
+        processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).exportSelectedModelAsXML();
         //export xml
-        processModelsPage.exportModelAsXML(MODEL_NAME);
         try {
             Assert.assertTrue(processModelsPage.isFileDownloaded(FILE_NAME + ZIP_EXTENSION));
         } catch (IOException e) {
@@ -107,11 +106,12 @@ public class ImportExportModelTest extends BaseTestCase {
         }
     }
 
-    @AfterClass
+    @Test(priority = 4, description = "Delete Model", dependsOnMethods = {"importModel"})
+    @Description("Delete model")
     public void deleteModel() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.chooseDomain(DOMAIN);
-        processModelsPage.deleteModel(MODEL_NAME);
+        processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).deleteSelectedModel();
+        Assert.assertFalse(processModelsPage.isModelExists(MODEL_NAME, modelKeyword));
     }
 }

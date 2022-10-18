@@ -11,8 +11,6 @@ import com.oss.pages.bpm.processmodels.ImportModelWizardPage;
 import com.oss.pages.bpm.processmodels.ProcessModelsPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -58,6 +56,8 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     private static final String MILESTONE_DESCRIPTION_1 = "Milestone 1 - Selenium Test";
     private static final String NO_SYSTEM_MESSAGE_EXCEPTION = "There is no any System Message";
     private static final String FIRST_TASK_NAME = "First Task";
+    private static final String MODEL_STILL_VISIBLE_EXCEPTION = "Process model %s is still visible on Process Models View";
+    private final String modelKeyword = "Selenium " + (int) (Math.random() * 100001);
 
     @BeforeClass
     public void importProcessModel() {
@@ -84,6 +84,7 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
             throw new RuntimeException(CANNOT_LOAD_FILE_EXCEPTION, e);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        processModelsPage.selectModelByName(MODEL_NAME).setKeywordForSelectedModel(modelKeyword);
     }
 
     @Test(priority = 1, description = "Add new Milestones for Process Model")
@@ -106,24 +107,20 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
 
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.chooseDomain(DOMAIN);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.addMilestonesForProcessModel(MODEL_NAME, milestones);
+        processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).addMilestonesForSelectedModel(milestones);
 
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
                 -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
         Assert.assertEquals(message, SUCCESS_UPDATE_MILESTONES_MESSAGE);
 
-        processModelsPage.selectMilestoneTab(MODEL_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        processModelsPage.selectModel(MODEL_NAME, modelKeyword).openMilestoneTab();
 
         String nameMilestone1 = milestones.get(0).getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
         String nameMilestone2 = milestones.get(1).getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
 
         // Related Task
         String relateTaskMilestone1 = processModelsPage.getMilestoneValue(nameMilestone1, RELATED_TASK_LABEL);
-        String relatedTaskMilestone2 = processModelsPage.getMilestoneValue(nameMilestone2, RELATED_TASK_LABEL
-        );
+        String relatedTaskMilestone2 = processModelsPage.getMilestoneValue(nameMilestone2, RELATED_TASK_LABEL);
         Assert.assertEquals(relateTaskMilestone1, "");
         Assert.assertEquals(relatedTaskMilestone2, milestones.get(1).getRelatedTask().get());
 
@@ -170,16 +167,13 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
 
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.chooseDomain(DOMAIN);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.editMilestonesForProcessModel(MODEL_NAME, milestones);
+        processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).editMilestonesForSelectedModel(milestones);
 
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
                 -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
         Assert.assertEquals(message, SUCCESS_UPDATE_MILESTONES_MESSAGE);
 
-        processModelsPage.selectMilestoneTab(MODEL_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        processModelsPage.selectModel(MODEL_NAME, modelKeyword).openMilestoneTab();
 
         String nameMilestone1 = milestones.get(0).getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
         String nameMilestone2 = milestones.get(1).getName().orElseThrow(() -> new RuntimeException(MISSING_NAME_EXCEPTION));
@@ -215,15 +209,14 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     public void removeMilestonesForProcessModel() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.chooseDomain(DOMAIN);
+        processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).removeMilestonesForSelectedModel(2);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.removeMilestonesForProcessModel(MODEL_NAME, 2);
 
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
                 -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
         Assert.assertEquals(message, SUCCESS_UPDATE_MILESTONES_MESSAGE);
 
-        processModelsPage.selectMilestoneTab(MODEL_NAME);
+        processModelsPage.selectModel(MODEL_NAME, modelKeyword).openMilestoneTab();
         Assert.assertTrue(processModelsPage.isMilestonesTabEmpty());
     }
 
@@ -245,9 +238,7 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
 
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.chooseDomain(DOMAIN);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.addMilestonesForProcessModel(MODEL_NAME, milestones);
+        processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).addMilestonesForSelectedModel(milestones);
 
         String message = SystemMessageContainer.create(driver, webDriverWait).getFirstMessage().orElseThrow(()
                 -> new RuntimeException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
@@ -261,7 +252,9 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     public void deleteModel() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processModelsPage.chooseDomain(DOMAIN);
-        processModelsPage.deleteModel(MODEL_NAME);
+        processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).deleteSelectedModel();
+        if (processModelsPage.isModelExists(MODEL_NAME, modelKeyword)) {
+            throw new IllegalStateException(String.format(MODEL_STILL_VISIBLE_EXCEPTION, MODEL_NAME));
+        }
     }
 }
