@@ -15,7 +15,7 @@ public class CoolingZoneEditorWizardPage extends BasePage {
 
     private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     private static final String SELECT_COOLING_ZONE_NAME = "coolingZone";
-    private static final String WIZARD_ID = "optional_prompt-card";
+    private static final String WIZARD_ID = "cooling-zone-assignment-wizard";
     private static final String ACCEPT_ID = "wizard-submit-button-cooling-zone-assignment-wizard";
 
     @Step("Click Update")
