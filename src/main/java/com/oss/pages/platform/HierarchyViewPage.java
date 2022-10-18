@@ -95,6 +95,12 @@ public class HierarchyViewPage extends BasePage {
         return TabsWidget.createById(driver, wait, BOTTOM_TABS_WIDGET_ID);
     }
 
+    @Step("Check if tree has no data")
+    public boolean hasNoData() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getMainTree().hasNoData();
+    }
+
     @Step("Save new configuration for page")
     public HierarchyViewPage saveNewPageConfiguration(String configurationName, Field... fields) {
         DelayUtils.waitForPageToLoad(driver, wait);
