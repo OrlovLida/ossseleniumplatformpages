@@ -4,16 +4,12 @@ import java.time.LocalDateTime;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.oss.framework.utils.DelayUtils;
 
 import io.qameta.allure.Step;
 
 public class EtlDataCollectionsPage extends BaseDfePage {
-
-    private static final Logger log = LoggerFactory.getLogger(EtlDataCollectionsPage.class);
 
     private static final String TABLE_ID = "data-collection-listAppId";
     private static final String ADD_ETL_PROCESS_LABEL = "Add New ETL Process";
@@ -77,7 +73,7 @@ public class EtlDataCollectionsPage extends BaseDfePage {
     }
 
     @Step("I select found ETL Process")
-    public void selectFoundEtlProcess() {
+    public void selectFirstEtlInTable() {
         getTable().selectRow(0);
     }
 

@@ -45,7 +45,7 @@ public class HV_Smoke_Test extends BaseTestCase {
     @Description("Check context actions labels")
     public void checkContextActionsLabels() {
         checkErrorPage();
-        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         Assert.assertEquals(hierarchyViewPage.getGroupActionLabel("CREATE"), "Create");
         waitForPageToLoad();
     }

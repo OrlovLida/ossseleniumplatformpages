@@ -167,20 +167,6 @@ public class LocationInventoryClient {
                 .response();
     }
 
-    /**
-     * @deprecated duplicated method (will be removed 3.0.x release), use public void removeLocation(Long locationId, String locationType)
-     */
-    @Deprecated
-    public void deleteLocation(String locationId, String locationType) {
-        env.getLocationInventoryCoreRequestSpecification()
-                .given()
-                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
-                .when()
-                .delete(PHYSICAL_LOCATIONS_API_PATH + "/" + locationType + "/" + locationId)
-                .then()
-                .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
-    }
-
     public SearchResultDTO getSublocationId(String locationId, String query) {
         return env.getLocationInventoryCoreRequestSpecification()
                 .given()

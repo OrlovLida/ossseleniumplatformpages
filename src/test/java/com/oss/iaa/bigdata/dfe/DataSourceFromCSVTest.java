@@ -1,24 +1,18 @@
 package com.oss.iaa.bigdata.dfe;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.bigdata.dfe.datasource.DataSourcePage;
 import com.oss.pages.iaa.bigdata.dfe.datasource.dswizard.DataSourceStepWizardPage;
 import com.oss.pages.iaa.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({TestListener.class})
 public class DataSourceFromCSVTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(DataSourceFromCSVTest.class);
     private DataSourcePage dataSourcePage;
     private String dataSourceName;
     private String dataSourceName_updated;
@@ -67,8 +61,7 @@ public class DataSourceFromCSVTest extends BaseTestCase {
 
             Assert.assertTrue(dataSourceIsCreated);
         } else {
-            log.error("Data Source with name: {} doesn't exist", dataSourceName);
-            Assert.fail();
+            Assert.fail("Data Source with name: " + dataSourceName + " doesn't exist");
         }
     }
 
@@ -84,8 +77,7 @@ public class DataSourceFromCSVTest extends BaseTestCase {
 
             Assert.assertTrue(dataSourceIsDeleted);
         } else {
-            log.error("Data Source with name {} doesn't exist, cannot perform delete action", dataSourceName);
-            Assert.fail();
+            Assert.fail("Data Source with name: " + dataSourceName + " doesn't exist, cannot perform delete action");
         }
     }
 }

@@ -163,7 +163,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Test(priority = 6, description = "Select ethernet interface and open it in New Inventory View", dependsOnMethods = {"moveToHierarchyView"})
     @Description("Select Ethernet Interface in Hierarchy View and open it in New Inventory View")
     public void selectEthernetInterface() {
-        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         String labelpath = DEVICE_NAME + ".Ports." + PORT_NAME + ".Termination Points.EthernetInterface_TP." + PORT_NAME;
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         waitForPageToLoad();

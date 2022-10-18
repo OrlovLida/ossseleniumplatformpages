@@ -41,7 +41,7 @@ public class IPLinkTest extends BaseTestCase {
     public void createProcessNRP() {
         homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);//add wait
-        processNRPCode = processWizardPage.createSimpleNRP();
+        processNRPCode = processWizardPage.createSimpleNRPV2();
         checkPopup(processNRPCode);
     }
 

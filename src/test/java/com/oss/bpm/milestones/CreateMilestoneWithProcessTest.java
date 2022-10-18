@@ -55,7 +55,6 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     private static final String UPDATE_DESCRIPTION_1 = "Update 1";
     private static final String UPDATE_DESCRIPTION_2 = "Update 2";
     private static final String UPDATE_DESCRIPTION_3 = "Update 3";
-    private static final String NAME_COLUMN_ID = "name";
 
 
     private final String milestoneName1 = "Milestone 1." + (int) (Math.random() * 100001);
@@ -175,6 +174,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
                 .build();
 
         Milestone milestone3 = Milestone.builder()
+                .setName(milestoneName1)
                 .setLeadTime("20")
                 .setDescription(UPDATE_DESCRIPTION_3)
                 .setIsManualCompletion("false")
@@ -365,19 +365,6 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         String descriptionMilestone2 = processOverviewPage.getMilestoneValue(nameMilestone2, DESCRIPTION_LABEL);
         Assert.assertEquals(descriptionMilestone1, DESCRIPTION_EDIT_1);
         Assert.assertEquals(descriptionMilestone2, "");
-    }
-
-    @Test(priority = 5, description = "Check if Name is not editable for predefined Milestone")
-    @Description("Check if Name is not editable for predefined Milestone")
-    public void checkIfNameIsNotEditableForPredefinedMilestone() {
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        ProcessWizardPage processWizardPage = processOverviewPage.openProcessCreationWizard();
-        ProcessWizardPage.MilestoneStepWizard milestoneStepWizard =
-                processWizardPage.definedMilestoneInProcess(PROCESS_NAME, 0L, GK_MILESTONES);
-        boolean isEditable = milestoneStepWizard.getMilestonePredefinedList().getRow(0).isAttributeEditable(NAME_COLUMN_ID);
-        processWizardPage.clickCancelButton();
-        Assert.assertFalse(isEditable);
     }
 
 }

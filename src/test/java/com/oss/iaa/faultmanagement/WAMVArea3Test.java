@@ -3,14 +3,13 @@ package com.oss.iaa.faultmanagement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.iaa.faultmanagement.FMSMDashboardPage;
 import com.oss.pages.iaa.faultmanagement.WAMVPage;
 import com.oss.pages.iaa.faultmanagement.wamv.Area3Page;
@@ -50,7 +49,7 @@ public class WAMVArea3Test extends BaseTestCase {
     private Area3Page area3Page;
 
     @Parameters({"chosenDashboard", "alarmListName", "alarmManagementViewRow"})
-    @BeforeClass
+    @BeforeMethod
     public void goToFMDashboardPage(
             @Optional("FaultManagement") String chosenDashboard,
             @Optional("Selenium_test_alarm_list") String alarmListName,
@@ -89,6 +88,7 @@ public class WAMVArea3Test extends BaseTestCase {
         }
     }
 
+    //TODO WILL WORK AFTER FIX OSSNGSA-12062
     @Parameters({"alarmListRowWithMO"})
     @Test(priority = 2, testName = "Check MO Properties", description = "Check MO Properties")
     @Description("I verify if MO Properties works in WAMV")
@@ -105,6 +105,7 @@ public class WAMVArea3Test extends BaseTestCase {
         }
     }
 
+    //TODO WILL WORK AFTER FIX OSSNGSA-12002
     @Parameters({"alarmListRow", "adapterName"})
     @Test(priority = 3, testName = "Check Alarm Details in AREA3", description = "Check Alarm Details in AREA3")
     @Description("I verify if Alarm Details works in WAMV in AREA3")
@@ -231,7 +232,6 @@ public class WAMVArea3Test extends BaseTestCase {
 
     private WAMVPage searchAndOpenWamv(String alarmListName, int alarmManagementViewRow) {
         fmsmDashboardPage.searchInView(ALARM_MANAGEMENT_VIEW_ID, alarmListName);
-        DelayUtils.sleep(8000); // TODO delete it after fix OSSNGSA-11102
         return fmsmDashboardPage.openSelectedView(ALARM_MANAGEMENT_VIEW_ID, alarmManagementViewRow);
     }
 }

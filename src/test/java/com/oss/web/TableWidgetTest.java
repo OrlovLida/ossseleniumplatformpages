@@ -220,8 +220,8 @@ public class TableWidgetTest extends BaseTestCase {
         tableWidget.callAction(ActionsContainer.KEBAB_GROUP_ID, refreshActionId);
         DelayUtils.sleep(1000);
 
-        Assertions.assertThat(tableWidget.getPagination().getBottomRageOfRows()).isEqualTo(1);
-        Assertions.assertThat(tableWidget.getPagination().getTopRageOfRows()).isEqualTo(tableWidget.getPagination().getStep());
+        Assertions.assertThat(tableWidget.getPagination().getBottomRangeOfRows()).isEqualTo(1);
+        Assertions.assertThat(tableWidget.getPagination().getTopRangeOfRows()).isEqualTo(tableWidget.getPagination().getStep());
     }
 
     @Test(priority = 12)

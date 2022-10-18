@@ -2,8 +2,6 @@ package com.oss.pages.iaa.bigdata.dfe.servergroup;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.iaa.bigdata.dfe.BaseDfePage;
@@ -11,8 +9,6 @@ import com.oss.pages.iaa.bigdata.dfe.BaseDfePage;
 import io.qameta.allure.Step;
 
 public class ServerGroupPage extends BaseDfePage {
-
-    private static final Logger log = LoggerFactory.getLogger(ServerGroupPage.class);
 
     private static final String TABLE_ID = "server-groupAppId";
     private static final String SEARCH_INPUT_ID = "input_server-groupSearchAppId";

@@ -20,11 +20,8 @@ import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
-import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 
@@ -37,7 +34,6 @@ import io.qameta.allure.Step;
 public class ProcessWizardPage extends BasePage {
 
     private static final String CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION = "Cannot extract Process Code from message: ";
-    private static final String TABLE_PROCESSES = "bpm_processes_view_processes";
     private static final String PROCESS_WIZARD_STEP_1 = "bpm_processes_view_start-process-prompt_prompt-card";
     private static final String DCP = "Data Correction Process";
     private static final String DOMAIN_ATTRIBUTE_ID = "domain-combobox";
@@ -49,8 +45,6 @@ public class ProcessWizardPage extends BasePage {
     private static final String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
     private static final String CREATE_BUTTON = "wizard-submit-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     protected static final String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_prompt-card";
-
-    private static final String PREVIOUS_BUTTON = "wizard-previous-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String CANCEL_BUTTON = "wizard-cancel-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     protected static final String NEXT_BUTTON = "wizard-next-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     private static final String INVENTORY_PROCESS = "Inventory Processes";
@@ -59,8 +53,6 @@ public class ProcessWizardPage extends BasePage {
     protected static final String PROCESS_NAME = "Selenium Test " + Math.random();
     private static final String PREDEFINED_MILESTONE_LIST = "editMilestonesComponentId";
     private static final String ADD_MILESTONE_LIST = "addMilestonesComponentId";
-    private static final String CREATE_GROUP_ACTION_ID = "create";
-    private static final String START_PROCESS_ACTION_ID = "start-process";
     private static final String CREATE_PROCESS_OPTION_LABEL = "Create processes";
     private static final String ADD_MILESTONE_OPTION_LABEL = "Add Milestones";
     private static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
@@ -68,83 +60,6 @@ public class ProcessWizardPage extends BasePage {
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
-    }
-
-    /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by {@link #createSimpleNRPV2()}.
-     * New method is adapted to run on views other than Process Instances View.
-     * As part of the method replacement, in tests where process creation is executed,
-     * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessOverviewPage#createSimpleNRP()} method
-     * which will open wizard and proceed process creation.
-     */
-    @Deprecated
-    public String createSimpleNRP() {
-        return createProcess(PROCESS_NAME, (long) 0, NRP);
-    }
-
-    /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by {@link #createSimpleDCPV2()}.
-     * New method is adapted to run on views other than Process Instances View.
-     * As part of the method replacement, in tests where process creation is executed,
-     * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessOverviewPage#createSimpleDCP()} method
-     * which will open wizard and proceed process creation.
-     */
-    @Deprecated
-    public String createSimpleDCP() {
-        return createProcess(PROCESS_NAME, (long) 0, DCP);
-    }
-
-
-    /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by {@link #createDCPWithPlusDays(Long)}.
-     * New method is adapted to run on views other than Process Instances View.
-     * As part of the method replacement, in tests where process creation is executed,
-     * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessOverviewPage#createDCPWithPlusDays(Long)} method
-     * which will open wizard and proceed process creation.
-     */
-    @Deprecated
-    public String createDCPPlusDays(Long plusDays) {
-        return createProcess(PROCESS_NAME, plusDays, DCP);
-    }
-
-    /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by {@link #createNRPWithPlusDays(Long)}.
-     * New method is adapted to run on views other than Process Instances View.
-     * As part of the method replacement, in tests where process creation is executed,
-     * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessOverviewPage#createNRPWithPlusDays(Long)} method
-     * which will open wizard and proceed process creation.
-     */
-    @Deprecated
-    public String createNRPPlusDays(Long plusDays) {
-        return createProcess(PROCESS_NAME, plusDays, NRP);
-    }
-
-    /**
-     * @deprecated Along with the 3.0.x version this method will be replaced by {@link #createProcessIPD(String, Long, String)}.
-     * New method is adapted to run on views other than Process Instances View.
-     * As part of the method replacement, in tests where process creation is executed,
-     * context action of opening process creation wizard should be called from the class of the given View, e.g.
-     * {@link ProcessOverviewPage#openProcessCreationWizard()} (for Process Instances View).
-     * It is also possible to call {@link ProcessOverviewPage#createProcessIPD(String, Long, String)} method
-     * which will open wizard and proceed process creation.
-     */
-    @Deprecated
-    public String createProcess(String processName, Long plusDays, String processType) {
-        TableInterface table = OldTable.createById(driver, wait, TABLE_PROCESSES);
-        table.callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
-        definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        String text = messages.get(0).getText();
-        return extractProcessCode(text);
     }
 
     public String createSimpleNRPV2() {

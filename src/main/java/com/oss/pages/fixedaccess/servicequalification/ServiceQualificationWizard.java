@@ -11,11 +11,6 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.CHECKBOX;
-import static com.oss.framework.components.inputs.Input.ComponentType.RADIO_BUTTON;
-import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class ServiceQualificationWizard extends BasePage {
 
     private static final String SQ_WIZARD_ID = "sqWebViewID";
@@ -44,14 +39,14 @@ public class ServiceQualificationWizard extends BasePage {
 
     @Step("Set query option for SQ (Address or DA as input)")
     public ServiceQualificationWizard setQueryOption(String option) {
-        getServiceQualificationWizard().setComponentValue(RADIO_BUTTONS_FOR_QUERY_OPTION, option, RADIO_BUTTON);
+        getServiceQualificationWizard().setComponentValue(RADIO_BUTTONS_FOR_QUERY_OPTION, option);
         waitForPageToLoad();
         return this;
     }
 
     @Step("Set address or DA for query")
     public ServiceQualificationWizard setAddressOrDA(String queryParameter) {
-        Input input = getServiceQualificationWizard().getComponent(SEARCH_FIELD_FOR_QUERY, SEARCH_FIELD);
+        Input input = getServiceQualificationWizard().getComponent(SEARCH_FIELD_FOR_QUERY);
         input.clear();
         input.setSingleStringValueContains(queryParameter);
         return this;
@@ -60,34 +55,34 @@ public class ServiceQualificationWizard extends BasePage {
     @Step("Set Required Download Speed")
     public ServiceQualificationWizard setRequiredDownloadSpeed(String requiredDownloadSpeed) {
         waitForPageToLoad();
-        getServiceQualificationWizard().setComponentValue(REQUIRED_DOWNLOAD_SPEED_INPUT, requiredDownloadSpeed, TEXT_FIELD);
+        getServiceQualificationWizard().setComponentValue(REQUIRED_DOWNLOAD_SPEED_INPUT, requiredDownloadSpeed);
         return this;
     }
 
     @Step("Set Required Upload Speed")
     public ServiceQualificationWizard setRequiredUploadSpeed(String requiredUploadSpeed) {
-        getServiceQualificationWizard().setComponentValue(REQUIRED_UPLOAD_SPEED_INPUT, requiredUploadSpeed, TEXT_FIELD);
+        getServiceQualificationWizard().setComponentValue(REQUIRED_UPLOAD_SPEED_INPUT, requiredUploadSpeed);
         return this;
     }
 
     @Step("Set provide alternative checkbox")
     public ServiceQualificationWizard setProvideAlternative(String provideAlternativeValue) {
         waitForPageToLoad();
-        getServiceQualificationWizard().setComponentValue(PROVIDE_ALTERNATIVE_CHECKBOX, provideAlternativeValue, CHECKBOX);
+        getServiceQualificationWizard().setComponentValue(PROVIDE_ALTERNATIVE_CHECKBOX, provideAlternativeValue);
         return this;
     }
 
     @Step("Set provide resource checkbox")
     public ServiceQualificationWizard setProvideResource(String provideResourceValue) {
         waitForPageToLoad();
-        getServiceQualificationWizard().setComponentValue(PROVIDE_RESOURCE_CHECKBOX, provideResourceValue, CHECKBOX);
+        getServiceQualificationWizard().setComponentValue(PROVIDE_RESOURCE_CHECKBOX, provideResourceValue);
         return this;
     }
 
     @Step("Set provide service node checkbox")
     public ServiceQualificationWizard setProvideServiceNode(String provideServiceNodeValue) {
         waitForPageToLoad();
-        getServiceQualificationWizard().setComponentValue(PROVIDE_SERVICE_NODE_CHECKBOX, provideServiceNodeValue, CHECKBOX);
+        getServiceQualificationWizard().setComponentValue(PROVIDE_SERVICE_NODE_CHECKBOX, provideServiceNodeValue);
         return this;
     }
 
@@ -101,7 +96,7 @@ public class ServiceQualificationWizard extends BasePage {
     @Step("Set xid in advanced search filter")
     public ServiceQualificationWizard setXidInAdvancedSearchFilter(Long id) {
         waitForPageToLoad();
-        getAdvancedSearch().getComponent("id", TEXT_FIELD).setSingleStringValueContains(id.toString());
+        getAdvancedSearch().getComponent("id").setSingleStringValueContains(id.toString());
         return this;
     }
 
