@@ -6,27 +6,30 @@
 package com.oss.pages.transport.trail.v2;
 
 import org.openqa.selenium.WebDriver;
+
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+
 import io.qameta.allure.Step;
 
 public abstract class TrailWizardAttributesPage extends BasePage {
-    
+
     private static final String NAME_COMPONENT_ID = "trailNameComponent";
     private static final String DESCRIPTION_COMPONENT_ID = "trailDescriptionComponent";
     private static final String CAPACITY_UNIT_COMPONENT_ID = "trailCapacityUnitComponent";
     private static final String CAPACITY_VALUE_COMPONENT_ID = "trailCapacityValueComponent";
     private static final String UNDEFINED = "Undefined";
-    
+    private static final String ID = "NEEDS_TO_UPDATE_ID";
+
     private final Wizard wizard;
-    
+
     protected TrailWizardAttributesPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, ID);
     }
-    
+
     @Step("Clear Name")
     public void clearName() {
         clearTextField(NAME_COMPONENT_ID);
