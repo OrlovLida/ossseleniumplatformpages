@@ -74,12 +74,14 @@ public class IPPathTest extends BaseTestCase {
 
         networkViewPage.useContextAction("add_to_view_group", "Connection");
         waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, TRAIL_FOR_ROUTING);
+        networkViewPage.queryElementAndAddItToView("name", TRAIL_FOR_ROUTING);
         waitForPageToLoad();
 
         networkViewPage.expandDockedPanel("left");
         waitForPageToLoad();
-        networkViewPage.unselectObject(TRAIL_FOR_ROUTING);
+
+        //Adapt usage of method to new definition
+        //networkViewPage.unselectObject(TRAIL_FOR_ROUTING);
         waitForPageToLoad();
         networkViewPage.selectObjectInViewContent("Name", DEVICE_1);
         waitForPageToLoad();
@@ -115,16 +117,18 @@ public class IPPathTest extends BaseTestCase {
         waitForPageToLoad();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.startEditingSelectedTrail();
-        networkViewPage.unselectObject(IP_PATH_NAME_2);
-        networkViewPage.selectObject(TRAIL_FOR_ROUTING);
+        //Adapt usage of method to new definition
+        //networkViewPage.unselectObject(IP_PATH_NAME_2);
+        //networkViewPage.selectObject(TRAIL_FOR_ROUTING);
         RoutingWizardPage routingWizard = networkViewPage.addSelectedObjectsToRouting();
         routingWizard.proceed();
         waitForPageToLoad();
         networkViewPage.stopEditingTrail();
         waitForPageToLoad();
-        networkViewPage.unselectObject(TRAIL_FOR_ROUTING);
-        networkViewPage.selectObject(IP_PATH_NAME_2);
-        Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(TRAIL_FOR_ROUTING));
+        //Adapt usage of method to new definition
+        //networkViewPage.unselectObject(TRAIL_FOR_ROUTING);
+        //networkViewPage.selectObject(IP_PATH_NAME_2);
+        //Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(TRAIL_FOR_ROUTING));
     }
 
     @Test(priority = 6)

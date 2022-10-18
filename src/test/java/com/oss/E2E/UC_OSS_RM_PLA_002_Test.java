@@ -194,7 +194,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
         waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("serialNumber", TEXT_FIELD, serialNumber);
+        networkViewPage.queryElementAndAddItToView("serialNumber", serialNumber);
         networkViewPage.expandDockedPanel(LEFT);
         waitForPageToLoad();
         networkViewPage.selectObjectInViewContent(NAME, "H1");
@@ -465,7 +465,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.CONNECTION_ACTION);
         waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("label", TEXT_FIELD, TRAIL_NAME);
+        networkViewPage.queryElementAndAddItToView("label", TRAIL_NAME);
         networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID, ConfirmationBox.DELETE);
     }
 
@@ -505,7 +505,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
         waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, DEVICE_NAME);
+        networkViewPage.queryElementAndAddItToView("name", DEVICE_NAME);
         networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_DEVICE_ACTION, ConfirmationBox.YES);
         checkMessageSize();
         checkMessageType(MessageType.SUCCESS);
