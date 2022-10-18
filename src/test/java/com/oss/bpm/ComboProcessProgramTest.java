@@ -87,8 +87,6 @@ public class ComboProcessProgramTest extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        DelayUtils.sleep(3000);
-
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);

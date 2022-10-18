@@ -26,10 +26,6 @@ import static com.oss.bpm.milestones.EditMilestoneTest.EDIT_MILESTONE_BUTTON;
  * @author Paweł Rother
  */
 
-/**
- * Tests must be run by user without BPMMilestone.ADMIN user permissions:
- */
-
 @Listeners({TestListener.class})
 public class ChangeMilestoneStateTest extends BaseTestCase {
     private static final String BPM_USER_LOGIN = "bpm_webselenium";
