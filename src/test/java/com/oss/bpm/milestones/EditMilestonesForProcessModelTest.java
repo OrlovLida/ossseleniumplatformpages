@@ -85,14 +85,12 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processModelsPage.selectModelByName(MODEL_NAME).setKeywordForSelectedModel(modelKeyword);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 1, description = "Add new Milestones for Process Model")
     @Description("Add new Milestones for Process Model")
     public void addMilestonesForProcessModel() {
-        ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
         String milestoneName1 = MILESTONE_NAME_1 + (int) (Math.random() * 100001);
         String milestoneName2 = MILESTONE_NAME_2 + (int) (Math.random() * 100001);
         List<Milestone> milestones = Lists.newArrayList(
@@ -107,7 +105,8 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
                         .setRelatedTask(FIRST_TASK_NAME)
                         .setIsManualCompletion("true")
                         .build());
-
+        ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).addMilestonesForSelectedModel(milestones);
 
