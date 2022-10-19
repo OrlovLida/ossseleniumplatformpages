@@ -18,58 +18,61 @@ import io.qameta.allure.Description;
 public class ExportGuiWizardTest extends BaseTestCase {
     private static final String EXPORT_BUTTON_ID = "exportButton";
     private static final String TEST_MOVIE_TYPE = "TestMovie";
-    
+    private static final String CSV = "CSV";
+    private static final String XLS = "XLS";
+    private static final String XLSX = "XLSX";
+    private static final String XML = "XML";
     private NewInventoryViewPage inventoryView;
-    private String emailAddress = "testExport@mail.com";
-    
+    private final String emailAddress = "testExport@mail.com";
+
     @BeforeClass
     public void prepareTests() {
         inventoryView = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_MOVIE_TYPE);
     }
-    
+
     @BeforeMethod
     public void openExportGuiWizard() {
         inventoryView.openNotificationPanel().clearNotifications();
         inventoryView.callAction(ActionsContainer.KEBAB_GROUP_ID, EXPORT_BUTTON_ID);
-        
+
     }
-    
+
     @Test
     @Description("Export to CSV File from Language Service using Export Gui Wizard")
     public void exportCSVFile() {
         new ExportGuiWizardPage(driver)
-                .chooseCSV()
+                .chooseFileType(CSV)
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to XLS File from Language Service using Export Gui Wizard")
     public void exportXLSFile() {
         new ExportGuiWizardPage(driver)
-                .chooseXLS()
+                .chooseFileType(XLS)
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to XLSX File from Language Service using Export Gui Wizard")
     public void exportXLSXFile() {
         new ExportGuiWizardPage(driver)
-                .chooseXLSX()
+                .chooseFileType(XLSX)
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to XML File from Language Service using Export Gui Wizard")
     public void exportXMLFile() {
         new ExportGuiWizardPage(driver)
-                .chooseXML()
+                .chooseFileType(XML)
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to PDF File from Language Service using Export Gui Wizard")
     public void exportToPDFFile() {
@@ -78,7 +81,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to PDF File from Language Service using Export Gui Wizard")
     public void exportToCompressedFile() {
@@ -87,7 +90,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to File with Headers from Language Service using Export Gui Wizard")
     public void exportToFileWithHeaders() {
@@ -96,28 +99,28 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to File with Headers from Language Service using Export Gui Wizard")
     public void exportToFileWithChangedDataMask() {
         new ExportGuiWizardPage(driver)
-                .chooseCSV()
+                .chooseFileType(CSV)
                 .changeDateMask("Basic")
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to File with Headers from Language Service using Export Gui Wizard")
     public void exportToFileWithChangedFormat() {
         new ExportGuiWizardPage(driver)
-                .chooseCSV()
+                .chooseFileType(CSV)
                 .changeQuoteCharacter("Single")
                 .changeCSVDelimiter("Comma")
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to File with Sending Email from Language Service using Export Gui Wizard")
     public void exportWithSendingEmail() {
@@ -128,7 +131,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to File with Sending Email with Attachment from Language Service using Export Gui Wizard")
     public void exportWithSendingEmailWithAttachment() {
@@ -140,7 +143,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to Remote Location By SCP from Language Service using Export Gui Wizard")
     public void exportToRemoteLocationBySCP() {
@@ -155,7 +158,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     @Test
     @Description("Export to Remote Location By SFTP from Language Service using Export Gui Wizard")
     public void exportToRemoteLocationBySFTP() {
@@ -170,7 +173,7 @@ public class ExportGuiWizardTest extends BaseTestCase {
                 .closeTheWizard();
         Assert.assertEquals(countNotification(), 1);
     }
-    
+
     private int countNotification() {
         return inventoryView.openNotificationPanel().amountOfNotifications();
     }
