@@ -26,11 +26,12 @@ public class EIWizardPage extends BasePage {
     private static final String SWITCH_MODE_FIELD_ID = "uid-switchportMode";
     private static final String ACCESS_FUNCTION_FIELD_ID = "uid-accessFunction";
     private static final String DESCRIPTION_FIELD_DATA_ATTRIBUTE_NAME = "uid-description";
+    private static final String ID = "NEEDS_TO_UPDATE_ID";
     private final Wizard wizard;
 
     public EIWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, ID);
     }
 
     public void setAdministrativeState(String administrativeState) {

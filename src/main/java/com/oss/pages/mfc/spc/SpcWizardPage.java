@@ -6,8 +6,8 @@ import java.util.Objects;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.data.Data;
+import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -16,13 +16,14 @@ import io.qameta.allure.Step;
 
 public class SpcWizardPage<R extends BasePage> extends BasePage {
 
+    private static final String ID = "NEEDS_TO_UPDATE_ID";
     private final Wizard wizard;
     private final R returnPage;
 
     protected SpcWizardPage(WebDriver driver, WebDriverWait wait, R returnPage) {
         super(driver);
         this.returnPage = returnPage;
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, ID);
     }
 
     public static <R extends BasePage> SpcWizardPage<R> create(WebDriver driver, WebDriverWait wait, R returnPage) {
