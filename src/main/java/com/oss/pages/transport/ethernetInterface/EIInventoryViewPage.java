@@ -3,11 +3,8 @@ package com.oss.pages.transport.ethernetInterface;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.contextactions.ActionsInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
@@ -20,7 +17,6 @@ import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
 public class EIInventoryViewPage extends BasePage {
 
     private final TabsInterface tabsInterface;
-    private final ActionsInterface actionsInterface;
     private Map<String, String> propertiesToValuesMap = new HashMap<>();
 
     private static final String ADMINISTRATIVE_STATE = "Administrative State";
@@ -36,8 +32,6 @@ public class EIInventoryViewPage extends BasePage {
     private static final String SWITCH_MODE = "Switchport mode";
     private static final String ACCESS_FUNCTION = "Access Function";
     private static final String DESCRIPTION = "Description";
-
-    private static final String EI_TECHNOLOGY = "EthernetInterface";
     private static final String PROPERTIES_TAB = "Properties";
     private static final String PROPERTY_PANEL_ID = "properties(EthernetInterface)";
     private static final String TAB_ID = "2";
@@ -45,19 +39,16 @@ public class EIInventoryViewPage extends BasePage {
     public EIInventoryViewPage(WebDriver driver) {
         super(driver);
         DelayUtils.waitForPageToLoad(driver, wait);
-        actionsInterface = ActionsContainer.createFromParent(driver.findElement(By.xpath("//div[@class='windowContent']")), driver, wait);
         tabsInterface = TabsWidget.createById(driver, wait, TAB_ID);
     }
 
     public void selectEI() {
         OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
         oldInventoryViewPage.getTableWidget().selectRow(0);
-//        OldInventoryViewPage oldInventoryViewPage = new OldInventoryViewPage(driver);
-//        oldInventoryViewPage.getTableWidget().selectTechnology(EI_TECHNOLOGY);
     }
 
     public EIWizardPage editEI() {
-        actionsInterface.callActionByLabel("EDIT", "Edit Ethernet Interface");
+        tabsInterface.callActionByLabel("EDIT", "Edit Ethernet Interface");
         return new EIWizardPage(driver);
     }
 
