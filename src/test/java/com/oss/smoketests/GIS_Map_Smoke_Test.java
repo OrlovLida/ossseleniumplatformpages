@@ -30,7 +30,7 @@ import io.qameta.allure.Description;
 public class GIS_Map_Smoke_Test extends BaseTestCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GIS_Map_Smoke_Test.class);
-    private static final String PATH_NAME = "gismap";
+    private static final String PATH_NAME = "recoSamples";
     private static final String FILE_NAME = "smoketest.png";
     private static final String OPEN_STREET_MAP = "Open Street Map";
     private static final String RED_COLOR_LOG_PATTERN = "Red color value is %s.";
