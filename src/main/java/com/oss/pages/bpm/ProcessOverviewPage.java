@@ -83,18 +83,17 @@ public class ProcessOverviewPage extends BasePage {
         processTable.selectPredefinedFilter(filterName);
     }
 
-    public String getProcessStatus(String code) {
+    private String getProcessAttribute(String columnLabel) {
         OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
-        processTable.searchByAttributeWithLabel(CODE_LABEL, Input.ComponentType.TEXT_FIELD, code);
-        int index = processTable.getRowNumber(code, CODE_LABEL);
-        return processTable.getCellValue(index, STATUS_LABEL);
+        return processTable.getCellValue(0, columnLabel);
     }
 
-    public String getProcessName(String code) {
-        OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
-        processTable.searchByAttributeWithLabel(CODE_LABEL, Input.ComponentType.TEXT_FIELD, code);
-        int index = processTable.getRowNumber(code, CODE_LABEL);
-        return processTable.getCellValue(index, NAME_LABEL);
+    public String getProcessStatus() {
+        return getProcessAttribute(STATUS_LABEL);
+    }
+
+    public String getProcessName() {
+        return getProcessAttribute(NAME_LABEL);
     }
 
     public String getProcessCode(String processName) {

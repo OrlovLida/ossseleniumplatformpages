@@ -65,8 +65,8 @@ public class ComboProcessProgramTest extends BaseTestCase {
     private static final String PARENT = "Parent";
     private static final String CHILD = "Child";
     private static final String PROCESS_WITH_PROGRAMS_CREATED_MESSAGE =
-            "Process %1$s (%2$s) was created and linked with Program %3$s (%4$s)";
-    private final Logger log = LoggerFactory.getLogger(ComboProcessProgramTest.class);
+            "Process %1$s (%2$s) was created and linked with selected Program(s)";
+    private final Logger LOGGER = LoggerFactory.getLogger(ComboProcessProgramTest.class);
     private final String programName = "Selenium Test Program-" + (int) (Math.random() * 100001);
     private final long plus5Days = 5L;
     private final long plus10Days = 10L;
@@ -84,7 +84,6 @@ public class ComboProcessProgramTest extends BaseTestCase {
             .endPlusDaysLongWay(plus10Days)
             .longWorkWeakLongWay(true)
             .build();
-    private String programCode;
 
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -128,7 +127,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
         systemMessage.close();
 
         //wait for process creation
-        log.info(WAITING_INFO);
+        LOGGER.info(WAITING_INFO);
         DelayUtils.sleep((int) TimeUnit.MINUTES.toMillis(plusMinutes));
         processOverviewPage.reloadTable();
         waitForPageToLoad();
@@ -219,7 +218,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
         Assert.assertEquals(messages.get(0).getText(), String.format(PROCESSES_CREATED_MESSAGE, PROCESS_DEFINITION_NAME_ROLES));
         systemMessage.close();
 
-        programCode = processOverviewPage.getProcessCode(programName);
+        String programCode = processOverviewPage.getProcessCode(programName);
 
         //Assert notification
         waitForPageToLoad();
@@ -340,6 +339,8 @@ public class ComboProcessProgramTest extends BaseTestCase {
         String programCode1 = processOverviewPage.openProgramCreationWizard()
                 .createProgram(programName1, plus5Days, PROGRAM_DEFINITION_NAME);
 
+        SystemMessageContainer.create(driver, webDriverWait).close();
+
         processOverviewPage.createInstance(properties);
 
         //Assert message
@@ -350,7 +351,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
         systemMessage.close();
         String processCode = processOverviewPage.getProcessCode(processName);
         Assert.assertEquals(messages.get(0).getText(),
-                String.format(PROCESS_WITH_PROGRAMS_CREATED_MESSAGE, processName, processCode, programName, programCode));
+                String.format(PROCESS_WITH_PROGRAMS_CREATED_MESSAGE, processName, processCode));
 
         //Assert process roles
         processOverviewPage.selectProcess(NAME_LABEL, processName).openProcessRolesTab();
@@ -439,6 +440,8 @@ public class ComboProcessProgramTest extends BaseTestCase {
 
         String programCode1 = processOverviewPage.openProgramCreationWizard()
                 .createProgram(programName1, plus5Days, PROGRAM_DEFINITION_NAME);
+
+        SystemMessageContainer.create(driver, webDriverWait).close();
 
         processOverviewPage.createInstance(properties);
         processName = processName + "-4";

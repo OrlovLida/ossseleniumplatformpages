@@ -601,7 +601,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
         // when
         processOverviewPage.selectPredefinedFilter(SHOW_WITH_COMPLETED_FILTER);
-        String processStatus = processOverviewPage.getProcessStatus(processNRPCode);
+        String processStatus = processOverviewPage.selectProcess(processNRPCode).getProcessStatus();
 
         // then
         Assertions.assertThat(processStatus).isEqualTo(COMPLETED_STATUS);
