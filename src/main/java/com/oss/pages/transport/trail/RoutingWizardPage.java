@@ -17,11 +17,12 @@ import com.oss.pages.BasePage;
  */
 public class RoutingWizardPage extends BasePage {
 
+    private static final String ID = "NEEDS_TO_UPDATE_ID";
     private final Wizard wizard;
 
     public RoutingWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, ID);
     }
 
     public void proceed() {

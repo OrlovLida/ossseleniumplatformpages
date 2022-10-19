@@ -23,12 +23,13 @@ public abstract class TrailWizardPage extends BasePage {
     private static final String CAPACITY_UNIT_COMPONENT_ID = "uid_capacity_unit";
     private static final String CAPACITY_VALUE_COMPONENT_ID = "uid_capacity_value";
     private static final String UNDEFINED = "Undefined";
+    private static final String ID = "NEEDS_TO_UPDATE_ID";
 
     private final Wizard wizard;
 
     protected TrailWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, ID);
     }
 
     public abstract String getTrailType();
