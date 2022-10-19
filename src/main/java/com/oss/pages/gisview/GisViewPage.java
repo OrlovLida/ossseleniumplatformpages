@@ -36,8 +36,8 @@ public class GisViewPage extends BasePage {
         getGisMapInterface().setMap(mapLabel);
     }
 
-    public String getStringObjectFromCanvas() {
-        return getGisMapInterface().getStringObjectFromCanvas();
+    public String getCanvasObject() {
+        return getGisMapInterface().getCanvasObject();
     }
 
     public void searchResult(String value) {
