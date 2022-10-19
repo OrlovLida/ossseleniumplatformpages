@@ -8,6 +8,7 @@ package com.oss.pages.bpm.processinstances;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
+import com.google.common.collect.ImmutableMap;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.ComponentFactory;
@@ -15,29 +16,32 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author Gabriela Kasza
  * @author Paweł Rother
  */
 public class ProcessWizardPage extends BasePage {
-
     public static final String NRP = "Network Resource Process";
     public static final String DCP = "Data Correction Process";
     protected static final String NEXT_BUTTON = "wizard-next-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     protected static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
     protected static final String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_prompt-card";
     protected static final String PROCESS_NAME = "Selenium Test " + Math.random();
+    private static final Logger LOGGER = LoggerFactory.getLogger(ProcessWizardPage.class);
     private static final String CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION = "Cannot extract Process Code from message: ";
+    private static final String CANNOT_EXTRACT_PROGRAM_CODE_EXCEPTION = "Cannot extract Program Code from message: ";
     private static final String PROCESS_WIZARD_STEP_1 = "bpm_processes_view_start-process-prompt_prompt-card";
     private static final String DOMAIN_ATTRIBUTE_ID = "domain-combobox";
     private static final String DEFINITION_ATTRIBUTE_ID = "definition-combobox";
@@ -57,18 +61,21 @@ public class ProcessWizardPage extends BasePage {
     private static final String NUMBER_OF_PROCESSES_ID = "createMultipleNumberComponentId";
     private static final String PROGRAMS_SEARCH_ID = "programsSearchBoxId";
 
-
     private static final String PROCESSES_OUT_OF_RANGE_EXCEPTION = "Number of Processes must be between 1 and 300";
     private static final String CHECKBOX_NOT_PRESENT_EXCEPTION = "Checkbox %s is not present in the wizard.";
     private static final String PROCESS_ROLES_ASSIGNMENT_STEP = "Role assignment";
     private static final String MILESTONES_ASSIGNMENT_STEP = "Milestones assignment";
     private static final String LACK_OF_STEP_EXCEPTION = "Step %s is not visible on Process creation wizard";
+    private static final String CREATING_PROCESS_INFO = "Creating Process";
+    private static final String CREATING_PROGRAM_INFO = "Creating Program";
+
 
     public ProcessWizardPage(WebDriver driver) {
         super(driver);
     }
 
     protected Wizard definedBasicProcess(String processName, String processType, Long plusDays) {
+        LOGGER.info(CREATING_PROCESS_INFO);
         Wizard wizardSecondStep = selectProcessDefinition(processType);
         wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, processName);
         if (driver.getPageSource().contains(FINISH_DUE_DATE_ID)) {
@@ -78,6 +85,7 @@ public class ProcessWizardPage extends BasePage {
     }
 
     protected Wizard definedBasicProgram(String programName, String programType, Long plusDays) {
+        LOGGER.info(CREATING_PROGRAM_INFO);
         Wizard wizardSecondStep = selectProcessDefinition(programType);
         wizardSecondStep.setComponentValue(PROCESS_NAME_ATTRIBUTE_ID, programName);
         if (driver.getPageSource().contains(DUE_DATE_ID)) {
@@ -93,7 +101,7 @@ public class ProcessWizardPage extends BasePage {
 
     public String createProgram(String programName, Long plusDays, String programType) {
         definedBasicProgram(programName, programType, plusDays).clickButtonById(CREATE_BUTTON);
-        return extractProcessCode(getProcessCreationMessage());
+        return extractProgramCode(getProcessCreationMessage());
     }
 
     public String createSimpleNRPV2() {
@@ -152,13 +160,18 @@ public class ProcessWizardPage extends BasePage {
         }
     }
 
-    public String createProgramWithProcess(String programName, Long plusDaysProgram, String programType,
-                                           String processName, Long plusDaysProcess, String processType) {
+    public Map<String, String> createProgramWithProcess(String programName, Long plusDaysProgram, String programType,
+                                                        String processName, Long plusDaysProcess, String processType) {
         Wizard programWizard = definedBasicProgram(programName, programType, plusDaysProgram);
         selectCheckbox(programWizard, CREATE_PROCESS_CHECKBOX_ID);
         programWizard.clickButtonById(CREATE_BUTTON);
         definedBasicProcess(processName, processType, plusDaysProcess).clickButtonById(CREATE_BUTTON);
-        return extractProcessCode(getProcessCreationMessage());
+        String processCode = extractProcessCode(getProcessCreationMessage());
+        String programCode = extractProgramCode(getProcessCreationMessage());
+        return ImmutableMap.<String, String>builder()
+                .put("processCode", processCode)
+                .put("programCode", programCode)
+                .build();
     }
 
     private Wizard selectProcessDefinition(String processType) {
@@ -186,17 +199,6 @@ public class ProcessWizardPage extends BasePage {
         } catch (TimeoutException e) {
             throw new NoSuchElementException(String.format(CHECKBOX_NOT_PRESENT_EXCEPTION, checkBoxId));
         }
-    }
-
-    /**
-     * @deprecated Along with the 3.1.x version this method will be replaced by
-     * {@link #defineProcessAndGoToMilestonesStep(String, Long, String)}.
-     */
-    @Description("Go to Milestone Step)")
-    @Deprecated
-    public MilestoneStepWizard definedMilestoneInProcess(String processName, Long plusDays, String processType) {
-        defineProcessAndGoToMilestonesStep(processName, plusDays, processType);
-        return new MilestoneStepWizard(driver);
     }
 
     public MilestonesStepWizardPage defineProcessAndGoToMilestonesStep(String processName, Long plusDays, String processType) {
@@ -274,11 +276,23 @@ public class ProcessWizardPage extends BasePage {
         Iterable<String> messageParts = Splitter.on(CharMatcher.anyOf("() ")).split(message);
         for (String part : messageParts) {
             if (part.startsWith("NRP-") || part.startsWith("DCP-")
-                    || part.startsWith("IP-") || part.startsWith("DRP-")) {
+                    || part.startsWith("IP-") || part.startsWith("DRP-")
+                    || part.startsWith("ML-") || part.startsWith("audit_roles-")
+                    || part.startsWith("audit-")) {
                 return part;
             }
         }
         throw new NoSuchElementException(CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION + message);
+    }
+
+    private String extractProgramCode(String message) {
+        Iterable<String> messageParts = Splitter.on(CharMatcher.anyOf("() ")).split(message);
+        for (String part : messageParts) {
+            if (part.startsWith("program_roles-") || part.startsWith("audit_program-")) {
+                return part;
+            }
+        }
+        throw new NoSuchElementException(CANNOT_EXTRACT_PROGRAM_CODE_EXCEPTION + message);
     }
 
     public void createInstance(ProcessCreationWizardProperties properties) {
@@ -409,16 +423,5 @@ public class ProcessWizardPage extends BasePage {
         proceedMilestonesStep(processWizard, properties, false);
         proceedForecastsStep(processWizard, properties, false);
         clickAcceptButton();
-    }
-
-    /**
-     * @deprecated Along with the 3.1.x version this method will be replaced by
-     * {@link MilestonesStepWizardPage}.
-     */
-    @Deprecated
-    public static class MilestoneStepWizard extends MilestonesStepWizardPage {
-        private MilestoneStepWizard(WebDriver driver) {
-            super(driver);
-        }
     }
 }

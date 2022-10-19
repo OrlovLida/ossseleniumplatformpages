@@ -14,6 +14,11 @@ public class ScheduleProperties {
     protected static final String WEEKLY_SCHEDULE = "Weekly";
     protected static final String MONTHLY_SCHEDULE = "Monthly";
     protected static final String YEARLY_SCHEDULE = "Yearly";
+    private static final String INVALID_PROPERTIES_SETTING = "Invalid ScheduleProperties settings \n";
+    private static final String MORE_THAN_ONE_OPTION_SET_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "There is more than one Schedule Type option set in Schedule Properties";
+    private static final String NO_OPTION_SET_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "There no Schedule Type option set in Schedule Properties";
 
     private final String scheduleType;
     private final int plusMinutes;
@@ -143,6 +148,10 @@ public class ScheduleProperties {
         }
 
         public ScheduleProperties build() {
+            if (settingsAmount == 0)
+                throw new IllegalArgumentException(NO_OPTION_SET_EXCEPTION);
+            if (settingsAmount > 1)
+                throw new IllegalArgumentException(MORE_THAN_ONE_OPTION_SET_EXCEPTION);
             return new ScheduleProperties(this);
         }
     }

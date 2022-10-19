@@ -4,6 +4,8 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -13,7 +15,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static com.oss.pages.bpm.processinstances.ScheduleProperties.*;
-import static com.oss.untils.Environment.LOGGER;
 
 /**
  * @author Paweł Rother
@@ -51,9 +52,8 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
 
     private static final String NO_ELEMENT_EXCEPTION = "There is no element with id = {}";
     private static final String WRONG_DAY_OF_THE_WEEK_ARGUMENT = "Provided day of the week is not valid.";
-    private static final String WRONG_SCHEDULE_TYPE_EXCEPTION = "Provided schedule type is not valid.";
-    private static final String SCHEDULE_SETTINGS_EXCEPTION = "There is more than one Schedule Type option set in Schedule Properties";
-    private static final String NO_SCHEDULE_SETTING_EXCEPTION = "There no Schedule Type option set in Schedule Properties";
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleStepWizardPage.class);
+    private static final String ADDING_SCHEDULE_INFO = "Adding Schedule";
 
     private final Wizard wizard = Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
 
@@ -62,6 +62,7 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
     }
 
     public ScheduleStepWizardPage setCRONExpression(String cronExpression) {
+        LOGGER.info(ADDING_SCHEDULE_INFO);
         setInputValue(CRON_EXPRESSION_INPUT, cronExpression);
         return this;
     }
@@ -80,68 +81,64 @@ public class ScheduleStepWizardPage extends ProcessWizardPage {
     }
 
     public ScheduleStepWizardPage setSchedule(ScheduleProperties scheduleProperties) {
-        if (scheduleProperties.getSettingsAmount() > 1) {
-            throw new IllegalArgumentException(SCHEDULE_SETTINGS_EXCEPTION);
-        } else if (scheduleProperties.getSettingsAmount() == 0) {
-            throw new IllegalArgumentException(NO_SCHEDULE_SETTING_EXCEPTION);
-        } else {
-            setInputValue(SCHEDULE_TYPE_INPUT_ID, scheduleProperties.getScheduleType());
-            if (scheduleProperties.getScheduleType().equals(SINGLE_SCHEDULE)) {
+        LOGGER.info(ADDING_SCHEDULE_INFO);
 
-                scheduleProperties.getPlusDays().ifPresent(plusDays ->
-                        setInputValue(SCHEDULE_SINGLE_DATE_INPUT_ID, LocalDate.now().plusDays(plusDays).toString()));
+        setInputValue(SCHEDULE_TYPE_INPUT_ID, scheduleProperties.getScheduleType());
+        if (scheduleProperties.getScheduleType().equals(SINGLE_SCHEDULE)) {
 
-                LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
-                setInputValue(SCHEDULE_SINGLE_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
+            scheduleProperties.getPlusDays().ifPresent(plusDays ->
+                    setInputValue(SCHEDULE_SINGLE_DATE_INPUT_ID, LocalDate.now().plusDays(plusDays).toString()));
 
-            } else if (scheduleProperties.getScheduleType().equals(DAILY_SCHEDULE)) {
+            LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
+            setInputValue(SCHEDULE_SINGLE_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
-                scheduleProperties.getRepeatDaysCycle().ifPresent(repeatDaysCycle ->
-                        setInputValue(SCHEDULE_DAILY_REPEAT_DAYS_CYCLE_INPUT_ID, String.valueOf(repeatDaysCycle)));
+        } else if (scheduleProperties.getScheduleType().equals(DAILY_SCHEDULE)) {
 
-                LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
-                setInputValue(SCHEDULE_DAILY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
+            scheduleProperties.getRepeatDaysCycle().ifPresent(repeatDaysCycle ->
+                    setInputValue(SCHEDULE_DAILY_REPEAT_DAYS_CYCLE_INPUT_ID, String.valueOf(repeatDaysCycle)));
 
-            } else if (scheduleProperties.getScheduleType().equals(WEEKLY_SCHEDULE)) {
+            LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
+            setInputValue(SCHEDULE_DAILY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
-                scheduleProperties.getRepeatDayOfWeek().ifPresent(repeatDayOfWeek -> {
-                    for (DayOfWeek dayOfTheWeek : repeatDayOfWeek) {
-                        chooseDayOfTheWeek(dayOfTheWeek);
-                    }
-                });
+        } else if (scheduleProperties.getScheduleType().equals(WEEKLY_SCHEDULE)) {
 
-                LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
-                setInputValue(SCHEDULE_WEEKLY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
+            scheduleProperties.getRepeatDayOfWeek().ifPresent(repeatDayOfWeek -> {
+                for (DayOfWeek dayOfTheWeek : repeatDayOfWeek) {
+                    chooseDayOfTheWeek(dayOfTheWeek);
+                }
+            });
 
-            } else if (scheduleProperties.getScheduleType().equals(MONTHLY_SCHEDULE)) {
+            LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
+            setInputValue(SCHEDULE_WEEKLY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
-                scheduleProperties.getRepeatDay().ifPresent(repeatDay ->
-                        setInputValue(SCHEDULE_MONTHLY_REPEAT_DAY_INPUT_ID, String.valueOf(repeatDay)));
+        } else if (scheduleProperties.getScheduleType().equals(MONTHLY_SCHEDULE)) {
 
-                scheduleProperties.getRepeatMonthsCycle().ifPresent(repeatMonthsCycle ->
-                        setInputValue(SCHEDULE_MONTHLY_REPEAT_MONTHS_CYCLE_INPUT_ID, String.valueOf(repeatMonthsCycle)));
+            scheduleProperties.getRepeatDay().ifPresent(repeatDay ->
+                    setInputValue(SCHEDULE_MONTHLY_REPEAT_DAY_INPUT_ID, String.valueOf(repeatDay)));
 
-                LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
-                setInputValue(SCHEDULE_MONTHLY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
+            scheduleProperties.getRepeatMonthsCycle().ifPresent(repeatMonthsCycle ->
+                    setInputValue(SCHEDULE_MONTHLY_REPEAT_MONTHS_CYCLE_INPUT_ID, String.valueOf(repeatMonthsCycle)));
 
-            } else if (scheduleProperties.getScheduleType().equals(YEARLY_SCHEDULE)) {
+            LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
+            setInputValue(SCHEDULE_MONTHLY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
 
-                scheduleProperties.getRepeatYearsCycle().ifPresent(repeatYearsCycle ->
-                        setInputValue(SCHEDULE_YEARLY_REPEAT_YEARS_CYCLE_INPUT_ID, String.valueOf(repeatYearsCycle)));
+        } else if (scheduleProperties.getScheduleType().equals(YEARLY_SCHEDULE)) {
 
-                scheduleProperties.getRepeatMonth().ifPresent(repeatMonth ->
-                        setInputValue(SCHEDULE_YEARLY_REPEAT_MONTH_INPUT_ID, String.valueOf(repeatMonth)));
+            scheduleProperties.getRepeatYearsCycle().ifPresent(repeatYearsCycle ->
+                    setInputValue(SCHEDULE_YEARLY_REPEAT_YEARS_CYCLE_INPUT_ID, String.valueOf(repeatYearsCycle)));
 
-                scheduleProperties.getRepeatDay().ifPresent(repeatDay ->
-                        setInputValue(SCHEDULE_YEARLY_REPEAT_DAY_INPUT_ID, String.valueOf(repeatDay)));
+            scheduleProperties.getRepeatMonth().ifPresent(repeatMonth ->
+                    setInputValue(SCHEDULE_YEARLY_REPEAT_MONTH_INPUT_ID, String.valueOf(repeatMonth)));
 
-                LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
-                setInputValue(SCHEDULE_YEARLY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
-            } else
-                throw new IllegalArgumentException(WRONG_SCHEDULE_TYPE_EXCEPTION);
-            return this;
+            scheduleProperties.getRepeatDay().ifPresent(repeatDay ->
+                    setInputValue(SCHEDULE_YEARLY_REPEAT_DAY_INPUT_ID, String.valueOf(repeatDay)));
+
+            LocalTime time = LocalTime.now().plusMinutes(scheduleProperties.getPlusMinutes());
+            setInputValue(SCHEDULE_YEARLY_TIME_INPUT_ID, time.format(DateTimeFormatter.ofPattern(TIME_PATTERN)));
         }
+        return this;
     }
+
 
     private void chooseDayOfTheWeek(DayOfWeek dayOfTheWeek) {
         if (dayOfTheWeek.equals(DayOfWeek.MONDAY))
