@@ -106,16 +106,9 @@ public class ProcessOverviewPage extends BasePage {
         return processTable.getCellValue(index, CODE_LABEL);
     }
 
-    /**
-     * @deprecated Along with the 3.1.x version this method will be replaced by
-     * {@link #selectProcess(String)}
-     */
-    @Deprecated
-    public void findProcess(String processCode) {
-        selectProcess(CODE_LABEL, processCode);
+    public ProcessOverviewPage selectProcess(String processCode) {
+        return selectProcess(CODE_LABEL, processCode);
     }
-
-    public ProcessOverviewPage selectProcess(String processCode) { return selectProcess(CODE_LABEL, processCode); }
 
     public ProcessOverviewPage selectProcess(String attributeName, String value) {
         TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
@@ -151,19 +144,6 @@ public class ProcessOverviewPage extends BasePage {
     public int getRelatedProcessesAmount() {
         CommonList list = CommonList.create(driver, wait, RELATED_PROCESSES_LIST);
         return list.getRows().size();
-    }
-
-    /**
-     * @deprecated Along with the 3.1.x version this method will be replaced by
-     * {@link #openMilestoneTab()}
-     */
-    @Deprecated
-
-    public void selectMilestoneTab(String processAttributeName, String value) {
-        selectProcess(processAttributeName, value);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        TabsWidget milestoneTab = TabsWidget.createById(driver, wait, PROCESS_TABS);
-        milestoneTab.selectTabById(MILESTONE_TAB_ID);
     }
 
     public ProcessOverviewPage openMilestoneTab() {
