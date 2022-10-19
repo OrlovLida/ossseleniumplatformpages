@@ -52,6 +52,7 @@ public class GIS_Map_Smoke_Test extends BaseTestCase {
     @Description("Check if Canvas object is present")
     public void isCanvasObjectPresent() {
         GisViewPage gisViewPage = GisViewPage.getGisViewPage(driver, webDriverWait);
+        checkErrorPage();
         gisViewPage.setMap(OPEN_STREET_MAP);
         waitForPageToLoad();
         Assert.assertTrue(gisViewPage.isCanvasPresent());
