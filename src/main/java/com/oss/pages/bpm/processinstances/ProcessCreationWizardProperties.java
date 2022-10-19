@@ -13,6 +13,11 @@ import java.util.List;
 @Getter
 public class ProcessCreationWizardProperties {
     private static final String INVALID_PROPERTIES_SETTING = "Invalid ProcessCreationWizardProperties settings \n";
+    private static final String OPTIONS_WITHOUT_PROCESS_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "\"withMultipleProcesses\", \"withProcessMilestones\", \"withProcessForecasts\" and \"withProcessRoles\" " +
+            "options cannot be set without \"basicProcess\" or  \"withProcessCreation\"option";
+    private static final String OPTIONS_WITHOUT_BASIC_PROGRAM_EXCEPTION = INVALID_PROPERTIES_SETTING +
+            "\"withProgramMilestones\", \"withProgramForecasts\" and \"withProgramRoles\" options cannot be set without \"basicProgram\" option";
     private static final String PROGRAM_TO_LINK_EXCEPTION = INVALID_PROPERTIES_SETTING +
             "\"withProgramsToLink\" is available only with Basic Process creation";
     private static final String BASIC_PROGRAM_AND_PROCESS_EXCEPTION = INVALID_PROPERTIES_SETTING +
@@ -102,7 +107,6 @@ public class ProcessCreationWizardProperties {
     }
 
     public static class ProcessCreationWizardPropertiesBuilder {
-
         private String cronExpression;
         private ScheduleProperties scheduleProperties;
 
@@ -170,7 +174,6 @@ public class ProcessCreationWizardProperties {
             this.processMilestoneList = milestoneList;
             return this;
         }
-
 
         public ProcessCreationWizardPropertiesBuilder withProcessForecasts(Forecast mainForecast, List<Forecast> forecastsList) {
             this.isProcessForecastsCreation = true;
@@ -256,6 +259,12 @@ public class ProcessCreationWizardProperties {
                 throw new IllegalArgumentException(PROGRAM_TO_LINK_EXCEPTION);
             if (!isProcessCreation && !isProgramCreation)
                 throw new IllegalArgumentException(NO_BASIC_PROCESS_PROGRAM_EXCEPTION);
+            if ((isProcessMilestonesCreation || isProcessForecastsCreation || isProcessRolesAssignment || isMultipleProcessesCreation)
+                    && !(isProcessCreation || isProgramWithProcessCreation))
+                throw new IllegalArgumentException(OPTIONS_WITHOUT_PROCESS_EXCEPTION);
+            if ((isProgramMilestonesCreation || isProgramForecastsCreation || isProgramRolesAssignment) && !isProgramCreation)
+                throw new IllegalArgumentException(OPTIONS_WITHOUT_BASIC_PROGRAM_EXCEPTION);
+
             return new ProcessCreationWizardProperties(this);
         }
     }

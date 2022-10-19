@@ -71,8 +71,6 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        DelayUtils.sleep(3000);
-        processOverviewPage.clearAllColumnFilters();
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -80,6 +78,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
             processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        processOverviewPage.clearAllColumnFilters();
     }
 
     @Test(priority = 1, description = "Create Network Resource Process")

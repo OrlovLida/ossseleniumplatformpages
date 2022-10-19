@@ -60,7 +60,6 @@ public class EditMilestoneTest extends BaseTestCase {
     @BeforeClass
     public void createMilestone() {
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        processOverviewPage.clearAllColumnFilters();
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -68,6 +67,7 @@ public class EditMilestoneTest extends BaseTestCase {
             processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        processOverviewPage.clearAllColumnFilters();
 
         String processName = PROCESS_NAME + (int) (Math.random() * 100001);
 
