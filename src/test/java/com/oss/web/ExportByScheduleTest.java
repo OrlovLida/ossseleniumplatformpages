@@ -21,7 +21,7 @@ public class ExportByScheduleTest extends BaseTestCase {
     
     private static final String EXPORT_BUTTON_ID = "exportButton";
     private static final String TEST_MOVIE_TYPE = "TestMovie";
-    private static String TASK_NAME = "Test_Export" + FakeGenerator.getRandomInt();
+    private static final String TASK_NAME = "Test_Export" + FakeGenerator.getRandomInt();
     
     private SchedulerServicePage schedulerServicePage;
     
