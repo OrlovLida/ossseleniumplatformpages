@@ -138,7 +138,9 @@ public class ISPConfigurationTest extends BaseTestCase {
         waitForPageToLoad();
         locationWizardPage.clickNext();
         waitForPageToLoad();
-        locationWizardPage.setGeographicalAddress("a");
+        locationWizardPage.setGeographicalAddress("");
+        waitForPageToLoad();
+        locationWizardPage.setCityIfEmpty();
         waitForPageToLoad();
         locationWizardPage.clickNext();
         waitForPageToLoad();
