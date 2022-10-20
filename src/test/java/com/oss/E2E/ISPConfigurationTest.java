@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -12,7 +13,6 @@ import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
-import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
@@ -23,6 +23,8 @@ import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.physical.CardCreateWizardPage;
+import com.oss.pages.physical.ChangeCardModelWizard;
+import com.oss.pages.physical.ChangeModelWizardPage;
 import com.oss.pages.physical.CoolingZoneEditorWizardPage;
 import com.oss.pages.physical.CreateCoolingZoneWizardPage;
 import com.oss.pages.physical.DeviceWizardPage;
@@ -112,6 +114,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     private final static String CREATE_PHYSICAL_LOCATION = "Create Physical Location";
     private final static String INFRASTRUCTURE_MANAGEMENT = "Infrastructure Management";
     private final static String CREATE_INFRASTRUCTURE = "Create Infrastructure";
+    private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
     private String HIERARCHY_VIEW_URL = "";
     private SoftAssert softAssert;
 
@@ -140,7 +143,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         locationWizardPage.clickNext();
         waitForPageToLoad();
         locationWizardPage.create();
-        checkPopup();
+        checkPopup(String.format(SYSTEM_MESSAGE_PATTERN, "Create building", "building creation"));
     }
 
     @Test(priority = 2, description = "Show building in Hierarchy View", dependsOnMethods = {"createBuilding"})
@@ -175,7 +178,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         waitForPageToLoad();
         sublocationWizardPage.create();
         waitForPageToLoad();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create room", "room creation"));
     }
 
     @Test(priority = 5, description = "Open Create Device wizard", dependsOnMethods = {"createRoom"})
@@ -198,7 +201,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         deviceWizardPage.setPreciseLocation(SUBLOCATION_NAME);
         waitForPageToLoad();
         deviceWizardPage.accept();
-        checkPopup();
+        checkPopup(String.format(SYSTEM_MESSAGE_PATTERN, "Create physical device", "physical device creation"));
     }
 
     @Test(priority = 7, description = "Show device in Hierarchy View", dependsOnMethods = {"createPhysicalDevice"})
@@ -215,20 +218,19 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void openChangeModelWizard() {
         HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         hierarchyViewPage.selectFirstObject();
-//        waitForPageToLoad();
-//        hierarchyViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, CHANGE_DEVICE_MODEL_ACTION_ID);
-//        waitForPageToLoad();
+        waitForPageToLoad();
+        hierarchyViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, CHANGE_DEVICE_MODEL_ACTION_ID);
+        waitForPageToLoad();
     }
 
     @Test(priority = 9, description = "Change device model", dependsOnMethods = {"openChangeModelWizard"})
     @Description("Change device model and check confirmation system message")
     public void changeDeviceModel() {
-//        ChangeModelWizardPage changeModelWizardPage = new ChangeModelWizardPage(driver);
-//        changeModelWizardPage.setModel(MODEL_UPDATE);
-//        waitForPageToLoad();
-//        DelayUtils.sleep(1000);//TODO ?
-//        changeModelWizardPage.clickUpdate(); //TODO OSSPHY-56019
-//        checkPopupAndCloseMessage();
+        ChangeModelWizardPage changeModelWizardPage = new ChangeModelWizardPage(driver);
+        changeModelWizardPage.setModel(MODEL_UPDATE);
+        waitForPageToLoad();
+        changeModelWizardPage.clickUpdate();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Change device model", "change device model"));
     }
 
     @Test(priority = 10, description = "Open Create Card wizard", dependsOnMethods = {"changeDeviceModel"})
@@ -252,7 +254,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         cardCreateWizardPage.setSlot(SLOT_LT4);
         waitForPageToLoad();
         cardCreateWizardPage.clickAccept();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create card", "card creation"));
     }
 
     @Test(priority = 12, description = "Open Change Card Model wizard", dependsOnMethods = {"createCard"})
@@ -264,18 +266,18 @@ public class ISPConfigurationTest extends BaseTestCase {
         String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis." + PHYSICAL_DEVICE_NAME + "/Chassis.Slots.LT3.Card.NELT-B";
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         waitForPageToLoad();
-//        hierarchyViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, CHANGE_CARD_MODEL_ACTION_ID);
-//        waitForPageToLoad();
+        hierarchyViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, CHANGE_CARD_MODEL_ACTION_ID);
+        waitForPageToLoad();
     }
 
     @Test(priority = 13, description = "Change Card Model", dependsOnMethods = {"openChangeCardWizard"})
     @Description("Change Card Model and check confirmation system message")
     public void changeCardModel() {
-//        ChangeCardModelWizard changeCardModelWizard = new ChangeCardModelWizard(driver);
-//        changeCardModelWizard.setModelCard(CARD_MODEL_UPDATE);//TODO do dopisania w BUC
-//        waitForPageToLoad();
-//        changeCardModelWizard.clickSubmit();//TODO OSSPHY-56019
-//        checkPopupAndCloseMessage();
+        ChangeCardModelWizard changeCardModelWizard = new ChangeCardModelWizard(driver);
+        changeCardModelWizard.setModelCard(CARD_MODEL_UPDATE);
+        waitForPageToLoad();
+        changeCardModelWizard.clickSubmit();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Change card model", "card model change"));
     }
 
     @Test(priority = 14, description = "Open Mounting Editor wizard", dependsOnMethods = {"changeCardModel"})
@@ -305,7 +307,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         mountingEditorWizardPage.clickCheckbox();
         waitForPageToLoad();
         mountingEditorWizardPage.clickAccept();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Set mounting editor", "setting mounting editor."));
     }
 
     @Test(priority = 16, description = "Move to Location Overview and create cooling zone", dependsOnMethods = {"showHierarchyViewFromPopup"})
@@ -319,10 +321,10 @@ public class ISPConfigurationTest extends BaseTestCase {
         CreateCoolingZoneWizardPage coolingZoneWizard = new CreateCoolingZoneWizardPage(driver);
         coolingZoneWizard.setName(COOLING_ZONE_NAME);
         waitForPageToLoad();
-        coolingZoneWizard.setOperatingLocation(SUBLOCATION_NAME);//TODO do dopisania w BUC
+        coolingZoneWizard.setOperatingLocation(SUBLOCATION_NAME);
         coolingZoneWizard.clickAccept();
         waitForPageToLoad();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create cooling zone", "cooling zone creation"));
     }
 
     @Test(priority = 17, description = "Create cooling unit", dependsOnMethods = {"createCoolingZone"})
@@ -342,7 +344,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         deviceWizardPage.setPreciseLocation(SUBLOCATION_NAME);
         waitForPageToLoad();
         deviceWizardPage.accept();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create cooling unit", "cooling unit creation"));
     }
 
     @Test(priority = 18, description = "Assign cooling unit to cooling zone", dependsOnMethods = {"createCoolingUnit"})
@@ -382,7 +384,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         deviceWizardPage.setPreciseLocation(SUBLOCATION_NAME);
         waitForPageToLoad();
         deviceWizardPage.accept();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create second device", "second device creation"));
     }
 
     @Test(priority = 20, description = "Assign second device to cooling zone", dependsOnMethods = {"createSecondDevice"})
@@ -415,14 +417,14 @@ public class ISPConfigurationTest extends BaseTestCase {
         log.info("Cooling capacity = {}", coolingCapacity);
         String coolingLoadRatio = tableWidget.getCellValue(rowNumber, COOLING_LOAD_RATIO_COLUMN);
         log.info("Cooling load ratio = {}", coolingLoadRatio);
-        softAssert = new SoftAssert();
-        softAssert.assertNotEquals(coolingLoad, COOLING_ZONE_COOLING_LOAD, String.format(ASSERT_NOT_EQUALS, coolingLoad, COOLING_ZONE_COOLING_LOAD));
-        softAssert.assertNotEquals(coolingCapacity, COOLING_ZONE_CAPACITY, String.format(ASSERT_NOT_EQUALS, coolingCapacity, COOLING_ZONE_CAPACITY));
-        softAssert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
+        SoftAssert coolingAssert = new SoftAssert();
+        coolingAssert.assertNotEquals(coolingLoad, COOLING_ZONE_COOLING_LOAD, String.format(ASSERT_NOT_EQUALS, coolingLoad, COOLING_ZONE_COOLING_LOAD));
+        coolingAssert.assertNotEquals(coolingCapacity, COOLING_ZONE_CAPACITY, String.format(ASSERT_NOT_EQUALS, coolingCapacity, COOLING_ZONE_CAPACITY));
+        coolingAssert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
         COOLING_ZONE_COOLING_LOAD = coolingLoad;
         COOLING_ZONE_LOAD_RATIO = coolingLoadRatio;
         COOLING_ZONE_CAPACITY = coolingCapacity;
-        softAssert.assertAll();
+        coolingAssert.assertAll();
     }
 
     @Test(priority = 22, description = "Create third device", dependsOnMethods = {"showHierarchyViewFromPopup"})
@@ -444,7 +446,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         deviceWizardPage.setPreciseLocation(SUBLOCATION_NAME);
         waitForPageToLoad();
         deviceWizardPage.accept();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create third device", "third device creation"));
     }
 
     @Test(priority = 23, description = "Assign third device to cooling zone", dependsOnMethods = {"createThirdDevice"})
@@ -471,12 +473,12 @@ public class ISPConfigurationTest extends BaseTestCase {
         log.info("Cooling load = {}", coolingLoad);
         String coolingLoadRatio = tableWidget.getCellValue(rowNumber, COOLING_LOAD_RATIO_COLUMN);
         log.info("Cooling load ratio = {}", coolingLoadRatio);
-        softAssert = new SoftAssert();
-        softAssert.assertNotEquals(coolingLoad, COOLING_ZONE_COOLING_LOAD, String.format(ASSERT_NOT_EQUALS, coolingLoad, COOLING_ZONE_COOLING_LOAD));
-        softAssert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
+        SoftAssert coolingAssert = new SoftAssert();
+        coolingAssert.assertNotEquals(coolingLoad, COOLING_ZONE_COOLING_LOAD, String.format(ASSERT_NOT_EQUALS, coolingLoad, COOLING_ZONE_COOLING_LOAD));
+        coolingAssert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
         COOLING_ZONE_COOLING_LOAD = coolingLoad;
         COOLING_ZONE_LOAD_RATIO = coolingLoadRatio;
-        softAssert.assertAll();
+        coolingAssert.assertAll();
     }
 
     @Test(priority = 25, description = "Update cooling unit", dependsOnMethods = {"assignThirdDeviceToCoolingZone"})
@@ -491,7 +493,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         waitForPageToLoad();
         deviceWizardPage.nextUpdateWizard();
         deviceWizardPage.acceptUpdateWizard();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Update cooling unit", "cooling unit update"));
         waitForPageToLoad();
     }
 
@@ -506,10 +508,10 @@ public class ISPConfigurationTest extends BaseTestCase {
         log.info("Cooling capacity = {}", coolingCapacity);
         String coolingLoadRatio = tableWidget.getCellValue(rowNumber, COOLING_LOAD_RATIO_COLUMN);
         log.info("Cooling load ratio = {}", coolingLoadRatio);
-        softAssert = new SoftAssert();
-        softAssert.assertNotEquals(coolingCapacity, COOLING_ZONE_CAPACITY, String.format(ASSERT_NOT_EQUALS, coolingCapacity, COOLING_ZONE_CAPACITY));
-        softAssert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
-        softAssert.assertAll();
+        SoftAssert coolingAssert = new SoftAssert();
+        coolingAssert.assertNotEquals(coolingCapacity, COOLING_ZONE_CAPACITY, String.format(ASSERT_NOT_EQUALS, coolingCapacity, COOLING_ZONE_CAPACITY));
+        coolingAssert.assertNotEquals(coolingLoadRatio, COOLING_ZONE_LOAD_RATIO, String.format(ASSERT_NOT_EQUALS, coolingLoadRatio, COOLING_ZONE_LOAD_RATIO));
+        coolingAssert.assertAll();
     }
 
     @Test(priority = 27, description = "Create power device", dependsOnMethods = {"showHierarchyViewFromPopup"})
@@ -528,7 +530,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         deviceWizardPage.setPreciseLocation(SUBLOCATION_NAME);
         waitForPageToLoad();
         deviceWizardPage.accept();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create power device", "power device creation"));
     }
 
     @Test(priority = 28, description = "Check power values", dependsOnMethods = {"createPowerDevice"})
@@ -538,15 +540,15 @@ public class ISPConfigurationTest extends BaseTestCase {
         int rowNumber = tableWidget.getRowNumber(SUBLOCATION_NAME, NAME);
         String rowValue = tableWidget.getCellValue(rowNumber, POWER_CAPACITY_COLUMN);
         log.info("Power capacity = {}", rowValue);
-        softAssert = new SoftAssert();
-        softAssert.assertNotEquals(rowValue, LOCATION_POWER_CAPACITY, String.format(ASSERT_NOT_EQUALS, rowValue, LOCATION_POWER_CAPACITY));
+        SoftAssert powerAssert = new SoftAssert();
+        powerAssert.assertNotEquals(rowValue, LOCATION_POWER_CAPACITY, String.format(ASSERT_NOT_EQUALS, rowValue, LOCATION_POWER_CAPACITY));
         rowValue = tableWidget.getCellValue(rowNumber, POWER_LOAD_COLUMN);
         log.info("Power load = {}", rowValue);
-        softAssert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
+        powerAssert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
         rowValue = tableWidget.getCellValue(rowNumber, POWER_LOAD_RATIO_COLUMN);
         log.info("Power load ratio = {}", rowValue);
-        softAssert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
-        softAssert.assertAll();
+        powerAssert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
+        powerAssert.assertAll();
     }
 
     @Test(priority = 29, description = "Create power supply unit", dependsOnMethods = {"checkPowerValues"})
@@ -564,7 +566,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         deviceWizardPage.setPreciseLocation(SUBLOCATION_NAME);
         waitForPageToLoad();
         deviceWizardPage.accept();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create power supply unit", "power supply unit creation"));
     }
 
     @Test(priority = 30, description = "Check power values", dependsOnMethods = {"createPowerSupplyUnit"})
@@ -574,16 +576,15 @@ public class ISPConfigurationTest extends BaseTestCase {
         int rowNumber = tableWidget.getRowNumber(SUBLOCATION_NAME, NAME);
         String rowValue = tableWidget.getCellValue(rowNumber, POWER_CAPACITY_COLUMN);
         log.info("Power capacity = {}", rowValue);
-        //TODO dostosowac asercje
-        softAssert = new SoftAssert();
-        softAssert.assertNotEquals(rowValue, LOCATION_POWER_CAPACITY, String.format(ASSERT_NOT_EQUALS, rowValue, LOCATION_POWER_CAPACITY));
+        SoftAssert powerAssert = new SoftAssert();
+        powerAssert.assertNotEquals(rowValue, LOCATION_POWER_CAPACITY, String.format(ASSERT_NOT_EQUALS, rowValue, LOCATION_POWER_CAPACITY));
         rowValue = tableWidget.getCellValue(rowNumber, POWER_LOAD_COLUMN);
         log.info("Power row value = {}", rowValue);
-        softAssert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
+        powerAssert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
         rowValue = tableWidget.getCellValue(rowNumber, POWER_LOAD_RATIO_COLUMN);
         log.info("Power load ratio = {}", rowValue);
-        softAssert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
-        softAssert.assertAll();
+        powerAssert.assertNotEquals(rowValue, "0", String.format(ASSERT_NOT_EQUALS, rowValue, "0"));
+        powerAssert.assertAll();
     }
 
     @Test(priority = 31, description = "Create row", dependsOnMethods = {"showHierarchyViewFromPopup"})
@@ -601,7 +602,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         waitForPageToLoad();
         sublocationWizardPage.clickNext();
         sublocationWizardPage.create();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create row", "row creation"));
     }
 
     @Test(priority = 32, description = "Create 3 footprints", dependsOnMethods = {"showHierarchyViewFromPopup"})
@@ -622,7 +623,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         sublocationWizardPage.setQuantity("3");
         waitForPageToLoad();
         sublocationWizardPage.create();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create footprint", "footprint creation"));
     }
 
     @Test(priority = 33, description = "Set rack Precise Location to footprint", dependsOnMethods = {"setMountingEditor"})
@@ -635,7 +636,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         sublocationWizardPage.setPreciseLocation(FOOTPRINT_1);
         waitForPageToLoad();
         sublocationWizardPage.create();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Precise rack location", "precising rack location"));
     }
 
     @Test(priority = 34, description = "Set device Precise Location to footprint", dependsOnMethods = {"createFootprint"})
@@ -652,49 +653,49 @@ public class ISPConfigurationTest extends BaseTestCase {
         waitForPageToLoad();
         deviceWizardPage.acceptUpdateWizard();
         waitForPageToLoad();
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Precise device location", "precising device location"));
     }
 
     @Test(priority = 35, description = "Delete power supply unit", dependsOnMethods = {"createPowerSupplyUnit"})
     @Description("Delete power supply unit and check confirmation system message")
     public void deletePowerSupplyUnit() {
         deleteObjectFromDeviceTab(POWER_SUPPLY_UNIT_NAME);
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete power supply unit", "power supply unit delete"));
     }
 
     @Test(priority = 36, description = "Delete power device", dependsOnMethods = {"createPowerDevice"})
     @Description("Delete power device and check confirmation system message")
     public void deletePowerDevice() {
         deleteObjectFromDeviceTab(POWER_DEVICE_NAME);
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete power device", "power device delete"));
     }
 
     @Test(priority = 37, description = "Delete cooling unit", dependsOnMethods = {"createCoolingUnit"})
     @Description("Delete cooling unit and check confirmation system message")
     public void deleteCoolingUnit() {
         deleteObjectFromDeviceTab(COOLING_UNIT_NAME);
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete cooling unit", "cooling unit delete"));
     }
 
     @Test(priority = 38, description = "Delete third device", dependsOnMethods = {"createThirdDevice"})
     @Description("Delete third device and check confirmation system message")
     public void deleteThirdDevice() {
         deleteObjectFromDeviceTab(PHYSICAL_DEVICE_NAME3);
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete third device", "third device delete"));
     }
 
     @Test(priority = 39, description = "Delete second device", dependsOnMethods = {"createSecondDevice"})
     @Description("Delete second device and check confirmation system message")
     public void deleteSecondDevice() {
         deleteObjectFromDeviceTab(PHYSICAL_DEVICE_NAME2);
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete second device", "second device delete"));
     }
 
     @Test(priority = 40, description = "Delete first device", dependsOnMethods = {"createPhysicalDevice"})
     @Description("Delete first device and check confirmation system message")
     public void deletePhysicalDevice() {
         deleteObjectFromDeviceTab(PHYSICAL_DEVICE_NAME);
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete physical device", "physical device delete"));
     }
 
     @Test(priority = 41, description = "Delete cooling zone", dependsOnMethods = {"createCoolingZone"})
@@ -703,34 +704,35 @@ public class ISPConfigurationTest extends BaseTestCase {
         TableInterface tableWidget = getTableWidget(TABLE_COOLING_ZONES);
         tableWidget.selectFirstRow();
         tableWidget.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_COOLING_ZONE_ACTION_ID);
-        clickConfirmationBoxByLabel(DELETE_BUTTON_LABEL);//TODO po OSSPHY-56052 zmienić na id
-        checkPopupAndCloseMessage();
+        clickConfirmationBoxByLabel();//TODO po OSSPHY-56052 zmienić na id
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete cooling zone", "cooling zone delete"));
     }
 
     @Test(priority = 42, description = "Delete 3 footprints", dependsOnMethods = {"createFootprint"})
     @Description("Delete 3 footprints and check confirmation system message")
     public void deleteFootprints() {
         deleteObjectFromSublocationTab(FOOTPRINT_1);
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete footprints", "footprint 1 delete"));
 
         deleteObjectFromSublocationTab(FOOTPRINT_2);
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete footprints", "footprint 2 delete"));
 
         deleteObjectFromSublocationTab(FOOTPRINT_3);
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete footprints", "footprint 3 delete"));
     }
 
     @Test(priority = 43, description = "Delete row", dependsOnMethods = {"createRow"})
     @Description("Delete row and check confirmation system message")
     public void deleteRow() {
         deleteObjectFromSublocationTab(ROW_1);
-        checkPopupAndCloseMessage();
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete row", "row delete"));
     }
 
     @Test(priority = 44, description = "Delete room", dependsOnMethods = {"createRoom"})
     @Description("Delete room and check confirmation system message")
     public void deleteRoom() {
         deleteObjectFromSublocationTab(SUBLOCATION_NAME);
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete room", "room delete"));
     }
 
     @Test(priority = 45, description = "Delete location", dependsOnMethods = {"createBuilding"})
@@ -739,26 +741,37 @@ public class ISPConfigurationTest extends BaseTestCase {
         HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         hierarchyViewPage.selectFirstObject();
         hierarchyViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_LOCATION_ACTION_ID);
-        clickConfirmationBoxByLabel(DELETE_BUTTON_LABEL);//TODO po OSSPHY-56052 zmienić na id
-        checkPopupAndCloseMessage();
+        clickConfirmationBoxByLabel();//TODO po OSSPHY-56052 zmienić na id
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete location", "location delete"));
         waitForPageToLoad();
-        hierarchyViewPage.hasNoData();
+        Assert.assertTrue(hierarchyViewPage.hasNoData());
     }
 
-    private void checkPopup() {
-        getSuccesSystemMessage();
+    @Test(priority = 46, description = "Checking system message summary")
+    @Description("Checking system message summary")
+    public void systemMessageSummary() {
+        softAssert.assertAll();
+    }
+
+    private void checkPopup(String systemMessageLog) {
+        getSuccesSystemMessage(systemMessageLog);
         waitForPageToLoad();
     }
 
-    private void checkPopupAndCloseMessage() {
-        SystemMessageInterface systemMessage = getSuccesSystemMessage();
+    private void checkPopupAndCloseMessage(String systemMessageLog) {
+        SystemMessageInterface systemMessage = getSuccesSystemMessage(systemMessageLog);
         systemMessage.close();
         waitForPageToLoad();
     }
 
-    private SystemMessageInterface getSuccesSystemMessage() {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
-        Assert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
+    private SystemMessageInterface getSuccesSystemMessage(String systemMessageLog) {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 5));
+        Optional<SystemMessageContainer.Message> firstSystemMessage = systemMessage.getFirstMessage();
+        softAssert.assertTrue(firstSystemMessage.isPresent(), systemMessageLog);
+        if (firstSystemMessage.isPresent()) {
+            softAssert.assertEquals((systemMessage.getFirstMessage()
+                    .orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), SystemMessageContainer.MessageType.SUCCESS, systemMessageLog);
+        }
         return systemMessage;
     }
 
@@ -778,7 +791,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         TableWidget tableWidget = getTableWidget(TABLE_SUBLOCATIONS);
         unselectAllAndSelectRow(tableWidget, objectName);
         tableWidget.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_SUBLOCATION_ACTION_ID);
-        clickConfirmationBoxByLabel(DELETE_BUTTON_LABEL);//TODO po OSSPHY-56052 zmienić na id
+        clickConfirmationBoxByLabel();//TODO po OSSPHY-56052 zmienić na id
     }
 
     private TableWidget getTableWidget(String tableId) {
@@ -802,8 +815,8 @@ public class ISPConfigurationTest extends BaseTestCase {
         ConfirmationBox.create(driver, webDriverWait).clickButtonById(actionId);
     }
 
-    private void clickConfirmationBoxByLabel(String actionLabel) {
-        ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(actionLabel);
+    private void clickConfirmationBoxByLabel() {
+        ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(ISPConfigurationTest.DELETE_BUTTON_LABEL);
     }
 
     private void unselectAllAndSelectRow(TableWidget tableWidget, String value) {
