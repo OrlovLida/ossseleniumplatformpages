@@ -22,7 +22,8 @@ public class ExportByScheduleTest extends BaseTestCase {
     private static final String EXPORT_BUTTON_ID = "exportButton";
     private static final String TEST_MOVIE_TYPE = "TestMovie";
     private static final String TASK_NAME = "Test_Export" + FakeGenerator.getRandomInt();
-    
+    private static final String TIME_INPUT = "timeInput";
+    private static final String TIME_SINGLE = "timeSingle";
     private SchedulerServicePage schedulerServicePage;
     
     @BeforeMethod
@@ -40,7 +41,7 @@ public class ExportByScheduleTest extends BaseTestCase {
                 .typeTaskName(TASK_NAME)
                 .chooseSingleSchedule()
                 .setActualDate()
-                .setTime("2359")
+                .setTime(TIME_SINGLE, "2359")
                 .closeTheWizard();
         schedulerServicePage = SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
@@ -57,7 +58,7 @@ public class ExportByScheduleTest extends BaseTestCase {
                 .goToTheScheduleTask()
                 .typeTaskName(TASK_NAME)
                 .chooseDailySchedule()
-                .setActualTime()
+                .setActualTime(TIME_INPUT)
                 .closeTheWizard();
         schedulerServicePage = SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
@@ -73,8 +74,8 @@ public class ExportByScheduleTest extends BaseTestCase {
                 .goToTheScheduleTask()
                 .typeTaskName(TASK_NAME)
                 .chooseWeeklySchedule()
-                .repeatEveryWeekOn(1)
-                .setActualTime()
+                .repeatEveryWeekOn("Mon")
+                .setActualTime("timeInputWeekly")
                 .closeTheWizard();
         schedulerServicePage = SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
@@ -91,7 +92,7 @@ public class ExportByScheduleTest extends BaseTestCase {
                 .typeTaskName(TASK_NAME)
                 .chooseMonthlySchedule()
                 .repeatEveryDayMonthly("1")
-                .setActualTime()
+                .setActualTime(TIME_INPUT)
                 .closeTheWizard();
         schedulerServicePage = SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
@@ -109,7 +110,7 @@ public class ExportByScheduleTest extends BaseTestCase {
                 .chooseYearlySchedule()
                 .repeatEveryMonth("June")
                 .repeatEveryDayYearly("1")
-                .setActualTime()
+                .setActualTime(TIME_INPUT)
                 .closeTheWizard();
         schedulerServicePage = SchedulerServicePage.goToSchedulerServicePage(driver, BASIC_URL);
         schedulerServicePage
