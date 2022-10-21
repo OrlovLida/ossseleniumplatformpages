@@ -25,21 +25,21 @@ import java.util.Objects;
 @Listeners({TestListener.class})
 public class ImportExportModelTest extends BaseTestCase {
     private static final String BPM_USER_LOGIN = "bpm_webselenium";
-    private static final String BPM_USER_PASSWORD = "bpmweb";
+    private static final String BPM_USER_PASSWORD = "Webtests123!";
     private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private static final String BPM_ADMIN_USER_PASSWORD = "bpmweb";
+    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
 
     private static final String SUCCESS_FILE_UPLOAD_MESSAGE = "Upload success";
     private static final String CANNOT_LOAD_FILE_EXCEPTION = "Cannot load file";
     private static final String FILE_NOT_DELETED_EXCEPTION = "File is not properly deleted";
     private static final String DOMAIN = "Inventory Processes";
-    private static final String MODEL_NAME = "bpm_selenium_test_process";
+    private static final String MODEL_NAME = "bpm_selenium_import_export_model";
     private static final String FILE_NAME = MODEL_NAME.replaceAll(" ", "+");
     private static final String BAR_EXTENSION = ".bar";
     private static final String ZIP_EXTENSION = ".zip";
     private static final String OTHER_GROUP_ID = "other";
     private static final String IMPORT_ID = "import";
-    private static final String IMPORT_PATH = "bpm/bpm_selenium_test_process.bar";
+    private static final String IMPORT_PATH = "bpm/bpm_selenium_import_export_model.bar";
     private final String modelKeyword = "Selenium " + (int) (Math.random() * 100001);
 
     @BeforeClass

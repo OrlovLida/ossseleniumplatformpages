@@ -44,10 +44,10 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     private static final String SECOND_TASK_NAME = "Second Task";
     private static final String MISSING_NAME_EXCEPTION = "Missing Name";
     private static final String DOMAIN = "Inventory Processes";
-    private static final String MODEL_NAME = "bpm_selenium_test_process";
+    private static final String MODEL_NAME = "bpm_selenium_edit_milestones_for_process_model";
     private static final String OTHER_GROUP_ID = "other";
     private static final String IMPORT_ID = "import";
-    private static final String IMPORT_PATH = "bpm/bpm_selenium_test_process.bar";
+    private static final String IMPORT_PATH = "bpm/bpm_selenium_edit_milestones_for_process_model.bar";
     private static final String SUCCESS_UPDATE_MILESTONES_MESSAGE = "Milestones were updated successfully.";
     private static final String EMPTY_NAME_ERROR_MESSAGE = "Name of milestone can not be empty.";
     private static final String EDIT_MILESTONES_WIZARD_ID = "bpm_models_view_milestones-popup_wizard-app-id";
