@@ -655,7 +655,6 @@ public class ISPConfigurationTest extends BaseTestCase {
         deviceWizardPage.setPreciseLocation(FOOTPRINT_3);
         waitForPageToLoad();
         deviceWizardPage.acceptUpdateWizard();
-        waitForPageToLoad();
         checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Precise device location", "precising device location"));
     }
 
