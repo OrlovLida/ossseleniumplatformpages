@@ -6,18 +6,20 @@
  */
 package com.oss.transport.trail;
 
+import org.assertj.core.api.Assertions;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.prompts.ConfirmationBox;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.IPLinkWizardPage;
 import com.oss.pages.transport.trail.MPLSNetworkWizardPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.pages.transport.trail.TerminationWizardPage;
-import org.assertj.core.api.Assertions;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Robert Nawrat
@@ -36,14 +38,17 @@ public class MPLSNetworkTest extends BaseTestCase {
     private static final String TYPE_COLUMN = "Type";
     private static final String START = "Start";
     private static final String END = "End";
-
+    private static final String NAME_COLUMN_LABEL = "Name";
+    private static final String CONNECTION_NAME_COLUMN_ID = "trail.name";
+    private static final String LOCATION_NAME_COLUMN_ID = "location.name";
+    private static final String DEVICE_NAME_COLUMN_ID = "physicalDevice.name";
     private NetworkViewPage networkView;
 
     @BeforeClass
     public void init() {
         networkView = new NetworkViewPage(driver);
-        //Use SideMenu class to open Network View
-        //networkView.openNetworkView();
+        driver.get(String.format("%s/#/view/transport/trail/network?perspective=LIVE", BASIC_URL));
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 1)
@@ -56,8 +61,7 @@ public class MPLSNetworkTest extends BaseTestCase {
 
     @Test(priority = 2)
     public void createMPLSNetworkWithEmptyAllOptionalAttributes() {
-        //Adapt usage of method to new definition
-        //networkView.selectObject(MPLS_NETWORK_1);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, MPLS_NETWORK_1);
         MPLSNetworkWizardPage mplsNetworkWizard = networkView.openCreateTrailWizard(MPLSNetworkWizardPage.class);
         mplsNetworkWizard.proceed();
         assertMPLSNetworkAttributes(getMPLSNetworkAttributesDefaultValues());
@@ -73,9 +77,8 @@ public class MPLSNetworkTest extends BaseTestCase {
 
     @Test(priority = 4)
     public void clearMPLSNetworkAllOptionalAttributes() {
-        //Adapt usage of method to new definition
-        //networkView.selectObject(MPLS_NETWORK_2);
-        //networkView.unselectObject(MPLS_NETWORK_1);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, MPLS_NETWORK_2);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, MPLS_NETWORK_1);
         MPLSNetworkWizardPage mplsNetworkWizard = networkView.openUpdateTrailWizard(MPLSNetworkWizardPage.class);
         clearAllOptionalAttributes(mplsNetworkWizard);
         mplsNetworkWizard.proceed();
@@ -84,43 +87,35 @@ public class MPLSNetworkTest extends BaseTestCase {
 
     @Test(priority = 5)
     public void createIPLink() {
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(MPLS_NETWORK);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, MPLS_NETWORK);
         IPLinkWizardPage ipLinkWizard = networkView.openCreateTrailWizard(IPLinkWizardPage.class);
         ipLinkWizard.proceed();
-        //Adapt usage of method to new definition
-        //Assertions.assertThat(networkView.isObjectInViewContent(IP_LINK)).isTrue();
+        Assertions.assertThat(networkView.isObjectInViewContent(NAME_COLUMN_LABEL, IP_LINK)).isTrue();
     }
 
     @Test(priority = 6)
     public void addIPLinkToRouting() {
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(IP_LINK);
-        //networkView.selectObject(MPLS_NETWORK);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, IP_LINK);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, MPLS_NETWORK);
         networkView.startEditingSelectedTrail();
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(MPLS_NETWORK);
-        //networkView.selectObject(IP_LINK);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, MPLS_NETWORK);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, IP_LINK);
         RoutingWizardPage routingWizard = networkView.addSelectedObjectsToRouting();
         routingWizard.proceed();
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(IP_LINK);
-        //networkView.selectObject(MPLS_NETWORK);
-        //Adapt usage of method to new definition
-        //Assertions.assertThat(networkView.isObjectInRouting1stLevel(IP_LINK)).isTrue();
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, IP_LINK);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, MPLS_NETWORK);
+        Assertions.assertThat(networkView.isObjectInRouting1stLevel(IP_LINK, CONNECTION_NAME_COLUMN_ID)).isTrue();
     }
 
     @Test(priority = 7)
     public void createDevice() {
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(MPLS_NETWORK);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, MPLS_NETWORK);
         DeviceWizardPage deviceWizard = networkView.openCreateDeviceWizard();
         deviceWizard.setModel(DEVICE_MODEL);
         deviceWizard.setName(DEVICE);
         deviceWizard.setLocation(LOCATION);
         deviceWizard.create();
-        //Adapt usage of method to new definition
-        //Assertions.assertThat(networkView.isObjectInViewContent(DEVICE)).isTrue();
+        Assertions.assertThat(networkView.isObjectInViewContent(NAME_COLUMN_LABEL, DEVICE)).isTrue();
     }
 
     @Test(priority = 8)
@@ -128,41 +123,36 @@ public class MPLSNetworkTest extends BaseTestCase {
         TerminationWizardPage terminationWizard = networkView.addSelectedObjectsToTermination();
         terminationWizard.setTerminationType(TerminationWizardPage.TerminationType.Start);
         terminationWizard.proceed();
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(DEVICE);
-        //networkView.selectObject(MPLS_NETWORK);
-        //Assertions.assertThat(networkView.isObjectInTerminations(DEVICE)).isTrue();
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, MPLS_NETWORK);
+        Assertions.assertThat(networkView.isObjectInTerminations(DEVICE, DEVICE_NAME_COLUMN_ID)).isTrue();
     }
 
     @Test(priority = 9)
     public void addLocationToTerminations() {
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(MPLS_NETWORK);
-        //networkView.selectObject(LOCATION);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, MPLS_NETWORK);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, LOCATION);
         TerminationWizardPage terminationWizard = networkView.addSelectedObjectsToTermination();
         terminationWizard.setTerminationType(TerminationWizardPage.TerminationType.End);
         terminationWizard.clearNetworkElement();
         terminationWizard.proceed();
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(LOCATION);
-        //networkView.selectObject(MPLS_NETWORK);
-        //Assertions.assertThat(networkView.isObjectInTerminations(LOCATION)).isTrue();
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, LOCATION);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, MPLS_NETWORK);
+        Assertions.assertThat(networkView.isObjectInTerminations(LOCATION, LOCATION_NAME_COLUMN_ID)).isTrue();
     }
 
     @Test(priority = 10)
     public void addDeviceAndLocationToElementRoutingSegments() {
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(MPLS_NETWORK);
-        //networkView.selectObject(LOCATION);
-        //networkView.selectObject(DEVICE);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, MPLS_NETWORK);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, LOCATION);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, DEVICE);
         RoutingWizardPage routingWizard = networkView.addSelectedObjectsToRouting();
         routingWizard.accept();
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(DEVICE);
-        //networkView.unselectObject(LOCATION);
-        //networkView.selectObject(MPLS_NETWORK);
-        //Assertions.assertThat(networkView.isObjectInRoutingElements(DEVICE)).isTrue();
-        //Assertions.assertThat(networkView.isObjectInRoutingElements(LOCATION)).isTrue();
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, LOCATION);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, MPLS_NETWORK);
+        Assertions.assertThat(networkView.isObjectInRoutingElements(NAME_COLUMN_LABEL, DEVICE)).isTrue();
+        Assertions.assertThat(networkView.isObjectInRoutingElements(NAME_COLUMN_LABEL, LOCATION)).isTrue();
     }
 
     @Test(priority = 11)
@@ -171,9 +161,8 @@ public class MPLSNetworkTest extends BaseTestCase {
         networkView.removeSelectedTerminations();
         networkView.selectTermination(TYPE_COLUMN, END);
         networkView.removeSelectedTerminations();
-        //Adapt usage of method to new definition
-        //Assertions.assertThat(networkView.isObjectInTerminations(DEVICE)).isFalse();
-        //Assertions.assertThat(networkView.isObjectInTerminations(LOCATION)).isFalse();
+        Assertions.assertThat(networkView.isObjectInTerminations(DEVICE, DEVICE_NAME_COLUMN_ID)).isFalse();
+        Assertions.assertThat(networkView.isObjectInTerminations(LOCATION, LOCATION_NAME_COLUMN_ID)).isFalse();
     }
 
     @Test(priority = 12)
@@ -182,39 +171,32 @@ public class MPLSNetworkTest extends BaseTestCase {
         networkView.deleteSelectedElementsFromRouting();
         networkView.selectRoutingElement(TYPE_COLUMN, LOCATION_TYPE);
         networkView.deleteSelectedElementsFromRouting();
-        //Adapt usage of method to new definition
-        //Assertions.assertThat(networkView.isObjectInRoutingElements(DEVICE)).isFalse();
-        //Assertions.assertThat(networkView.isObjectInRoutingElements(LOCATION)).isFalse();
+        Assertions.assertThat(networkView.isObjectInRoutingElements(NAME_COLUMN_LABEL, DEVICE)).isFalse();
+        Assertions.assertThat(networkView.isObjectInRoutingElements(NAME_COLUMN_LABEL, LOCATION)).isFalse();
     }
 
     @Test(priority = 13)
     public void removeTrailFromRouting() {
-        //Adapt method call to changes
-        //networkView.selectConnectionInRouting(IP_LINK);
+        networkView.selectConnectionInRouting(CONNECTION_NAME_COLUMN_ID, IP_LINK);
         networkView.deleteSelectedConnectionsFromRouting();
-        //Adapt usage of method to new definition
-        //Assertions.assertThat(networkView.isObjectInRouting1stLevel(IP_LINK)).isFalse();
+        Assertions.assertThat(networkView.isObjectInRouting1stLevel(IP_LINK, CONNECTION_NAME_COLUMN_ID)).isFalse();
     }
 
     @Test(priority = 14)
     public void deleteTrails() {
-        //Adapt usage of method to new definition
-        //networkView.selectObject(MPLS_NETWORK_2);
-        //networkView.selectObject(IP_LINK);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, MPLS_NETWORK_2);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, IP_LINK);
         networkView.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID, ConfirmationBox.PROCEED);
-        //Adapt usage of method to new definition
-        //Assertions.assertThat(networkView.isObjectInViewContent(MPLS_NETWORK)).isFalse();
-        //Assertions.assertThat(networkView.isObjectInViewContent(MPLS_NETWORK_2)).isFalse();
-        //Assertions.assertThat(networkView.isObjectInViewContent(IP_LINK)).isFalse();
+        Assertions.assertThat(networkView.isObjectInViewContent(NAME_COLUMN_LABEL, MPLS_NETWORK)).isFalse();
+        Assertions.assertThat(networkView.isObjectInViewContent(NAME_COLUMN_LABEL, MPLS_NETWORK_2)).isFalse();
+        Assertions.assertThat(networkView.isObjectInViewContent(NAME_COLUMN_LABEL, IP_LINK)).isFalse();
     }
 
     @Test(priority = 15)
     public void deleteDevice() {
-        //Adapt usage of method to new definition
-        //networkView.selectObject(DEVICE);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, DEVICE);
         networkView.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_ELEMENT_ACTION, ConfirmationBox.YES);
-        //Adapt usage of method to new definition
-        //Assertions.assertThat(networkView.isObjectInViewContent(DEVICE)).isFalse();
+        Assertions.assertThat(networkView.isObjectInViewContent(NAME_COLUMN_LABEL, DEVICE)).isFalse();
     }
 
     private MPLSNetworkAttributes getMPLSNetworkAttributesToCreate() {

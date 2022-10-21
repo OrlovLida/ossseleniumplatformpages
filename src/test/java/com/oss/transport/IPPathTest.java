@@ -23,8 +23,6 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 @Listeners({TestListener.class})
 public class IPPathTest extends BaseTestCase {
 
@@ -37,7 +35,6 @@ public class IPPathTest extends BaseTestCase {
     private static final String CAPACITY_VALUE_2 = "110";
     private static final String DEVICE_1 = "SeleniumTestDevice_IPPath_1";
     private static final String DEVICE_2 = "SeleniumTestDevice_IPPath_2";
-
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String CONNECTION_NAME_COLUMN_ID = "trail.name";
 
