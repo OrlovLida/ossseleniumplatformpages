@@ -229,7 +229,6 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
         editWizard.editMilestone(editManualCompletionMilestone);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        milestoneViewPage.selectMilestone(milestoneName2);
         changeMilestoneState(IN_PROGRESS_STATE, COMPLETED_STATE, false);
     }
 
