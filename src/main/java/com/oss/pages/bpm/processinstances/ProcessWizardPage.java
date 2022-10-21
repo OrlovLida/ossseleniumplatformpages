@@ -278,7 +278,8 @@ public class ProcessWizardPage extends BasePage {
             if (part.startsWith("NRP-") || part.startsWith("DCP-")
                     || part.startsWith("IP-") || part.startsWith("DRP-")
                     || part.startsWith("ML-") || part.startsWith("audit_roles-")
-                    || part.startsWith("audit-")) {
+                    || part.startsWith("audit1-") || part.startsWith("audit2-")
+                    || part.startsWith("audit_milestone-") || part.startsWith("audit_param-")) {
                 return part;
             }
         }
