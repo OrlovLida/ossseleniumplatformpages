@@ -80,6 +80,11 @@ public class IPLinkTest extends BaseTestCase {
     private static final String DEVICE_2_NAME = "device2";
     private static final String PORT_NAME = "CLUSTER 0";
     private static final String ETHERNET_INTERFACE_NAME = "ETH";
+    private static final String NAME_COLUMN_LABEL = "Name";
+    private static final String CONNECTION_NAME_COLUMN_ID = "trail.name";
+    private static final String LOCATION_NAME_COLUMN_ID = "location.name";
+    private static final String DEVICE_NAME_COLUMN_ID = "physicalDevice.name";
+    private static final String OBJECT_TYPE_COLUMN_LABEL = "Object Type";
 
     private static final String IP_LINK_TYPE = "IP Link";
 
@@ -95,9 +100,8 @@ public class IPLinkTest extends BaseTestCase {
     @Description("Open network view in live perspective")
     public void init() {
         networkView = new NetworkViewPage(driver);
-
-        //Use SideMenu class to open Network View
-        //networkView.openNetworkView();
+        driver.get(String.format("%s/#/view/transport/trail/network?perspective=LIVE", BASIC_URL));
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
     }
 
@@ -126,16 +130,14 @@ public class IPLinkTest extends BaseTestCase {
     public void createIpDevices() {
         createIpDevice(DEVICE_1_NAME);
         createIpDevice(DEVICE_2_NAME);
-        //Adapt usage of method to new definition
-        //networkView.isObjectInViewContent(DEVICE_1_NAME);
-        //networkView.isObjectInViewContent(DEVICE_2_NAME);
+        networkView.isObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_1_NAME);
+        networkView.isObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_2_NAME);
     }
 
     private void createIpDevice(String deviceName) {
         DeviceWizardPage deviceWizard = networkView.openCreateDeviceWizard();
         deviceWizard.createDevice(DEVICE_MODEL, deviceName, LOCATION_NAME);
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(deviceName);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, deviceName);
     }
 
     @Test(priority = 4)
@@ -165,7 +167,7 @@ public class IPLinkTest extends BaseTestCase {
     }
 
     private IPLinkWizardAttributesStepPage openCreateIPLinkWizard() {
-        networkView.openWizardPage(IPLinkWizardAttributesStepPage.TRAIL_TYPE);
+        networkView.openConnectionWizard(IPLinkWizardAttributesStepPage.TRAIL_TYPE);
         return IPLinkWizardAttributesStepPage.getAttributesStepPage(driver);
     }
 
@@ -188,9 +190,8 @@ public class IPLinkTest extends BaseTestCase {
     }
 
     private void selectDevices() {
-        //Adapt usage of method to new definition
-        //networkView.selectObject(DEVICE_1_NAME);
-        //networkView.selectObject(DEVICE_2_NAME);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, DEVICE_1_NAME);
+        networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, DEVICE_2_NAME);
     }
 
     private void fillTermination(TerminationStepPage terminationStep, TerminationStepPage.TerminationType terminationType) {
@@ -217,8 +218,7 @@ public class IPLinkTest extends BaseTestCase {
 
     private void assertCreatedIPLink(IPLinkAttributes attributesToCreate) {
         assertIPLinkAttributes(attributesToCreate);
-        //Adapt usage of method to new definition
-        //networkView.isObjectInRouting1stLevel(IP_LINK_NAME);
+        networkView.isObjectInRouting1stLevel(IP_LINK_NAME, CONNECTION_NAME_COLUMN_ID);
     }
 
     private void assertEthernetLinkAttributes(IPLinkAttributes expected) {
@@ -237,8 +237,7 @@ public class IPLinkTest extends BaseTestCase {
         createEmptyIPLink();
         IPLinkAttributes expectedAttributes = prepareEmptyIPLinkExpectedAttributes();
         assertIPLinkAttributes(expectedAttributes);
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(IP_LINK_TYPE);
+        networkView.unselectObjectInViewContent(OBJECT_TYPE_COLUMN_LABEL, IP_LINK_TYPE);
     }
 
     private void createEmptyIPLink() {
@@ -270,8 +269,7 @@ public class IPLinkTest extends BaseTestCase {
         IPLinkAttributes attributesToUpdate = prepareIPLinkAttributesToUpdate();
         updateIPLinkWithAttributes(attributesToUpdate);
         assertIPLinkAttributes(attributesToUpdate);
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(UPDATED_IP_LINK_NAME);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME);
     }
 
     private IPLinkAttributes prepareIPLinkAttributesToUpdate() {
@@ -293,8 +291,7 @@ public class IPLinkTest extends BaseTestCase {
     }
 
     private void updateIPLinkWithAttributes(IPLinkAttributes attributesToUpdate) {
-        //Adapt usage of method to new definition
-        //networkView.selectObject(IP_LINK_TYPE);
+        networkView.selectObjectInViewContent(OBJECT_TYPE_COLUMN_LABEL, IP_LINK_TYPE);
         networkView.useContextAction(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.ATTRIBUTES_AND_TERMINATIONS_ACTION);
         IPLinkWizardAttributesStepPage ipLinkWizard = IPLinkWizardAttributesStepPage.getAttributesStepPage(driver);
         fillAttributes(ipLinkWizard, attributesToUpdate);
@@ -352,54 +349,48 @@ public class IPLinkTest extends BaseTestCase {
     @Test(priority = 7)
     @Description("Add IP Device and Location to IP Link routing")
     public void addIpDeviceAndLocationToRouting() {
-        //Adapt usage of method to new definition
-        //networkView.selectObject(UPDATED_IP_LINK_NAME);
+        networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME);
         networkView.startEditingSelectedTrail();
-        //networkView.unselectObject(UPDATED_IP_LINK_NAME);
-        //networkView.selectObject(DEVICE_1_NAME);
-        //networkView.selectObject(LOCATION_NAME);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME);
+        networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_1_NAME);
+        networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, LOCATION_NAME);
         RoutingWizardPage routingWizard = networkView.addSelectedObjectsToRouting();
         routingWizard.accept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(DEVICE_1_NAME);
-        //networkView.unselectObject(LOCATION_NAME);
-        //networkView.selectObject(UPDATED_IP_LINK_NAME);
-        //Assert.assertTrue(networkView.isObjectInRoutingElements(DEVICE_1_NAME));
-        //Assert.assertTrue(networkView.isObjectInRoutingElements(LOCATION_NAME));
-        //networkView.unselectObject(UPDATED_IP_LINK_NAME);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_1_NAME);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, LOCATION_NAME);
+        networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME);
+        Assert.assertTrue(networkView.isObjectInRoutingElements(NAME_COLUMN_LABEL, DEVICE_1_NAME));
+        Assert.assertTrue(networkView.isObjectInRoutingElements(NAME_COLUMN_LABEL, LOCATION_NAME));
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME);
     }
 
     @Test(priority = 8)
     @Description("Add Location to IP Link terminations")
     public void addLocationToTerminations() {
-        //Adapt usage of method to new definition
-        //networkView.selectObject(LOCATION_NAME);
+        networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, LOCATION_NAME);
         TerminationStepPage terminationStep = networkView.addSelectedObjectsToTerminationV2();
         terminationStep.chooseTerminationType(TerminationType.START);
         terminationStep.accept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(LOCATION_NAME);
-        //networkView.selectObject(UPDATED_IP_LINK_NAME);
-        //Assert.assertTrue(networkView.isObjectInTerminations(LOCATION_NAME));
-        //networkView.unselectObject(UPDATED_IP_LINK_NAME);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, LOCATION_NAME);
+        networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME);
+        Assert.assertTrue(networkView.isObjectInTerminations(LOCATION_NAME, LOCATION_NAME_COLUMN_ID));
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME);
     }
 
     @Test(priority = 9)
     @Description("Add IP Device to IP Link terminations")
     public void addIpDeviceToTerminations() {
-        //Adapt usage of method to new definition
-        //networkView.selectObject(DEVICE_2_NAME);
+        networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_2_NAME);
         TerminationStepPage terminationStep = networkView.addSelectedObjectsToTerminationV2();
         terminationStep.chooseTerminationType(TerminationType.END);
         terminationStep.accept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        //Adapt usage of method to new definition
-        //networkView.unselectObject(DEVICE_2_NAME);
-        //networkView.selectObject(UPDATED_IP_LINK_NAME);
-        //Assert.assertTrue(networkView.isObjectInTerminations(DEVICE_2_NAME));
-        //networkView.unselectObject(DEVICE_2_NAME);
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_2_NAME);
+        networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME);
+        Assert.assertTrue(networkView.isObjectInTerminations(DEVICE_2_NAME, DEVICE_NAME_COLUMN_ID));
+        networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_2_NAME);
     }
 
     @Test(priority = 10)
@@ -409,9 +400,8 @@ public class IPLinkTest extends BaseTestCase {
         networkView.removeSelectedTerminations();
         networkView.selectTermination(TYPE_COLUMN, END_TYPE);
         networkView.removeSelectedTerminations();
-        //Adapt usage of method to new definition
-        //Assert.assertFalse(networkView.isObjectInTerminations(DEVICE_2_NAME));
-        //Assert.assertFalse(networkView.isObjectInTerminations(LOCATION_NAME));
+        Assert.assertFalse(networkView.isObjectInTerminations(DEVICE_2_NAME, DEVICE_NAME_COLUMN_ID));
+        Assert.assertFalse(networkView.isObjectInTerminations(LOCATION_NAME, LOCATION_NAME_COLUMN_ID));
     }
 
     @Test(priority = 11)
@@ -421,23 +411,19 @@ public class IPLinkTest extends BaseTestCase {
         networkView.deleteSelectedElementsFromRouting();
         networkView.selectRoutingElement(TYPE_COLUMN, LOCATION_TYPE);
         networkView.deleteSelectedElementsFromRouting();
-        //Adapt usage of method to new definition
-        //Assert.assertFalse(networkView.isObjectInRoutingElements(DEVICE_1_NAME));
-        //Assert.assertFalse(networkView.isObjectInRoutingElements(LOCATION_NAME));
+        Assert.assertFalse(networkView.isObjectInRoutingElements(NAME_COLUMN_LABEL, DEVICE_1_NAME));
+        Assert.assertFalse(networkView.isObjectInRoutingElements(NAME_COLUMN_LABEL, LOCATION_NAME));
     }
 
     @Test(priority = 12)
     @Description("Remove created IP Links and Ethernet Link")
     public void deleteCreatedTrails() {
-        //Use selectObjectInViewContent or selectObject method
         networkView.clickOnObject(IP_LINK_NAME, 1);
         networkView.clickOnObject(IP_LINK_NAME, 2);
-        //Adapt usage of method to new definition
-        //networkView.selectObject(UPDATED_IP_LINK_NAME);
+        networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME);
         networkView.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID, ConfirmationBox.DELETE);
-        //Adapt usage of method to new definition
-        //Assert.assertFalse(networkView.isObjectInViewContent(IP_LINK_NAME));
-        //Assert.assertFalse(networkView.isObjectInViewContent(UPDATED_IP_LINK_NAME));
+        Assert.assertFalse(networkView.isObjectInViewContent(NAME_COLUMN_LABEL, IP_LINK_NAME));
+        Assert.assertFalse(networkView.isObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME));
     }
 
     @Test(priority = 13)
@@ -448,11 +434,9 @@ public class IPLinkTest extends BaseTestCase {
     }
 
     private void deleteDevice(String deviceName) {
-        //Adapt usage of method to new definition
-        //networkView.selectObject(deviceName);
+        networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, deviceName);
         networkView.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_ELEMENT_ACTION, ConfirmationBox.YES);
-        //Adapt usage of method to new definition1
-        //Assert.assertFalse(networkView.isObjectInViewContent(deviceName));
+        Assert.assertFalse(networkView.isObjectInViewContent(NAME_COLUMN_LABEL, deviceName));
     }
 
     private static class IPLinkAttributes {

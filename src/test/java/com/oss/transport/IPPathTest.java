@@ -38,6 +38,10 @@ public class IPPathTest extends BaseTestCase {
     private static final String DEVICE_1 = "SeleniumTestDevice_IPPath_1";
     private static final String DEVICE_2 = "SeleniumTestDevice_IPPath_2";
 
+    private static final String NAME_COLUMN_LABEL = "Name";
+    private static final String CONNECTION_NAME_COLUMN_ID = "trail.name";
+
+
     @BeforeClass
     public void openWebConsole() {
         waitForPageToLoad();
@@ -80,8 +84,7 @@ public class IPPathTest extends BaseTestCase {
         networkViewPage.expandDockedPanel("left");
         waitForPageToLoad();
 
-        //Adapt usage of method to new definition
-        //networkViewPage.unselectObject(TRAIL_FOR_ROUTING);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_LABEL, TRAIL_FOR_ROUTING);
         waitForPageToLoad();
         networkViewPage.selectObjectInViewContent("Name", DEVICE_1);
         waitForPageToLoad();
@@ -117,18 +120,16 @@ public class IPPathTest extends BaseTestCase {
         waitForPageToLoad();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.startEditingSelectedTrail();
-        //Adapt usage of method to new definition
-        //networkViewPage.unselectObject(IP_PATH_NAME_2);
-        //networkViewPage.selectObject(TRAIL_FOR_ROUTING);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_LABEL, IP_PATH_NAME_2);
+        networkViewPage.selectObjectInViewContent(NAME_COLUMN_LABEL, TRAIL_FOR_ROUTING);
         RoutingWizardPage routingWizard = networkViewPage.addSelectedObjectsToRouting();
         routingWizard.proceed();
         waitForPageToLoad();
         networkViewPage.stopEditingTrail();
         waitForPageToLoad();
-        //Adapt usage of method to new definition
-        //networkViewPage.unselectObject(TRAIL_FOR_ROUTING);
-        //networkViewPage.selectObject(IP_PATH_NAME_2);
-        //Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(TRAIL_FOR_ROUTING));
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_LABEL, TRAIL_FOR_ROUTING);
+        networkViewPage.selectObjectInViewContent(NAME_COLUMN_LABEL, IP_PATH_NAME_2);
+        Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(TRAIL_FOR_ROUTING, CONNECTION_NAME_COLUMN_ID));
     }
 
     @Test(priority = 6)

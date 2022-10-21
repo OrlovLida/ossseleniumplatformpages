@@ -115,7 +115,7 @@ public class NetworkViewPage extends BasePage {
     }
 
     @Step("Open new Trail create wizard")
-    public void openWizardPage(String trailType) {
+    public void openConnectionWizard(String trailType) {
         useContextAction(ActionsContainer.CREATE_GROUP_ID, CREATE_CONNECTION_ID);
         selectTrailType(trailType);
         acceptTrailType();
@@ -155,7 +155,7 @@ public class NetworkViewPage extends BasePage {
         } catch (Exception ignored) {
             throw new IllegalStateException(TRAIL_WIZARD_ERROR_MESSAGE + trailWizardPageClass.getSimpleName());
         }
-        openWizardPage(trailWizardPage.getTrailType());
+        openConnectionWizard(trailWizardPage.getTrailType());
         return trailWizardPage;
     }
 
@@ -200,8 +200,8 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Open modify termination wizard")
     public void modifyTermination() {
-        TableWidget tabsWidget = TableWidget.createById(driver, TERMINATION_TABLE_APP_ID, wait);
-        tabsWidget.callAction(EDIT_GROUP_ID, MODIFY_TERMINATION_ACTION_ID);
+        TableWidget tableWidget = TableWidget.createById(driver, TERMINATION_TABLE_APP_ID, wait);
+        tableWidget.callAction(EDIT_GROUP_ID, MODIFY_TERMINATION_ACTION_ID);
     }
 
     @Step("Expand docked panel")
@@ -236,27 +236,19 @@ public class NetworkViewPage extends BasePage {
     @Step("Select object in view content")
     public void selectObjectInViewContent(String attributeLabel, String value) {
         waitForPageToLoad();
-        getOldTable(CONTENT_VIEW_TABLE_APP_ID).selectRowContains(attributeLabel, value);
+        getOldTable(CONTENT_VIEW_TABLE_APP_ID).selectRowByAttributeValueWithLabel(attributeLabel, value);
+    }
+
+    @Step("Select object in View content")
+    public void selectObjectInViewContentContains(String attributeLabel, String value) {
+        expandViewContentPanel();
+        selectObjectInViewContentByPartialName(attributeLabel, value);
     }
 
     @Step("Unselect object in view content")
     public void unselectObjectInViewContent(String attributeLabel, String value) {
         waitForPageToLoad();
         getOldTable(CONTENT_VIEW_TABLE_APP_ID).unselectRow(attributeLabel, value);
-    }
-
-    // TODO: OSSTPT-30835 - select object only when it's not selected
-    @Step("Select object in View content")
-    public void selectObject(String attributeLabel, String value) {
-        expandViewContentPanel();
-        clickOnObjectInViewContentByPartialName(attributeLabel, value);
-    }
-
-    // TODO: OSSTPT-30835 - unselect object only when it's selected
-    @Step("Unselect object in View content")
-    public void unselectObject(String attributeLabel, String value) {
-        expandViewContentPanel();
-        clickOnObjectInViewContentByPartialName(attributeLabel, value);
     }
 
     @Step("Click on object in View content by partial name: {partialName} and index {index}")
@@ -287,7 +279,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Check object presence in View content")
     public boolean isObjectInViewContent(String attributeLabel, String value) {
-        return getOldTable(CONTENT_VIEW_TABLE_APP_ID).isValuePresentContains(attributeLabel, value);
+        return getOldTable(CONTENT_VIEW_TABLE_APP_ID).isValuePresent(attributeLabel, value);
     }
 
     @Step("Check object presence in Routing 1st level")
@@ -295,14 +287,29 @@ public class NetworkViewPage extends BasePage {
         return isObjectInTableWidgetTab(FIRST_LEVEL_ROUTING_TABLE_APP_ID, value, columnId);
     }
 
+    @Step("Check object presence in Routing 1st level")
+    public boolean isObjectInRouting1stLevelContains(String value, String columnId) {
+        return isObjectInTableWidgetTabContains(FIRST_LEVEL_ROUTING_TABLE_APP_ID, value, columnId);
+    }
+
     @Step("Check object presence in Routing Elements")
-    public boolean isObjectInRoutingElements(String value, String columnId) {
-        return isObjectInOldTableTab(ELEMENT_ROUTING_TABLE_APP_ID, value, columnId);
+    public boolean isObjectInRoutingElements(String columnLabel, String value) {
+        return isObjectInOldTableTab(ELEMENT_ROUTING_TABLE_APP_ID, columnLabel, value);
+    }
+
+    @Step("Check object presence in Routing Elements")
+    public boolean isObjectInRoutingElementsContains(String value, String columnId) {
+        return isObjectInOldTableTabContains(ELEMENT_ROUTING_TABLE_APP_ID, value, columnId);
     }
 
     @Step("Check object presence in Terminations")
     public boolean isObjectInTerminations(String value, String columnId) {
         return isObjectInTableWidgetTab(TERMINATIONS_TABLE_APP_ID, value, columnId);
+    }
+
+    @Step("Check object presence in Terminations")
+    public boolean isObjectInTerminationsContains(String value, String columnId) {
+        return isObjectInTableWidgetTabContains(TERMINATIONS_TABLE_APP_ID, value, columnId);
     }
 
     @Step("Suppress incomplete routing")
@@ -370,7 +377,7 @@ public class NetworkViewPage extends BasePage {
         return constructor.newInstance(driver);
     }
 
-    private void clickOnObjectInViewContentByPartialName(String attributeLabel, String value) {
+    private void selectObjectInViewContentByPartialName(String attributeLabel, String value) {
         getOldTable(LEFT_PANEL_TAB_ID).selectRowContains(attributeLabel, value);
         waitForPageToLoad();
     }
@@ -388,11 +395,19 @@ public class NetworkViewPage extends BasePage {
         getTabsWidget(OLD_TABLE_ID).selectTabByLabel(tabName);
     }
 
-    private boolean isObjectInOldTableTab(String tableId, String value, String columnId) {
-        return getOldTable(tableId).isValuePresentContains(value, columnId);
+    private boolean isObjectInOldTableTab(String tableId, String columnLabel, String value) {
+        return getOldTable(tableId).isValuePresent(columnLabel, value);
     }
 
     private boolean isObjectInTableWidgetTab(String tableId, String value, String columnId) {
+        return getTableWidget(tableId).isValuePresent(value, columnId);
+    }
+
+    private boolean isObjectInOldTableTabContains(String tableId, String value, String columnId) {
+        return getOldTable(tableId).isValuePresentContains(value, columnId);
+    }
+
+    private boolean isObjectInTableWidgetTabContains(String tableId, String value, String columnId) {
         return getTableWidget(tableId).isValuePresentContains(value, columnId);
     }
 

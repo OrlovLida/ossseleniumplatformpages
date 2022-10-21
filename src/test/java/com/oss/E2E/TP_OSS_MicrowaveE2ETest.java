@@ -290,7 +290,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
 
-        networkViewPage.openWizardPage(MICROWAVE_CHANNEL_TRAIL_TYPE);
+        networkViewPage.openConnectionWizard(MICROWAVE_CHANNEL_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveChannelAttributes firstMicrowaveChannelAttributes = getFirstMicrowaveChannelAttributes();
         MicrowaveChannelWizardPage firstMicrowaveChannelWizardPage = new MicrowaveChannelWizardPage(driver);
@@ -317,14 +317,14 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, firstMicrowaveChannel);
         waitForPageToLoad();
 
-        networkViewPage.openWizardPage(MICROWAVE_CHANNEL_TRAIL_TYPE);
+        networkViewPage.openConnectionWizard(MICROWAVE_CHANNEL_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveChannelAttributes secondMicrowaveChannelAttributes = getSecondMicrowaveChannelAttributes();
         MicrowaveChannelWizardPage secondMicrowaveChannelWizardPage = new MicrowaveChannelWizardPage(driver);
         fillMicrowaveChannelWizard(secondMicrowaveChannelWizardPage, secondMicrowaveChannelAttributes);
         waitForPageToLoad();
         assertMicrowaveChannel(networkViewPage, secondMicrowaveChannelAttributes);
-        // Czekamy na: OSSTRAIL-5488
+        TODO:
         //Add Terminations using Terminations Tab
 
         networkViewPage.startEditingSelectedTrail();
@@ -365,7 +365,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         waitForPageToLoad();
         networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, secondMicrowaveChannel);
 
-        networkViewPage.openWizardPage(MICROWAVE_LINK_TRAIL_TYPE);
+        networkViewPage.openConnectionWizard(MICROWAVE_LINK_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveLinkAttributes microwaveLinkAttributes = getMicrowaveLinkAttributes();
         MicrowaveLinkWizardPage microwaveLinkWizardPage = new MicrowaveLinkWizardPage(driver);
