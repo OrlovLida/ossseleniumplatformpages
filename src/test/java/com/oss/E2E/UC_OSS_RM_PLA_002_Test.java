@@ -421,6 +421,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
             waitForPageToLoad();
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
         }
+        networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.INFO);
         Assert.assertEquals(status, "SUCCESS");
     }
 
