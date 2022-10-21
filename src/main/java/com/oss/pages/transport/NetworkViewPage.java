@@ -22,10 +22,10 @@ import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
+import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.pages.transport.trail.TerminationWizardPage;
 import com.oss.pages.transport.trail.TrailWizardPage;
-import com.oss.pages.transport.trail.v2.TerminationStepPage;
 
 import io.qameta.allure.Step;
 
@@ -50,11 +50,9 @@ public class NetworkViewPage extends BasePage {
     public static final String CREATE_CONNECTION_ID = "CREATE_Create Connection-null";
     public static final String MODIFY_TERMINATION_ACTION_ID = "ModifyTerminationActionId";
     public static final String TRAIL_TYPE_ACCEPT_BUTTON_ID = "wizard-submit-button-trailTypeWizardWidget";
-
     private static final String START_EDITING_CONNECTION_ACTION = "EDIT_Start editing Connection-null";
     private static final String STOP_EDITING_CONNECTION_ACTION = "EDIT_Stop editing Connection-null";
     private static final String TERMINATION_ACTION = "EDIT_Add to Termination-null";
-    private static final String ADD_TO_GROUP_ACTION = "add_to_group";
     private static final String SUPPRESSION_WIZARD_CONTEXT_ACTION_ID = "vrSuppress";
     private static final String ACTION_CONTAINER_ID = "logicalview-windowToolbar";
     private static final String REMOVE_FROM_ROUTING_ACTION_ID = "DeleteRoutingActionId";
@@ -82,7 +80,6 @@ public class NetworkViewPage extends BasePage {
     private static final String VALIDATION_RESULTS_PANEL_ID = "plaValidationResultsV3ForProcessApp";
     private static final String REASON_FIELD_ID = "reasonField";
     private static final String ROUTING_ACTION_ID = "EDIT_Add to Routing-null";
-
     private static final String FIRST_LEVEL_ROUTING_TAB_LABEL = "Routing - 1st level";
     private static final String ELEMENT_ROUTING_TAB_LABEL = "Element Routing";
     private static final String TERMINATIONS_TAB_LABEL = "Terminations";
@@ -128,9 +125,9 @@ public class NetworkViewPage extends BasePage {
     }
 
     @Step("Add selected objects to Termination V2")
-    public TerminationStepPage addSelectedObjectsToTerminationV2() {
+    public ConnectionWizardPage addSelectedObjectsToTerminationV2() {
         useContextAction(EDIT_GROUP_ID, TERMINATION_ACTION);
-        return new TerminationStepPage(driver);
+        return new ConnectionWizardPage(driver);
     }
 
     @Step("Add selected objects to Termination")
@@ -351,19 +348,19 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Add element queried in advanced search")
     public void queryElementAndAddItToView(String componentId, String value) {
-        getAdvancedSearchWidget(ADVANCED_SEARCH_WIDGET_ID).getComponent(componentId).clearByAction();
-        getAdvancedSearchWidget(ADVANCED_SEARCH_WIDGET_ID).getComponent(componentId).setSingleStringValue(value);
+        getAdvancedSearchWidget().getComponent(componentId).clearByAction();
+        getAdvancedSearchWidget().getComponent(componentId).setSingleStringValue(value);
         waitForPageToLoad();
-        getAdvancedSearchWidget(ADVANCED_SEARCH_WIDGET_ID).getTableComponent().selectRow(0);
+        getAdvancedSearchWidget().getTableComponent().selectRow(0);
         DelayUtils.sleep(500);
         waitForPageToLoad();
-        getAdvancedSearchWidget(ADVANCED_SEARCH_WIDGET_ID).clickAdd();
+        getAdvancedSearchWidget().clickAdd();
         waitForPageToLoad();
     }
 
     @Step("Get value from Attributes panel")
     public String getAttributeValue(String attributeName) {
-        return getPropertyPanel(ATTRIBUTES_PANEL_ID).getPropertyValue(attributeName);
+        return getPropertyPanel().getPropertyValue(attributeName);
     }
 
     private OldActionsContainer getMainActionContainer() {
@@ -419,28 +416,28 @@ public class NetworkViewPage extends BasePage {
         return getWizard(SUPPRESSION_WIZARD_ID);
     }
 
-    private Wizard getWizard(String wizardId){
+    private Wizard getWizard(String wizardId) {
         return Wizard.createByComponentId(driver, wait, wizardId);
     }
 
-    private OldTable getOldTable(String oldTableId){
+    private OldTable getOldTable(String oldTableId) {
         return OldTable.createById(driver, wait, oldTableId);
     }
 
-    private TableWidget getTableWidget(String tableId){
+    private TableWidget getTableWidget(String tableId) {
         return TableWidget.createById(driver, tableId, wait);
     }
 
-    private TabsWidget getTabsWidget(String tabId){
+    private TabsWidget getTabsWidget(String tabId) {
         return TabsWidget.createById(driver, wait, tabId);
     }
 
-    private PropertyPanel getPropertyPanel(String propertyPanelId){
-        return PropertyPanel.createById(driver, wait, propertyPanelId);
+    private PropertyPanel getPropertyPanel() {
+        return PropertyPanel.createById(driver, wait, NetworkViewPage.ATTRIBUTES_PANEL_ID);
     }
 
-    private AdvancedSearchWidget getAdvancedSearchWidget(String advancedSearchWidgetId) {
-        return AdvancedSearchWidget.createById(driver, wait, advancedSearchWidgetId);
+    private AdvancedSearchWidget getAdvancedSearchWidget() {
+        return AdvancedSearchWidget.createById(driver, wait, NetworkViewPage.ADVANCED_SEARCH_WIDGET_ID);
     }
 
     private ChooseConfigurationWizard getChooseConfigurationWizard() {
@@ -489,7 +486,7 @@ public class NetworkViewPage extends BasePage {
     @Step("Set Configuration = {configurationName}")
     public void applyConfigurationForAttributesPanel(String configurationName) {
         waitForPageToLoad();
-        getPropertyPanel(ATTRIBUTES_PANEL_ID).callAction(GEAR_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_ID);
+        getPropertyPanel().callAction(GEAR_OBJECT_GROUP_ID, CHOOSE_CONFIGURATION_ID);
         getChooseConfigurationWizard().chooseConfiguration(configurationName).apply();
     }
 

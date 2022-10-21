@@ -8,6 +8,7 @@ package com.oss.transport.trail;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
@@ -15,15 +16,15 @@ import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
+import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.pages.transport.trail.v2.IPLinkTerminationStepPage;
 import com.oss.pages.transport.trail.v2.IPLinkWizardAttributesStepPage;
-import com.oss.pages.transport.trail.v2.TerminationStepPage;
-import com.oss.pages.transport.trail.v2.TerminationStepPage.TerminationType;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.ModelsRepository;
 import com.oss.untils.Environment;
+
 import io.qameta.allure.Description;
 
 public class IPLinkTest extends BaseTestCase {
@@ -157,12 +158,12 @@ public class IPLinkTest extends BaseTestCase {
         fillAttributes(ipLinkWizard, attributes);
 
         IPLinkTerminationStepPage terminationStep = ipLinkWizard.next();
-        fillTermination(terminationStep, TerminationStepPage.TerminationType.START);
-        fillTermination(terminationStep, TerminationStepPage.TerminationType.END);
+        fillTermination(terminationStep, ConnectionWizardPage.TerminationType.START);
+        fillTermination(terminationStep, ConnectionWizardPage.TerminationType.END);
 
         terminationStep.setCreateAssociatedEthernetLink(true);
 
-        terminationStep.accept();
+        terminationStep.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -194,11 +195,11 @@ public class IPLinkTest extends BaseTestCase {
         networkView.selectObjectInViewContentContains(NAME_COLUMN_LABEL, DEVICE_2_NAME);
     }
 
-    private void fillTermination(TerminationStepPage terminationStep, TerminationStepPage.TerminationType terminationType) {
+    private void fillTermination(ConnectionWizardPage terminationStep, ConnectionWizardPage.TerminationType terminationType) {
         terminationStep.chooseTerminationType(terminationType);
         terminationStep.setNonexistentCard();
-        terminationStep.setPort(PORT_NAME);
-        terminationStep.setTerminationPoint(ETHERNET_INTERFACE_NAME);
+        terminationStep.terminatePort(PORT_NAME);
+        terminationStep.terminateTerminationPort(ETHERNET_INTERFACE_NAME);
     }
 
     private void assertElementWithSameName(int elementIndex, IPLinkAttributes attributesToCreate) {
@@ -369,9 +370,9 @@ public class IPLinkTest extends BaseTestCase {
     @Description("Add Location to IP Link terminations")
     public void addLocationToTerminations() {
         networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, LOCATION_NAME);
-        TerminationStepPage terminationStep = networkView.addSelectedObjectsToTerminationV2();
-        terminationStep.chooseTerminationType(TerminationType.START);
-        terminationStep.accept();
+        ConnectionWizardPage terminationStep = networkView.addSelectedObjectsToTerminationV2();
+        terminationStep.chooseTerminationType(ConnectionWizardPage.TerminationType.START);
+        terminationStep.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, LOCATION_NAME);
         networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME);
@@ -383,9 +384,9 @@ public class IPLinkTest extends BaseTestCase {
     @Description("Add IP Device to IP Link terminations")
     public void addIpDeviceToTerminations() {
         networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_2_NAME);
-        TerminationStepPage terminationStep = networkView.addSelectedObjectsToTerminationV2();
-        terminationStep.chooseTerminationType(TerminationType.END);
-        terminationStep.accept();
+        ConnectionWizardPage terminationStep = networkView.addSelectedObjectsToTerminationV2();
+        terminationStep.chooseTerminationType(ConnectionWizardPage.TerminationType.END);
+        terminationStep.clickAccept();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkView.unselectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_2_NAME);
         networkView.selectObjectInViewContent(NAME_COLUMN_LABEL, UPDATED_IP_LINK_NAME);
