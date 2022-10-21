@@ -13,7 +13,6 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
     public ScheduleTaskPage(WebDriver driver){super(driver);}
 
     private static final String TASK_NAME_ID = "exportgui-components-scheduledtasknametxt";
-    private static final String TYPE_OF_SCHEDULE_ID = "exportgui-components-scheduledcronexprtxt";
     private static final String TIME_SINGLE_ID = "timeSingle";
     private static final String COMBO_MONTH_ID = "comboMonthYearly";
     private static final String COMBO_DAY_MONTH_ID = "comboDayMonthly";
@@ -27,31 +26,31 @@ public class ScheduleTaskPage extends ExportGuiWizardPage{
 
     @Step("Choose Single Schedule")
     public ScheduleTaskPage chooseSingleSchedule(){
-        setComboboxValue(TYPE_OF_SCHEDULE_ID, "Single");
+        setTypeOfSchedule("Single");
         return this;
     }
 
     @Step("Choose Daily Schedule")
     public ScheduleTaskPage chooseDailySchedule(){
-        setComboboxValue(TYPE_OF_SCHEDULE_ID, "Daily");
+        setTypeOfSchedule( "Daily");
         return this;
     }
 
     @Step("Choose Weekly Schedule")
     public ScheduleTaskPage chooseWeeklySchedule(){
-        setComboboxValue(TYPE_OF_SCHEDULE_ID, "Weekly");
+        setTypeOfSchedule("Weekly");
         return this;
     }
 
     @Step("Choose Monthly Schedule")
     public ScheduleTaskPage chooseMonthlySchedule(){
-        setComboboxValue(TYPE_OF_SCHEDULE_ID, "Monthly");
+        setTypeOfSchedule("Monthly");
         return this;
     }
 
     @Step("Choose Yearly Schedule")
     public ScheduleTaskPage chooseYearlySchedule(){
-        setComboboxValue(TYPE_OF_SCHEDULE_ID, "Yearly");
+       setTypeOfSchedule("Yearly");
         return this;
     }
 

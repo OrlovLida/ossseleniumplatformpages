@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.inputs.ComponentFactory;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -32,6 +33,7 @@ public class ExportGuiWizardPage extends BasePage {
     private static final String COMBOBOX_CSV_DELIMITER_ID = "exportgui-components-csvdelimitertxt";
     private static final String COMBOBOX_QUOTE_CHARACTER_ID = "exportgui-components-csvquotechartxt";
     private static final String TEXTFIELD_FILE_NAME_ID = "exportgui-components-filenametxt";
+    private static final String TYPE_OF_SCHEDULE_ID = "exportgui-components-scheduledcronexprtxt";
     private String wizardId = "exportgui-wizard-widget";
 
     public Wizard getWizard() {
@@ -47,46 +49,6 @@ public class ExportGuiWizardPage extends BasePage {
     @Step("Choose File Type: {fileType}")
     public ExportGuiWizardPage chooseFileType(String fileType) {
         setComboboxValue(COMBOBOX_FILE_TYPE_ID, fileType);
-        return this;
-    }
-
-    /**
-     * @deprecated (To remove with release 3.0.x Use setFileType method instead)
-     */
-    @Deprecated
-    @Step("Choose CSV File Type")
-    public ExportGuiWizardPage chooseCSV() {
-        setComboboxValue(COMBOBOX_FILE_TYPE_ID, "CSV");
-        return this;
-    }
-
-    /**
-     * @deprecated (To remove with release 3.0.x Use setFileType method instead)
-     */
-    @Deprecated
-    @Step("Choose XLSX File Type")
-    public ExportGuiWizardPage chooseXLSX() {
-        setComboboxValue(COMBOBOX_FILE_TYPE_ID, "XLSX");
-        return this;
-    }
-
-    /**
-     * @deprecated (To remove with release 3.0.x Use setFileType method instead)
-     */
-    @Deprecated
-    @Step("Choose XLS File Type")
-    public ExportGuiWizardPage chooseXLS() {
-        setComboboxValue(COMBOBOX_FILE_TYPE_ID, "XLS");
-        return this;
-    }
-
-    /**
-     * @deprecated (To remove with release 3.0.x Use setFileType method instead)
-     */
-    @Deprecated
-    @Step("Choose XML File Type")
-    public ExportGuiWizardPage chooseXML() {
-        setComboboxValue(COMBOBOX_FILE_TYPE_ID, "XML");
         return this;
     }
 
@@ -155,7 +117,7 @@ public class ExportGuiWizardPage extends BasePage {
 
     @Step("Change Quote Character on Combobox")
     public ExportGuiWizardPage changeQuoteCharacter(String value) {
-        setComboboxValue(COMBOBOX_QUOTE_CHARACTER_ID, value);
+        getWizard().getComponent(COMBOBOX_QUOTE_CHARACTER_ID).setSingleStringValueContains(value);
         return this;
     }
 
@@ -167,7 +129,7 @@ public class ExportGuiWizardPage extends BasePage {
 
     @Step("Change Date Mask on Combobox")
     public ExportGuiWizardPage changeDateMask(String value) {
-        setComboboxValue(COMBOBOX_DATE_MASK_ID, value);
+        getWizard().getComponent(COMBOBOX_DATE_MASK_ID).setSingleStringValueContains(value);
         return this;
     }
 
@@ -179,6 +141,9 @@ public class ExportGuiWizardPage extends BasePage {
 
     void setComboboxValue(String comboboxId, String value) {
         getWizard().setComponentValue(comboboxId, value);
+    }
+    void setTypeOfSchedule( String value) {
+        getWizard().setComponentValue(TYPE_OF_SCHEDULE_ID, value, Input.ComponentType.COMBOBOX);
     }
 
     void setTextValue(String textFieldId, String value) {
