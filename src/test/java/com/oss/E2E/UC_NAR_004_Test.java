@@ -98,6 +98,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
         }
+        networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.INFO);
         Assert.assertEquals(status, "SUCCESS");
     }
 
@@ -171,6 +172,7 @@ public class UC_NAR_004_Test extends BaseTestCase {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
         }
+        networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.INFO);
         Assert.assertEquals(status, "SUCCESS");
     }
 
