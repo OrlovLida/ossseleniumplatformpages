@@ -47,8 +47,8 @@ public class FiltersTest extends BaseTestCase {
     
     @BeforeClass
     public void goToInventoryView() {
-//        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
-//        advancedSearch = inventoryViewPage.getAdvancedSearch();
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "Location");
+        advancedSearch = inventoryViewPage.getAdvancedSearch();
     }
     
     @Test(priority = 1)
@@ -170,9 +170,9 @@ public class FiltersTest extends BaseTestCase {
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL);
         filterManagerPage
                 .expandAllCategories()
-                .shareFilter("Row", "ossadmin", "W")
+                .shareFilter(FILTER_NAME, USER2_LOGIN, "W")
                 .expandAllCategories()
-                .shareFilter("Mouting position", "ossadmin", "")
+                .shareFilter(FILTER2_NAME, USER2_LOGIN, "R")
                 .shareFolder(FOLDER_NAME, USER2_LOGIN);
         filterManagerPage.changeUser(USER2_LOGIN, USER2_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
