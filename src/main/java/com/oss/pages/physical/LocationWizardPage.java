@@ -32,6 +32,7 @@ public class LocationWizardPage extends BasePage {
     private static final String NUMBER_OF_LOCATIONS_DATA_ATTRIBUTE_NAME = "locationsCount";
     private static final String MODEL_DATA_ATTRIBUTE_NAME = "masterModel";
     private static final String STREET_DATA_ATTRIBUTE_NAME = "Street";
+    private static final String CITY_ATTRIBUTE_NAME = "City";
     private static final String STREET_NUMBER_DATA_ATTRIBUTE_NAME = "streetNumber";
     private static final String WIZARD_ID = "optional_prompt-card";
     private static final String CREATE_BUTTON_ID = "wizard-submit-button-physical-location-wizard";
@@ -170,6 +171,13 @@ public class LocationWizardPage extends BasePage {
     public void setTypeIfEmpty(String type) {
         if (locationWizard.getComponent(LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).getValue() == null) {
             locationWizard.setComponentValue(LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, type, Input.ComponentType.COMBOBOX);
+        }
+    }
+
+    @Step("Set first City if empty")
+    public void setCityIfEmpty() {
+        if (locationWizard.getComponent(CITY_ATTRIBUTE_NAME).getValue() == null) {
+            locationWizard.setComponentValue(CITY_ATTRIBUTE_NAME, "");
         }
     }
 

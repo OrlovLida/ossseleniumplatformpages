@@ -24,7 +24,6 @@ public class ExportByScheduleTest extends BaseTestCase {
     private static final String TASK_NAME = "Test_Export" + FakeGenerator.getRandomInt();
     private static final String TIME_INPUT = "timeInput";
     private static final String TIME_SINGLE = "timeSingle";
-
     private SchedulerServicePage schedulerServicePage;
     
     @BeforeMethod
