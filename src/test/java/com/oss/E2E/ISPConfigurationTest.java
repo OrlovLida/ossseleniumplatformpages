@@ -285,9 +285,10 @@ public class ISPConfigurationTest extends BaseTestCase {
     @Test(priority = 14, description = "Open Mounting Editor wizard", dependsOnMethods = {"changeCardModel"})
     @Description("Refresh page, select device and open Mounting Editor wizard")
     public void openMountingEditorWizard() {
-        driver.navigate().refresh();//TODO ?
         waitForPageToLoad();
         HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
+        hierarchyViewPage.getMainTree().unselectAllNodes();
+        waitForPageToLoad();
         hierarchyViewPage.selectNodeByLabel(PHYSICAL_DEVICE_NAME);
         waitForPageToLoad();
         hierarchyViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, MOUNTING_EDITOR_ACTION_ID);
@@ -309,7 +310,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         mountingEditorWizardPage.clickCheckbox();
         waitForPageToLoad();
         mountingEditorWizardPage.clickAccept();
-        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Set mounting editor", "setting mounting editor."));
+        checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Set mounting editor", "setting mounting editor"));
     }
 
     @Test(priority = 16, description = "Move to Location Overview and create cooling zone", dependsOnMethods = {"showHierarchyViewFromPopup"})
@@ -767,7 +768,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     }
 
     private SystemMessageInterface getSuccesSystemMessage(String systemMessageLog) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 5));
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
         Optional<SystemMessageContainer.Message> firstSystemMessage = systemMessage.getFirstMessage();
         softAssert.assertTrue(firstSystemMessage.isPresent(), systemMessageLog);
         if (firstSystemMessage.isPresent()) {
