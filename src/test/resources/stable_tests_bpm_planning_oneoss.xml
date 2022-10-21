@@ -1,0 +1,38 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="BPM_Selenium_Tests_Suite" thread-count="2" parallel="tests" verbose="1">
+    <test name="CreateProcessNRPTest">
+        <classes>
+            <class name="com.oss.bpm.CreateProcessNRPTest"/>
+        </classes>
+    </test>
+    <test name="EditMilestonesForProcessModelTest">
+        <classes>
+            <class name="com.oss.bpm.milestones.EditMilestonesForProcessModelTest"/>
+        </classes>
+    </test>
+    <test name="ImportExportModelTest">
+        <classes>
+            <class name="com.oss.bpm.ImportExportModelTest"/>
+        </classes>
+    </test>
+    <test name="CreateMilestoneWithProcessTest">
+        <classes>
+            <class name="com.oss.bpm.milestones.CreateMilestoneWithProcessTest"/>
+        </classes>
+    </test>
+    <test name="ChangeMilestoneStateTest">
+        <classes>
+            <class name="com.oss.bpm.milestones.ChangeMilestoneStateTest"/>
+        </classes>
+    </test>
+    <test name="EditMilestoneTest">
+        <classes>
+            <class name="com.oss.bpm.milestones.EditMilestoneTest"/>
+        </classes>
+    </test>
+    <test name="ComboProcessProgramTest">
+        <classes>
+            <class name="com.oss.bpm.ComboProcessProgramTest"/>
+        </classes>
+    </test>
+</suite>
