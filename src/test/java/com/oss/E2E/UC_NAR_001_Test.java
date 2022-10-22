@@ -39,8 +39,9 @@ public class UC_NAR_001_Test extends BaseTestCase {
     private static final String CONFIRM_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
     private static final String DELETE_LF_BUTTON_ID = "logicalInventory_DeleteLogicalFunctionActionModifyId";
     private static final String DELETE_DEVICE_BUTTON_ID = "DeleteDeviceWizardAction";
-    private SoftAssert softAssert;
+    private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
 
+    private SoftAssert softAssert;
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
     @BeforeClass
@@ -81,7 +82,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
         networkDiscoveryControlViewPage.runReconciliation();
-        checkPopupMessageType(MessageType.INFO);
+        checkPopupMessageType(MessageType.INFO, String.format(SYSTEM_MESSAGE_PATTERN, "Run reconciliation with basic sample", "starting reconciliation"));
         waitForPageToLoad();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
@@ -108,7 +109,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         networkInconsistenciesViewPage.expandTree();
         networkInconsistenciesViewPage.assignLocation(OBJECT_NAME, "1");
-        checkPopupMessageType(MessageType.SUCCESS);
+        checkPopupMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Apply inconsistencies", "assigning location"));
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
         DelayUtils.sleep(5000);
@@ -182,7 +183,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        checkPopupMessageType(MessageType.INFO);
+        checkPopupMessageType(MessageType.INFO, String.format(SYSTEM_MESSAGE_PATTERN, "Delete CM Domain", "CM Domain delete"));
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
@@ -203,7 +204,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_LF_BUTTON_ID);
         LogicalFunctionWizardPreStep logicalFunctionWizardPreStep = LogicalFunctionWizardPreStep.create(driver, webDriverWait);
         logicalFunctionWizardPreStep.clickAccept();
-        checkPopupMessageType(MessageType.SUCCESS);
+        checkPopupMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Delete logical function", "logical function delete"));
     }
 
     @Test(priority = 11, description = "Delete device", dependsOnMethods = {"applyInconsistencies"})
@@ -220,15 +221,21 @@ public class UC_NAR_001_Test extends BaseTestCase {
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_DEVICE_BUTTON_ID);
         newInventoryViewPage.clickConfirmationBox(CONFIRM_ID);
-        checkPopupMessageType(MessageType.SUCCESS);
+        checkPopupMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Delete device", "device delete"));
     }
 
-    private void checkPopupMessageType(MessageType messageType) {
+    @Test(priority = 12, description = "Checking system message summary")
+    @Description("Checking system message summary")
+    public void systemMessageSummary() {
+        softAssert.assertAll();
+    }
+
+    private void checkPopupMessageType(MessageType messageType, String systemMessageLog) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        softAssert.assertNotNull(messages);
+        softAssert.assertNotNull(messages, systemMessageLog);
         softAssert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
-                messageType);
+                messageType, systemMessageLog);
     }
 
     private void waitForPageToLoad() {

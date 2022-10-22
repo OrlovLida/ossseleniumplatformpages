@@ -45,6 +45,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     private static final String MCCMNC_PRIMARY = "E2ETests [mcc: 0001, mnc: 01]";
     private static final int[] LOCAL_CELLS_ID = {7, 8, 9};
     private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
+    private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
     private String processNRPCode;
     private CellSiteConfigurationPage cellSiteConfigurationPage;
     private SoftAssert softAssert;
@@ -69,33 +70,33 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
     public void startHLPTask() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
-        checkTaskAssignment();
+        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, "Start HLP task", "HLP task start"));
         closeMessage();
     }
 
     @Test(priority = 3, description = "Create gNodeB", dependsOnMethods = {"startHLPTask"})
     @Description("Create gNodeB")
-    public void create5Gnode() {
+    public void createGNodeB() {
         openCellSiteConfigurationView();
         cellSiteConfigurationPage.createGNodeB(GNODEB_NAME, randomGNodeBId, GNODEB_MODEL, MCCMNC_PRIMARY);
-        checkMessageContainsText("GNodeB was created");
+        checkMessageContainsText("GNodeB was created", String.format(SYSTEM_MESSAGE_PATTERN, "Create GNodeB", "GNodeB create"));
         closeMessage();
     }
 
-    @Test(priority = 4, description = "Create gNodeB DU", dependsOnMethods = {"create5Gnode"})
-    @Description("Create gNodeB DU")
-    public void create5GnodeDU() {
+    @Test(priority = 4, description = "Create gNodeB DU", dependsOnMethods = {"createGNodeB"})
+    @Description("Create GNodeB DU")
+    public void createGNodeBDU() {
         cellSiteConfigurationPage.createGNodeBDU(GNODEB_DU_NAME, randomGNodeBDUId, GNODEB_DU_MODEL, GNODEB_NAME);
-        checkMessageContainsText("GNodeB DU was created");
+        checkMessageContainsText("GNodeB DU was created", String.format(SYSTEM_MESSAGE_PATTERN, "Create GNodeB DU", "GNodeB DU create"));
         closeMessage();
     }
 
-    @Test(priority = 5, description = "Create three cells 5G", dependsOnMethods = {"create5GnodeDU"})
+    @Test(priority = 5, description = "Create three cells 5G", dependsOnMethods = {"createGNodeBDU"})
     @Description("Create three cells 5G")
     public void create5Gcells() {
         cellSiteConfigurationPage.expandTreeToBaseStation("Site", LOCATION_NAME, GNODEB_NAME);
         cellSiteConfigurationPage.createCell5GBulk(3, CELL5G_CARRIER, CELL5G_NAMES, LOCAL_CELLS_ID);
-        checkMessageContainsText("Cells 5G created success");
+        checkMessageContainsText("Cells 5G created success", String.format(SYSTEM_MESSAGE_PATTERN, "Create 5G cells", "cells 5G create"));
         closeMessage();
     }
 
@@ -109,7 +110,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         for (String ranAntenna : ANTENNA_NAMES) {
             waitForPageToLoad();
             cellSiteConfigurationPage.createRanAntennaAndArray(ranAntenna, RAN_ANTENNA_MODEL, LOCATION_NAME);
-            checkMessageType();
+            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Create ran antenna", "ran antenna create"));
             closeMessage();
         }
     }
@@ -121,17 +122,17 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow(GNODEB_NAME);
         waitForPageToLoad();
         cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
-        checkMessageType();
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Create hosting relation", "GNodeB hosting on device create"));
         closeMessage();
         cellSiteConfigurationPage.selectTreeRow(GNODEB_DU_NAME);
         waitForPageToLoad();
         cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, false);
-        checkMessageType();
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Create hosting relation", "GNodeB DU hosting on device create"));
         closeMessage();
         for (int i = 0; i < CELL5G_NAMES.length; i++) {
             cellSiteConfigurationPage.selectTreeRow(CELL5G_NAMES[i]);
             cellSiteConfigurationPage.createHostingOnAntennaArray(ANTENNA_NAMES[i]);
-            checkMessageType();
+            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Create hosting relation", "cell 5G hosting on antenna array create"));
             closeMessage();
         }
     }
@@ -155,7 +156,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         cellSiteConfigurationPage.filterObject("Hosted Resource", GNODEB_NAME);
         waitForPageToLoad();
         cellSiteConfigurationPage.removeObject();
-        checkMessageType();
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete hosting relation", "hosting of GNodeB delete"));
         closeMessage();
         waitForPageToLoad();
         cellSiteConfigurationPage.getTree().expandTreeRow(GNODEB_NAME);
@@ -168,7 +169,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
             cellSiteConfigurationPage.filterObject("Hosted Resource", cell);
             waitForPageToLoad();
             cellSiteConfigurationPage.removeObject();
-            checkMessageType();
+            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete hosting relation", "hosting of cell 5G delete"));
             closeMessage();
             waitForPageToLoad();
         }
@@ -183,7 +184,7 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         for (String ranAntenna : ANTENNA_NAMES) {
             waitForPageToLoad();
             cellSiteConfigurationPage.removeDevice("Antennas", MANUFACTURER, ranAntenna);
-            checkMessageType();
+            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete ran antenna", "ran antenna delete"));
             closeMessage();
             waitForPageToLoad();
         }
@@ -200,15 +201,15 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
             cellSiteConfigurationPage.filterObject("Name", cell);
             waitForPageToLoad();
             cellSiteConfigurationPage.removeObject();
-            checkMessageType();
+            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete 5G cells", "cells 5G delete"));
             closeMessage();
             waitForPageToLoad();
         }
     }
 
-    @Test(priority = 12, description = "Delete gNodeB DU", dependsOnMethods = {"create5GnodeDU"})
-    @Description("Delete gNodeB DU")
-    public void delete5GnodeDU() {
+    @Test(priority = 12, description = "Delete GNodeB DU", dependsOnMethods = {"createGNodeBDU"})
+    @Description("Delete GNodeB DU")
+    public void deleteGNodeBDU() {
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         waitForPageToLoad();
         cellSiteConfigurationPage.selectTab("Base Stations");
@@ -216,19 +217,25 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         cellSiteConfigurationPage.filterObject("Name", GNODEB_DU_NAME);
         waitForPageToLoad();
         cellSiteConfigurationPage.removeObject();
-        checkMessageType();
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete GNodeB DU", "GNodeB DU delete"));
         closeMessage();
     }
 
-    @Test(priority = 13, description = "Delete gNodeB", dependsOnMethods = {"create5Gnode"})
-    @Description("Delete gNodeB")
-    public void delete5Gnode() {
+    @Test(priority = 13, description = "Delete GNodeB", dependsOnMethods = {"createGNodeB"})
+    @Description("Delete GNodeB")
+    public void deleteGNodeB() {
         waitForPageToLoad();
         cellSiteConfigurationPage.filterObject("Name", GNODEB_NAME);
         waitForPageToLoad();
         cellSiteConfigurationPage.removeObject();
-        checkMessageType();
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete GNodeB", "GNodeB delete"));
         closeMessage();
+    }
+
+    @Test(priority = 14, description = "Checking system message summary")
+    @Description("Checking system message summary")
+    public void systemMessageSummary() {
+        softAssert.assertAll();
     }
 
     private void openCellSiteConfigurationView() {
@@ -249,17 +256,17 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    private void checkMessageType() {
-        softAssert.assertEquals((getFirstMessage().getMessageType()), SystemMessageContainer.MessageType.SUCCESS);
+    private void checkMessageType(String systemMessageLog) {
+        softAssert.assertEquals((getFirstMessage().getMessageType()), SystemMessageContainer.MessageType.SUCCESS, systemMessageLog);
     }
 
-    private void checkMessageContainsText(String message) {
+    private void checkMessageContainsText(String message, String systemMessageLog) {
         softAssert.assertTrue((getFirstMessage().getText())
-                .contains(message));
+                .contains(message), systemMessageLog);
     }
 
-    private void checkMessageText() {
-        softAssert.assertEquals((getFirstMessage().getText()), "The task properly assigned.");
+    private void checkMessageText(String systemMessageLog) {
+        softAssert.assertEquals((getFirstMessage().getText()), "The task properly assigned.", systemMessageLog);
     }
 
     private SystemMessageContainer.Message getFirstMessage() {
@@ -268,9 +275,9 @@ public class TP_OSS_RM_RAN_002_Test extends BaseTestCase {
                 .orElseThrow(() -> new RuntimeException("The list is empty"));
     }
 
-    private void checkTaskAssignment() {
-        checkMessageType();
-        checkMessageText();
+    private void checkTaskAssignment(String systemMessageLog) {
+        checkMessageType(systemMessageLog);
+        checkMessageText(systemMessageLog);
     }
 
     private void waitForPageToLoad() {
