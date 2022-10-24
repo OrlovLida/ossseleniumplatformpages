@@ -5,8 +5,15 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.iaa.servicedesk.issue.ticket.MyGroupTicketsPage;
+import com.oss.pages.iaa.servicedesk.issue.ticket.MyTicketsPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
+import com.oss.pages.iaa.servicedesk.issue.ticket.TicketOverviewTab;
+import com.oss.pages.iaa.servicedesk.issue.ticket.TicketSearchPage;
+import com.oss.pages.iaa.servicedesk.issue.wizard.ChangeAttributeWizardPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.IssueCSDIWizardPage;
+import com.oss.pages.platform.NotificationWrapperPage;
 
 import io.qameta.allure.Description;
 
@@ -26,9 +33,20 @@ public class CreateIncidentTicketTest extends BaseTestCase {
     private static final String FLOW_TYPE = "Incident";
     private static final String INCIDENT_DESCRIPTION = "Selenium test ticket";
     private static final String SEVERITY_ATTRIBUTE_NAME = "Severity";
+    private static final String STATUS_RESOLVED = "Resolved";
+    private static final String TEST_REASON = "Selenium_Test";
+    private static final String ATTRIBUTE_WIZARD_ID = "_configureStepPrompt_prompt-card";
+    private static final String STATUS_CLOSED = "Closed";
 
     private TicketDashboardPage ticketDashboardPage;
     private IssueCSDIWizardPage issueCSDIWizardPage;
+    private MyGroupTicketsPage myGroupTicketsPage;
+    private MyTicketsPage myTicketsPage;
+    private TicketSearchPage ticketSearchPage;
+    private NotificationWrapperPage notificationWrapperPage;
+    private IssueDetailsPage issueDetailsPage;
+    private TicketOverviewTab ticketOverviewTab;
+    private ChangeAttributeWizardPage changeAttributeWizardPage;
     private String ticketID;
 
     @BeforeMethod
@@ -62,4 +80,5 @@ public class CreateIncidentTicketTest extends BaseTestCase {
         Assert.assertTrue(ticketDashboardPage.getAttributeFromTable(0, SEVERITY_ATTRIBUTE_NAME).contains(SEVERITY));
         Assert.assertEquals(ticketDashboardPage.getRowForIssueWithID(ticketID), 0);
     }
+
 }
