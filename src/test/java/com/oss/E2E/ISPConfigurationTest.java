@@ -179,7 +179,6 @@ public class ISPConfigurationTest extends BaseTestCase {
         sublocationWizardPage.clickNext();
         waitForPageToLoad();
         sublocationWizardPage.create();
-        waitForPageToLoad();
         checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create room", "room creation"));
     }
 
@@ -326,7 +325,6 @@ public class ISPConfigurationTest extends BaseTestCase {
         waitForPageToLoad();
         coolingZoneWizard.setOperatingLocation(SUBLOCATION_NAME);
         coolingZoneWizard.clickAccept();
-        waitForPageToLoad();
         checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Create cooling zone", "cooling zone creation"));
     }
 
