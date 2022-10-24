@@ -40,6 +40,7 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
     private static final String SEVERITY_ATTRIBUTE_NAME = "Severity";
     private static final String STATUS_RESOLVED = "Resolved";
     private static final String STATUS_CLOSED = "Closed";
+    private static final String TT_DOWNLOAD_FILE = "TroubleTicket*.xlsx";
 
     private TicketDashboardPage ticketDashboardPage;
     private IssueCSDIWizardPage issueCSDIWizardPage;
@@ -84,7 +85,17 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
         Assert.assertEquals(ticketDashboardPage.getRowForIssueWithID(ticketID), 0);
     }
 
-    @Test(priority = 2, testName = "Check My Tickets", description = "Check My Tickets")
+    @Test(priority = 2, testName = "Export from Ticket Dashboard", description = "Export from Ticket Dashboard")
+    @Description("Export from Ticket Dashboard")
+    public void exportFromTicketDashboard() {
+        ticketDashboardPage.exportFromDashboard(TT_DOWNLOAD_FILE);
+        notificationWrapperPage = ticketDashboardPage.openNotificationPanel();
+
+        Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 1);
+        Assert.assertTrue(ticketDashboardPage.checkIfFileIsNotEmpty(TT_DOWNLOAD_FILE));
+    }
+
+    @Test(priority = 3, testName = "Check My Tickets", description = "Check My Tickets")
     @Description("Check My Tickets")
     public void checkMyTickets() {
         myTicketsPage = new MyTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
@@ -93,7 +104,7 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
         Assert.assertEquals(myTicketsPage.getIdForNthTicketInTable(0), ticketID);
     }
 
-    @Test(priority = 3, testName = "Check Ticket Search", description = "Check Ticket Search")
+    @Test(priority = 4, testName = "Check Ticket Search", description = "Check Ticket Search")
     @Description("Check Ticket Search")
     public void checkTicketSearch() {
         ticketSearchPage = new TicketSearchPage(driver, webDriverWait).openView(driver, BASIC_URL);
@@ -102,7 +113,7 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
         Assert.assertEquals(ticketSearchPage.getIdForNthTicketInTable(0), ticketID);
     }
 
-    @Test(priority = 4, testName = "Check My Group Tickets", description = "Check My Group Tickets")
+    @Test(priority = 5, testName = "Check My Group Tickets", description = "Check My Group Tickets")
     @Description("Check My Group Tickets")
     public void checkMyGroupTickets() {
         myGroupTicketsPage = new MyGroupTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
@@ -111,7 +122,7 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
         Assert.assertEquals(myGroupTicketsPage.getIdForNthTicketInTable(0), ticketID);
     }
 
-    @Test(priority = 5, testName = "Export from My Group Tickets", description = "Export from My Group Tickets")
+    @Test(priority = 6, testName = "Export from My Group Tickets", description = "Export from My Group Tickets")
     @Description("Export from My Group Tickets")
     public void exportFromMyGroupTickets() {
         myGroupTicketsPage = new MyGroupTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
@@ -126,7 +137,7 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
         Assert.assertTrue(myGroupTicketsPage.checkIfFileIsNotEmpty(DOWNLOAD_FILE));
     }
 
-    @Test(priority = 6, testName = "Close Ticket", description = "Open ticket and go through all necessary steps to close it")
+    @Test(priority = 7, testName = "Close Ticket", description = "Open ticket and go through all necessary steps to close it")
     @Description("Open ticket and go through all necessary steps to close it")
     public void closeTicket(
     ) {
@@ -143,7 +154,7 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
         Assert.assertEquals(ticketOverviewTab.checkTicketStatus(), STATUS_CLOSED);
     }
 
-    @Test(priority = 7, testName = "Check Closed Tickets View", description = "Refresh, search and check if ticket is shown in the closed tickets table")
+    @Test(priority = 8, testName = "Check Closed Tickets View", description = "Refresh, search and check if ticket is shown in the closed tickets table")
     @Description("Refresh, search and check if ticket is shown in the closed tickets table")
     public void checkClosedTicketView() {
         closedTicketsPage = new ClosedTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
