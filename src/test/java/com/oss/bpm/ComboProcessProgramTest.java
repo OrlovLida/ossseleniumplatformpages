@@ -65,7 +65,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
     private static final String PARENT = "Parent";
     private static final String CHILD = "Child";
     private static final String PROCESS_WITH_PROGRAMS_CREATED_MESSAGE =
-            "Process %1$s (%2$s) was created and linked with selected Program(s)";
+            "Process %1$s (%2$s) was created and linked with selected Program(s).";
     private final Logger LOGGER = LoggerFactory.getLogger(ComboProcessProgramTest.class);
     private final String programName = "Selenium Test Program-" + (int) (Math.random() * 100001);
     private final long plus5Days = 5L;
