@@ -54,6 +54,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private static final String SITE = "Site";
     private static final String NAME = "Name";
     private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
+    private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
+
     private SoftAssert softAssert;
 
     private CellSiteConfigurationPage cellSiteConfigurationPage;
@@ -80,7 +82,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
         tasksPage.startTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
-        checkTaskAssignment();
+        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, "Start HLP", "HLP start"));
         waitForPageToLoad();
     }
 
@@ -96,7 +98,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.createENodeB(ENODEB_NAME, ENODEB_ID, ENODEB_MODEL, MCCMNC_PRIMARY);
-        checkMessageText("ENodeB was created");
+        checkMessageText("ENodeB was created", String.format(SYSTEM_MESSAGE_PATTERN, "Create eNodeB", "eNodeB create"));
     }
 
     @Test(priority = 5, description = "Create Cell4G with Bulk Wizard", dependsOnMethods = {"createENodeB"})
@@ -105,8 +107,8 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, ENODEB_NAME);
         cellSiteConfigurationPage.createCell4GBulk(AMOUNT_OF_CELLS, CARRIER, CELL_NAMES, LOCAL_CELLS_ID, CRP);
-        checkMessageText("Cells 4G created success");
-        checkMessageType();
+        checkMessageText("Cells 4G created success", String.format(SYSTEM_MESSAGE_PATTERN, "Create cell 5G bulk", "cell 4G create"));
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Create cell 5G bulk", "cell 4G create"));
     }
 
     @Test(priority = 6, description = "Create Base Band Unit", dependsOnMethods = {"createCell4GBulk"})
@@ -115,7 +117,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         cellSiteConfigurationPage.selectTreeRow(LOCATION_NAME);
         cellSiteConfigurationPage.createBaseBandUnit(BBU_EQUIPMENT_TYPE, BASE_BAND_UNIT_MODEL, BBU_NAME, LOCATION_NAME);
-        checkMessageType();
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Create base band unit", "base band unit create"));
         waitForPageToLoad();
     }
 
@@ -124,7 +126,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     public void createRadioUnit() {
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.createRadioUnit(RADIO_UNIT_EQUIPMENT_TYPE, RADIO_UNIT_MODEL, RADIO_UNIT_NAMES[i], LOCATION_NAME);
-            checkMessageType();
+            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Create radio unit", "radio unit create"));
             waitForPageToLoad();
         }
     }
@@ -134,7 +136,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     public void createRanAntennaAndArray() {
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.createRanAntennaAndArray(ANTENNA_NAMES[i], RAN_ANTENNA_MODEL, LOCATION_NAME);
-            checkMessageType();
+            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Create ran antenna and array", "ran antenna and array create"));
             waitForPageToLoad();
         }
     }
@@ -146,7 +148,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         cellSiteConfigurationPage.selectTreeRow(ENODEB_NAME);
         waitForPageToLoad();
         cellSiteConfigurationPage.createHostingOnDevice(BBU_NAME, true);
-        checkMessageType();
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Host eNodeB on BBU", "hosting on device create"));
         waitForPageToLoad();
     }
 
@@ -157,7 +159,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
             cellSiteConfigurationPage.selectTreeRow(CELL_NAMES[i]);
             waitForPageToLoad();
             cellSiteConfigurationPage.createHostingOnDevice(RADIO_UNIT_NAMES[i]);
-            checkMessageType();
+            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Host cell 4G on RRU", "hosting on device create"));
             waitForPageToLoad();
         }
     }
@@ -170,7 +172,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
             cellSiteConfigurationPage.selectTreeRow(CELL_NAMES[i]);
             waitForPageToLoad();
             cellSiteConfigurationPage.createHostingOnAntennaArray(ANTENNA_NAMES[i]);
-            checkMessageType();
+            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Host cell 4G on ran antenna array", "hosting on antenna array create"));
             waitForPageToLoad();
         }
     }
@@ -182,7 +184,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
         tasksPage.completeTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
-        checkTaskCompleted();
+        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Finish HLP", "complete high level planning task"));
     }
 
     @Test(priority = 13, description = "Start LLP task", dependsOnMethods = {"finishHLP"})
@@ -191,7 +193,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
         tasksPage.startTask(processNRPCode, TasksPageV2.LOW_LEVEL_PLANNING_TASK);
-        checkTaskAssignment();
+        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, "Start LLP", "start low level planning task"));
         waitForPageToLoad();
     }
 
@@ -235,7 +237,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processNRPCode, TasksPageV2.LOW_LEVEL_PLANNING_TASK);
-        checkTaskCompleted();
+        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Finish low level planning task", "complete low level planning task"));
         processIPCode = tasksPage.proceedNRPFromReadyForIntegration(processNRPCode);
     }
 
@@ -245,15 +247,15 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         waitForPageToLoad();
         tasksPage.completeTask(processIPCode, TasksPageV2.IMPLEMENTATION_TASK);
-        checkTaskCompleted();
+        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete process NRP", "complete implementation task"));
         tasksPage.startTask(processIPCode, TasksPageV2.ACCEPTANCE_TASK);
-        checkTaskAssignment();
+        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, "Complete process NRP", "start acceptance task"));
         tasksPage.completeTask(processIPCode, TasksPageV2.ACCEPTANCE_TASK);
-        checkTaskCompleted();
+        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete process NRP", "complete acceptance task"));
         tasksPage.startTask(processNRPCode, TasksPageV2.VERIFICATION_TASK);
-        checkTaskAssignment();
+        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, "Complete process NRP", "start verification task"));
         tasksPage.completeTask(processNRPCode, TasksPageV2.VERIFICATION_TASK);
-        checkTaskCompleted();
+        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete process NRP", "complete verification task"));
     }
 
     @Test(priority = 18, description = "Delete antennas, BBU, RRU", dependsOnMethods = {"createBaseBandUnit", "createRadioUnit"})
@@ -262,14 +264,14 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         openCellSiteConfiguration();
         waitForPageToLoad();
         cellSiteConfigurationPage.removeDevice("Base Band Units", MANUFACTURER, BBU_NAME);
-        checkMessageType();
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete devices", "BBU delete"));
         waitForPageToLoad();
         for (int i = 0; i < 3; i++) {
             cellSiteConfigurationPage.removeDevice("Remote Radio Units", MANUFACTURER, RADIO_UNIT_NAMES[i]);
-            checkMessageType();
+            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete devices", "RRU delete"));
             waitForPageToLoad();
             cellSiteConfigurationPage.removeDevice("Antennas", MANUFACTURER, ANTENNA_NAMES[i]);
-            checkMessageType();
+            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete devices", "antenna delete"));
             waitForPageToLoad();
         }
     }
@@ -279,6 +281,12 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     public void deleteNodeB() {
         waitForPageToLoad();
         cellSiteConfigurationPage.removeBaseStation(NAME, ENODEB_NAME);
+    }
+
+    @Test(priority = 20, description = "Checking system message summary")
+    @Description("Checking system message summary")
+    public void systemMessageSummary() {
+        softAssert.assertAll();
     }
 
     private void openCellSiteConfiguration() {
@@ -303,13 +311,13 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    private void checkMessageContainsText(String message) {
+    private void checkMessageContainsText(String systemMessageLog) {
         softAssert.assertTrue((getFirstMessage().getText())
-                .contains(message));
+                .contains(TP_OSS_RM_RAN_001_Test.TASK_COMPLETED), systemMessageLog);
     }
 
-    private void checkMessageText(String message) {
-        softAssert.assertEquals((getFirstMessage().getText()), message);
+    private void checkMessageText(String message, String systemMessageLog) {
+        softAssert.assertEquals((getFirstMessage().getText()), message, systemMessageLog);
     }
 
     private Message getFirstMessage() {
@@ -318,25 +326,25 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
                 .orElseThrow(() -> new RuntimeException("The list is empty"));
     }
 
-    private void checkTaskAssignment() {
-        checkMessageText(TASK_ASSIGNED);
-        checkMessageType();
+    private void checkTaskAssignment(String systemMessageLog) {
+        checkMessageText(TASK_ASSIGNED, systemMessageLog);
+        checkMessageType(systemMessageLog);
     }
 
-    private void checkTaskCompleted() {
-        checkMessageContainsText(TASK_COMPLETED);
-        checkMessageType();
+    private void checkTaskCompleted(String systemMessageLog) {
+        checkMessageContainsText(systemMessageLog);
+        checkMessageType(systemMessageLog);
     }
 
-    private void checkMessageType() {
-        SystemMessageInterface systemMessage = getSuccesSystemMessage();
+    private void checkMessageType(String systemMessageLog) {
+        SystemMessageInterface systemMessage = getSuccesSystemMessage(systemMessageLog);
         systemMessage.close();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    private SystemMessageInterface getSuccesSystemMessage() {
+    private SystemMessageInterface getSuccesSystemMessage(String systemMessageLog) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
-        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS);
+        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS, systemMessageLog);
         return systemMessage;
     }
 

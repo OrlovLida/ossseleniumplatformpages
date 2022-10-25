@@ -6,12 +6,13 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
+import com.oss.pages.platform.NotificationWrapperPage;
 
 import io.qameta.allure.Description;
 
 public class TicketDashboardTest extends BaseTestCase {
 
-    TicketDashboardPage ticketDashboardPage;
+    private TicketDashboardPage ticketDashboardPage;
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
