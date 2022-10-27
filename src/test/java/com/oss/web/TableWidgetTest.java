@@ -163,11 +163,11 @@ public class TableWidgetTest extends BaseTestCase {
 
     @Test(priority = 9)
     public void checkSortingByASC() {
-        String columnId = "id";
-        String attributeId = "plot";
-        String attributeValue = "Two";
+        String columnId = "movieLength";
+        String attributeId = "rating";
+        String attributeValue = "10";
 
-        inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.TEXT_FIELD);
+        inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.NUMBER_FIELD);
         DelayUtils.sleep(1000);
         List<String> sortedValues = getValuesFromTableByKey(columnId).stream()
                 .map(Long::parseLong)
@@ -186,11 +186,11 @@ public class TableWidgetTest extends BaseTestCase {
 
     @Test(priority = 10)
     public void checkSortingByDESC() {
-        String columnId = "id";
-        String attributeId = "plot";
-        String attributeValue = "Two";
+        String columnId = "movieLength";
+        String attributeId = "rating";
+        String attributeValue = "10";
 
-        inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.TEXT_FIELD);
+        inventoryViewPage.searchByAttributeValue(attributeId, attributeValue, Input.ComponentType.NUMBER_FIELD);
         DelayUtils.sleep(1000);
 
         List<String> sortedValues = getValuesFromTableByKey(columnId).stream()
