@@ -34,9 +34,7 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
     @Test(priority = 1)
     public void showSelectedRows() {
-
         inventoryViewPage.selectObjectByRowId(2);
-
         List<TableRow> selectedRows = inventoryViewPage.getSelectedRows();
         String selectedObjectCount = tableWidget.getSelectedObjectCount();
 
@@ -45,7 +43,6 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
         selectRowsOnNextPage(3, 5);
         selectRowsOnNextPage(4, 5);
-
         String selectedObjectCountAllPages = tableWidget.getSelectedObjectCount();
 
         Assertions.assertThat(selectedObjectCountAllPages).isEqualTo(FIVE_SELECTED);
@@ -58,7 +55,6 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
     @Test(priority = 2)
     public void unselectObjectByClickOnCheckbox() {
-
         inventoryViewPage.unselectObjectByRowId(2);
 
         List<TableRow> selectedRowsAfterUnselect = inventoryViewPage.getSelectedRows();
@@ -71,7 +67,6 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
     @Test(priority = 3)
     public void unselectAllObjects() {
-
         tableWidget.unselectAllRows();
 
         List<TableRow> selectedRowsAfterUnselectAll = inventoryViewPage.getSelectedRows();
@@ -83,14 +78,10 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
     @Test(priority = 4)
     public void showAllRows() {
-
         int allRows = inventoryViewPage.getMainTable().getPagination().getTotalCount();
-
         inventoryViewPage.selectObjectsByRowId(0, 2, 4, 6, 8);
-
         tableWidget.showOnlySelectedRows();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
         tableWidget.showAllRows();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         int totalCount = tableWidget.getPagination().getTotalCount();
@@ -145,16 +136,13 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
     @Test(priority = 8)
     public void filteringAndUnselectAll() {
-        DelayUtils.waitForPageToLoad(driver,webDriverWait);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         int allRows = tableWidget.getPagination().getTotalCount();
         String attributeValue = inventoryViewPage.getAttributeValue(ATTRIBUTE_ID, 0);
 
         showSelectedAndFiltered(ATTRIBUTE_ID, attributeValue);
-
         tableWidget.unselectAllRows();
-
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
         String selectedObjectCountAfterUnselectAll = tableWidget.getSelectedObjectCount();
 
         Assertions.assertThat(selectedObjectCountAfterUnselectAll).isEqualTo(ZERO_SELECTED);
@@ -186,7 +174,6 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
         tableWidget.showOnlySelectedRows();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
     }
 
     private void selectRowsOnNextPage(int... index) {
