@@ -85,6 +85,21 @@ public class ComboProcessProgramTest extends BaseTestCase {
             .longWorkWeakLongWay(true)
             .build();
 
+    private final List<Forecast> processForecasts = Lists.newArrayList(
+            Forecast.builder()
+                    .name(AUDIT_ROLES_TASK_1)
+                    .startPlusDays(0L)
+                    .endPlusDaysShortWay(plus5Days)
+                    .longWorkWeakShortWay(true)
+                    .build(),
+
+            Forecast.builder()
+                    .name(AUDIT_ROLES_TASK_2)
+                    .startPlusDays(0L)
+                    .endPlusDaysLongWay(plus10Days)
+                    .longWorkWeakLongWay(true)
+                    .build());
+
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
@@ -179,21 +194,6 @@ public class ComboProcessProgramTest extends BaseTestCase {
                         .setName(processMilestoneName2)
                         .setIsActive("true")
                         .setRelatedTask(AUDIT_ROLES_TASK_1)
-                        .build());
-
-        final List<Forecast> processForecasts = Lists.newArrayList(
-                Forecast.builder()
-                        .name(AUDIT_ROLES_TASK_1)
-                        .startPlusDays(0L)
-                        .endPlusDaysShortWay(plus5Days)
-                        .longWorkWeakShortWay(true)
-                        .build(),
-
-                Forecast.builder()
-                        .name(AUDIT_ROLES_TASK_2)
-                        .startPlusDays(0L)
-                        .endPlusDaysLongWay(plus10Days)
-                        .longWorkWeakLongWay(true)
                         .build());
 
         final ProcessCreationWizardProperties properties = ProcessCreationWizardProperties.builder()
@@ -313,21 +313,6 @@ public class ComboProcessProgramTest extends BaseTestCase {
                         .setRelatedTask(AUDIT_ROLES_TASK_1)
                         .build());
 
-        final List<Forecast> processForecasts = Lists.newArrayList(
-                Forecast.builder()
-                        .name(AUDIT_ROLES_TASK_1)
-                        .startPlusDays(0L)
-                        .endPlusDaysShortWay(plus5Days)
-                        .longWorkWeakShortWay(true)
-                        .build(),
-
-                Forecast.builder()
-                        .name(AUDIT_ROLES_TASK_2)
-                        .startPlusDays(0L)
-                        .endPlusDaysLongWay(plus10Days)
-                        .longWorkWeakLongWay(true)
-                        .build());
-
         ProcessCreationWizardProperties properties = ProcessCreationWizardProperties.builder()
                 .basicProcess(processName, PROCESS_DEFINITION_NAME_ROLES, plus5Days)
                 .withProcessMilestones(processMilestones)
@@ -412,21 +397,6 @@ public class ComboProcessProgramTest extends BaseTestCase {
                         .setName(processMilestoneName2)
                         .setIsActive("true")
                         .setRelatedTask(AUDIT_ROLES_TASK_1)
-                        .build());
-
-        final List<Forecast> processForecasts = Lists.newArrayList(
-                Forecast.builder()
-                        .name(AUDIT_ROLES_TASK_1)
-                        .startPlusDays(0L)
-                        .endPlusDaysShortWay(plus5Days)
-                        .longWorkWeakShortWay(true)
-                        .build(),
-
-                Forecast.builder()
-                        .name(AUDIT_ROLES_TASK_2)
-                        .startPlusDays(0L)
-                        .endPlusDaysLongWay(plus10Days)
-                        .longWorkWeakLongWay(true)
                         .build());
 
         ProcessCreationWizardProperties properties = ProcessCreationWizardProperties.builder()
