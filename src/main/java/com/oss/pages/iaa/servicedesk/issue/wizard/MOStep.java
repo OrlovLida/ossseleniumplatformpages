@@ -25,6 +25,7 @@ public class MOStep extends BaseSDPage {
     private static final String WIZARD_ID = "_WizardWindow";
     private static final String SELECTION_BAR_ID = "selection-bar-toggler-button";
     private static final String SHOW_SELECTED_ONLY_ID = "show-selected-only-button";
+    private static final String IDENTIFIER_FIELD_ID = "identifier";
 
     public MOStep(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -35,6 +36,14 @@ public class MOStep extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget.createById(driver, MO_TABLE_ID, wait).fullTextSearch(text);
         log.info("Search text {}", text);
+    }
+
+    @Step("I enter {text} into MO Identifier field")
+    public void enterTextIntoMOIdentifierField(String text) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        Wizard.createByComponentId(driver, wait, MO_COMPONENT_ID).setComponentValue(IDENTIFIER_FIELD_ID, text);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Search text {} in MO identifier field", text);
     }
 
     @Step("I select {index} row in MO table")
