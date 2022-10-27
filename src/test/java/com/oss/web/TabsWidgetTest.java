@@ -69,7 +69,6 @@ public class TabsWidgetTest extends BaseTestCase {
         Assert.assertFalse(newInventoryViewPage.isTabVisible(INTERESTS));
     }
 
-
     @Test(priority = 6, enabled = false)
     public void displayTabsForMultiselection() {
         newInventoryViewPage.enableWidget(TABLE_TYPE, MOVIES);
