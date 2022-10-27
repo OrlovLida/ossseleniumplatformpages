@@ -53,7 +53,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private static final String TEST_DIRECTOR_TYPE = "TestDirector";
     private static final String INTERESTS = "Interests";
     private static final String ATTACHMENTS = "Attachments";
-    private static final String TABLE_TYPE = "Table";
+    private static final String TABLE_TYPE = " Table";
     private static final String MOVIES = "Movies";
     private static final String ME = "Me";
     private static final String HORIZONTAL_60_40_BUTTON_ID = "TWO_ROWS_60_40";
