@@ -24,7 +24,6 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
     private static final String FIVE_SELECTED = "5 selected";
 
     private static final String ATTRIBUTE_ID = "id";
-    private static final String ATTRIBUTE_VALUE = "3";
 
     @BeforeClass
     public void goToInventoryView() {
@@ -77,16 +76,15 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
         List<TableRow> selectedRowsAfterUnselectAll = inventoryViewPage.getSelectedRows();
         String selectedObjectCountAfterUnselectAll = tableWidget.getSelectedObjectCount();
-
+        tableWidget.showAllRows();
         Assertions.assertThat(selectedRowsAfterUnselectAll).isEmpty();
         Assertions.assertThat(selectedObjectCountAfterUnselectAll).isEqualTo(ZERO_SELECTED);
-        tableWidget.showAllRows();
-
     }
 
     @Test(priority = 4)
     public void showAllRows() {
-        int allRows = tableWidget.getPagination().getTotalCount();
+
+        int allRows = inventoryViewPage.getMainTable().getPagination().getTotalCount();
 
         inventoryViewPage.selectObjectsByRowId(0, 2, 4, 6, 8);
 
@@ -95,16 +93,16 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
         tableWidget.showAllRows();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(allRows);
-
+        int totalCount = tableWidget.getPagination().getTotalCount();
         tableWidget.unselectAllRows();
+        Assertions.assertThat(totalCount).isEqualTo(allRows);
     }
 
     @Test(priority = 5)
     public void filteringAndShowSelected() {
+        String attributeValue = inventoryViewPage.getAttributeValue(ATTRIBUTE_ID, 0);
 
-        showSelectedAndFiltered(ATTRIBUTE_ID, ATTRIBUTE_VALUE);
+        showSelectedAndFiltered(ATTRIBUTE_ID, attributeValue);
 
         String selectedObjectCount = tableWidget.getSelectedObjectCount();
 
@@ -117,18 +115,19 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
     @Test(priority = 6)
     public void showSelectedAndClearFilters() {
         inventoryViewPage.clearFilters();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-
-        Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(3);
+        int totalCount = inventoryViewPage.getMainTable().getPagination().getTotalCount();
         tableWidget.unselectAllRows();
         tableWidget.showAllRows();
+        Assertions.assertThat(totalCount).isEqualTo(3);
     }
 
     @Test(priority = 7)
     public void filteringAndShowAll() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         int allRows = tableWidget.getPagination().getTotalCount();
+        String attributeValue = inventoryViewPage.getAttributeValue(ATTRIBUTE_ID, 0);
 
-        showSelectedAndFiltered(ATTRIBUTE_ID, ATTRIBUTE_VALUE);
+        showSelectedAndFiltered(ATTRIBUTE_ID, attributeValue);
 
         tableWidget.showAllRows();
 
@@ -139,16 +138,18 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
         Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(1);
 
         inventoryViewPage.clearFilters();
-        Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(allRows);
-
+        int totalCount = tableWidget.getPagination().getTotalCount();
         tableWidget.unselectAllRows();
+        Assertions.assertThat(totalCount).isEqualTo(allRows);
     }
 
     @Test(priority = 8)
     public void filteringAndUnselectAll() {
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         int allRows = tableWidget.getPagination().getTotalCount();
+        String attributeValue = inventoryViewPage.getAttributeValue(ATTRIBUTE_ID, 0);
 
-        showSelectedAndFiltered(ATTRIBUTE_ID, ATTRIBUTE_VALUE);
+        showSelectedAndFiltered(ATTRIBUTE_ID, attributeValue);
 
         tableWidget.unselectAllRows();
 
