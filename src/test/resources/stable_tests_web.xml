@@ -2,62 +2,62 @@
 <suite name="RegressionSuiteWeb-WEB" thread-count="2" parallel="tests" verbose="1">
     <test name="AdvancedSearchComponent">
         <classes>
-            <class name="com.oss.radio.web.AdvancedSearchCompactTest"/>
+            <class name="com.oss.web.AdvancedSearchCompactTest"/>
         </classes>
     </test>
     <test name="TableWidgetTest">
         <classes>
-            <class name="com.oss.radio.web.TableWidgetTest"/>
+            <class name="com.oss.web.TableWidgetTest"/>
         </classes>
     </test>
     <test name="SelectionBarTableWidgetTest">
         <classes>
-            <class name="com.oss.radio.web.SelectionBarTableWidgetTest"/>
+            <class name="com.oss.web.SelectionBarTableWidgetTest"/>
         </classes>
     </test>
     <test name="PropertyPanelTest">
         <classes>
-            <class name="com.oss.radio.web.PropertyPanelTest"/>
+            <class name="com.oss.web.PropertyPanelTest"/>
         </classes>
     </test>
     <test name="LayoutTests">
         <classes>
-            <class name="com.oss.radio.web.LayoutTest"/>
+            <class name="com.oss.web.LayoutTest"/>
         </classes>
     </test>
     <test name="FilteringOnRelationNodesTest">
         <classes>
-            <class name="com.oss.radio.web.FilteringOnRelationNodesTest"/>
+            <class name="com.oss.web.FilteringOnRelationNodesTest"/>
         </classes>
     </test>
     <test name="TreeWidget">
         <classes>
-            <class name="com.oss.radio.web.TreeWidgetTest"/>
+            <class name="com.oss.web.TreeWidgetTest"/>
         </classes>
     </test>
     <test name="NewNavigationTest">
         <classes>
-            <class name="com.oss.radio.web.NewNavigationTest"/>
+            <class name="com.oss.web.NewNavigationTest"/>
         </classes>
     </test>
     <test name="LifecycleStateDecoratorsInTreeWidgetTest">
         <classes>
-            <class name="com.oss.radio.web.LifecycleStateDecoratorsInTreeWidgetTest"/>
+            <class name="com.oss.web.LifecycleStateDecoratorsInTreeWidgetTest"/>
         </classes>
     </test>
     <test name="SetDataFormatAndTimeZoneTest">
         <classes>
-            <class name="com.oss.radio.web.SetDataFormatAndTimeZoneTest"/>
+            <class name="com.oss.web.SetDataFormatAndTimeZoneTest"/>
         </classes>
     </test>
     <test name="TreeTableWidgetTest">
         <classes>
-            <class name="com.oss.radio.web.TreeTableWidgetTest"/>
+            <class name="com.oss.web.TreeTableWidgetTest"/>
         </classes>
     </test>
     <test name="SelectionBarOnTreeTableTest">
         <classes>
-            <class name="com.oss.radio.web.SelectionBarOnTreeTableTest"/>
+            <class name="com.oss.web.SelectionBarOnTreeTableTest"/>
         </classes>
     </test>
     <test name="InputsWizardTest">
@@ -67,12 +67,17 @@
     </test>
     <test name="ExpandNextLevelOnTreeTest">
         <classes>
-            <class name="com.oss.radio.web.ExpandNextLevelOnTreeTest"/>
+            <class name="com.oss.web.ExpandNextLevelOnTreeTest"/>
         </classes>
     </test>
     <test name="AddExistingObjectToHVTest">
         <classes>
-            <class name="com.oss.radio.web.AddExistingObjectToHVTest"/>
+            <class name="com.oss.web.AddExistingObjectToHVTest"/>
+        </classes>
+    </test>
+    <test name="TabsWidgetTest">
+        <classes>
+            <class name="com.oss.web.TabsWidgetTest"/>
         </classes>
     </test>
 </suite>
