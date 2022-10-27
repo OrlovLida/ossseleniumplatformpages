@@ -132,7 +132,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
-        deviceWizardPage.setPreciseLocation("a");
+        deviceWizardPage.setPreciseLocation("");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (driver.getPageSource().contains(AVAILABLE_MOUNTING_POSITIONS)) {
             deviceWizardPage.setFirstAvailableMountingPosition();
@@ -229,7 +229,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         deviceWizardPage.next();
-        deviceWizardPage.setPreciseLocation("t");
+        deviceWizardPage.setPreciseLocation("");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (driver.getPageSource().contains(AVAILABLE_MOUNTING_POSITIONS)) {
             deviceWizardPage.setFirstAvailableMountingPosition();
