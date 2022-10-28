@@ -19,6 +19,7 @@ import com.oss.pages.BasePage;
 public class GisViewPage extends BasePage {
 
     private static final String GIS_VIEW_TABS_ID = "gis_view_tabs";
+    private static final String GIS_MAP_ID = "template-gisview";
 
     private GisViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -74,7 +75,7 @@ public class GisViewPage extends BasePage {
     }
 
     public void enableLayerInTree(String layer) {
-        Button layersTreeButton = Button.createByLabel(driver, "template-gisview", "Layers tree");
+        Button layersTreeButton = Button.createByLabel(driver, GIS_MAP_ID, "Layers tree");
         layersTreeButton.click();
         getGisMapInterface().getLayersTree().toggleNodeByPath(layer);
     }
@@ -103,6 +104,6 @@ public class GisViewPage extends BasePage {
     }
 
     private GisMapInterface getGisMapInterface() {
-        return GisMap.create(driver, wait);
+        return GisMap.create(driver, wait, GIS_MAP_ID);
     }
 }

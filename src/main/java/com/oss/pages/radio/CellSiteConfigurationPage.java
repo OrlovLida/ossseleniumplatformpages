@@ -6,6 +6,8 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.gismap.GisMap;
+import com.oss.framework.widgets.gismap.GisMapInterface;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidget;
@@ -21,6 +23,7 @@ import io.qameta.allure.Step;
  */
 
 public class CellSiteConfigurationPage extends BasePage {
+    private static final String SITE = "Site";
     private static final String TAB_TABLE_DATA_ATTRIBUTE_NAME = "TableTabsApp";
     private static final String TREE_DATA_ATTRIBUTE_NAME = "SiteHierarchyApp";
     private static final String CELL_TAB_NAME = "Cells %s";
@@ -47,6 +50,7 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String DELETE_LABEL = "Delete";
     private static final String DELETE_BUTTON_ID = "delete-popup-buttons-app-1";
     private static final String DELETE_WIZARD_ID = "delete-popup_prompt-card";
+    private static final String MAP_ID = "ConfigurationMapApp";
 
     public CellSiteConfigurationPage(WebDriver driver) {
         super(driver);
@@ -159,6 +163,14 @@ public class CellSiteConfigurationPage extends BasePage {
         getTree().expandTreeRow(locationType);
         getTree().selectTreeRow(locationName);
         return this;
+    }
+
+    @Step("Expand the tree and select location")
+    public void expandTreeToSite() {
+        waitForPageToLoad();
+        getTree().expandTreeRow(SITE);
+        waitForPageToLoad();
+        getTree().selectTreeRowByOrder(1);
     }
 
     @Step("Expand the tree and select Cell")
@@ -348,6 +360,18 @@ public class CellSiteConfigurationPage extends BasePage {
         new EditCell4GBulkWizardPage(driver).editCellsBulk(cellsNumber, pci, rsi, referencePower, tac, paOutput);
     }
 
+    public boolean isCanvasPresent() {
+        return getGisMapInterface().isCanvasPresent();
+    }
+
+    public void setMap(String mapLabel) {
+        getGisMapInterface().setMap(mapLabel);
+    }
+
+    public String getCanvasObject() {
+        return getGisMapInterface().getCanvasObject();
+    }
+
     private void selectTreeTable(String type, String manufacturer, String name) {
         OldTreeTableWidget widget = OldTreeTableWidget.create(driver, wait, TREE_TABLE_ID);
         widget.expandNode(type, "Type");
@@ -377,5 +401,9 @@ public class CellSiteConfigurationPage extends BasePage {
 
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    private GisMapInterface getGisMapInterface() {
+        return GisMap.create(driver, wait, MAP_ID);
     }
 }

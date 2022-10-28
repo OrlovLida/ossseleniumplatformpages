@@ -15,6 +15,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.GlobalNotificationContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.navigation.toolsmanager.Application;
@@ -41,7 +42,8 @@ public class Views_Smoke_Test extends BaseTestCase {
     @Test(priority = 1, description = "Get Categories from main Page")
     @Description("Get Categories from main Page")
     public void getCategoriesFromToolsManager() {
-        checkErrorPage("Start Page.");
+        checkErrorPage("Start");
+        checkGlobalNotificationContainer("Start");
         ToolsManagerWindow toolsManagerWindow = ToolsManagerWindow.create(driver, webDriverWait);
         categories = toolsManagerWindow.getCategoriesName();
         for (String category : categories) {
@@ -95,6 +97,7 @@ public class Views_Smoke_Test extends BaseTestCase {
         chooseFromLeftSideMenu(viewName, groupName, path);
         waitForPageToLoad();
         checkErrorPage(viewName);
+        checkGlobalNotificationContainer(viewName);
     }
 
     @DataProvider(name = "categories")
@@ -133,6 +136,15 @@ public class Views_Smoke_Test extends BaseTestCase {
             }
         }
         checkSystemMessage();
+    }
+
+    private void checkGlobalNotificationContainer(String viewName) {
+        GlobalNotificationContainer globalNotificationContainer = GlobalNotificationContainer.create(driver, webDriverWait);
+        if (globalNotificationContainer.isErrorNotificationPresent()) {
+            GlobalNotificationContainer.NotificationInformation information = globalNotificationContainer.getNotificationInformation();
+            LOGGER.error(information.getMessage());
+            Assert.fail(String.format("Global Notification shows error on %s page.", viewName));
+        }
     }
 
     private void checkSystemMessage() {
