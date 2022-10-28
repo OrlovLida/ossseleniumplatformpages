@@ -20,6 +20,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.GlobalNotificationContainer;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.gisview.GisViewPage;
@@ -43,8 +44,9 @@ public class GIS_Map_Smoke_Test extends BaseTestCase {
     public void openGisView() {
         waitForPageToLoad();
         checkErrorPage();
+        checkGlobalNotificationContainer();
         HomePage homePage = new HomePage(driver);
-        homePage.chooseFromLeftSideMenu("GIS View", "Resource Inventory");
+        homePage.chooseFromLeftSideMenu("GIS View", "Resource Inventory ");
         waitForPageToLoad();
     }
 
@@ -53,6 +55,7 @@ public class GIS_Map_Smoke_Test extends BaseTestCase {
     public void isCanvasObjectPresent() {
         GisViewPage gisViewPage = GisViewPage.getGisViewPage(driver, webDriverWait);
         checkErrorPage();
+        checkGlobalNotificationContainer();
         gisViewPage.setMap(OPEN_STREET_MAP);
         waitForPageToLoad();
         Assert.assertTrue(gisViewPage.isCanvasPresent());
@@ -132,6 +135,15 @@ public class GIS_Map_Smoke_Test extends BaseTestCase {
             LOGGER.error(errorInformation.getErrorDescription());
             LOGGER.error(errorInformation.getErrorMessage());
             Assert.fail("Error Page is shown.");
+        }
+    }
+
+    private void checkGlobalNotificationContainer() {
+        GlobalNotificationContainer globalNotificationContainer = GlobalNotificationContainer.create(driver, webDriverWait);
+        if (globalNotificationContainer.isErrorNotificationPresent()) {
+            GlobalNotificationContainer.NotificationInformation information = globalNotificationContainer.getNotificationInformation();
+            LOGGER.error(information.getMessage());
+            Assert.fail("Global Notification shows error.");
         }
     }
 }

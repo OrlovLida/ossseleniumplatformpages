@@ -6,6 +6,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.GlobalNotificationContainer;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
@@ -24,6 +26,7 @@ public class HV_Smoke_Test extends BaseTestCase {
     public void openHierarchyViewSearchPage() {
         waitForPageToLoad();
         checkErrorPage();
+        checkGlobalNotificationContainer();
         HomePage homePage = new HomePage(driver);
         homePage.chooseFromLeftSideMenu("Hierarchy View", "Resource Inventory");
         waitForPageToLoad();
@@ -33,6 +36,7 @@ public class HV_Smoke_Test extends BaseTestCase {
     @Description("Open Hierarchy View for Site")
     public void loadHierarchyView() {
         checkErrorPage();
+        checkGlobalNotificationContainer();
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType("Physical Device");
         waitForPageToLoad();
@@ -45,8 +49,9 @@ public class HV_Smoke_Test extends BaseTestCase {
     @Description("Check context actions labels")
     public void checkContextActionsLabels() {
         checkErrorPage();
+        checkGlobalNotificationContainer();
         HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
-        Assert.assertEquals(hierarchyViewPage.getGroupActionLabel("CREATE"), "Create");
+        Assert.assertEquals(hierarchyViewPage.getGroupActionLabel(ActionsContainer.CREATE_GROUP_ID), "Create");
         waitForPageToLoad();
     }
 
@@ -58,6 +63,15 @@ public class HV_Smoke_Test extends BaseTestCase {
             LOGGER.error(errorInformation.getErrorDescription());
             LOGGER.error(errorInformation.getErrorMessage());
             Assert.fail("Error Page is shown.");
+        }
+    }
+
+    private void checkGlobalNotificationContainer() {
+        GlobalNotificationContainer globalNotificationContainer = GlobalNotificationContainer.create(driver, webDriverWait);
+        if (globalNotificationContainer.isErrorNotificationPresent()) {
+            GlobalNotificationContainer.NotificationInformation information = globalNotificationContainer.getNotificationInformation();
+            LOGGER.error(information.getMessage());
+            Assert.fail("Global Notification shows error.");
         }
     }
 
