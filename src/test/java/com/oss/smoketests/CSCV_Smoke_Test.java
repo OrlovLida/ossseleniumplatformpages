@@ -37,7 +37,7 @@ import io.qameta.allure.Description;
 public class CSCV_Smoke_Test extends BaseTestCase {
 
     private static final String PATH_NAME = "gismap";
-    private static final String FILE_NAME = "smoketest.png";
+    private static final String FILE_NAME = "smoketestCSCV.png";
     private static final String OPEN_STREET_MAP = "Open Street Map";
     private static final String RED_COLOR_LOG_PATTERN = "Red color value is %s.";
     private static final String GREEN_COLOR_LOG_PATTERN = "Green color value is %s.";

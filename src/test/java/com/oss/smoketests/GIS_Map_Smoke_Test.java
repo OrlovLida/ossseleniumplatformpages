@@ -46,7 +46,7 @@ public class GIS_Map_Smoke_Test extends BaseTestCase {
         checkErrorPage();
         checkGlobalNotificationContainer();
         HomePage homePage = new HomePage(driver);
-        homePage.chooseFromLeftSideMenu("GIS View", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("GIS View", "Resource Inventory");
         waitForPageToLoad();
     }
 
