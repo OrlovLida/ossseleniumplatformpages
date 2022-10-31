@@ -36,7 +36,6 @@ public class HV_Smoke_Test extends BaseTestCase {
     @Description("Open Hierarchy View for Site")
     public void loadHierarchyView() {
         checkErrorPage();
-        checkGlobalNotificationContainer();
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType("Physical Device");
         waitForPageToLoad();
