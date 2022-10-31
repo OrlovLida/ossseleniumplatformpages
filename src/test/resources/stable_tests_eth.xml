@@ -5,6 +5,16 @@
       <class name="com.oss.transport.AEITest"/>
     </classes>
   </test>
+  <test name="EthernetInterfaceTest">
+    <classes>
+      <class name="com.oss.transport.EthernetInterfaceTest"/>
+    </classes>
+  </test>
+  <test name="TrafficPolicyTest">
+    <classes>
+      <class name="com.oss.transport.TrafficPolicyTest"/>
+    </classes>
+  </test>
   <test name="TrafficClassTest">
     <classes>
       <class name="com.oss.transport.TrafficClassTest"/>
