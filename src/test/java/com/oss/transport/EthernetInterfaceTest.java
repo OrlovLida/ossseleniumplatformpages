@@ -3,6 +3,7 @@ package com.oss.transport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -245,32 +246,32 @@ public class EthernetInterfaceTest extends BaseTestCase {
     }
 
     private void assertEIAttributes(EIAttributes eiAttributes, NewInventoryViewPage eiInventoryView) {
-
+        SoftAssert softAssert = new SoftAssert();
         String maximumFrameSize = eiInventoryView.getPropertyPanelValue("maximumFrameSize");
-        Assert.assertEquals(maximumFrameSize, eiAttributes.maximumFrameSize);
+        softAssert.assertEquals(maximumFrameSize, eiAttributes.maximumFrameSize);
 
         String bandwidth = eiInventoryView.getPropertyPanelValue("bandwidth");
-        Assert.assertEquals(bandwidth, eiAttributes.bandwidth);
+        softAssert.assertEquals(bandwidth, eiAttributes.bandwidth);
 
         String autoNegotiation = eiInventoryView.getPropertyPanelValue("autoNegotiation");
-        Assert.assertEquals(autoNegotiation, eiAttributes.autoNegotiation);
+        softAssert.assertEquals(autoNegotiation, eiAttributes.autoNegotiation);
 
         String accessFunction = eiInventoryView.getPropertyPanelValue("accessFunction");
-        Assert.assertEquals(accessFunction, eiAttributes.accessFunction);
+        softAssert.assertEquals(accessFunction, eiAttributes.accessFunction);
 
         String encapsulation = eiInventoryView.getPropertyPanelValue("encapsulation");
-        Assert.assertEquals(encapsulation, eiAttributes.encapsulation);
-
+        softAssert.assertEquals(encapsulation, eiAttributes.encapsulation);
+        softAssert.assertAll();
     }
 
     private void assertEIAttributesClear(EIAttributes eiAttributes, NewInventoryViewPage eiInventoryView) {
-
+        SoftAssert softAssert = new SoftAssert();
         String maximumFrameSize = eiInventoryView.getPropertyPanelValue("maximumFrameSize");
-        Assert.assertEquals(maximumFrameSize, "-");
+        softAssert.assertEquals(maximumFrameSize, "-");
 
         String flowControl = eiInventoryView.getPropertyPanelValue("flowControl");
-        Assert.assertEquals(flowControl, eiAttributes.flowControl);
-
+        softAssert.assertEquals(flowControl, eiAttributes.flowControl);
+        softAssert.assertAll();
     }
 
     private static class EIAttributes {
