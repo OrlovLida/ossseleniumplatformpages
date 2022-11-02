@@ -3,6 +3,7 @@ package com.oss.web;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -51,6 +52,7 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(5);
+        Assert.assertTrue(inventoryViewPage.getMainTable().isHeaderCheckboxSelected());
     }
 
     @Test(priority = 2)
@@ -62,6 +64,7 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
         Assertions.assertThat(selectedRowsAfterUnselect).hasSize(4);
         Assertions.assertThat(selectedObjectCountAfterUnselect).isEqualTo(FOUR_SELECTED);
+        Assert.assertFalse(inventoryViewPage.getMainTable().isHeaderCheckboxSelected());
 
     }
 
@@ -158,6 +161,28 @@ public class SelectionBarTableWidgetTest extends BaseTestCase {
 
         Assertions.assertThat(tableWidget.getPagination().getTotalCount()).isEqualTo(allRows);
 
+    }
+
+    // Disabled until fix OSSWEB-20724
+    @Test(priority = 9, enabled = false)
+    public void checkHeaderCheckboxState() {
+        tableWidget.selectAllRows();
+        Assert.assertTrue(inventoryViewPage.getMainTable().isHeaderCheckboxSelected());
+        inventoryViewPage.unselectObjectByRowId(1);
+        Assert.assertFalse(tableWidget.isHeaderCheckboxSelected());
+        inventoryViewPage.selectObjectByRowId(1);
+        Assert.assertTrue(tableWidget.isHeaderCheckboxSelected());
+        inventoryViewPage.getMainTable().unselectAllRows();
+    }
+
+    // Disabled until fix OSSWEB-20724
+    @Test(priority = 10, enabled = false)
+    public void checkHeaderCheckboxStateAfterShowSelected() {
+        tableWidget.selectAllRows();
+        tableWidget.showOnlySelectedRows();
+        Assert.assertTrue(tableWidget.isHeaderCheckboxSelected());
+        inventoryViewPage.unselectObjectByRowId(0);
+        Assert.assertFalse(tableWidget.isHeaderCheckboxSelected());
     }
 
     private void showSelectedAndFiltered(String attributeId, String attributeValue) {

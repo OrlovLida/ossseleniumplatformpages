@@ -63,6 +63,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         Assert.assertFalse(treeTableWidget.isExpandPresent(0));
         Assert.assertFalse(treeTableWidget.isExpandPresent(1));
         Assert.assertFalse(treeTableWidget.isExpandPresent(2));
+        Assert.assertTrue(treeTableWidget.isHeaderCheckboxSelected());
     }
 
     @Test(priority = 3)
@@ -101,6 +102,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         String selectedObjectCount = treeTableWidget.getSelectedObjectCount();
         Assert.assertEquals(treeTableWidget.getPagination().getTotalCount(), 2);
         Assert.assertEquals(selectedObjectCount, ONE_SELECTED);
+        Assert.assertFalse(treeTableWidget.isHeaderCheckboxSelected());
     }
 
     @Test(priority = 6)
@@ -152,6 +154,28 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
         treeTableWidget.showAllRows();
         String selectedObjectCount = treeTableWidget.getSelectedObjectCount();
         Assert.assertEquals(selectedObjectCount, ZERO_SELECTED);
+    }
+
+    // Disabled until fix OSSWEB-20724
+    @Test(priority = 10, enabled = false)
+    public void checkHeaderCheckboxState() {
+        treeTableWidget.selectAllRows();
+        Assert.assertTrue(treeTableWidget.isHeaderCheckboxSelected());
+        plannersViewPage.unselectObjectByRowId(1);
+        Assert.assertFalse(treeTableWidget.isHeaderCheckboxSelected());
+        plannersViewPage.selectObjectByRowId(1);
+        Assert.assertFalse(treeTableWidget.isHeaderCheckboxSelected());
+        treeTableWidget.unselectAllRows();
+
+    }
+
+    @Test(priority = 11, enabled = false)
+    public void checkHeaderCheckboxStateAfterShowSelected() {
+        treeTableWidget.selectAllRows();
+        treeTableWidget.showOnlySelectedRows();
+        Assert.assertTrue(treeTableWidget.isHeaderCheckboxSelected());
+        plannersViewPage.unselectObjectByRowId(0);
+        Assert.assertFalse(treeTableWidget.isHeaderCheckboxSelected());
     }
 
     private void selectRowsOnNextPage(int... index) {
