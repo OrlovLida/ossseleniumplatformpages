@@ -261,7 +261,6 @@ public class ISPConfigurationTest extends BaseTestCase {
     @Test(priority = 12, description = "Open Change Card Model wizard", dependsOnMethods = {"createCard"})
     @Description("Refresh page, select newly created card and open Change Card Model wizard")
     public void openChangeCardWizard() {
-        driver.navigate().refresh();//TODO do usunięcia po OSSWEB-20673
         waitForPageToLoad();
         HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis." + PHYSICAL_DEVICE_NAME + "/Chassis.Slots.LT3.Card.NELT-B";

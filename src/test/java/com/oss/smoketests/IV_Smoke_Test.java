@@ -35,7 +35,6 @@ public class IV_Smoke_Test extends BaseTestCase {
     @Description("Open Inventory View for Site")
     public void loadInventoryView() {
         checkErrorPage();
-        checkGlobalNotificationContainer();
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType("Site");
         waitForPageToLoad();
