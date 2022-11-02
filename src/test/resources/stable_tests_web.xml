@@ -75,4 +75,9 @@
             <class name="com.oss.web.AddExistingObjectToHVTest"/>
         </classes>
     </test>
+    <test name="TabsWidgetTest">
+        <classes>
+            <class name="com.oss.web.TabsWidgetTest"/>
+        </classes>
+    </test>
 </suite>

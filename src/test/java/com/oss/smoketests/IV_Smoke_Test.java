@@ -6,6 +6,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.GlobalNotificationContainer;
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HomePage;
@@ -23,6 +25,7 @@ public class IV_Smoke_Test extends BaseTestCase {
     public void openInventoryViewSearchPage() {
         waitForPageToLoad();
         checkErrorPage();
+        checkGlobalNotificationContainer();
         HomePage homePage = new HomePage(driver);
         homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         waitForPageToLoad();
@@ -41,8 +44,9 @@ public class IV_Smoke_Test extends BaseTestCase {
     @Description("Check context actions label")
     public void checkContextActionsLabels() {
         checkErrorPage();
+        checkGlobalNotificationContainer();
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        Assert.assertEquals(newInventoryViewPage.getGroupActionLabel("CREATE"), "Create");
+        Assert.assertEquals(newInventoryViewPage.getGroupActionLabel(ActionsContainer.CREATE_GROUP_ID), "Create");
         waitForPageToLoad();
     }
 
@@ -54,6 +58,15 @@ public class IV_Smoke_Test extends BaseTestCase {
             LOGGER.error(errorInformation.getErrorDescription());
             LOGGER.error(errorInformation.getErrorMessage());
             Assert.fail("Error Page is shown.");
+        }
+    }
+
+    private void checkGlobalNotificationContainer() {
+        GlobalNotificationContainer globalNotificationContainer = GlobalNotificationContainer.create(driver, webDriverWait);
+        if (globalNotificationContainer.isErrorNotificationPresent()) {
+            GlobalNotificationContainer.NotificationInformation information = globalNotificationContainer.getNotificationInformation();
+            LOGGER.error(information.getMessage());
+            Assert.fail("Global Notification shows error.");
         }
     }
 

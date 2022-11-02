@@ -36,6 +36,10 @@ public class LocationInventoryRepository {
         return client.getPhysicalLocation();
     }
 
+    public List<Integer> getFirstSite() {
+        return client.getFirstSite();
+    }
+
     public String createLocation(String locationName, String locationType, Long addressId) {
         ResourceDTO resourceDTO = client.createPhysicalLocation(buildLocation(locationType, locationName, addressId, ""));
         String locationId = resourceDTO.getUri().toString();

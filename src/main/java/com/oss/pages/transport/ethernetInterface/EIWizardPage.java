@@ -14,108 +14,85 @@ import com.oss.pages.BasePage;
 public class EIWizardPage extends BasePage {
 
     private static final String ADMINISTRATIVE_STATE_FIELD_ID = "uid-administrativeState";
-    private static final String AUTO_NEGOTIATION_FILED_ID = "uid-autoNegotiation";
-    private static final String ADMINISTRATIVE_SPEED_FIELD_ID = "uid-administrativeSpeed";
-    private static final String ADMINISTRATIVE_DUPLEX_MODE_FIELD_ID = "uid-administrativeDuplexMode";
-    private static final String MAXIMUM_FRAME_SIZE_FIELD_DATA_ATTRIBUTE_NAME = "uid-maxFrameSize";
-    private static final String FLOW_CONTROL_FIELD_ID = "uid-flowControl";
-    private static final String MTU_FIELD_DATA_ATTRIBUTE_NAME = "uid-mtu";
-    private static final String ENCAPSULATION_FIELD_ID = "uid-encapsulation";
-    private static final String BANDWIDTH_FIELD_DATA_ATTRIBUTE_NAME = "uid-bandwidth";
-    private static final String SWITCH_PORT_FIELD_ID = "uid-switchport";
-    private static final String SWITCH_MODE_FIELD_ID = "uid-switchportMode";
-    private static final String ACCESS_FUNCTION_FIELD_ID = "uid-accessFunction";
-    private static final String DESCRIPTION_FIELD_DATA_ATTRIBUTE_NAME = "uid-description";
-    private static final String ID = "NEEDS_TO_UPDATE_ID";
+    private static final String AUTO_NEGOTIATION_FILED_ID = "AutoNegotiationFieldID";
+    private static final String ADMINISTRATIVE_SPEED_FIELD_ID = "AdministrativeSpeedFieldID";
+    private static final String ADMINISTRATIVE_DUPLEX_MODE_FIELD_ID = "AdministrativeDuplexModeFieldID";
+    private static final String AUTO_ADVERTISEMENT_MAX_CAPACITY_ID = "AutoAdvertisementMaxCapacityFieldID";
+    private static final String MAXIMUM_FRAME_SIZE_FIELD_DATA_ATTRIBUTE_NAME = "MaxFrameSizeFieldID";
+    private static final String FLOW_CONTROL_FIELD_ID = "FlowControlFieldID";
+    private static final String MTU_FIELD_DATA_ATTRIBUTE_NAME = "MTUFieldID";
+    private static final String ENCAPSULATION_FIELD_ID = "EncapsulationFieldID";
+    private static final String BANDWIDTH_FIELD_DATA_ATTRIBUTE_NAME = "BandwidthFieldID";
+    private static final String SWITCH_PORT_FIELD_ID = "SwitchportFieldID";
+    private static final String SWITCH_MODE_FIELD_ID = "SwitchportModeFieldID";
+    private static final String ACCESS_FUNCTION_FIELD_ID = "AccessFunctionFieldID";
+    private static final String DESCRIPTION_FIELD_DATA_ATTRIBUTE_NAME = "DescriptionFieldID";
+    private static final String EI_WIZARD_ID = "EthernetInterfaceWizardWidgetId";
     private final Wizard wizard;
 
     public EIWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createByComponentId(driver, wait, ID);
+        wizard = Wizard.createByComponentId(driver, wait, EI_WIZARD_ID);
+    }
+
+    public Wizard getWizard() {
+        return wizard;
     }
 
     public void setAdministrativeState(String administrativeState) {
-        Combobox administrativeStateComponent = (Combobox) wizard.getComponent(ADMINISTRATIVE_STATE_FIELD_ID, Input.ComponentType.COMBOBOX);
-        administrativeStateComponent.clear();
-        administrativeStateComponent.setSingleStringValue(administrativeState);
+        getWizard().setComponentValue(ADMINISTRATIVE_STATE_FIELD_ID, administrativeState);
     }
 
     public void setAutoNegotiation(String autoNegotiation) {
-        Combobox administrativeStateComponent = (Combobox) wizard.getComponent(AUTO_NEGOTIATION_FILED_ID, Input.ComponentType.COMBOBOX);
-        administrativeStateComponent.clear();
-        administrativeStateComponent.setSingleStringValue(autoNegotiation);
+        getWizard().setComponentValue(AUTO_NEGOTIATION_FILED_ID, autoNegotiation);
     }
 
     public void setAdministrativeSpeed(String administrativeSpeed) {
-        Combobox administrativeSpeedComponent = (Combobox) wizard.getComponent(ADMINISTRATIVE_SPEED_FIELD_ID, Input.ComponentType.COMBOBOX);
-        administrativeSpeedComponent.clear();
-        administrativeSpeedComponent.setSingleStringValue(administrativeSpeed);
+        getWizard().setComponentValue(ADMINISTRATIVE_SPEED_FIELD_ID, administrativeSpeed);
     }
 
     public void setAdministrativeDuplexMode(String administrativeDuplexMode) {
-        Combobox administrativeDuplexModeComponent =
-                (Combobox) wizard.getComponent(ADMINISTRATIVE_DUPLEX_MODE_FIELD_ID, Input.ComponentType.COMBOBOX);
-        administrativeDuplexModeComponent.clear();
-        administrativeDuplexModeComponent.setSingleStringValue(administrativeDuplexMode);
+        getWizard().setComponentValue(ADMINISTRATIVE_DUPLEX_MODE_FIELD_ID, administrativeDuplexMode);
+    }
+
+    public void setAutoAdvertisementMaxCapacity(String autoAdvertisementMaxCapacity) {
+        getWizard().setComponentValue(AUTO_ADVERTISEMENT_MAX_CAPACITY_ID, autoAdvertisementMaxCapacity);
     }
 
     public void setMaximumFrameSize(String maximumFrameSize) {
-        Input maximumFrameSizeComponent = wizard.getComponent(MAXIMUM_FRAME_SIZE_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
-        maximumFrameSizeComponent.clear();
-        maximumFrameSizeComponent.setSingleStringValue(maximumFrameSize);
+        getWizard().setComponentValue(MAXIMUM_FRAME_SIZE_FIELD_DATA_ATTRIBUTE_NAME, maximumFrameSize);
     }
 
     public void setFlowControl(String flowControl) {
-        Combobox flowControlComponent = (Combobox) wizard.getComponent(FLOW_CONTROL_FIELD_ID, Input.ComponentType.COMBOBOX);
-        flowControlComponent.clear();
-        flowControlComponent.setSingleStringValue(flowControl);
+        getWizard().setComponentValue(FLOW_CONTROL_FIELD_ID, flowControl);
     }
 
     public void setMTU(String mtu) {
-        Input mtuComponent = wizard.getComponent(MTU_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
-        mtuComponent.clear();
-        mtuComponent.setSingleStringValue(mtu);
+        getWizard().setComponentValue(MTU_FIELD_DATA_ATTRIBUTE_NAME, mtu);
     }
 
     public void setEncapsulation(String encapsulation) {
-        Combobox encapsulationComponent = (Combobox) wizard.getComponent(ENCAPSULATION_FIELD_ID, Input.ComponentType.COMBOBOX);
-        encapsulationComponent.clear();
-        encapsulationComponent.setSingleStringValue(encapsulation);
+        getWizard().setComponentValue(ENCAPSULATION_FIELD_ID, encapsulation);
     }
 
     public void setBandwidth(String bandwidth) {
-        Input bandwidthComponent = wizard.getComponent(BANDWIDTH_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
-        bandwidthComponent.clear();
-        bandwidthComponent.setSingleStringValue(bandwidth);
+        getWizard().setComponentValue(BANDWIDTH_FIELD_DATA_ATTRIBUTE_NAME, bandwidth);
     }
 
     public void setSwitchPort(String switchPort) {
-        Combobox switchPortComponent = (Combobox) wizard.getComponent(SWITCH_PORT_FIELD_ID, Input.ComponentType.COMBOBOX);
-        switchPortComponent.clear();
-        switchPortComponent.setSingleStringValue(switchPort);
+        getWizard().setComponentValue(SWITCH_PORT_FIELD_ID, switchPort);
     }
 
     public void setSwitchMode(String switchMode) {
-        Combobox switchModeComponent = (Combobox) wizard.getComponent(SWITCH_MODE_FIELD_ID, Input.ComponentType.COMBOBOX);
-        switchModeComponent.clear();
-        switchModeComponent.setSingleStringValue(switchMode);
+        getWizard().setComponentValue(SWITCH_MODE_FIELD_ID, switchMode);
     }
 
     public void setAccessFunction(String accessFunction) {
-        Combobox accessFunctionComponent = (Combobox) wizard.getComponent(ACCESS_FUNCTION_FIELD_ID, Input.ComponentType.COMBOBOX);
-        accessFunctionComponent.clear();
-        accessFunctionComponent.setSingleStringValue(accessFunction);
+        getWizard().setComponentValue(ACCESS_FUNCTION_FIELD_ID, accessFunction);
     }
 
     public void setDescription(String description) {
-        Input descriptionComponent = wizard.getComponent(DESCRIPTION_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
-        descriptionComponent.clear();
-        descriptionComponent.setSingleStringValue(description);
-    }
-
-    public void clearAdministrativeState() {
-        Combobox administrativeStateComponent = (Combobox) wizard.getComponent(ADMINISTRATIVE_STATE_FIELD_ID, Input.ComponentType.COMBOBOX);
-        administrativeStateComponent.clear();
+        getWizard().setComponentValue(DESCRIPTION_FIELD_DATA_ATTRIBUTE_NAME, description);
     }
 
     public void clearMaximumFrameSize() {
@@ -158,9 +135,16 @@ public class EIWizardPage extends BasePage {
         descriptionComponent.clearByAction();
     }
 
-    public EIInventoryViewPage clickAccept() {
+    public EIWizardPage clickAccept() {
         DelayUtils.waitForPageToLoad(driver, wait);
         wizard.clickAccept();
-        return new EIInventoryViewPage(driver);
+        return new EIWizardPage(driver);
     }
+
+    public EIWizardPage clickNext() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        wizard.clickNext();
+        return new EIWizardPage(driver);
+    }
+
 }

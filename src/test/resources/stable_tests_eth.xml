@@ -1,8 +1,18 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="RegressionSuiteWeb-INVESTGA" thread-count="2" parallel="tests" verbose="1">
+<suite name="RegressionSuiteWeb-ONEOSSINVGA" thread-count="2" parallel="tests" verbose="1">
   <test name="AEITest">
     <classes>
       <class name="com.oss.transport.AEITest"/>
+    </classes>
+  </test>
+  <test name="EthernetInterfaceTest">
+    <classes>
+      <class name="com.oss.transport.EthernetInterfaceTest"/>
+    </classes>
+  </test>
+  <test name="TrafficPolicyTest">
+    <classes>
+      <class name="com.oss.transport.TrafficPolicyTest"/>
     </classes>
   </test>
   <test name="TrafficClassTest">
