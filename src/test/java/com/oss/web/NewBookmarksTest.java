@@ -1,76 +1,76 @@
 package com.oss.web;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.mainheader.ButtonPanel;
-import com.oss.framework.components.prompts.Popup;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.propertypanel.PropertyPanel;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.bookmark.NewBookmarksPage;
-import com.oss.untils.FakeGenerator;
-import io.qameta.allure.Description;
+import java.time.LocalDate;
+import java.util.List;
+
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import java.util.List;
+import com.oss.BaseTestCase;
+import com.oss.framework.components.mainheader.ButtonPanel;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.propertypanel.PropertyPanel;
+import com.oss.pages.platform.NewInventoryViewPage;
+import com.oss.pages.platform.bookmarksanddashboards.bookmarks.BookmarkWizardPage;
+import com.oss.pages.platform.bookmarksanddashboards.bookmarks.NewBookmarksPage;
+import com.oss.untils.FakeGenerator;
+
+import io.qameta.allure.Description;
 
 public class NewBookmarksTest extends BaseTestCase {
 
     public static final String BOOKMARK_PROPERTIES = "Bookmark properties" + FakeGenerator.getRandomInt();
     public static final String PROPERTY_PANEL_WIDGET = "PropertyPanelWidget";
     public static final String BUTTON_SAVE_BOOKMARK = "ButtonSaveBookmark";
-    public static final String CATEGORY_NAME = "Kategoria 2";
-    public static final String OPIS_KATEGORII = "Opis kategorii";
-    public static final String A = "A";
+    private static final String DESCRIPTION_BOOKMARK = FakeGenerator.getIdNumber();
+    public static final String CATEGORY_NAME = "Category " + FakeGenerator.getIdNumber();
+    public static final String DESCRIPTION_CATEGORY = FakeGenerator.getRandomName();
     public static final String ID = "id";
-    public static final String SAVE_MANAGEMENT_CONFIGURATION_BTN = "saveManagementConfigurationBtn";
-    public static final String INPUT_CATEGORIES = "input_categories";
-    public static final String NAME = "name";
-    public static final String DESCRIPTION = "description";
+
     public static final String FIRST_NAME = "First Name";
     public static final String DIRECTOR = "Director";
     public static final String TEST_MOVIE = "TestMovie";
     public static final String TITLE = "Title";
-
+    private static final String NEW_CATEGORY_NAME = "Edited Category " + FakeGenerator.getIdNumber();
+    private static final String NEW_DESCRIPTION_NAME = "New Description: " + LocalDate.now();
+    private static final String SAVE_BOOKMARK_POP_ID = "POPUP_MANAGEMENT_CONFIGURATION_ID";
 
     NewBookmarksPage bookmarksPage;
-
 
     @BeforeClass
     public void goToBookmarks() {
         bookmarksPage = NewBookmarksPage.goToBookmarksPage(driver, webDriverWait, BASIC_URL);
-        DelayUtils.sleep();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
-
 
     @Test(priority = 1)
     public void createCategory() {
-        bookmarksPage.createCategory(CATEGORY_NAME, OPIS_KATEGORII);
-        Assertions.assertThat(bookmarksPage.isElementPresent(CATEGORY_NAME)).isTrue();
-        Assertions.assertThat(bookmarksPage.getDescription(CATEGORY_NAME)).isEqualTo(OPIS_KATEGORII);
+        bookmarksPage.createCategory(CATEGORY_NAME, DESCRIPTION_CATEGORY);
         DelayUtils.sleep();
-    }
-
-    @Test(priority = 2)
-    public void editCategory() {
-        bookmarksPage.editCategory(CATEGORY_NAME, "Zedytowana kategoria 22", "Nowy opis");
-        DelayUtils.sleep();
+        Assertions.assertThat(bookmarksPage.isObjectPresent(CATEGORY_NAME)).isTrue();
+        Assertions.assertThat(bookmarksPage.getDescription(CATEGORY_NAME)).isEqualTo(DESCRIPTION_CATEGORY);
     }
 
     @Test(priority = 3)
-    public void deleteCategory() {
-        bookmarksPage.deleteCategory(CATEGORY_NAME);
-        Assertions.assertThat(bookmarksPage.isElementPresent(CATEGORY_NAME)).isFalse();
+    public void editCategory() {
+        bookmarksPage = NewBookmarksPage.goToBookmarksPage(driver, webDriverWait, BASIC_URL);
+        bookmarksPage.editCategory(CATEGORY_NAME, NEW_CATEGORY_NAME, NEW_DESCRIPTION_NAME);
         DelayUtils.sleep();
     }
 
     @Test(priority = 4)
+    public void deleteCategory() {
+        bookmarksPage.deleteCategory(NEW_CATEGORY_NAME);
+        DelayUtils.sleep();
+        Assertions.assertThat(bookmarksPage.isObjectPresent(NEW_CATEGORY_NAME)).isFalse();
+        DelayUtils.sleep();
+    }
+
+    @Test(priority = 2, enabled = false)
     @Description("Save properties of the Bookmark: enable/disable attributes, drag and drop attribute in the Property Panel")
     public void savePropertiesBookmark() {
-        String TYPE = TEST_MOVIE;
-        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
+        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_MOVIE);
         PropertyPanel propertyPanelWidget = newInventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_WIDGET);
         propertyPanelWidget.disableAttributeByLabel(TITLE);
         DelayUtils.sleep(1000);
@@ -79,22 +79,25 @@ public class NewBookmarksTest extends BaseTestCase {
         List<String> beforeSaveEdition = newInventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_WIDGET).getVisibleAttributes();
         int beforeChangePosition = beforeSaveEdition.indexOf(ID);
         ButtonPanel.create(driver, webDriverWait).clickButton(BUTTON_SAVE_BOOKMARK);
-        Popup popup = Popup.create(driver, webDriverWait);
-        popup.setComponentValue(NAME, BOOKMARK_PROPERTIES);
-        popup.setComponentValue(DESCRIPTION, "OpisBookmarkaZIV");
-        popup.setComponentValue(INPUT_CATEGORIES, "A", Input.ComponentType.SEARCH_FIELD);
-        popup.clickButtonById(SAVE_MANAGEMENT_CONFIGURATION_BTN);
+        saveBookmark();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         bookmarksPage = NewBookmarksPage.goToBookmarksPage(driver, webDriverWait, BASIC_URL);
-        bookmarksPage.expandRow(A);
+        bookmarksPage.expandCategory(CATEGORY_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assertions.assertThat(bookmarksPage.isElementPresent(BOOKMARK_PROPERTIES)).isTrue();
+        Assertions.assertThat(bookmarksPage.isObjectPresent(BOOKMARK_PROPERTIES)).isTrue();
         bookmarksPage.openBookmark(BOOKMARK_PROPERTIES);
         List<String> afterSaveEdition = newInventoryViewPage.getPropertyPanel(0, PROPERTY_PANEL_WIDGET).getVisibleAttributes();
         int afterChangePosition = afterSaveEdition.indexOf(ID);
         Assertions.assertThat(beforeSaveEdition).isEqualTo(afterSaveEdition);
         Assertions.assertThat(beforeChangePosition).isEqualTo(afterChangePosition);
         DelayUtils.sleep();
+    }
 
+    private void saveBookmark() {
+        BookmarkWizardPage bookmarkWizardPage = new BookmarkWizardPage(driver, webDriverWait);
+        bookmarkWizardPage.setName(BOOKMARK_PROPERTIES);
+        bookmarkWizardPage.setDescription(DESCRIPTION_BOOKMARK);
+        bookmarkWizardPage.setCategory(CATEGORY_NAME);
+        bookmarkWizardPage.clickSave();
     }
 }

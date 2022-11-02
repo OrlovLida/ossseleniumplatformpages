@@ -31,6 +31,7 @@ public class FakeGenerator {
     public static int getRandomInt(){
         return faker.random().nextInt(500);
     }
+    public static String getRandomName(){return faker.name().name();}
     
     public static String getLocation(FilmTitle filmTitle) {
         switch (filmTitle) {
