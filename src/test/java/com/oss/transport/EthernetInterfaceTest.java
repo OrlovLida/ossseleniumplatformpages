@@ -54,6 +54,7 @@ public class EthernetInterfaceTest extends BaseTestCase {
     private static final String INVENTORY_VIEW_SIDE_MENU = "Inventory View";
     private static final String SEARCH_TYPE_ETHERNET_INTERFACE = "Ethernet Interface";
     private static final String SEARCH_TYPE_IP_NETWORK_ELEMENT = "IP Network Element";
+    private static final String ASSERT_MESSAGE_PATTERN = "Checking assertion for %s.";
     private String processNRPCode;
 
     @BeforeClass
@@ -247,30 +248,39 @@ public class EthernetInterfaceTest extends BaseTestCase {
 
     private void assertEIAttributes(EIAttributes eiAttributes, NewInventoryViewPage eiInventoryView) {
         SoftAssert softAssert = new SoftAssert();
-        String maximumFrameSize = eiInventoryView.getPropertyPanelValue("maximumFrameSize");
-        softAssert.assertEquals(maximumFrameSize, eiAttributes.maximumFrameSize);
 
-        String bandwidth = eiInventoryView.getPropertyPanelValue("bandwidth");
-        softAssert.assertEquals(bandwidth, eiAttributes.bandwidth);
+        String maximumFrameSizeAttribute = "maximumFrameSize";
+        String maximumFrameSize = eiInventoryView.getPropertyPanelValue(maximumFrameSizeAttribute);
+        softAssert.assertEquals(maximumFrameSize, eiAttributes.maximumFrameSize, String.format(ASSERT_MESSAGE_PATTERN, maximumFrameSizeAttribute));
 
-        String autoNegotiation = eiInventoryView.getPropertyPanelValue("autoNegotiation");
-        softAssert.assertEquals(autoNegotiation, eiAttributes.autoNegotiation);
+        String bandwidthAttribute = "bandwidth";
+        String bandwidth = eiInventoryView.getPropertyPanelValue(bandwidthAttribute);
+        softAssert.assertEquals(bandwidth, eiAttributes.bandwidth, String.format(ASSERT_MESSAGE_PATTERN, bandwidthAttribute));
 
-        String accessFunction = eiInventoryView.getPropertyPanelValue("accessFunction");
-        softAssert.assertEquals(accessFunction, eiAttributes.accessFunction);
+        String autoNegotiationAttribute = "autoNegotiation";
+        String autoNegotiation = eiInventoryView.getPropertyPanelValue(autoNegotiationAttribute);
+        softAssert.assertEquals(autoNegotiation, eiAttributes.autoNegotiation, String.format(ASSERT_MESSAGE_PATTERN, autoNegotiationAttribute));
 
-        String encapsulation = eiInventoryView.getPropertyPanelValue("encapsulation");
-        softAssert.assertEquals(encapsulation, eiAttributes.encapsulation);
+        String accessFunctionAttribute = "accessFunction";
+        String accessFunction = eiInventoryView.getPropertyPanelValue(accessFunctionAttribute);
+        softAssert.assertEquals(accessFunction, eiAttributes.accessFunction, String.format(ASSERT_MESSAGE_PATTERN, accessFunctionAttribute));
+
+        String encapsulationAttribute = "encapsulation";
+        String encapsulation = eiInventoryView.getPropertyPanelValue(encapsulationAttribute);
+        softAssert.assertEquals(encapsulation, eiAttributes.encapsulation, String.format(ASSERT_MESSAGE_PATTERN, encapsulationAttribute));
         softAssert.assertAll();
     }
 
     private void assertEIAttributesClear(EIAttributes eiAttributes, NewInventoryViewPage eiInventoryView) {
         SoftAssert softAssert = new SoftAssert();
-        String maximumFrameSize = eiInventoryView.getPropertyPanelValue("maximumFrameSize");
-        softAssert.assertEquals(maximumFrameSize, "-");
 
-        String flowControl = eiInventoryView.getPropertyPanelValue("flowControl");
-        softAssert.assertEquals(flowControl, eiAttributes.flowControl);
+        String maximumFrameSizeAttribute = "maximumFrameSize";
+        String maximumFrameSize = eiInventoryView.getPropertyPanelValue(maximumFrameSizeAttribute);
+        softAssert.assertEquals(maximumFrameSize, "-", String.format(ASSERT_MESSAGE_PATTERN, maximumFrameSizeAttribute));
+
+        String flowControlAttribute = "flowControl";
+        String flowControl = eiInventoryView.getPropertyPanelValue(flowControlAttribute);
+        softAssert.assertEquals(flowControl, eiAttributes.flowControl, String.format(ASSERT_MESSAGE_PATTERN, flowControlAttribute));
         softAssert.assertAll();
     }
 
