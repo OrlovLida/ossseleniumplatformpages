@@ -29,7 +29,7 @@
         <physicalinventory.version>2.1.55.Final</physicalinventory.version>
         <resource-hierarchy-api.version>0.1.0</resource-hierarchy-api.version>
         <addressinventory.version>1.17.32.Final</addressinventory.version>
-        <radio.version>4.2.3.Final</radio.version>
+        <radio.version>4.6.4.Final</radio.version>
         <resourcecatalog.version>2.7.1.Final</resourcecatalog.version>
         <planning.version>6.9.2.Final</planning.version>
         <seleniumframework.version>2.2.0-SNAPSHOT</seleniumframework.version>

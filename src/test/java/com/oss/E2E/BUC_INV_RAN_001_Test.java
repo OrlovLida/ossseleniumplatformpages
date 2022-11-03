@@ -21,43 +21,72 @@ import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
+import com.oss.repositories.AddressRepository;
+import com.oss.repositories.LocationInventoryRepository;
+import com.oss.services.Radio4gClient;
+import com.oss.services.RadioClient;
+import com.oss.untils.Environment;
 
 import io.qameta.allure.Description;
 
-public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
+public class BUC_INV_RAN_001_Test extends BaseTestCase {
 
-    private static final String LOCATION_NAME = "XYZ_SeleniumTests";
-    private static final String ENODEB_NAME = "GBM055TST";
-    private static final String ENODEB_ID = "1" + (int) (Math.random() * 10);
+    private static final String LOCATION_NAME = "Denver1";
+    private static final String ENODEB_NAME = "Denver41";
+    private static final String ENODEB_ID = "141";
     private static final String ENODEB_MODEL = "HUAWEI Technology Co.,Ltd BTS5900";
-    private static final String MCCMNC_PRIMARY = "E2ETests [mcc: 0001, mnc: 01]";
     private static final String BASE_BAND_UNIT_MODEL = "HUAWEI Technology Co.,Ltd BBU5900";
-    private static final String BBU_NAME = "BTS5900,GBM055TST/0/BBU5900,0";
-    private static final String RADIO_UNIT_MODEL = "HUAWEI Technology Co.,Ltd RRU5301";
-    private static final String[] RADIO_UNIT_NAMES = {"BTS5900,GBM055TST/0/MRRU,60", "BTS5900,GBM055TST/0/MRRU,70", "BTS5900,GBM055TST/0/MRRU,80"};
+    private static final String BBU_NAME = "BTS5900,Denver1/0/BBU5900,0";
+    private static final String RADIO_UNIT_MODEL = "HUAWEI Technology Co.,Ltd RRU5501";
+    private static final String[] RADIO_UNIT_NAMES = {"BTS5900,Denver1/0/MRRU,80", "BTS5900,Denver1/0/MRRU,81", "BTS5900,Denver1/0/MRRU,82"};
     private static final String RAN_ANTENNA_MODEL = "HUAWEI Technology Co.,Ltd APE4518R14V06";
-    private static final String[] ANTENNA_NAMES = {"TP_OSS_RM_RAN_001_ANTENNA_1", "TP_OSS_RM_RAN_001_ANTENNA_2", "TP_OSS_RM_RAN_001_ANTENNA_3"};
+    private static final String[] ANTENNA_NAMES = {"ANT-1", "ANT-2", "ANT-3"};
+    private static final String[] ANTENNA_ARRAYS_1 = {"ANT-1/APE4518R14V06 Ly1/Freq(1695-2690)", "ANT-1/APE4518R14V06 Ry2/Freq(1695-2690)"};
+    private static final String[] ANTENNA_ARRAYS_2 = {"ANT-2/APE4518R14V06 Ly1/Freq(1695-2690)", "ANT-2/APE4518R14V06 Ry2/Freq(1695-2690)"};
+    private static final String[] ANTENNA_ARRAYS_3 = {"ANT-3/APE4518R14V06 Ly1/Freq(1695-2690)", "ANT-3/APE4518R14V06 Ry2/Freq(1695-2690)"};
     private static final String BBU_EQUIPMENT_TYPE = "Base Band Unit";
     private static final String RADIO_UNIT_EQUIPMENT_TYPE = "Remote Radio Head/Unit";
-    private static final String CARRIER = "E2E Carrier (11)";
-    private static final String[] CELL_NAMES = new String[]{"TP_OSS_RM_RAN_001_CELL10", "TP_OSS_RM_RAN_001_CELL20", "TP_OSS_RM_RAN_001_CELL30"};
+    private static final String[] CELL_NAMES = new String[]{"Denver411", "Denver412", "Denver413"};
     private static final int AMOUNT_OF_CELLS = CELL_NAMES.length;
-    private static final String PCI = "2";
-    private static final String RSI = "2";
-    private static final String REFERENCE_POWER = "0";
-    private static final String[] TAC = {"2", "2", "2"};
-    private static final int[] LOCAL_CELLS_ID = {1, 2, 3};
+    private static final String[] PCI = {"100", "101", "102"};
+    private static final String[] RSI = {"150", "160", "170"};
+    private static final String REFERENCE_POWER = "15.2";
+    private static final String[] TAC = {"500", "500", "500"};
+    private static final int[] LOCAL_CELLS_ID = {0, 1, 2};
     private static final int CRP = 2;
-    private static final String PA_INPUT = "2.0";
+    private static final String MIMO_MODE = "2Tx2Rx";
+    private static final String BANDWITH = "15";
+    private static final String TX_POWER = "44.7";
     private static final String TASK_COMPLETED = "Task properly completed.";
     private static final String TASK_ASSIGNED = "The task properly assigned.";
     private static final String SITE = "Site";
     private static final String NAME = "Name";
     private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
     private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
+    private static final String NRP = "Network Resource Process";
+    private static final String COUNTRY_NAME = "United States";
+    private static final String REGION_NAME = "Colorado";
+    private static final String DISTRICT_NAME = "District 1";
+    private static final String CITY_NAME = "Denver";
+    private static final String POSTAL_CODE_NAME = "80014";
+    private static final String MCCMNC_PRIMARY = "E2ETest [mcc: 999, mnc: 1]";
+    private static final String CARRIER = "L800-B20-5 (6175)";
+    private static final String MCC_MNC_OPERATOR = "E2ETest";
+    private static final String MCC = "999";
+    private static final String MNC = "1";
+    private static final String BAND_TYPE_NAME = "L800-B20";
+    private static final int DL_FREQUENCY_END = 821;
+    private static final int DL_FREQUENCY_START = 791;
+    private static final int UL_FREQUENCY_END = 862;
+    private static final int UL_FREQUENCY_START = 832;
+    private static final String CARRIER_NAME = "L800-B20-5";
+    private static final int DOWNLINK_CHANNEL = 6175;
+    private static final int UPLINK_CHANNEL = 24175;
+    private static final int DL_CENTRE_FREQUENCY = 793;
+    private static final int UL_CENTRE_FREQUENCY = 834;
 
     private SoftAssert softAssert;
-
+    private Environment env = Environment.getInstance();
     private CellSiteConfigurationPage cellSiteConfigurationPage;
     private String processNRPCode;
     private String processIPCode;
@@ -68,15 +97,23 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         softAssert = new SoftAssert();
     }
 
-    @Test(priority = 1, description = "Create and start NRP Process")
+    @Test(priority = 1, description = "Check prerequisites")
+    @Description("Check prerequisites")
+    public void checkPrereq() {
+        getOrCreateLocations();
+        getOrCreateMccMnc();
+        getOrCreateCarrier();
+    }
+
+    @Test(priority = 2, description = "Create and start NRP Process", dependsOnMethods = {"checkPrereq"})
     @Description("Create and start NRP Process")
     public void createProcessNRP() {
         ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
-        processNRPCode = processInstancesPage.createSimpleNRP();
+        processNRPCode = processInstancesPage.createProcessIPD(LOCATION_NAME, 0L, NRP);
         closeMessage();
     }
 
-    @Test(priority = 2, description = "Start HLP task", dependsOnMethods = {"createProcessNRP"})
+    @Test(priority = 3, description = "Start HLP task", dependsOnMethods = {"createProcessNRP"})
     @Description("Start High Level Planning task")
     public void startHLP() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -86,13 +123,13 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 3, description = "Find location and open it in Cell Site Configuration view", dependsOnMethods = {"startHLP"})
+    @Test(priority = 4, description = "Find location and open it in Cell Site Configuration view", dependsOnMethods = {"startHLP"})
     @Description("Find location in new Inventory View and open location in Cell Site Configuration view")
     public void findLocation() {
         openCellSiteConfiguration();
     }
 
-    @Test(priority = 4, description = "Create eNodeB", dependsOnMethods = {"findLocation"})
+    @Test(priority = 5, description = "Create eNodeB", dependsOnMethods = {"findLocation"})
     @Description("Create eNodeB")
     public void createENodeB() {
         waitForPageToLoad();
@@ -101,7 +138,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         checkMessageText("ENodeB was created", String.format(SYSTEM_MESSAGE_PATTERN, "Create eNodeB", "eNodeB create"));
     }
 
-    @Test(priority = 5, description = "Create Cell4G with Bulk Wizard", dependsOnMethods = {"createENodeB"})
+    @Test(priority = 6, description = "Create Cell4G with Bulk Wizard", dependsOnMethods = {"createENodeB"})
     @Description("Create Cell4G with Bulk Wizard")
     public void createCell4GBulk() {
         waitForPageToLoad();
@@ -111,7 +148,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Create cell 5G bulk", "cell 4G create"));
     }
 
-    @Test(priority = 6, description = "Create Base Band Unit", dependsOnMethods = {"createCell4GBulk"})
+    @Test(priority = 7, description = "Create Base Band Unit", dependsOnMethods = {"createCell4GBulk"})
     @Description("Create Base Band Unit")
     public void createBaseBandUnit() {
         waitForPageToLoad();
@@ -121,7 +158,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 7, description = "Create three Radio Units", dependsOnMethods = {"createBaseBandUnit"})
+    @Test(priority = 8, description = "Create three Radio Units", dependsOnMethods = {"createBaseBandUnit"})
     @Description("Create three Radio Units")
     public void createRadioUnit() {
         for (int i = 0; i < 3; i++) {
@@ -131,7 +168,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 8, description = "Create three RAN Antennas", dependsOnMethods = {"createRadioUnit"})
+    @Test(priority = 9, description = "Create three RAN Antennas", dependsOnMethods = {"createRadioUnit"})
     @Description("Create three RAN Antennas")
     public void createRanAntennaAndArray() {
         for (int i = 0; i < 3; i++) {
@@ -141,7 +178,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 9, description = "Create hosting relation between eNodeB and BBU", dependsOnMethods = {"createENodeB", "createBaseBandUnit"})
+    @Test(priority = 10, description = "Create hosting relation between eNodeB and BBU", dependsOnMethods = {"createENodeB", "createBaseBandUnit"})
     @Description("Create hosting relation between eNodeB and BBU")
     public void hostENodeBOnBBU() {
         waitForPageToLoad();
@@ -152,7 +189,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 10, description = "Create hosting relation between Cell 4G and RRU", dependsOnMethods = {"createCell4GBulk", "createRadioUnit"})
+    @Test(priority = 11, description = "Create hosting relation between Cell 4G and RRU", dependsOnMethods = {"createCell4GBulk", "createRadioUnit"})
     @Description("Create hosting relation between Cell 4G and RRU")
     public void hostCell4GOnRRU() {
         for (int i = 0; i < 3; i++) {
@@ -164,20 +201,26 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 11, description = "Create hosting relation between Cell 4G and RAN Antenna Array", dependsOnMethods = {"createCell4GBulk", "createRanAntennaAndArray"})
+    @Test(priority = 12, description = "Create hosting relation between Cell 4G and RAN Antenna Array", dependsOnMethods = {"createCell4GBulk", "createRanAntennaAndArray"})
     @Description("Create hosting relation between Cell 4G and RAN Antenna Array")
     public void hostCell4GOnRANAntennaArray() {
-        for (int i = 0; i < 3; i++) {
-            waitForPageToLoad();
-            cellSiteConfigurationPage.selectTreeRow(CELL_NAMES[i]);
-            waitForPageToLoad();
-            cellSiteConfigurationPage.createHostingOnAntennaArray(ANTENNA_NAMES[i]);
-            checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Host cell 4G on ran antenna array", "hosting on antenna array create"));
-            waitForPageToLoad();
-        }
+        cellSiteConfigurationPage.selectTreeRow(CELL_NAMES[0]);
+        waitForPageToLoad();
+        cellSiteConfigurationPage.createHostingOnAntennaArraysContains(ANTENNA_ARRAYS_1);
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Host cell 4G on ran antenna array", "hosting on antenna array 1 create"));
+        waitForPageToLoad();
+        cellSiteConfigurationPage.selectTreeRow(CELL_NAMES[1]);
+        waitForPageToLoad();
+        cellSiteConfigurationPage.createHostingOnAntennaArraysContains(ANTENNA_ARRAYS_2);
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Host cell 4G on ran antenna array", "hosting on antenna array 2 create"));
+        waitForPageToLoad();
+        cellSiteConfigurationPage.selectTreeRow(CELL_NAMES[2]);
+        waitForPageToLoad();
+        cellSiteConfigurationPage.createHostingOnAntennaArraysContains(ANTENNA_ARRAYS_3);
+        checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Host cell 4G on ran antenna array", "hosting on antenna array 3 create"));
     }
 
-    @Test(priority = 12, description = "Finish HLP task", dependsOnMethods = {"hostCell4GOnRANAntennaArray"})
+    @Test(priority = 13, description = "Finish HLP task", dependsOnMethods = {"hostCell4GOnRANAntennaArray"})
     @Description("Finish High Level Planning task")
     public void finishHLP() {
         waitForPageToLoad();
@@ -187,7 +230,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Finish HLP", "complete high level planning task"));
     }
 
-    @Test(priority = 13, description = "Start LLP task", dependsOnMethods = {"finishHLP"})
+    @Test(priority = 14, description = "Start LLP task", dependsOnMethods = {"finishHLP"})
     @Description("Start Low Level Planning")
     public void startLLP() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -197,7 +240,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 14, description = "Check validation results", dependsOnMethods = {"startLLP"})
+    @Test(priority = 15, description = "Check validation results", dependsOnMethods = {"startLLP"})
     @Description("Check validation results")
     public void validateProjectPlan() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -211,7 +254,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         Assert.assertTrue(planViewWizardPage.isValidationResultPresent());
     }
 
-    @Test(priority = 15, description = "Complete cells configuration", dependsOnMethods = {"validateProjectPlan"})
+    @Test(priority = 16, description = "Complete cells configuration", dependsOnMethods = {"validateProjectPlan"})
     @Description("Complete cells configuration")
     public void lowLevelLogicalDesign() {
         PlanViewWizardPage planViewWizardPage = new PlanViewWizardPage(driver);
@@ -221,14 +264,13 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, ENODEB_NAME);
         cellSiteConfigurationPage.getTabTable().clearColumnValue(NAME);
         for (int i = 0; i < 3; i++) {
-            waitForPageToLoad();
             cellSiteConfigurationPage.selectRowByAttributeValueWithLabel(NAME, CELL_NAMES[i]);
         }
         waitForPageToLoad();
-        cellSiteConfigurationPage.editCellsInBulk(AMOUNT_OF_CELLS, PCI, RSI, REFERENCE_POWER, TAC, PA_INPUT);
+        cellSiteConfigurationPage.editCellsInBulk(PCI, RSI, REFERENCE_POWER, TAC, MIMO_MODE, BANDWITH, TX_POWER);
     }
 
-    @Test(priority = 16, description = "Finish LLP task", dependsOnMethods = {"lowLevelLogicalDesign"})
+    @Test(priority = 17, description = "Finish LLP task", dependsOnMethods = {"lowLevelLogicalDesign"})
     @Description("Finish Low Level Planning task")
     public void finishLowLevelPlanningTask() {
         waitForPageToLoad();
@@ -241,7 +283,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         processIPCode = tasksPage.proceedNRPFromReadyForIntegration(processNRPCode);
     }
 
-    @Test(priority = 17, description = "Finish NRP and IP", dependsOnMethods = {"finishLowLevelPlanningTask"})
+    @Test(priority = 18, description = "Finish NRP and IP", dependsOnMethods = {"finishLowLevelPlanningTask"})
     @Description("Finish NRP and IP")
     public void completeProcessNRP() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -258,7 +300,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete process NRP", "complete verification task"));
     }
 
-    @Test(priority = 18, description = "Delete antennas, BBU, RRU", dependsOnMethods = {"createBaseBandUnit", "createRadioUnit"})
+    @Test(priority = 19, description = "Delete antennas, BBU, RRU", dependsOnMethods = {"createBaseBandUnit", "createRadioUnit"})
     @Description("Delete antennas, BBU, RRU")
     public void deleteDevices() {
         openCellSiteConfiguration();
@@ -276,14 +318,14 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 19, description = "Delete eNodeB", dependsOnMethods = {"createENodeB"})
+    @Test(priority = 20, description = "Delete eNodeB", dependsOnMethods = {"createENodeB"})
     @Description("Delete eNodeB")
     public void deleteNodeB() {
         waitForPageToLoad();
         cellSiteConfigurationPage.removeBaseStation(NAME, ENODEB_NAME);
     }
 
-    @Test(priority = 20, description = "Checking system message summary")
+    @Test(priority = 21, description = "Checking system message summary")
     @Description("Checking system message summary")
     public void systemMessageSummary() {
         softAssert.assertAll();
@@ -313,7 +355,7 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
 
     private void checkMessageContainsText(String systemMessageLog) {
         softAssert.assertTrue((getFirstMessage().getText())
-                .contains(TP_OSS_RM_RAN_001_Test.TASK_COMPLETED), systemMessageLog);
+                .contains(BUC_INV_RAN_001_Test.TASK_COMPLETED), systemMessageLog);
     }
 
     private void checkMessageText(String message, String systemMessageLog) {
@@ -351,5 +393,27 @@ public class TP_OSS_RM_RAN_001_Test extends BaseTestCase {
     private void closeMessage() {
         SystemMessageContainer.create(driver, webDriverWait).close();
         waitForPageToLoad();
+    }
+
+    private void getOrCreateLocations() {
+        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
+        locationInventoryRepository.getOrCreateLocation(LOCATION_NAME, SITE, prepareAddress());
+    }
+
+    private Long prepareAddress() {
+        AddressRepository addressRepository = new AddressRepository(Environment.getInstance());
+        return addressRepository.updateOrCreateAddress(COUNTRY_NAME, POSTAL_CODE_NAME, REGION_NAME, CITY_NAME, DISTRICT_NAME);
+    }
+
+    private void getOrCreateMccMnc() {
+        RadioClient.getInstance(Environment.getInstance()).getOrCreateMccMnc(MCC_MNC_OPERATOR, MCC, MNC);
+    }
+
+    private Long getOrCreateBandType() {
+        return Radio4gClient.getInstance(Environment.getInstance()).getOrCreateBandType(BAND_TYPE_NAME, DL_FREQUENCY_START, DL_FREQUENCY_END, UL_FREQUENCY_START, UL_FREQUENCY_END);
+    }
+
+    private void getOrCreateCarrier() {
+        Radio4gClient.getInstance(Environment.getInstance()).getOrCreateCarrier(CARRIER_NAME, DOWNLINK_CHANNEL, UPLINK_CHANNEL, DL_CENTRE_FREQUENCY, UL_CENTRE_FREQUENCY, getOrCreateBandType());
     }
 }

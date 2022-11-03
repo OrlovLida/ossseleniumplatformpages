@@ -19,7 +19,6 @@ public class Cell4GBulkWizardPage extends BasePage {
     private static final String CARRIER = "carrier";
     private static final String BANDWIDTH_UL = "bandwidth_ul";
     private static final String BANDWIDTH_DL = "bandwidth_dl";
-    private static final String TAC = "tac";
     private static final String MIMO = "mimo_mode";
     private static final String NAME = "name-TEXT_FIELD";
     private static final String COLUMN_LOCAL_CELL_ID = "localCellId";
@@ -29,94 +28,94 @@ public class Cell4GBulkWizardPage extends BasePage {
     private static final String WIZARD_ID = "cell-4g-bulk-wizard_prompt-card";
     private static final String CELLS_LIST_ID = "ExtendedList-secondStep";
     private static final String CELL_TYPE_IOT_ID = "cellTypeIot";
-    private final Wizard cell4GBulkWizard;
+    private static final String NON_IOT_TYPE = "NON_IOT";
 
     public Cell4GBulkWizardPage(WebDriver driver) {
         super(driver);
-        cell4GBulkWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    }
+
+    public Wizard getWizard() {
+        return Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     @Step("Click Accept button")
     public void clickAccept() {
-        cell4GBulkWizard.clickAccept();
+        getWizard().clickAccept();
     }
 
     @Step("Click Next button")
     public void clickNext() {
-        cell4GBulkWizard.clickNext();
+        getWizard().clickNext();
     }
 
     @Step("Create Cells in Bulk Wizard")
     public void createCellBulkWizard(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId, int crp) {
         setCellsAmount(String.valueOf(amountOfCells));
         setCarrier(carrier);
-        setCellTypeIot("STANDALONE_IOT");
+        setCellTypeIot(NON_IOT_TYPE);
         setSameLocation();
-        setBandwidthUl("10");
-        setBandwidthDl("10");
-        setMimo("2Tx2Rx");
-        setTotalTxPower("25");
+        waitForPageToLoad();
         clickNext();
         setFirstAvailableId();
-        int rowNumber = amountOfCells;
+        int rowNumber = 1;
         for (String cellName : cellNames) {
             Row row = EditableList.createById(driver, wait, CELLS_LIST_ID).getRow(rowNumber - 1);
             row.setValue(cellName, COLUMN_NAME, NAME);
             row.setValue(String.valueOf(crp), COLUMN_CRP, CRP_ID);
             row.setValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID);
-            rowNumber--;
+            rowNumber++;
         }
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         clickAccept();
     }
 
     @Step("Set Amount of cells")
     public void setCellsAmount(String cellsAmount) {
-        cell4GBulkWizard.setComponentValue(CELLS_AMOUNT, cellsAmount);
+        getWizard().setComponentValue(CELLS_AMOUNT, cellsAmount);
     }
 
     @Step("Set Cell Type IoT")
     public void setCellTypeIot(String cellTypeIot) {
-        cell4GBulkWizard.setComponentValue(CELL_TYPE_IOT_ID, cellTypeIot);
+        getWizard().setComponentValue(CELL_TYPE_IOT_ID, cellTypeIot);
     }
 
     @Step("Set Carrier")
     public void setCarrier(String carrier) {
-        cell4GBulkWizard.setComponentValue(CARRIER, carrier);
+        getWizard().setComponentValue(CARRIER, carrier);
     }
 
     @Step("Set BandwidthUL")
     public void setBandwidthUl(String bandwidthUl) {
-        cell4GBulkWizard.setComponentValue(BANDWIDTH_UL, bandwidthUl);
+        getWizard().setComponentValue(BANDWIDTH_UL, bandwidthUl);
     }
 
     @Step("Set BandwidthDL")
     public void setBandwidthDl(String bandwidthDl) {
-        cell4GBulkWizard.setComponentValue(BANDWIDTH_DL, bandwidthDl);
+        getWizard().setComponentValue(BANDWIDTH_DL, bandwidthDl);
     }
 
     @Step("Set Total TX Power")
     public void setTotalTxPower(String txPower) {
-        cell4GBulkWizard.setComponentValue(CELL_TOTAL_TX_POWER_ID, txPower);
-    }
-
-    @Step("Set TAC")
-    public void setTac(String tac) {
-        cell4GBulkWizard.setComponentValue(TAC, tac);
+        getWizard().setComponentValue(CELL_TOTAL_TX_POWER_ID, txPower);
     }
 
     @Step("Set MIMO")
     public void setMimo(String mimo) {
-        cell4GBulkWizard.setComponentValue(MIMO, mimo);
+        getWizard().setComponentValue(MIMO, mimo);
     }
 
     @Step("Click Same Location as Base Station checkbox")
     public void setSameLocation() {
-        cell4GBulkWizard.setComponentValue(USE_SAME_LOCATION_AS_BASE_STATION, "true");
+        getWizard().setComponentValue(USE_SAME_LOCATION_AS_BASE_STATION, "true");
     }
 
     @Step("Click Set First Available ID")
     public void setFirstAvailableId() {
-        cell4GBulkWizard.setComponentValue(USE_FIRST_AVAILABLE_ID, "true");
+        getWizard().setComponentValue(USE_FIRST_AVAILABLE_ID, "true");
     }
+
+    protected void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
 }

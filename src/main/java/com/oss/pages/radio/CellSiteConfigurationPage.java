@@ -97,7 +97,6 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Select {label} row")
     public CellSiteConfigurationPage selectRowByAttributeValueWithLabel(String attribute, String label) {
-        waitForPageToLoad();
         getTabTable().selectRowByAttributeValueWithLabel(attribute, label);
         waitForPageToLoad();
         return this;
@@ -355,9 +354,19 @@ public class CellSiteConfigurationPage extends BasePage {
         hostOnAntennaWizard.clickAccept();
     }
 
-    public void editCellsInBulk(int cellsNumber, String pci, String rsi, String referencePower, String[] tac, String paOutput) {
+    @Step("Create Hosting on Antenna Arrays")
+    public void createHostingOnAntennaArraysContains(String[] antennaName) {
+        selectTab(HOSTING_TAB_LABEL);
+        clickPlusIconAndSelectOptionById(HOST_ON_ANTENNA_ARRAY_ACTION_ID);
+        HostingWizardPage hostOnAntennaWizard = new HostingWizardPage(driver);
+        hostOnAntennaWizard.setHostingContains(antennaName);
+        waitForPageToLoad();
+        hostOnAntennaWizard.clickAccept();
+    }
+
+    public void editCellsInBulk(String[] pci, String[] rsi, String referencePower, String[] tac, String mimoMode, String bandwidth, String txPower) {
         clickEditIcon();
-        new EditCell4GBulkWizardPage(driver).editCellsBulk(cellsNumber, pci, rsi, referencePower, tac, paOutput);
+        new EditCell4GBulkWizardPage(driver).editCellsBulk(pci, rsi, referencePower, tac, mimoMode, bandwidth, txPower);
     }
 
     public boolean isCanvasPresent() {
