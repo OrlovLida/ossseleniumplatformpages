@@ -1,5 +1,6 @@
 package com.oss.pages.physical;
 
+import com.oss.framework.components.inputs.ObjectSearchField;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +22,7 @@ public class LocationWizardPage extends BasePage {
     private static final String LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "logicalLocationType";
     private static final String LOCATION_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String LOCATION_ABBREVIATION_DATA_ATTRIBUTE_NAME = "abbreviation";
-    private static final String LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME = "address";
+    private static final String LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME = "geoSearch";
     private static final String LOCATION_LATITUDE_DATA_ATTRIBUTE_NAME = "latitude";
     private static final String LOCATION_LONGITUDE_DATA_ATTRIBUTE_NAME = "longitude";
     private static final String LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
@@ -118,10 +119,47 @@ public class LocationWizardPage extends BasePage {
                 Input.ComponentType.TEXT_FIELD);
     }
 
+    @Step("Set location abbreviation")
+    public void setLocationAbbreviation(String locationAbbreviation) {
+        locationWizard.setComponentValue(LOCATION_ABBREVIATION_DATA_ATTRIBUTE_NAME, locationAbbreviation,
+                Input.ComponentType.TEXT_FIELD);
+    }
+
+    @Step("Set location latitude")
+    public void setLocationLatitude(String locationLatitude) {
+        locationWizard.setComponentValue(LOCATION_LATITUDE_DATA_ATTRIBUTE_NAME, locationLatitude,
+                Input.ComponentType.NUMBER_FIELD);
+    }
+
+    @Step("Set location longitude")
+    public void setLocationLongitude(String locationLongitude) {
+        locationWizard.setComponentValue(LOCATION_LONGITUDE_DATA_ATTRIBUTE_NAME, locationLongitude,
+                Input.ComponentType.NUMBER_FIELD);
+    }
+
+    @Step("Set location description")
+    public void setLocationDescription(String locationDescription) {
+        locationWizard.setComponentValue(LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME, locationDescription,
+                Input.ComponentType.TEXT_AREA);
+    }
+
+    @Step("Set location remarks")
+    public void setLocationRemarks(String locationRemarks) {
+        locationWizard.setComponentValue(LOCATION_REMARKS_DATA_ATTRIBUTE_NAME, locationRemarks,
+                Input.ComponentType.TEXT_AREA);
+    }
+
+
     @Step("Set geographical address")
     public void setGeographicalAddress(String geographicalAddress) {
         locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
                 .setValueContains(Data.createSingleData(geographicalAddress));
+    }
+
+
+    public void setFirstGeographicalAddress(String geographicalAddress) {
+        ObjectSearchField input = (ObjectSearchField) locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
+        input.setFirstResult(geographicalAddress);
     }
 
     @Step("Set first Address in the drop-down list")

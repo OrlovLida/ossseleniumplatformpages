@@ -621,4 +621,7 @@ public class NewInventoryViewPage extends BasePage {
         return WidgetChooser.create(driver, wait);
     }
 
+    public void clickConfirmationBoxByLabel(String buttonLabel) {
+        getConfirmationBox().clickButtonByLabel(buttonLabel);
+    }
 }
