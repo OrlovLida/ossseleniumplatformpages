@@ -1,5 +1,12 @@
 package com.oss.pages.bpm;
 
+import java.util.List;
+
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.oss.framework.components.attributechooser.AttributesChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableInterface;
@@ -8,13 +15,8 @@ import com.oss.pages.BasePage;
 import com.oss.pages.bpm.taskforms.IPDTaskFormPage;
 import com.oss.pages.bpm.taskforms.KDTaskFormPage;
 import com.oss.pages.platform.HomePage;
-import io.qameta.allure.Step;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import io.qameta.allure.Step;
 
 /**
  * @author Paweł Rother
@@ -188,6 +190,8 @@ public class TasksPageV2 extends BasePage {
     }
 
     public String proceedNRPFromReadyForIntegration(String processCode) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTableWidget().unselectAllRows();
         DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(processCode, READY_FOR_INTEGRATION_TASK);
         String ipCode = getIPCodeFromCompletedNRP(processCode);

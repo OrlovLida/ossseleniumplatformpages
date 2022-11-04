@@ -1,5 +1,7 @@
 package com.oss.E2E;
 
+import java.util.Optional;
+
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -9,7 +11,6 @@ import org.testng.asserts.SoftAssert;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
-import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
@@ -41,9 +42,9 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     private static final String[] RADIO_UNIT_NAMES = {"BTS5900,Denver1/0/MRRU,80", "BTS5900,Denver1/0/MRRU,81", "BTS5900,Denver1/0/MRRU,82"};
     private static final String RAN_ANTENNA_MODEL = "HUAWEI Technology Co.,Ltd APE4518R14V06";
     private static final String[] ANTENNA_NAMES = {"ANT-1", "ANT-2", "ANT-3"};
-    private static final String[] ANTENNA_ARRAYS_1 = {"ANT-1/APE4518R14V06 Ly1/Freq(1695-2690)", "ANT-1/APE4518R14V06 Ry2/Freq(1695-2690)"};
-    private static final String[] ANTENNA_ARRAYS_2 = {"ANT-2/APE4518R14V06 Ly1/Freq(1695-2690)", "ANT-2/APE4518R14V06 Ry2/Freq(1695-2690)"};
-    private static final String[] ANTENNA_ARRAYS_3 = {"ANT-3/APE4518R14V06 Ly1/Freq(1695-2690)", "ANT-3/APE4518R14V06 Ry2/Freq(1695-2690)"};
+    private static final String[] ANTENNA_ARRAYS_1 = {"ANT-1/APE4518R14V06_Ly1/Freq(1695-2690)", "ANT-1/APE4518R14V06_Ry2/Freq(1695-2690)"};
+    private static final String[] ANTENNA_ARRAYS_2 = {"ANT-2/APE4518R14V06_Ly1/Freq(1695-2690)", "ANT-2/APE4518R14V06_Ry2/Freq(1695-2690)"};
+    private static final String[] ANTENNA_ARRAYS_3 = {"ANT-3/APE4518R14V06_Ly1/Freq(1695-2690)", "ANT-3/APE4518R14V06_Ry2/Freq(1695-2690)"};
     private static final String BBU_EQUIPMENT_TYPE = "Base Band Unit";
     private static final String RADIO_UNIT_EQUIPMENT_TYPE = "Remote Radio Head/Unit";
     private static final String[] CELL_NAMES = new String[]{"Denver411", "Denver412", "Denver413"};
@@ -300,10 +301,17 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
         checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete process NRP", "complete verification task"));
     }
 
-    @Test(priority = 19, description = "Delete antennas, BBU, RRU", dependsOnMethods = {"createBaseBandUnit", "createRadioUnit"})
+    @Test(priority = 19, description = "Delete eNodeB", dependsOnMethods = {"createENodeB"})
+    @Description("Delete eNodeB")
+    public void deleteNodeB() {
+        openCellSiteConfiguration();
+        waitForPageToLoad();
+        cellSiteConfigurationPage.removeBaseStation(NAME, ENODEB_NAME);
+    }
+
+    @Test(priority = 20, description = "Delete antennas, BBU, RRU", dependsOnMethods = {"createBaseBandUnit", "createRadioUnit"})
     @Description("Delete antennas, BBU, RRU")
     public void deleteDevices() {
-        openCellSiteConfiguration();
         waitForPageToLoad();
         cellSiteConfigurationPage.removeDevice("Base Band Units", MANUFACTURER, BBU_NAME);
         checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete devices", "BBU delete"));
@@ -316,13 +324,6 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
             checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete devices", "antenna delete"));
             waitForPageToLoad();
         }
-    }
-
-    @Test(priority = 20, description = "Delete eNodeB", dependsOnMethods = {"createENodeB"})
-    @Description("Delete eNodeB")
-    public void deleteNodeB() {
-        waitForPageToLoad();
-        cellSiteConfigurationPage.removeBaseStation(NAME, ENODEB_NAME);
     }
 
     @Test(priority = 21, description = "Checking system message summary")
@@ -381,12 +382,17 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     private void checkMessageType(String systemMessageLog) {
         SystemMessageInterface systemMessage = getSuccesSystemMessage(systemMessageLog);
         systemMessage.close();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     private SystemMessageInterface getSuccesSystemMessage(String systemMessageLog) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
-        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS, systemMessageLog);
+        Optional<Message> firstSystemMessage = systemMessage.getFirstMessage();
+        softAssert.assertTrue(firstSystemMessage.isPresent(), systemMessageLog);
+        if (firstSystemMessage.isPresent()) {
+            softAssert.assertEquals((systemMessage.getFirstMessage()
+                    .orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), SystemMessageContainer.MessageType.SUCCESS, systemMessageLog);
+        }
         return systemMessage;
     }
 
