@@ -83,6 +83,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
             .endPlusDaysShortWay(plus5Days)
             .endPlusDaysLongWay(plus10Days)
             .longWorkWeakLongWay(true)
+            .longWorkWeakShortWay(false)
             .build();
 
     private final List<Forecast> processForecasts = Lists.newArrayList(
@@ -91,6 +92,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
                     .startPlusDays(0L)
                     .endPlusDaysShortWay(plus5Days)
                     .longWorkWeakShortWay(true)
+                    .longWorkWeakLongWay(false)
                     .build(),
 
             Forecast.builder()
@@ -98,6 +100,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
                     .startPlusDays(0L)
                     .endPlusDaysLongWay(plus10Days)
                     .longWorkWeakLongWay(true)
+                    .longWorkWeakShortWay(false)
                     .build());
 
     private void waitForPageToLoad() {
