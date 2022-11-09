@@ -378,7 +378,7 @@ public class TreeWidgetTest extends BaseTestCase {
         viewPage.getMainTree().callActionById(ActionsContainer.EDIT_GROUP_ID, REMOVE_SUBLOCATION_ACTION);
         ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(CONFIRM_DELETE_BUTTON);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        List<String> nodes = hierarchyViewPage.getVisibleNodesLabel();
+        List<String> nodes = viewPage.getVisibleNodesLabel();
         Assert.assertTrue(nodes.isEmpty());
         Assert.assertTrue(driver.findElement(By.className("tree_no_data")).isDisplayed());
 
