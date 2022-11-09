@@ -1,15 +1,5 @@
 package com.oss.pages.bpm;
 
-import java.util.AbstractMap;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.attributechooser.AttributesChooser;
 import com.oss.framework.components.inputs.Input;
@@ -24,8 +14,16 @@ import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.processinstances.TerminateProcessWizardPage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.AbstractMap;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class PlannersViewPage extends BasePage {
 
@@ -279,7 +277,7 @@ public class PlannersViewPage extends BasePage {
         return new ProcessWizardPage(driver);
     }
 
-    public String createProgramWithProcess(String programName, Long plusDays, String programType, String processName, Long plusDaysProcess, String processType) {
+    public Map<String, String> createProgramWithProcess(String programName, Long plusDays, String programType, String processName, Long plusDaysProcess, String processType) {
         return openProgramCreationWizard().createProgramWithProcess(programName, plusDays, programType, processName, plusDaysProcess, processType);
     }
 

@@ -247,7 +247,6 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
         inventoryViewPage.clearFilters();
     }
 
-    // Disabled until fix OSSWEB-15793
     @Test(priority = 12)
     public void filterByOSFUsingAdvancedSearchWidget() {
         // given
@@ -261,6 +260,7 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
         advancedSearchWidget.getComponent(NATIONALITY_COLUMN_ID)
                 .setSingleStringValue(nationality);
         // when
+        DelayUtils.sleep();
         Multimap<String, String> visibleTags = advancedSearchWidget.getAppliedFilters();
         // then
         Assertions.assertThat(visibleTags.keys()).contains(LAST_NAME_LABEL);

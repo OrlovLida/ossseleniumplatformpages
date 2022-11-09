@@ -1,5 +1,6 @@
 package com.oss.pages.bpm;
 
+import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
@@ -10,6 +11,7 @@ import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
+import com.oss.pages.bpm.processinstances.ProcessCreationWizardProperties;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
 import org.openqa.selenium.WebDriver;
@@ -22,9 +24,10 @@ import java.util.stream.Collectors;
  * @author Paweł Rother
  */
 public class ProcessOverviewPage extends BasePage {
+    public static final String NAME_LABEL = "Name";
     private static final String PROCESS_VIEW = "bpm_processes_view_processes";
-    private static final String PROCESS_TABS = "bpm_processes_view_process-details-tabs-container";
-    private static final String MILESTONE_TAB = "bpm_processes_view_milestones-tab";
+    private static final String PROCESS_TABS = "process-details-window";
+    private static final String MILESTONE_TAB_ID = "bpm_processes_view_milestones-tab";
     private static final String MILESTONE_LIST = "bpm_processes_view_process-milestones-list";
     private static final String ADD_MILESTONES_LIST_ID = "CREATE_MILESTONES_EDITABLE_LIST_ID";
     private static final String CREATE_MILESTONES_ACTION_ID = "create-milestones";
@@ -36,11 +39,20 @@ public class ProcessOverviewPage extends BasePage {
     private static final String ADD_MILESTONES_WIZARD_ID = "WIZARD_APP_ID";
     private static final String CODE_LABEL = "Code";
     private static final String STATUS_LABEL = "Status";
-    private static final String NAME_LABEL = "Name";
     private static final String REFRESH_TABLE_ID = "refresh-table";
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String NETWORK_PLANNING = "Network Planning";
     private static final String PROCESS_OVERVIEW = "Process Overview";
+    private static final String RELOAD_TABLE_ACTION_ID = "refresh-table";
+    private static final String FORECAST_TAB_ID = "bpm_processes_view_forecast-tab";
+    private static final String PROCESS_ROLES_TAB_ID = "bpm_processes_view_roles-tab";
+    private static final String PROCESS_ROLES_LIST = "bpm_processes_view_process-roles-parameters-tab";
+    private static final String FORECAST_LIST = "bpm_processes_view_process-forecast-list";
+    private static final String GROUPS_LABEL = "Groups";
+    private static final String START_PROGRAM_ACTION_ID = "start-program";
+    private static final String RELATED_PROCESSES_TAB_ID = "bpm_processes_view_relations-tab";
+    private static final String RELATED_PROCESSES_LIST = "bpm_processes_view_related-processes-list";
+
 
     public ProcessOverviewPage(WebDriver driver) {
         super(driver);
@@ -71,18 +83,17 @@ public class ProcessOverviewPage extends BasePage {
         processTable.selectPredefinedFilter(filterName);
     }
 
-    public String getProcessStatus(String code) {
+    private String getProcessAttribute(String columnLabel) {
         OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
-        processTable.searchByAttributeWithLabel(CODE_LABEL, Input.ComponentType.TEXT_FIELD, code);
-        int index = processTable.getRowNumber(code, CODE_LABEL);
-        return processTable.getCellValue(index, STATUS_LABEL);
+        return processTable.getCellValue(0, columnLabel);
     }
 
-    public String getProcessName(String code) {
-        OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
-        processTable.searchByAttributeWithLabel(CODE_LABEL, Input.ComponentType.TEXT_FIELD, code);
-        int index = processTable.getRowNumber(code, CODE_LABEL);
-        return processTable.getCellValue(index, NAME_LABEL);
+    public String getProcessStatus() {
+        return getProcessAttribute(STATUS_LABEL);
+    }
+
+    public String getProcessName() {
+        return getProcessAttribute(NAME_LABEL);
     }
 
     public String getProcessCode(String processName) {
@@ -94,17 +105,19 @@ public class ProcessOverviewPage extends BasePage {
         return processTable.getCellValue(index, CODE_LABEL);
     }
 
-    public void findProcess(String processCode) {
-        findProcess(CODE_LABEL, processCode);
+    public ProcessOverviewPage selectProcess(String processCode) {
+        return selectProcess(CODE_LABEL, processCode);
     }
 
-    private void findProcess(String attributeName, String value) {
+    public ProcessOverviewPage selectProcess(String attributeName, String value) {
         TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, value);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
         table.selectRowByAttributeValueWithLabel(attributeName, value);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
     }
 
     public String getMilestoneValue(String milestoneName, String attributeName) {
@@ -112,11 +125,47 @@ public class ProcessOverviewPage extends BasePage {
         return milestoneList.getRow(NAME_LABEL, milestoneName).getValue(attributeName);
     }
 
-    public void selectMilestoneTab(String processAttributeName, String value) {
-        findProcess(processAttributeName, value);
+    public String getProcessRoleGroups(String processRoleName) {
+        CommonList milestoneList = CommonList.create(driver, wait, PROCESS_ROLES_LIST);
+        return milestoneList.getRow(NAME_LABEL, processRoleName).getValue(GROUPS_LABEL);
+    }
+
+    public String getForecastValue(String forecastName, String attributeName) {
+        CommonList list = CommonList.create(driver, wait, FORECAST_LIST);
+        return list.getRow(NAME_LABEL, forecastName).getValue(attributeName);
+    }
+
+    public String getRelatedProcessValue(String relatedProcessName, String attributeName) {
+        CommonList list = CommonList.create(driver, wait, RELATED_PROCESSES_LIST);
+        return list.getRow(NAME_LABEL, relatedProcessName).getValue(attributeName);
+    }
+
+    public int getRelatedProcessesAmount() {
+        CommonList list = CommonList.create(driver, wait, RELATED_PROCESSES_LIST);
+        return list.getRows().size();
+    }
+
+    public ProcessOverviewPage openMilestoneTab() {
+        return openTab(MILESTONE_TAB_ID);
+    }
+
+    public ProcessOverviewPage openProcessRolesTab() {
+        return openTab(PROCESS_ROLES_TAB_ID);
+    }
+
+    public ProcessOverviewPage openForecastsTab() {
+        return openTab(FORECAST_TAB_ID);
+    }
+
+    public ProcessOverviewPage openRelatedProcessesTab() {
+        return openTab(RELATED_PROCESSES_TAB_ID);
+    }
+
+    private ProcessOverviewPage openTab(String tabId) {
+        TabsWidget tabsWidget = TabsWidget.createById(driver, wait, PROCESS_TABS);
+        tabsWidget.selectTabById(tabId);
         DelayUtils.waitForPageToLoad(driver, wait);
-        TabsWidget milestoneTab = TabsWidget.createById(driver, wait, PROCESS_TABS);
-        milestoneTab.selectTabById(MILESTONE_TAB);
+        return this;
     }
 
     public void callAction(String actionId) {
@@ -138,7 +187,7 @@ public class ProcessOverviewPage extends BasePage {
     }
 
     public List<Milestone> addMilestonesForProcess(String processCode, List<Milestone> milestones) {
-        findProcess(processCode);
+        selectProcess(processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
         callAction(CREATE_MILESTONES_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -160,6 +209,19 @@ public class ProcessOverviewPage extends BasePage {
         return new ProcessWizardPage(driver);
     }
 
+    public ProcessWizardPage openProgramCreationWizard() {
+        callAction(CREATE_GROUP_ACTION_ID, START_PROGRAM_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new ProcessWizardPage(driver);
+    }
+
+    public void createInstance(ProcessCreationWizardProperties properties) {
+        if (properties.isProcessCreation())
+            openProcessCreationWizard().createInstance(properties);
+        else if (properties.isProgramCreation())
+            openProgramCreationWizard().createInstance(properties);
+    }
+
     public String createSimpleNRP() {
         return openProcessCreationWizard().createSimpleNRPV2();
     }
@@ -172,4 +234,10 @@ public class ProcessOverviewPage extends BasePage {
         return openProcessCreationWizard().createSimpleDCPV2();
     }
 
+    public ProcessOverviewPage reloadTable() {
+        TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.callAction(OldActionsContainer.KEBAB_GROUP_ID, RELOAD_TABLE_ACTION_ID);
+        return this;
+    }
 }

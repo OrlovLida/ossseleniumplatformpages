@@ -60,8 +60,8 @@ public class NewNavigationTest extends BaseTestCase {
     private static final String USER_2 = "webseleniumtests2";
     private static final String PASSWORD_2 = "oss";
     private static final String DELETE_CATEGORY_BUTTON_ID = "deleteCategoryButton";
-    private static final String PHYSICAL_DEVICE_TYPE = "PhysicalDevice";
-    private static final String MODELS_LEARNING_ROLE = "MODELS_LEARNING";
+    private static final String PHYSICAL_CONNECTION_TYPE = "Physical Connection";
+    private static final String MODIFY_ROLE = "MODIFY";
     private static final String TEST_MOVIE_TYPE = "TestMovie";
     private static final String INVENTORY_VIEW_LINK = "#/views/management/views/inventory-view";
     private static final String LINK_IS_NOT_AVAILABLE_EXCEPTION = "Link is not available";
@@ -231,7 +231,7 @@ public class NewNavigationTest extends BaseTestCase {
         goToHomePage();
         ApplicationWizard applicationWizard = openApplicationWizard();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        applicationWizard.setPolicies(PHYSICAL_DEVICE_TYPE, MODELS_LEARNING_ROLE);
+        applicationWizard.setPolicies(PHYSICAL_CONNECTION_TYPE, MODIFY_ROLE);
         applicationWizard.clickSave();
         DelayUtils.sleep(10000);
         Assertions.assertThat(toolsManagerWindow.getApplicationURL(APPLICATION_NAME_2)).isEmpty();
@@ -250,7 +250,7 @@ public class NewNavigationTest extends BaseTestCase {
         ApplicationWizard applicationWizard = ApplicationWizard.create(driver, webDriverWait);
         applicationWizard.setApplication(APPLICATION_TYPE);
         applicationWizard.setApplicationName(APPLICATION_NAME_3);
-        applicationWizard.setPolicies(PHYSICAL_DEVICE_TYPE, MODELS_LEARNING_ROLE);
+        applicationWizard.setPolicies(PHYSICAL_CONNECTION_TYPE, MODIFY_ROLE);
         applicationWizard.clickSave();
         changeUser(USER_2, PASSWORD_2);
         List<String> subcategoriesNames = toolsManagerWindow.getSubcategoriesNames(CATEGORY_NAME);

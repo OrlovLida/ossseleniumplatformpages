@@ -53,7 +53,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private static final String TEST_DIRECTOR_TYPE = "TestDirector";
     private static final String INTERESTS = "Interests";
     private static final String ATTACHMENTS = "Attachments";
-    private static final String TABLE_TYPE = "Table";
+    private static final String TABLE_TYPE = " Table";
     private static final String MOVIES = "Movies";
     private static final String ME = "Me";
     private static final String HORIZONTAL_60_40_BUTTON_ID = "TWO_ROWS_60_40";
@@ -79,8 +79,8 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
 
     private void deleteOldConfiguration(){
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
-        deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
         deleteOldConfigurations(inventoryViewPage.getPageConfigurationsName());
+        deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
         inventoryViewPage.selectFirstRow();
         deleteOldConfigurations(inventoryViewPage.getTabsConfigurationsName());
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
@@ -250,6 +250,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     
     @AfterMethod
     public void unselectAllRows() {
+        DelayUtils.waitForPageToLoad(driver,webDriverWait);
         if (!tableWidget.getSelectedObjectCount().equals("0 selected")) {
             tableWidget.unselectAllRows();
         }

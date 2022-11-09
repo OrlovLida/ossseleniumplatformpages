@@ -282,15 +282,15 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     public void createMicrowaveChannelWithTerminations() {
         openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        addObjectToView(NAME_COMPONENT_ID, TEXT_FIELD, FIRST_INDOOR_UNIT_NAME);
+        addObjectToView(NAME_COMPONENT_ID, FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
-        addObjectToView(NAME_COMPONENT_ID, TEXT_FIELD, SECOND_INDOOR_UNIT_NAME);
+        addObjectToView(NAME_COMPONENT_ID, SECOND_INDOOR_UNIT_NAME);
         waitForPageToLoad();
         networkViewPage.expandViewContentPanel();
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
 
-        networkViewPage.openWizardPage(MICROWAVE_CHANNEL_TRAIL_TYPE);
+        networkViewPage.openConnectionWizard(MICROWAVE_CHANNEL_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveChannelAttributes firstMicrowaveChannelAttributes = getFirstMicrowaveChannelAttributes();
         MicrowaveChannelWizardPage firstMicrowaveChannelWizardPage = new MicrowaveChannelWizardPage(driver);
@@ -317,14 +317,14 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, firstMicrowaveChannel);
         waitForPageToLoad();
 
-        networkViewPage.openWizardPage(MICROWAVE_CHANNEL_TRAIL_TYPE);
+        networkViewPage.openConnectionWizard(MICROWAVE_CHANNEL_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveChannelAttributes secondMicrowaveChannelAttributes = getSecondMicrowaveChannelAttributes();
         MicrowaveChannelWizardPage secondMicrowaveChannelWizardPage = new MicrowaveChannelWizardPage(driver);
         fillMicrowaveChannelWizard(secondMicrowaveChannelWizardPage, secondMicrowaveChannelAttributes);
         waitForPageToLoad();
         assertMicrowaveChannel(networkViewPage, secondMicrowaveChannelAttributes);
-        // Czekamy na: OSSTRAIL-5488
+        TODO:
         //Add Terminations using Terminations Tab
 
         networkViewPage.startEditingSelectedTrail();
@@ -365,7 +365,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         waitForPageToLoad();
         networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, secondMicrowaveChannel);
 
-        networkViewPage.openWizardPage(MICROWAVE_LINK_TRAIL_TYPE);
+        networkViewPage.openConnectionWizard(MICROWAVE_LINK_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveLinkAttributes microwaveLinkAttributes = getMicrowaveLinkAttributes();
         MicrowaveLinkWizardPage microwaveLinkWizardPage = new MicrowaveLinkWizardPage(driver);
@@ -403,10 +403,10 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         toolsManagerWindow.openApplication(categoryName, applicationName);
     }
 
-    private void addObjectToView(String componentId, Input.ComponentType componentType, String value) {
+    private void addObjectToView(String componentId, String value) {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
-        networkViewPage.queryElementAndAddItToView(componentId, componentType, value);
+        networkViewPage.queryElementAndAddItToView(componentId, value);
     }
 
     private void createPhysicalDevice(String deviceModel, String deviceName, String locationName) {

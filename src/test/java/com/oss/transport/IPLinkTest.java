@@ -23,9 +23,7 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class IPLinkTest extends BaseTestCase {
     private static final String IP_LINK_NAME = "IPLink_Selenium";
     private static final String NEW_IP_LINK_NAME = "IPLink_Selenium2";
@@ -33,6 +31,7 @@ public class IPLinkTest extends BaseTestCase {
     private static final String BUSINESS_PROCESS_MANAGEMENT = "Business Process Management";
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String PROCESS_INSTANCES = "Process Instances";
+    private static final String CONNECTION_NAME_COLUMN_ID = "trail.name";
     private NetworkViewPage networkViewPage;
     private String processNRPCode;
 
@@ -64,12 +63,12 @@ public class IPLinkTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, "SeleniumIPLinkTests");
+        networkViewPage.queryElementAndAddItToView("name", "SeleniumIPLinkTests");
 
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, "SeleniumIPLinkTests2");
+        networkViewPage.queryElementAndAddItToView("name", "SeleniumIPLinkTests2");
 
         networkViewPage.expandDockedPanel("left");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -145,7 +144,7 @@ public class IPLinkTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         RoutingWizardPage routingWizardPage = networkViewPage.addSelectedObjectsToRouting();
         routingWizardPage.proceed();
-        Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(ETHERNET_LINK_NAME));
+        Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(ETHERNET_LINK_NAME, CONNECTION_NAME_COLUMN_ID));
     }
 
     @Test(priority = 7)
@@ -226,7 +225,7 @@ public class IPLinkTest extends BaseTestCase {
 
     private void updateTermination(String type) {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkViewPage.selectObjectInDetailsTab("Type", type);
+        networkViewPage.selectTermination("Type", type);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         networkViewPage.modifyTermination();
         ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);

@@ -31,6 +31,7 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
     private static final String TASKS = "Tasks";
     private static final String NAME = "Name";
     private static final String SITE = "Site";
+    private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
     private String processDCPCode;
     private Random r = new Random();
     private final String pci = Integer.toString(r.nextInt(503));
@@ -54,7 +55,7 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         waitForPageToLoad();
         TasksPageV2 tasksPage = new TasksPageV2(driver);
         tasksPage.startTask(processDCPCode, "Correct data");
-        checkPopup("The task properly assigned.");
+        checkPopup("The task properly assigned.", String.format(SYSTEM_MESSAGE_PATTERN, "Start DCP", "DCP start"));
         waitForPageToLoad();
     }
 
@@ -99,18 +100,24 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         editCell4GBulkWizardPage.setRSIBulk(rsi);
         waitForPageToLoad();
         editCell4GBulkWizardPage.accept();
-        checkPopup("Cells 4G updated successfully");
+        checkPopup("Cells 4G updated successfully", String.format(SYSTEM_MESSAGE_PATTERN, "Modify cell 4G parameters", "cell 4G bulk wizard close"));
     }
 
     @Test(priority = 5, description = "Finish DCP", dependsOnMethods = {"modifyCell4Gparameters"})
     @Description("Finish Data Correction Process")
-    public void finnishDCP() {
+    public void finishDCP() {
         openView(TASKS, BPM_AND_PLANNING, PROCESS_OPERATIONS);
         waitForPageToLoad();
         TasksPageV2 tasksPage = new TasksPageV2(driver);
         tasksPage.completeTask(processDCPCode, "Correct data");
-        checkPopup("Task properly completed.");
+        checkPopup("Task properly completed.", String.format(SYSTEM_MESSAGE_PATTERN, "Finish DCP", "DCP finish"));
         waitForPageToLoad();
+    }
+
+    @Test(priority = 6, description = "Checking system message summary")
+    @Description("Checking system message summary")
+    public void systemMessageSummary() {
+        softAssert.assertAll();
     }
 
     private void openView(String actionLabel, String... path) {
@@ -121,12 +128,12 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         homePage.chooseFromLeftSideMenu(actionLabel, path);
     }
 
-    private void checkPopup(String text) {
+    private void checkPopup(String text, String systemMessageLog) {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        softAssert.assertEquals(messages.size(), 1);
-        softAssert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS);
-        softAssert.assertTrue((messages.get(0).getText()).contains(text));
+        softAssert.assertEquals(messages.size(), 1, systemMessageLog);
+        softAssert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS, systemMessageLog);
+        softAssert.assertTrue((messages.get(0).getText()).contains(text), systemMessageLog);
         systemMessage.close();
     }
 

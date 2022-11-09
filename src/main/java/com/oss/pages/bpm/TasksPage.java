@@ -39,7 +39,7 @@ public class TasksPage extends BasePage {
     public static final String UPDATE_REQUIREMENTS_TASK = "Update Requirements";
     private static final Logger log = LoggerFactory.getLogger(TasksPage.class);
     private static final String TABLE_TASKS_ID = "bpm_task_view_task-table";
-    private static final String TABS_TASKS_VIEW_ID = "bpm_task_view_tabs-container";
+    private static final String TABS_TASKS_VIEW_ID = "bpm_task_view_right_window";
     private static final String PROCESS_CODE = "Process Code";
     private static final String NAME = "Name";
     private static final String ASSIGNEE = "Assignee";

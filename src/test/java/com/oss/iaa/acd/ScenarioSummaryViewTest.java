@@ -1,7 +1,7 @@
 package com.oss.iaa.acd;
 
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
@@ -23,7 +23,7 @@ public class ScenarioSummaryViewTest extends BaseTestCase {
     private static final String CREATION_TYPE_VALUE = "Automatically";
 
     @Parameters("chosenView")
-    @BeforeClass
+    @BeforeMethod
     public void goToScenarioSummaryView(
             @Optional("apd") String chosenView
     ) {
@@ -49,12 +49,15 @@ public class ScenarioSummaryViewTest extends BaseTestCase {
         Assert.assertFalse(scenarioSummaryPage.checkCardMaximize(DETECTED_ISSUES_WINDOW_ID));
     }
 
+    @Parameters({"columnName"})
     @Test(priority = 3, testName = "Check Table2D filtering by choosing cell", description = "Check Table2D filtering by choosing cell")
     @Description("Check Table2D filtering by choosing cell")
-    public void table2DFilteringByCellCheck() {
+    public void table2DFilteringByCellCheck(
+            @Optional("Critical") String columnName
+    ) {
         scenarioSummaryPage.turnOnSwitcher(SWITCHER_ID);
-        scenarioSummaryPage.selectCellInTable(SEVERITY_STATE_TABLE_NAME, LEFT_HEADER_NEW, "Critical");
-        Assert.assertTrue(scenarioSummaryPage.checkIfFilteringBySelectingCellWorks(SEVERITY_STATE_TABLE_NAME, LEFT_HEADER_NEW, "Critical"));
+        scenarioSummaryPage.selectCellInTable(SEVERITY_STATE_TABLE_NAME, LEFT_HEADER_NEW, columnName);
+        Assert.assertTrue(scenarioSummaryPage.checkIfFilteringBySelectingCellWorks(SEVERITY_STATE_TABLE_NAME, LEFT_HEADER_NEW, columnName));
         scenarioSummaryPage.clearFiltersInTable(SEVERITY_STATE_TABLE_NAME);
     }
 

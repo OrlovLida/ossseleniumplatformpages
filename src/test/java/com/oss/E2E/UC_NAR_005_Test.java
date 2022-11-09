@@ -45,6 +45,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
     private static final String LF_TYPE = "Logical Function";
     private static final String DELETE_LF_BUTTON_ID = "logicalInventory_DeleteLogicalFunctionActionModifyId";
     private static final String DELETE_DEVICE_BUTTON_ID = "DeleteDeviceWizardAction";
+    private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
     private SoftAssert softAssert;
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
@@ -97,10 +98,12 @@ public class UC_NAR_005_Test extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
         networkDiscoveryControlViewPage.runReconciliation();
-        checkMessageType(MessageType.INFO);
+        checkMessageType(MessageType.INFO, String.format(SYSTEM_MESSAGE_PATTERN, "Run reconciliation with full sample", "starting reconciliation"));
         waitForPageToLoad();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        waitForPageToLoad();
+        networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.INFO);
         if (status.equals("SUCCESS")) {
             waitForPageToLoad();
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
@@ -123,7 +126,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         networkInconsistenciesViewPage.expandTree();
         waitForPageToLoad();
         networkInconsistenciesViewPage.assignLocation(OBJECT_NAME, "1");
-        checkMessageType(MessageType.SUCCESS);
+        checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Assign location and apply inconsistencies", "assigning location"));
         waitForPageToLoad();
         networkInconsistenciesViewPage.clearOldNotification();
         networkInconsistenciesViewPage.applyInconsistencies();
@@ -209,7 +212,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_LF_BUTTON_ID);
         LogicalFunctionWizardPreStep logicalFunctionWizardPreStep = LogicalFunctionWizardPreStep.create(driver, webDriverWait);
         logicalFunctionWizardPreStep.clickAccept();
-        checkMessageType(MessageType.SUCCESS);
+        checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Delete logical function", "logical function delete"));
     }
 
     @Test(priority = 10, description = "Delete router", dependsOnMethods = {"assignLocationAndApplyInconsistencies"})
@@ -227,7 +230,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_DEVICE_BUTTON_ID);
         waitForPageToLoad();
         newInventoryViewPage.clickConfirmationBox(CONFIRM_ID);
-        checkMessageType(MessageType.SUCCESS);
+        checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Delete router", "router delete"));
         waitForPageToLoad();
         DelayUtils.sleep(15000);
         waitForPageToLoad();
@@ -242,17 +245,23 @@ public class UC_NAR_005_Test extends BaseTestCase {
         waitForPageToLoad();
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        checkMessageType(MessageType.INFO);
+        checkMessageType(MessageType.INFO, String.format(SYSTEM_MESSAGE_PATTERN, "Delete CM Domain", "CM Domain delete"));
         waitForPageToLoad();
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+    }
+
+    @Test(priority = 12, description = "Checking system message summary")
+    @Description("Checking system message summary")
+    public void systemMessageSummary() {
+        softAssert.assertAll();
     }
 
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    private void checkMessageType(MessageType messageType) {
-        softAssert.assertEquals((getFirstMessage().getMessageType()), messageType);
+    private void checkMessageType(MessageType messageType, String systemMessageLog) {
+        softAssert.assertEquals((getFirstMessage().getMessageType()), messageType, systemMessageLog);
     }
 
     private Message getFirstMessage() {
