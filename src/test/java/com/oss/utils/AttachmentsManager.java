@@ -1,7 +1,10 @@
 package com.oss.utils;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Timestamp;
 
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -11,7 +14,7 @@ import org.openqa.selenium.logging.LogType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.qameta.allure.Attachment;
+import io.qameta.allure.Allure;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
@@ -19,33 +22,32 @@ public class AttachmentsManager {
 
     private static final Logger log = LoggerFactory.getLogger(AttachmentsManager.class);
 
-    @Attachment(value = "Page screenshot", type = "image/png")
-    public static byte[] saveScreenshotPNG(WebDriver driver) {
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+    public static void saveScreenshotPNG(WebDriver driver) {
+        File screenshotAs = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        try {
+            Allure.addAttachment("Page screenshot", "image/png", FileUtils.openInputStream(screenshotAs), ".png");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Attachment(value = "Console link")
-    public static String saveLink(WebDriver driver) {
-        return driver.getCurrentUrl();
-    }
+    public static void saveLink(WebDriver driver) {
+        Allure.addAttachment("Console link", driver.getCurrentUrl());
+     }
 
     //Text attachments for Allure
-    @Attachment(value = "{0}", type = "text/plain")
-    public static String saveTextLog(String message) {
-        return message;
+    public static void saveTextLog(String message) {
+        Allure.addAttachment("{0}", "text/plain", message, ".txt");
     }
 
     //HTML attachments for Allure
-    @Attachment(value = "{0}", type = "text/html")
-    public static String attachHtml(String html) {
-        return html;
+    public static void attachHtml(String html) {
+        Allure.addAttachment("{0}", "text/html", html, ".html");
     }
 
-    @Attachment(value = "Console logs")
-    public static String attachConsoleLogs(WebDriver webDriver) {
+    public static void attachConsoleLogs(WebDriver webDriver) {
         if (CONFIGURATION.getDriver().equals("gecko")) {
             log.debug("Gecko driver doesn't support capturing browser logs");
-            return "Gecko driver doesn't support capturing browser logs";
         } else {
             LogEntries logEntries = webDriver.manage().logs().get(LogType.BROWSER);
             StringBuilder builder = new StringBuilder();
@@ -60,8 +62,7 @@ public class AttachmentsManager {
                 builder.append("\n");
             }
             builder.append("\n");
-            return builder.toString();
+            Allure.addAttachment("Console logs", builder.toString());
         }
     }
-
 }
