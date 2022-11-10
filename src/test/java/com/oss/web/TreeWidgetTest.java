@@ -372,7 +372,7 @@ public class TreeWidgetTest extends BaseTestCase {
 
     @Test(priority = 19)
     public void deleteRoot() {
-        HierarchyViewPage viewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, "Room", roomId_2.toString());
+        HierarchyViewPage viewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, SUB_LOCATION_TYPE_ROOM, roomId_2.toString());
         viewPage.selectFirstObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         viewPage.getMainTree().callActionById(ActionsContainer.EDIT_GROUP_ID, REMOVE_SUBLOCATION_ACTION);
@@ -380,8 +380,7 @@ public class TreeWidgetTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> nodes = viewPage.getVisibleNodesLabel();
         Assert.assertTrue(nodes.isEmpty());
-        Assert.assertTrue(driver.findElement(By.className("tree_no_data")).isDisplayed());
-
+        Assert.assertTrue(viewPage.getMainTree().hasNoData());
     }
 
     @AfterClass
