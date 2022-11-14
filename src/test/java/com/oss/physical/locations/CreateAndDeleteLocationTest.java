@@ -1,4 +1,5 @@
 package com.oss.physical.locations;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
@@ -15,10 +16,12 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import static com.oss.framework.components.alerts.SystemMessageContainer.*;
 
 public class CreateAndDeleteLocationTest extends BaseTestCase {
@@ -89,7 +92,6 @@ public class CreateAndDeleteLocationTest extends BaseTestCase {
     @Test(priority = 6)
     public void openHierarchyViewFromViewLink() {
         checkMessageTextForCreatedLocation();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         clickSystemMessageLink();
         closeSystemMessage();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -114,6 +116,10 @@ public class CreateAndDeleteLocationTest extends BaseTestCase {
         searchLocationDescriptionByValue();
         searchLocationRemarksByValue();
         searchLocationAddressByValue();
+    }
+
+    @Test(priority = 9, description = "Checking system message summary")
+    public void systemMessageSummary() {
         softAssert.assertAll();
     }
 
@@ -144,9 +150,9 @@ public class CreateAndDeleteLocationTest extends BaseTestCase {
     private void checkMessageTextForCreatedLocation() {
         SystemMessageInterface systemMessage = create(driver, webDriverWait);
         List<Message> messages = systemMessage.getMessages();
-        softAssert.assertEquals(messages.size(), 1);
-        softAssert.assertEquals(messages.get(0).getMessageType(), MessageType.SUCCESS);
-        softAssert.assertTrue(messages.get(0).getText().contains("Location has been created successfully, click here to open Hierarchy View."));
+        softAssert.assertEquals(messages.size(), 1, "There is no single message");
+        softAssert.assertEquals(messages.get(0).getMessageType(), MessageType.SUCCESS, "There is no successful message");
+        softAssert.assertTrue(messages.get(0).getText().contains("Location has been created successfully, click here to open Hierarchy View."), "Returned message contains different content.");
     }
 
     @Step("Click system message link")
@@ -162,49 +168,49 @@ public class CreateAndDeleteLocationTest extends BaseTestCase {
     @Step("Verification of Location Name in Property Panel")
     public void searchLocationNameByValue() {
         String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_ID).getPropertyValue("name");
-        Assert.assertTrue(name.contains("selenium test bu_comp_"));
+        Assert.assertTrue(name.contains("selenium test bu_comp_"), "Name was not calculated correctly.");
     }
 
     @Step("Verification of Location Type in Property Panel")
     private void searchLocationTypeByValue() {
         String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_ID).getPropertyValue("type");
-        Assert.assertEquals(name, "BuildingComplex");
+        Assert.assertEquals(name, "BuildingComplex", "There is a different type of location.");
     }
 
     @Step("Verification of Location Latitude in Property Panel")
     private void searchLocationLatitudeByValue() {
         String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_ID).getPropertyValue(("latitude"));
-        Assert.assertEquals(name, "51");
+        Assert.assertEquals(name, "51", "There is a different value of latitude.");
     }
 
     @Step("Verification of Location Longitude in Property Panel")
     private void searchLocationLongitudeByValue() {
         String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_ID).getPropertyValue(("longitude"));
-        Assert.assertEquals(name, "17");
+        Assert.assertEquals(name, "17", "There is a different value of longitude.");
     }
 
     @Step("Verification of Location Remarks in Property Panel")
     private void searchLocationRemarksByValue() {
         String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_ID).getPropertyValue(("remarks"));
-        Assert.assertEquals(name, "remarks");
+        Assert.assertEquals(name, "remarks", "There is a different value of remarks.");
     }
 
     @Step("Verification of Location Description in Property Panel")
     private void searchLocationDescriptionByValue() {
         String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_ID).getPropertyValue(("description"));
-        Assert.assertEquals(name, "description");
+        Assert.assertEquals(name, "description", "There is a different value of description.");
     }
 
     @Step("Verification of Location Address in Property Panel")
     private void searchLocationAddressByValue() {
         String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_ID).getPropertyValue(("address.name"));
-        Assert.assertEquals(name, addressName);
+        Assert.assertEquals(name, addressName, "There is a different address than one specified in wizard.");
     }
 
     @Step("Verification of Location Abbreviation in Property Panel")
     private void searchLocationAbbreviationByValue() {
         String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_ID).getPropertyValue(("abbreviation"));
-        Assert.assertEquals(name, "BU COM");
+        Assert.assertEquals(name, "BU COM", "There is a different value of abbreviation.");
     }
 
     @Step
