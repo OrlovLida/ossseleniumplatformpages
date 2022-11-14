@@ -1,6 +1,19 @@
 package com.oss.repositories;
 
-import com.comarch.oss.radio.api.dto.*;
+import java.util.List;
+
+import com.comarch.oss.radio.api.dto.BaseStationResponseIdDTO;
+import com.comarch.oss.radio.api.dto.CardIdentificationDTO;
+import com.comarch.oss.radio.api.dto.CarrierDTO;
+import com.comarch.oss.radio.api.dto.Cell4gDTO;
+import com.comarch.oss.radio.api.dto.CellResponseIdDTO;
+import com.comarch.oss.radio.api.dto.EnodeBDTO;
+import com.comarch.oss.radio.api.dto.HniDTO;
+import com.comarch.oss.radio.api.dto.HostRelationDTO;
+import com.comarch.oss.radio.api.dto.HostingResourceDTO;
+import com.comarch.oss.radio.api.dto.MccMncDTO;
+import com.comarch.oss.radio.api.dto.PortIdentificationDTO;
+import com.comarch.oss.radio.api.dto.RanBandType4GDTO;
 import com.oss.services.Radio4gClient;
 import com.oss.untils.Environment;
 
@@ -52,6 +65,37 @@ public class Radio4gRepository {
     public void createHRCellDeviceCard(Long hostingResourceId, Long eNodeBId, Long cellId, String slotName, String cardName) {
         Radio4gClient client = Radio4gClient.getInstance(env);
         client.createHRCell(buildDeviceCardHR(hostingResourceId, slotName, cardName), eNodeBId, cellId);
+    }
+
+    public Long getOrCreateBandType(String bandTypeName, int dLfrequencyStart, int dLfrequencyEnd, int uLfrequencyStart, int uLfrequencyEnd) {
+        Radio4gClient client = Radio4gClient.getInstance(env);
+        List<Integer> bandTypeIds = client.getBandTypeByName(bandTypeName);
+        if (bandTypeIds.isEmpty()) {
+            RanBandType4GDTO ranBandType4GDTO = RanBandType4GDTO.builder()
+                    .name(bandTypeName)
+                    .dLfrequencyStart(dLfrequencyStart)
+                    .dLfrequencyEnd(dLfrequencyEnd)
+                    .uLfrequencyStart(uLfrequencyStart)
+                    .uLfrequencyEnd(uLfrequencyEnd)
+                    .build();
+            return client.createBandType(ranBandType4GDTO);
+        }
+        return Long.valueOf(bandTypeIds.get(0));
+    }
+
+    public void getOrCreateCarrier(String carrierName, int downlinkChannel, int uplinkChannel, int dlCentreFrequency, int ulCentreFrequency, Long bandTypeId) {
+        Radio4gClient client = Radio4gClient.getInstance(env);
+        if (!client.isCarriePresent(carrierName)) {
+            CarrierDTO carrierDTO = CarrierDTO.builder()
+                    .name(carrierName)
+                    .downlinkChannel(downlinkChannel)
+                    .uplinkChannel(uplinkChannel)
+                    .dlCentreFrequency(dlCentreFrequency)
+                    .ulCentreFrequency(ulCentreFrequency)
+                    .bandTypeId(bandTypeId)
+                    .build();
+            client.createCarrier(carrierDTO);
+        }
     }
 
     private HostRelationDTO buildDeviceHR(Long hostingResourceId) {

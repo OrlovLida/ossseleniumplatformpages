@@ -257,8 +257,8 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Create {amountOfCells} Cells 5G by bulk wizard with Carrier = {carrier}")
-    public void createCell5GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID) {
-        openCell5GBulkWizard().createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID);
+    public void createCell5GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID, String[] pci, String[] rsi) {
+        openCell5GBulkWizard().createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID, pci, rsi);
     }
 
     @Step("Create Base Band Unit with following attributes: Type = {bbuEquipmentType}, Name = {bbuName}, Model = {baseBandUnitModel}, Location = {locationName}")

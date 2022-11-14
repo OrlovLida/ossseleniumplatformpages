@@ -24,7 +24,7 @@ import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
-import com.oss.services.Radio4gClient;
+import com.oss.repositories.Radio4gRepository;
 import com.oss.services.RadioClient;
 import com.oss.untils.Environment;
 
@@ -85,10 +85,11 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     private static final int UPLINK_CHANNEL = 24175;
     private static final int DL_CENTRE_FREQUENCY = 793;
     private static final int UL_CENTRE_FREQUENCY = 834;
+    private final Environment env = Environment.getInstance();
 
     private SoftAssert softAssert;
-    private Environment env = Environment.getInstance();
     private CellSiteConfigurationPage cellSiteConfigurationPage;
+    private Radio4gRepository radio4gRepository;
     private String processNRPCode;
     private String processIPCode;
 
@@ -96,6 +97,7 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     public void openConsole() {
         waitForPageToLoad();
         softAssert = new SoftAssert();
+        radio4gRepository = new Radio4gRepository(env);
     }
 
     @Test(priority = 1, description = "Check prerequisites")
@@ -303,7 +305,7 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
 
     @Test(priority = 19, description = "Delete eNodeB", dependsOnMethods = {"createENodeB"})
     @Description("Delete eNodeB")
-    public void deleteNodeB() {
+    public void deleteENodeB() {
         openCellSiteConfiguration();
         waitForPageToLoad();
         cellSiteConfigurationPage.removeBaseStation(NAME, ENODEB_NAME);
@@ -416,10 +418,10 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     }
 
     private Long getOrCreateBandType() {
-        return Radio4gClient.getInstance(Environment.getInstance()).getOrCreateBandType(BAND_TYPE_NAME, DL_FREQUENCY_START, DL_FREQUENCY_END, UL_FREQUENCY_START, UL_FREQUENCY_END);
+        return radio4gRepository.getOrCreateBandType(BAND_TYPE_NAME, DL_FREQUENCY_START, DL_FREQUENCY_END, UL_FREQUENCY_START, UL_FREQUENCY_END);
     }
 
     private void getOrCreateCarrier() {
-        Radio4gClient.getInstance(Environment.getInstance()).getOrCreateCarrier(CARRIER_NAME, DOWNLINK_CHANNEL, UPLINK_CHANNEL, DL_CENTRE_FREQUENCY, UL_CENTRE_FREQUENCY, getOrCreateBandType());
+        radio4gRepository.getOrCreateCarrier(CARRIER_NAME, DOWNLINK_CHANNEL, UPLINK_CHANNEL, DL_CENTRE_FREQUENCY, UL_CENTRE_FREQUENCY, getOrCreateBandType());
     }
 }

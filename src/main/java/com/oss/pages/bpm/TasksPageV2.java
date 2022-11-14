@@ -91,6 +91,8 @@ public class TasksPageV2 extends BasePage {
 
     public TasksPageV2 findTask(String processCode, String taskName) {
         DelayUtils.waitForPageToLoad(driver, wait);
+        getTableWidget().unselectAllRows();
+        DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
         table.clearAllFilters();
         table.searchByAttribute(PROCESS_CODE_INPUT_ID, processCode);
@@ -190,8 +192,6 @@ public class TasksPageV2 extends BasePage {
     }
 
     public String proceedNRPFromReadyForIntegration(String processCode) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getTableWidget().unselectAllRows();
         DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(processCode, READY_FOR_INTEGRATION_TASK);
         String ipCode = getIPCodeFromCompletedNRP(processCode);
