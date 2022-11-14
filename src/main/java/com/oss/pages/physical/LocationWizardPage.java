@@ -22,7 +22,6 @@ public class LocationWizardPage extends BasePage {
     private static final String LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "logicalLocationType";
     private static final String LOCATION_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String LOCATION_ABBREVIATION_DATA_ATTRIBUTE_NAME = "abbreviation";
-    private static final String LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME = "geoSearch";
     private static final String LOCATION_LATITUDE_DATA_ATTRIBUTE_NAME = "latitude";
     private static final String LOCATION_LONGITUDE_DATA_ATTRIBUTE_NAME = "longitude";
     private static final String LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
@@ -103,50 +102,38 @@ public class LocationWizardPage extends BasePage {
 
     @Step("Set description")
     public LocationWizardPage setDescription(String description) {
-        locationWizard.setComponentValue(LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME, description,
-                Input.ComponentType.TEXT_FIELD);
+        locationWizard.setComponentValue(LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME, description);
         return this;
     }
 
     @Step("Set location type")
     public void setLocationType(String locationType) {
-        locationWizard.setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType, Input.ComponentType.COMBOBOX);
+        locationWizard.setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType);
     }
 
     @Step("Set location name")
     public void setLocationName(String locationName) {
-        locationWizard.setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName,
-                Input.ComponentType.TEXT_FIELD);
+        locationWizard.setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName);
     }
 
     @Step("Set location abbreviation")
     public void setLocationAbbreviation(String locationAbbreviation) {
-        locationWizard.setComponentValue(LOCATION_ABBREVIATION_DATA_ATTRIBUTE_NAME, locationAbbreviation,
-                Input.ComponentType.TEXT_FIELD);
+        locationWizard.setComponentValue(LOCATION_ABBREVIATION_DATA_ATTRIBUTE_NAME, locationAbbreviation);
     }
 
     @Step("Set location latitude")
     public void setLocationLatitude(String locationLatitude) {
-        locationWizard.setComponentValue(LOCATION_LATITUDE_DATA_ATTRIBUTE_NAME, locationLatitude,
-                Input.ComponentType.NUMBER_FIELD);
+        locationWizard.setComponentValue(LOCATION_LATITUDE_DATA_ATTRIBUTE_NAME, locationLatitude);
     }
 
     @Step("Set location longitude")
     public void setLocationLongitude(String locationLongitude) {
-        locationWizard.setComponentValue(LOCATION_LONGITUDE_DATA_ATTRIBUTE_NAME, locationLongitude,
-                Input.ComponentType.NUMBER_FIELD);
-    }
-
-    @Step("Set location description")
-    public void setLocationDescription(String locationDescription) {
-        locationWizard.setComponentValue(LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME, locationDescription,
-                Input.ComponentType.TEXT_AREA);
+        locationWizard.setComponentValue(LOCATION_LONGITUDE_DATA_ATTRIBUTE_NAME, locationLongitude);
     }
 
     @Step("Set location remarks")
     public void setLocationRemarks(String locationRemarks) {
-        locationWizard.setComponentValue(LOCATION_REMARKS_DATA_ATTRIBUTE_NAME, locationRemarks,
-                Input.ComponentType.TEXT_AREA);
+        locationWizard.setComponentValue(LOCATION_REMARKS_DATA_ATTRIBUTE_NAME, locationRemarks);
     }
 
 
@@ -158,15 +145,15 @@ public class LocationWizardPage extends BasePage {
 
 
     public void setFirstGeographicalAddress(String geographicalAddress) {
-        ObjectSearchField input = (ObjectSearchField) locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
+        ObjectSearchField input = (ObjectSearchField) locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME);
         input.setFirstResult(geographicalAddress);
     }
 
     @Step("Set first Address in the drop-down list")
     public void setFirstAddress() {
-        if (locationWizard.getComponent(LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME,
+        if (locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME,
                 Input.ComponentType.SEARCH_FIELD).getStringValue().isEmpty()) {
-            locationWizard.setComponentValue(LOCATION_ADDRESS_DATA_ATTRIBUTE_NAME, " ",
+            locationWizard.setComponentValue(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, " ",
                     Input.ComponentType.SEARCH_FIELD);
         }
     }

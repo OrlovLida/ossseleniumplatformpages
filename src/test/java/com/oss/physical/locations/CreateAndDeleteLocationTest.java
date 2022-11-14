@@ -1,5 +1,4 @@
 package com.oss.physical.locations;
-
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
@@ -20,12 +19,11 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import static com.oss.framework.components.alerts.SystemMessageContainer.*;
 
 public class CreateAndDeleteLocationTest extends BaseTestCase {
     private static final String BUILDING_COMPLEX_TYPE = "Building Complex";
-    private static final String BUILDING_COMPLEX_NAME = "Selenium Test Bu_Comp_";
+    private static final String BUILDING_COMPLEX_NAME = "selenium test bu_comp_";
     private static final String BUILDING_COMPLEX_ABBREVIATION = "BU COM";
     private static final String BUILDING_COMPLEX_LATITUDE = "51";
     private static final String BUILDING_COMPLEX_LONGITUDE = "17";
@@ -70,7 +68,7 @@ public class CreateAndDeleteLocationTest extends BaseTestCase {
         locationWizard.setLocationAbbreviation(BUILDING_COMPLEX_ABBREVIATION);
         locationWizard.setLocationLatitude(BUILDING_COMPLEX_LATITUDE);
         locationWizard.setLocationLongitude(BUILDING_COMPLEX_LONGITUDE);
-        locationWizard.setLocationDescription(BUILDING_COMPLEX_DESCRIPTION);
+        locationWizard.setDescription(BUILDING_COMPLEX_DESCRIPTION);
         locationWizard.setLocationRemarks(BUILDING_COMPLEX_REMARKS);
         locationWizard.clickNext();
     }
@@ -81,7 +79,6 @@ public class CreateAndDeleteLocationTest extends BaseTestCase {
         locationWizard.setFirstGeographicalAddress(String.valueOf(geographicalAddressId));
         getGeographicalAddressName();
         locationWizard.clickNext();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 5)
@@ -117,6 +114,7 @@ public class CreateAndDeleteLocationTest extends BaseTestCase {
         searchLocationDescriptionByValue();
         searchLocationRemarksByValue();
         searchLocationAddressByValue();
+        softAssert.assertAll();
     }
 
     @AfterClass
@@ -131,13 +129,13 @@ public class CreateAndDeleteLocationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Step("Fill in geographical address attributes for created location")
+    @Step("Get first geographical address Id for created location")
     private void getFirstGeographicalAddressId() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         geographicalAddressId = addressRepository.getFirstGeographicalAddressId();
     }
 
-    @Step
+    @Step("Get name of geographical address by Id for created location")
     private void getGeographicalAddressName() {
         addressName = addressRepository.getGeographicalAddressName(geographicalAddressId);
     }
@@ -220,18 +218,13 @@ public class CreateAndDeleteLocationTest extends BaseTestCase {
         }
         return ids;
     }
+
     @Step
     private Long getCreatedLocationIdFromURL() {
         return getIdFromString(driver.getCurrentUrl()).stream()
                 .findFirst()
                 .orElseThrow(() -> new NoSuchElementException("Couldn't extract object id from URL"));
     }
-
-
-
-
-
-
 }
 
 
