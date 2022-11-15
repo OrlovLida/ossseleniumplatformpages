@@ -561,10 +561,9 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Open Hierarchy View for selected object")
-    public HierarchyViewPage goToHierarchyViewForSelectedObject() {
+    public void goToHierarchyViewForSelectedObject() {
         DelayUtils.waitForPageToLoad(driver, wait);
         callAction(ActionsContainer.SHOW_ON_GROUP_ID, OPEN_HIERARCHY_VIEW_ACTION_ID);
-        return new HierarchyViewPage(driver);
     }
 
     public boolean isTabVisible(String tabLabel) {
@@ -622,4 +621,7 @@ public class NewInventoryViewPage extends BasePage {
         return WidgetChooser.create(driver, wait);
     }
 
+    public void clickConfirmationBoxByLabel(String buttonLabel) {
+        getConfirmationBox().clickButtonByLabel(buttonLabel);
+    }
 }

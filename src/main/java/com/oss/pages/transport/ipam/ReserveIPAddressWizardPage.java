@@ -22,6 +22,7 @@ class ReserveIPAddressWizardPage extends BasePage {
     private static final String HOST_RESERVE_NUMBER_ADDRESSES_FIELD_UID = "host-reserve-number-addresses-field-uid";
     private static final String RESERVE_MULTIPLE_ADDRESSES = "Reserve multiple addresses";
     private static final String HOST_RESERVE_CONSECUTIVE_FIELD_UID = "host-reserve-consecutive-field-uid";
+    private static final String ID = "NEEDS_TO_UPDATE_ID";
 
     ReserveIPAddressWizardPage(WebDriver driver) {
         super(driver);
@@ -39,7 +40,7 @@ class ReserveIPAddressWizardPage extends BasePage {
 
     private Wizard reserveIPAddress(String description) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
+        Wizard reserveIPAddressWizard = Wizard.createByComponentId(driver, wait, ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         reserveIPAddressWizard.getComponent(HOST_RESERVE_DESCRIPTION_FIELD_UID, TEXT_FIELD).setValueContains(Data.createFindFirst(description));
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -47,7 +48,7 @@ class ReserveIPAddressWizardPage extends BasePage {
     }
 
     void bulkIPAddressReservation(String numberOfHostAddressesToReserve, Boolean reserveConsecutive) {
-        Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
+        Wizard reserveIPAddressWizard = Wizard.createByComponentId(driver, wait, ID);
         reserveIPAddressWizard.getComponent(HOST_RESERVE_MODE_UID_INPUT, SEARCH_FIELD).clear();
         reserveIPAddressWizard.getComponent(HOST_RESERVE_MODE_UID_INPUT, SEARCH_FIELD).setValueContains(Data.createFindFirst(RESERVE_MULTIPLE_ADDRESSES));
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -59,7 +60,7 @@ class ReserveIPAddressWizardPage extends BasePage {
     }
 
     void reserveGivenIPAddress(String ipAddress) {
-        Wizard reserveIPAddressWizard = Wizard.createWizard(driver, wait);
+        Wizard reserveIPAddressWizard = Wizard.createByComponentId(driver, wait, ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         reserveIPAddressWizard.getComponent(HOST_RESERVE_IP_ADDRESS_FIELD_UID, TEXT_FIELD).clear();
         DelayUtils.waitForPageToLoad(driver, wait);

@@ -2,7 +2,9 @@ package com.oss.pages.transport.trail;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.tree.TreeComponent;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -24,6 +26,7 @@ public class ConnectionWizardPage extends BasePage {
     private static final String CAPACITY_VALUE_ID = "trailCapacityValueComponent";
     private static final String ETHERNET_LINK_SPEED_ID = "oss.transport.trail.type.Ethernet Link.Speed";
     private static final String ADDRESS_TO_OPPOSITE_INTERFACE_ID = "oss.transport.trail.type.IP Link.AssignIPHostAddressComboboxComponent";
+    private static final String NONEXISTENT_CARD_VALUE = "No Card/Component";
 
     public ConnectionWizardPage(WebDriver driver) {
         super(driver);
@@ -72,6 +75,13 @@ public class ConnectionWizardPage extends BasePage {
         wizard.setComponentValue(TERMINATE_CARD_ID, value, SEARCH_FIELD);
     }
 
+    @Step("Set nonexistent card")
+    public void setNonexistentCard() {
+        Input searchField = wizard.getComponent(TERMINATE_CARD_ID);
+        searchField.setSingleStringValueContains(NONEXISTENT_CARD_VALUE);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
     @Step("Terminate Port")
     public void terminatePort(String value) {
         wizard.setComponentValue(TERMINATE_PORT_ID, value, SEARCH_FIELD);
@@ -85,5 +95,31 @@ public class ConnectionWizardPage extends BasePage {
     @Step("Assign IP Host Address to the opposite interface = {value}")
     public void assignAddressToOpositeInteface(boolean value) {
         wizard.setComponentValue(ADDRESS_TO_OPPOSITE_INTERFACE_ID, String.valueOf(value), CHECKBOX);
+    }
+
+    public void setCheckbox(String componentId, Boolean value) {
+        wizard.setComponentValue(componentId, value.toString());
+    }
+
+    @Step("Choose termination in tree - {terminationType}")
+    public void chooseTerminationType(ConnectionWizardPage.TerminationType terminationType) {
+        TreeComponent treeComponent = wizard.getTreeComponent();
+        treeComponent.toggleNodeByPath(terminationType.getLabel());
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public enum TerminationType {
+        START("1_1"),
+        END("1_2");
+
+        private final String label;
+
+        private TerminationType(String value) {
+            label = value;
+        }
+
+        private String getLabel() {
+            return label;
+        }
     }
 }

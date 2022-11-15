@@ -1,7 +1,5 @@
 package com.oss.iaa.bigdata.dfe.SMOKE;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -13,9 +11,10 @@ import io.qameta.allure.Description;
 
 public class ThresholdSmokeTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(ThresholdSmokeTest.class);
     private ThresholdPage thresholdPage;
     private static final String THRESHOLD_NAME = "t:SMOKE#alwaysWorking";
+    private static final String STATUS_SUCCESS = "Success";
+    private static final String STATUS_WARNING = "Warning";
 
     @BeforeClass
     public void goToThresholdsView() {
@@ -27,7 +26,7 @@ public class ThresholdSmokeTest extends BaseTestCase {
     public void checkIfThresholdIsWorking() {
         boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(THRESHOLD_NAME);
         if (thresholdExists) {
-            thresholdPage.selectFoundThreshold();
+            thresholdPage.selectFirstThresholdInTable();
             thresholdPage.selectExecutionHistoryTab();
             thresholdPage.clickRefreshInTabTable();
 
@@ -35,10 +34,9 @@ public class ThresholdSmokeTest extends BaseTestCase {
             Assert.assertTrue(ifRunsFresh);
 
             String actualStatus = thresholdPage.checkStatus();
-            boolean statusIsAcceptable = actualStatus.equals("Success") || actualStatus.equals("Warning");
+            boolean statusIsAcceptable = actualStatus.equals(STATUS_SUCCESS) || actualStatus.equals(STATUS_WARNING);
             Assert.assertTrue(statusIsAcceptable);
         } else {
-            log.info("Cannot find existing Threshold {}", THRESHOLD_NAME);
             Assert.fail("Cannot find existing Threshold " + THRESHOLD_NAME);
         }
     }

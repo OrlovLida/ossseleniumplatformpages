@@ -25,7 +25,7 @@ public class FMFilterManagerPage extends BaseManagerPage {
     private static final String HTTP_URL_TO_FM_FILTER_MANAGER = "%s/#/view/filter-manager/manager?perspective=LIVE";
     private static final String NEW_FOLDER_ID = "new_folder";
     private static final String NEW_FILTER_ID = "new_filter";
-    private static final String COMMON_LIST_APP_ID = "_FilterManagerList";
+    private static final String COMMON_LIST_APP_ID = "widget|filter-manager-list";
     private static final String REMOVE_ACTION_ID = "remove_action";
     private static final String SEARCH_FIELD_ID = "search";
 
@@ -73,7 +73,7 @@ public class FMFilterManagerPage extends BaseManagerPage {
     public void createFolder(String name, String description, String filterName) {
         FMCreateWizardPage fmWizardPage = openCreateNewFolderWizard();
         fmWizardPage.setName(name).setDescription(description);
-        fmWizardPage.dragAndDropFolderByName(filterName);
+        fmWizardPage.dragAndDropFilterByName(filterName);
         fmWizardPage.clickAccept();
         log.info("Creating a folder name: {}, description: {}, filterName: {}", name, description, filterName);
     }
@@ -155,12 +155,12 @@ public class FMFilterManagerPage extends BaseManagerPage {
     }
 
     @Step("I create filter")
-    public void createFilter(String name, String description, String type, String filterName) {
+    public void createFilter(String name, String description, String type, String folderName) {
         FMCreateWizardPage fmWizardPage = openCreateNewFilterWizard();
         fmWizardPage.setName(name).setDescription(description).setTypeValue(type);
         fmWizardPage.clickSwitcher("mode");
         fmWizardPage.setValueInExpressionEditor("FilterValueInput", "[Perceived Severity] LIKE REGEX \"2\"");
-        fmWizardPage.dragAndDropFilterByName(filterName);
+        fmWizardPage.dragAndDropFolderByName(folderName);
         fmWizardPage.clickAccept();
         DelayUtils.waitForPageToLoad(driver, wait);
         //TODO add second method after fix OSSWEB-19284

@@ -2,8 +2,6 @@ package com.oss.pages.iaa.bigdata.dfe.externalresource;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.utils.DelayUtils;
@@ -13,7 +11,6 @@ import io.qameta.allure.Step;
 
 public class ExternalResourcesPage extends BaseDfePage {
 
-    private static final Logger log = LoggerFactory.getLogger(ExternalResourcesPage.class);
     private static final String TABLE_ID = "ExternalResourcesTableWindowId";
     private static final String ADD_NEW_EXTERNAL_RESOURCE_LABEL = "Add New External Resource";
     private static final String EDIT_EXTERNAL_RESOURCE_LABEL = "Edit External Resource";

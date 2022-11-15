@@ -23,6 +23,7 @@ public class LocationInventoryClient {
     private static final String PHYSICAL_LOCATIONS_API_PATH = "/physicallocations";
     private static final String SUB_LOCATION_API_PATH = "/sublocations";
     private static final String PROJECT_ID = "project_id";
+    private static final String SEARCH_RESULT_ID = "searchResult.id";
 
     private static LocationInventoryClient instance;
     private final Environment env;
@@ -89,7 +90,7 @@ public class LocationInventoryClient {
                 .queryParam(Constants.NAME_PARAM, locationName)
                 .when()
                 .get(LocationInventoryClient.PHYSICAL_LOCATIONS_API_PATH);
-        return response.jsonPath().getList("searchResult.id");
+        return response.jsonPath().getList(SEARCH_RESULT_ID);
     }
 
     public List<Integer> getPhysicalLocation() {
@@ -98,7 +99,18 @@ public class LocationInventoryClient {
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
                 .when()
                 .get(LocationInventoryClient.PHYSICAL_LOCATIONS_API_PATH);
-        return response.jsonPath().getList("searchResult.id");
+        return response.jsonPath().getList(SEARCH_RESULT_ID);
+    }
+
+    public List<Integer> getFirstSite() {
+        com.jayway.restassured.response.Response response = env.getLocationInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam("rowsCount", "1")
+                .queryParam("query", "ObjectType==Site")
+                .when()
+                .get(LocationInventoryClient.PHYSICAL_LOCATIONS_API_PATH);
+        return response.jsonPath().getList(SEARCH_RESULT_ID);
     }
 
     public ResourceDTO createSubLocation(SublocationDTO subLocation) {
@@ -165,20 +177,6 @@ public class LocationInventoryClient {
                 .statusCode(HTTP_NO_CONTENT)
                 .extract()
                 .response();
-    }
-
-    /**
-     * @deprecated duplicated method (will be removed 3.0.x release), use public void removeLocation(Long locationId, String locationType)
-     */
-    @Deprecated
-    public void deleteLocation(String locationId, String locationType) {
-        env.getLocationInventoryCoreRequestSpecification()
-                .given()
-                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
-                .when()
-                .delete(PHYSICAL_LOCATIONS_API_PATH + "/" + locationType + "/" + locationId)
-                .then()
-                .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
     }
 
     public SearchResultDTO getSublocationId(String locationId, String query) {

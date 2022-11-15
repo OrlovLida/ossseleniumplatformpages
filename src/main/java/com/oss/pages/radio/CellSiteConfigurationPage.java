@@ -6,6 +6,8 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.gismap.GisMap;
+import com.oss.framework.widgets.gismap.GisMapInterface;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidget;
@@ -21,6 +23,7 @@ import io.qameta.allure.Step;
  */
 
 public class CellSiteConfigurationPage extends BasePage {
+    private static final String SITE = "Site";
     private static final String TAB_TABLE_DATA_ATTRIBUTE_NAME = "TableTabsApp";
     private static final String TREE_DATA_ATTRIBUTE_NAME = "SiteHierarchyApp";
     private static final String CELL_TAB_NAME = "Cells %s";
@@ -37,7 +40,6 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String TYPE_5G = "5G";
     private static final String DEVICES_TAB = "Devices";
     private static final String BASE_STATIONS_TAB = "Base Stations";
-    private static final String CREATE_DEVICE_ACTION_ID = "CreateDeviceOnLocationWizardAction";
     private static final String HOST_ON_DEVICE_ACTION_ID = "hostOnLogicalFunction";
     private static final String HOST_ON_ANTENNA_ARRAY_ACTION_ID = "hostOnAntennaArray";
     private static final String HOSTING_TAB_LABEL = "Hosting";
@@ -47,6 +49,7 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String DELETE_LABEL = "Delete";
     private static final String DELETE_BUTTON_ID = "delete-popup-buttons-app-1";
     private static final String DELETE_WIZARD_ID = "delete-popup_prompt-card";
+    private static final String MAP_ID = "ConfigurationMapApp";
 
     public CellSiteConfigurationPage(WebDriver driver) {
         super(driver);
@@ -78,7 +81,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Filter and select {objectName} row")
     public CellSiteConfigurationPage filterObject(String columnName, String objectName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         getTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
         selectRowByAttributeValueWithLabel(columnName, objectName);
         return this;
@@ -86,14 +89,13 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Clear {columnName}")
     public CellSiteConfigurationPage clearColumnFilter(String columnName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         getTabTable().clearColumnValue(columnName);
         return this;
     }
 
     @Step("Select {label} row")
     public CellSiteConfigurationPage selectRowByAttributeValueWithLabel(String attribute, String label) {
-        waitForPageToLoad();
         getTabTable().selectRowByAttributeValueWithLabel(attribute, label);
         waitForPageToLoad();
         return this;
@@ -161,6 +163,14 @@ public class CellSiteConfigurationPage extends BasePage {
         return this;
     }
 
+    @Step("Expand the tree and select location")
+    public void expandTreeToSite() {
+        waitForPageToLoad();
+        getTree().expandTreeRow(SITE);
+        waitForPageToLoad();
+        getTree().selectTreeRowByOrder(1);
+    }
+
     @Step("Expand the tree and select Cell")
     public CellSiteConfigurationPage expandTreeToCell(String locationType, String locationName, String baseStationName, String cellName) {
         waitForPageToLoad();
@@ -206,7 +216,7 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     public boolean hasNoData() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         return getTabTable().hasNoData();
     }
 
@@ -247,8 +257,8 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Create {amountOfCells} Cells 5G by bulk wizard with Carrier = {carrier}")
-    public void createCell5GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID) {
-        openCell5GBulkWizard().createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID);
+    public void createCell5GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID, String[] pci, String[] rsi) {
+        openCell5GBulkWizard().createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID, pci, rsi);
     }
 
     @Step("Create Base Band Unit with following attributes: Type = {bbuEquipmentType}, Name = {bbuName}, Model = {baseBandUnitModel}, Location = {locationName}")
@@ -256,7 +266,7 @@ public class CellSiteConfigurationPage extends BasePage {
         waitForPageToLoad();
         selectTab(DEVICES_TAB);
         waitForPageToLoad();
-        clickPlusIconAndSelectOptionById(CREATE_DEVICE_ACTION_ID);
+        getTabTable().callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_PHYSICAL_DEVICE_ACTION_ID);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         waitForPageToLoad();
         deviceWizardPage.setEquipmentType(bbuEquipmentType);
@@ -274,7 +284,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Create Radio Unit with following attributes: Type = {radioUnitEquipmentType}, Name = {radioUnitName}, Model = {radioUnitModel}, Location = {locationName}")
     public void createRadioUnit(String radioUnitEquipmentType, String radioUnitModel, String radioUnitName, String locationName) {
-        clickPlusIconAndSelectOptionById(CREATE_DEVICE_ACTION_ID);
+        getTabTable().callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_PHYSICAL_DEVICE_ACTION_ID);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         waitForPageToLoad();
         deviceWizardPage.setEquipmentType(radioUnitEquipmentType);
@@ -311,7 +321,7 @@ public class CellSiteConfigurationPage extends BasePage {
     public void createHostingOnDevice(String deviceName, boolean onlyCompatible) {
         selectTab(HOSTING_TAB_LABEL);
         waitForPageToLoad();
-        useTableContextActionById(HOST_ON_DEVICE_ACTION_ID);
+        clickPlusIconAndSelectOptionById(HOST_ON_DEVICE_ACTION_ID);
         HostingWizardPage hostOnDeviceWizard = new HostingWizardPage(driver);
         waitForPageToLoad();
         hostOnDeviceWizard.onlyCompatible(String.valueOf(onlyCompatible));
@@ -343,9 +353,31 @@ public class CellSiteConfigurationPage extends BasePage {
         hostOnAntennaWizard.clickAccept();
     }
 
-    public void editCellsInBulk(int cellsNumber, String pci, String rsi, String referencePower, String[] tac, String paOutput) {
+    @Step("Create Hosting on Antenna Arrays")
+    public void createHostingOnAntennaArraysContains(String[] antennaName) {
+        selectTab(HOSTING_TAB_LABEL);
+        clickPlusIconAndSelectOptionById(HOST_ON_ANTENNA_ARRAY_ACTION_ID);
+        HostingWizardPage hostOnAntennaWizard = new HostingWizardPage(driver);
+        hostOnAntennaWizard.setHostingContains(antennaName);
+        waitForPageToLoad();
+        hostOnAntennaWizard.clickAccept();
+    }
+
+    public void editCellsInBulk(String[] pci, String[] rsi, String referencePower, String[] tac, String mimoMode, String bandwidth, String txPower) {
         clickEditIcon();
-        new EditCell4GBulkWizardPage(driver).editCellsBulk(cellsNumber, pci, rsi, referencePower, tac, paOutput);
+        new EditCell4GBulkWizardPage(driver).editCellsBulk(pci, rsi, referencePower, tac, mimoMode, bandwidth, txPower);
+    }
+
+    public boolean isCanvasPresent() {
+        return getGisMapInterface().isCanvasPresent();
+    }
+
+    public void setMap(String mapLabel) {
+        getGisMapInterface().setMap(mapLabel);
+    }
+
+    public String getCanvasObject() {
+        return getGisMapInterface().getCanvasObject();
     }
 
     private void selectTreeTable(String type, String manufacturer, String name) {
@@ -377,5 +409,9 @@ public class CellSiteConfigurationPage extends BasePage {
 
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    private GisMapInterface getGisMapInterface() {
+        return GisMap.create(driver, wait, MAP_ID);
     }
 }

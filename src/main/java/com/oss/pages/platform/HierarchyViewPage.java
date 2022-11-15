@@ -25,16 +25,19 @@ import io.qameta.allure.Step;
 public class HierarchyViewPage extends BasePage {
 
     public static final String OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID = "HierarchyView";
-    private static final String BOTTOM_TABS_WIDGET_ID = "HierarchyView_BottomDetailTabs_%s";
+    private static final String BOTTOM_TABS_WIDGET_ID = "BottomDetailCard";
     private static final String HIERARCHY_VIEW_TREE_WIDGET_ID = "HierarchyTreeWidget";
 
-    // TODO: change to private
-    public HierarchyViewPage(WebDriver driver) {
+    private HierarchyViewPage(WebDriver driver) {
         super(driver);
     }
 
     private HierarchyViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
+    }
+
+    public static HierarchyViewPage getHierarchyViewPage(WebDriver driver, WebDriverWait wait) {
+        return new HierarchyViewPage(driver, wait);
     }
 
     public static HierarchyViewPage openHierarchyViewPage(WebDriver driver, String basicURL, String type) {
@@ -87,9 +90,15 @@ public class HierarchyViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public TabsWidget getBottomTabsWidget(String type) {
+    public TabsWidget getBottomTabsWidget() {
         Widget.waitForWidget(wait, TabsWidget.TABS_WIDGET_CLASS);
-        return TabsWidget.createById(driver, wait, String.format(BOTTOM_TABS_WIDGET_ID, type));
+        return TabsWidget.createById(driver, wait, BOTTOM_TABS_WIDGET_ID);
+    }
+
+    @Step("Check if tree has no data")
+    public boolean hasNoData() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getMainTree().hasNoData();
     }
 
     @Step("Save new configuration for page")
@@ -101,9 +110,8 @@ public class HierarchyViewPage extends BasePage {
     }
 
     @Step("Select First Object on Tree Widget")
-    public HierarchyViewPage selectFirstObject() {
+    public void selectFirstObject() {
         getMainTree().selectNode(0);
-        return this;
     }
 
     @Step("Unselect First Object on Tree Widget")

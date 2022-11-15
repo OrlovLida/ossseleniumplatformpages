@@ -13,6 +13,7 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.TasksPageV2;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
@@ -66,8 +67,8 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Test(priority = 2)
     @Description("Start High Level Planning Task")
     public void startHLPTask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.startTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
     }
 
@@ -127,7 +128,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Test(priority = 7)
     @Description("Finish rest of NRP and IP Tasks")
     public void finishProcessesTasks() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
 

@@ -19,7 +19,7 @@ import com.oss.pages.BasePage;
 public class LogicalFunctionWizardPreStep extends BasePage {
 
     private static final String WIZARD_ID = "wizard-widget-id";
-    private static final String RESOURCE_SPECIFICATION_COMPONENT_ID = "step0-search-comp-id_OSF";
+    private static final String RESOURCE_SPECIFICATION_COMPONENT_ID = "step0-search-comp-id";
     private final Wizard wizard;
 
     private LogicalFunctionWizardPreStep(WebDriver driver, WebDriverWait wait) {

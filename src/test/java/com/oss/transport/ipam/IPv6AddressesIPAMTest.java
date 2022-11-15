@@ -1,39 +1,69 @@
 package com.oss.transport.ipam;
 
-import com.oss.framework.components.mainheader.PerspectiveChooser;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
-import io.qameta.allure.Description;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import com.oss.BaseTestCase;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.utils.TestListener;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
-import com.oss.pages.bpm.TasksPage;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
-import com.oss.pages.transport.ipam.RoleViewPage;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
 
+import com.oss.BaseTestCase;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.bpm.ProcessOverviewPage;
+import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
+import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.IPSubnetWizardPage;
+import com.oss.pages.transport.ipam.RoleViewPage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import com.oss.pages.transport.ipam.helper.IPSubnetFilterProperties;
 import com.oss.pages.transport.ipam.helper.IPSubnetWizardProperties;
+import com.oss.utils.TestListener;
 
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.*;
+import io.qameta.allure.Description;
+
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.EXISTING_ADDRESS_MODE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_ASSIGNMENT_PROPERTY_ASSIGNED_TO;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_ASSIGNMENT_PROPERTY_DESCRIPTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_ASSIGNMENT_PROPERTY_IDENTIFIER;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_ASSIGNMENT_PROPERTY_IS_IN_NAT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_ASSIGNMENT_PROPERTY_IS_OBSOLETE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_ASSIGNMENT_PROPERTY_IS_PRIMARY;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_ASSIGNMENT_PROPERTY_ROLE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_PROPERTY_ADDRESS;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_PROPERTY_ASSIGNED_TO;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_PROPERTY_DESCRIPTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_PROPERTY_IDENTIFIER;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_PROPERTY_IP_NETWORK_NAME;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_PROPERTY_MASK;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_PROPERTY_STATUS;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.INTERFACE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.LOCATION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.NETWORK_PROPERTY_DESCRIPTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.NETWORK_PROPERTY_NAME;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.PHYSICAL_DEVICE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_ADDRESS;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_ASSIGNED_TO;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_CHILD_COUNT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_DESCRIPTION;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_HIGHEST_IP_ADDRESS;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_IDENTIFIER;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_IP_NETWORK_NAME;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_MASK_LENGTH;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_PERCENT_FREE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_ROLE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_SUBNET_TYPE;
 
 /**
  * @author Ewa Frączek
  */
 
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class IPv6AddressesIPAMTest extends BaseTestCase {
     private IPAddressManagementViewPage ipAddressManagementViewPage;
     protected NewInventoryViewPage newInventoryViewPage;
@@ -93,7 +123,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
 
     @BeforeClass(enabled = false)
     public void prepareTest() {
-        ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
@@ -101,7 +131,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
     @Description("Create Process NRP and start HLP")
     public void createAndStartProcessNRP() {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processNRPCode = processWizardPage.createSimpleNRP();
+        processNRPCode = processWizardPage.createSimpleNRPV2();
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
@@ -194,10 +224,10 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
 
         updatePropertiesAfterIPv6HostsAssignment();
         ipAddressManagementViewPage = new IPAddressManagementViewPage(driver);
-        if(ipAddressManagementViewPage.isTreeRowExpanded(getAddressAndMask(loopbackIPv6HostAddressProperties))){
+        if (ipAddressManagementViewPage.isTreeRowExpanded(getAddressAndMask(loopbackIPv6HostAddressProperties))) {
             ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
             ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(loopbackIPv6HostAssignmentProperties, NETWORK_NAME));
-        } else{
+        } else {
             ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
             ipAddressManagementViewPage.selectTreeRowContains(getAssignmentAddressMaskAndAssignTo(secondLoopbackIPv6HostAssignmentProperties, NETWORK_NAME));
         }
@@ -421,7 +451,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         roleViewPage.exitRoleView();
     }
 
-    private void updatePropertiesAfterIPv6SubnetsCreation(){
+    private void updatePropertiesAfterIPv6SubnetsCreation() {
         firstIPv6SubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, IPV6_SUBNETS_ADDRESS + "/" + LOWEST_IPV6_SUBNET_MASK + " [" + NETWORK_NAME + "]");
         firstIPv6SubnetProperties.put(SUBNET_PROPERTY_ADDRESS, IPV6_SUBNETS_ADDRESS);
         firstIPv6SubnetProperties.put(SUBNET_PROPERTY_HIGHEST_IP_ADDRESS, "::127:7f");
@@ -431,7 +461,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         firstIPv6SubnetProperties.put(SUBNET_PROPERTY_PERCENT_FREE, "0%");
         firstIPv6SubnetProperties.put(SUBNET_PROPERTY_CHILD_COUNT, "2");
 
-        secondIPv6SubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, IPV6_SUBNETS_ADDRESS + "/" + HIGHER_IPV6_SUBNET_MASK +" [" + NETWORK_NAME + "]");
+        secondIPv6SubnetProperties.put(SUBNET_PROPERTY_IDENTIFIER, IPV6_SUBNETS_ADDRESS + "/" + HIGHER_IPV6_SUBNET_MASK + " [" + NETWORK_NAME + "]");
         secondIPv6SubnetProperties.put(SUBNET_PROPERTY_ADDRESS, IPV6_SUBNETS_ADDRESS);
         secondIPv6SubnetProperties.put(SUBNET_PROPERTY_HIGHEST_IP_ADDRESS, "::127:3f");
         secondIPv6SubnetProperties.put(SUBNET_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME);
@@ -498,7 +528,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         loopbackIPv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_ASSIGNED_TO, ASSIGNMENT_INTERFACE_IDENTIFIER);
         loopbackIPv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IS_OBSOLETE, FALSE_STRING);
 
-        ipv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER, IPV6_HOST_ADDRESS + "/" + HIGHER_IPV6_SUBNET_MASK + " ["+NETWORK_NAME + "]");
+        ipv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IDENTIFIER, IPV6_HOST_ADDRESS + "/" + HIGHER_IPV6_SUBNET_MASK + " [" + NETWORK_NAME + "]");
         ipv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IS_PRIMARY, FALSE_STRING);
         ipv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_IS_IN_NAT, FALSE_STRING);
         ipv6HostAssignmentProperties.put(HOST_ASSIGNMENT_PROPERTY_ROLE, STANDARD_ROLE);
@@ -535,7 +565,7 @@ public class IPv6AddressesIPAMTest extends BaseTestCase {
         secondLoopbackIpv6HostAddressProperties.put(HOST_PROPERTY_IP_NETWORK_NAME, NETWORK_NAME_UPDATED);
         ipv6HostAssignmentProperties.put(HOST_PROPERTY_IDENTIFIER, IPV6_HOST_ADDRESS + "/" + HIGHER_IPV6_SUBNET_MASK + " [" + NETWORK_NAME_UPDATED + "]");
         loopbackIPv6HostAssignmentProperties.put(HOST_PROPERTY_IDENTIFIER, LOOPBACK_IPV6_HOST_ADDRESS + "/" + LOOPBACK_IPV6_HOST_MASK + " [" + NETWORK_NAME_UPDATED + "]");
-        secondLoopbackIPv6HostAssignmentProperties.put(HOST_PROPERTY_IDENTIFIER, SECOND_LOOPBACK_IPV6_HOST_ADDRESS + "/" + LOOPBACK_IPV6_HOST_MASK+" [" + NETWORK_NAME_UPDATED + "]");
+        secondLoopbackIPv6HostAssignmentProperties.put(HOST_PROPERTY_IDENTIFIER, SECOND_LOOPBACK_IPV6_HOST_ADDRESS + "/" + LOOPBACK_IPV6_HOST_MASK + " [" + NETWORK_NAME_UPDATED + "]");
     }
 
     private void updatePropertiesAfterIPv6SubnetsSplit() {

@@ -1,7 +1,5 @@
 package com.oss.smoketests;
 
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -9,6 +7,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.GlobalNotificationContainer;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
@@ -29,17 +28,21 @@ public class ResourceCatalog_Smoke_Test extends BaseTestCase {
     private static final String PHYSICAL_DEVICE = "Physical Device";
     private static final String LOGICAL_FUNCTION = "Logical Function";
     private static final String TERMINATION_POINT = "Termination Point";
-    private static final String LOG_PATTENR = "Checking if specification with name %s exists.";
+    private static final String NAME_ATTRIBUTE = "name";
+    private static final String LOG_PATTERN = "Checking if specification with name %s exists.";
+    private static final String ERROR_PATTERN = "Specification with type %s is not present.";
 
     @Test(priority = 1, description = "Open Resource Catalog view")
     @Description("Open Resource Catalog view")
     public void openResourceCatalog() {
         waitForPageToLoad();
         checkErrorPage();
+        checkGlobalNotificationContainer();
         ToolsManagerWindow toolsManagerWindow = ToolsManagerWindow.create(driver, webDriverWait);
         toolsManagerWindow.openApplication(RESOURCE_CATALOG, RESOURCE_SPECIFICATIONS);
         waitForPageToLoad();
         checkErrorPage();
+        checkGlobalNotificationContainer();
     }
 
     @Test(priority = 2, description = "Change pagination to 100 objects per page")
@@ -49,23 +52,25 @@ public class ResourceCatalog_Smoke_Test extends BaseTestCase {
         resourceSpecificationsViewPage.setPageSize(100);
         waitForPageToLoad();
         checkErrorPage();
+        checkGlobalNotificationContainer();
     }
 
     @Test(dataProvider = "types", priority = 3, description = "Search for specifications and check if it exists")
     @Description("Search for specifications and check if it exists")
     public void searchSpecification(String type) {
-        LOGGER.info(String.format(LOG_PATTENR, type));
-        Assert.assertTrue(checkSpecification(type));
+        LOGGER.info(String.format(LOG_PATTERN, type));
+        Assert.assertTrue(checkSpecification(type), String.format(ERROR_PATTERN, type));
     }
 
     @Step("Checking {specificationName} specification.")
     public boolean checkSpecification(String specificationName) {
         waitForPageToLoad();
         ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
-        resourceSpecificationsViewPage.setSearchText(specificationName);
+        resourceSpecificationsViewPage.clickClearAll();
+        resourceSpecificationsViewPage.searchByAttribute(NAME_ATTRIBUTE, specificationName);
         waitForPageToLoad();
-        List<String> visibleRS = resourceSpecificationsViewPage.getAllVisibleSpecificationNames();
-        return visibleRS.stream().anyMatch(rs -> rs.equals(specificationName));
+        resourceSpecificationsViewPage.collapseFirstNode();
+        return resourceSpecificationsViewPage.isSpecificationNamePresent(specificationName);
     }
 
     private void checkErrorPage() {
@@ -76,6 +81,15 @@ public class ResourceCatalog_Smoke_Test extends BaseTestCase {
             LOGGER.error(errorInformation.getErrorDescription());
             LOGGER.error(errorInformation.getErrorMessage());
             Assert.fail("Error Page is shown.");
+        }
+    }
+
+    private void checkGlobalNotificationContainer() {
+        GlobalNotificationContainer globalNotificationContainer = GlobalNotificationContainer.create(driver, webDriverWait);
+        if (globalNotificationContainer.isErrorNotificationPresent()) {
+            GlobalNotificationContainer.NotificationInformation information = globalNotificationContainer.getNotificationInformation();
+            LOGGER.error(information.getMessage());
+            Assert.fail("Global Notification shows error.");
         }
     }
 

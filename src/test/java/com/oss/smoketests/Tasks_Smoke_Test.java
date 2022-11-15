@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.GlobalNotificationContainer;
 import com.oss.framework.components.attributechooser.AttributesChooser;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.utils.DelayUtils;
@@ -39,6 +40,7 @@ public class Tasks_Smoke_Test extends BaseTestCase {
     private static final String TASK_NAME = "Task Name";
     private static final String SAVE_TASK_ID = "saveTask";
     private static final String SAVE_TASK_LABEL = "Save task";
+    private static final String NOT_LOADED_SAVE_TASK_LABEL = "webAppTaskDetailsSaveTaskLabel";
     private static final String ATTRIBUTES = "Attributes";
     private static final String NO_CONTEXT_ACTIONS_EXCEPTION = "No context actions are available.";
     private static final String PROCESS_INSTANCE_COLUMND_ID = "processInstanceId";
@@ -49,6 +51,7 @@ public class Tasks_Smoke_Test extends BaseTestCase {
     public void openTasksView() {
         waitForPageToLoad();
         checkErrorPage();
+        checkGlobalNotificationContainer();
         HomePage homePage = new HomePage(driver);
         homePage.chooseFromLeftSideMenu(TASKS, BPM_AND_PLANNING, PROCESS_OPERATIONS);
         waitForPageToLoad();
@@ -58,6 +61,7 @@ public class Tasks_Smoke_Test extends BaseTestCase {
     @Description("Select Uncompleted Tasks from Quick Filters")
     public void useQuickFilters() {
         checkErrorPage();
+        checkGlobalNotificationContainer();
         TasksPageV2 tasksPage = new TasksPageV2(driver);
         tasksPage.setQuickFilter(UNCOMPLETED_TASKS);
         waitForPageToLoad();
@@ -96,7 +100,8 @@ public class Tasks_Smoke_Test extends BaseTestCase {
         waitForPageToLoad();
         try {
             TabsWidget tabsWidget = TabsWidget.createById(driver, new WebDriverWait(driver, 5), TasksPageV2.TABS_TASKS_VIEW_ID);
-            Assert.assertEquals(tabsWidget.getActionsInterface().getActionLabel(SAVE_TASK_ID), SAVE_TASK_LABEL);
+            String actionLabel = tabsWidget.getActionsInterface().getActionLabel(SAVE_TASK_ID);
+            Assert.assertTrue(actionLabel.equals(SAVE_TASK_LABEL) || actionLabel.equals(NOT_LOADED_SAVE_TASK_LABEL));
         } catch (TimeoutException ex) {
             Assert.fail(NO_CONTEXT_ACTIONS_EXCEPTION);
         }
@@ -121,6 +126,15 @@ public class Tasks_Smoke_Test extends BaseTestCase {
             LOGGER.error(errorInformation.getErrorDescription());
             LOGGER.error(errorInformation.getErrorMessage());
             Assert.fail("Error Page is shown.");
+        }
+    }
+
+    private void checkGlobalNotificationContainer() {
+        GlobalNotificationContainer globalNotificationContainer = GlobalNotificationContainer.create(driver, webDriverWait);
+        if (globalNotificationContainer.isErrorNotificationPresent()) {
+            GlobalNotificationContainer.NotificationInformation information = globalNotificationContainer.getNotificationInformation();
+            LOGGER.error(information.getMessage());
+            Assert.fail("Global Notification shows error.");
         }
     }
 

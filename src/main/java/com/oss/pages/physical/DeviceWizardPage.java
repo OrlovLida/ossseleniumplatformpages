@@ -3,6 +3,7 @@ package com.oss.pages.physical;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.ObjectSearchField;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
@@ -12,19 +13,19 @@ import io.qameta.allure.Step;
 
 public class DeviceWizardPage extends BasePage {
 
-    public static final String DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "preciseLocation_OSF";
-    public static final String DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "physicalLocation_OSF";
+    public static final String DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "preciseLocation";
+    public static final String DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME = "physicalLocation";
     private static final String CREATE_BUTTON_DATA_ATTRIBUTE_NAME = "physical_device_common_buttons_app-1";
     private static final String UPDATE_BUTTON_DATA_ATTRIBUTE_NAME = "physical_device_update_common_buttons_app-1";
     private static final String NEXT_BUTTON_UPDATE_WIZARD_DATA_ATTRIBUTE_NAME = "wizard-next-button-device_update_wizard_view";
     private static final String ACCEPT_UPDATE_WIZARD_BUTTON_DATA_ATTRIBUTE_NAME = "wizard-submit-button-device_update_wizard_view";
     private static final String DEVICE_EQUIPMENT_TYPE_DATA_ATTRIBUTE_NAME = "equipmentType";
-    private static final String DEVICE_MODEL_DATA_ATTRIBUTE_NAME = "model_OSF";
+    private static final String DEVICE_MODEL_DATA_ATTRIBUTE_NAME = "model";
     private static final String DEVICE_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String DEVICE_NETWORK_FUNCTION_NAME_TYPE_DATA_ATTRIBUTE_NAME = "networkFunctionName";
     private static final String DEVICE_CHASSIS_ID_DATA_ATTRIBUTE_NAME = "chassisId";
-    private static final String DEVICE_LOCATION_DATA_ATTRIBUTE_NAME = "location_OSF";
-    private static final String DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME = "logicalLocation_OSF";
+    private static final String DEVICE_LOCATION_DATA_ATTRIBUTE_NAME = "location";
+    private static final String DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME = "logicalLocation";
     private static final String DEVICE_NETWORK_DOMAIN_DATA_ATTRIBUTE_NAME = "networkDomain";
     private static final String DEVICE_SERIAL_NUMBER_DATA_ATTRIBUTE_NAME = "serialNumber";
     private static final String DEVICE_HOSTNAME_DATA_ATTRIBUTE_NAME = "hostname";
@@ -44,9 +45,8 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_HOSTNAME_IN_LIST_POPUP_FIELD_ID = "table-element.hostname.id-TEXT_FIELD";
     private static final String DEVICE_SERIAL_NUMBER_IN_LIST_ID = "table-element.serialNumber.id";
     private static final String DEVICE_SERIAL_NUMBER_IN_LIST_POPUP_FIELD_ID = "table-element.serialNumber.id-TEXT_FIELD";
-
+    private static final String DEVICE_MODEL_DATA_OWNER_NAME = "resourceOwner";
     private static final String DEVICE_TYPE_PATTERN = "oss__046__physical__045__inventory__046__physicaldevice__046__type__046__";
-
     private static final String RECALCULATE_NAMING_BUTTON_ID = "CalculateNamingButton";
     private static final String NAMING_PREVIEW_LIST_ID = "ExtendedList-AttributesTable";
     private static final String DEVICE_NAME_IN_LIST_ID = "table-element.name.id";
@@ -74,7 +74,6 @@ public class DeviceWizardPage extends BasePage {
         create();
     }
 
-    private static final String DEVICE_MODEL_DATA_OWNER_NAME = "resourceOwner_OSF";
     @Step("Create Device with mandatory fields (Equipment type, Model, Name, Location, Physical Location, Precise Location) filled in")
     public void createDevice(String model, String name, String location) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -131,16 +130,34 @@ public class DeviceWizardPage extends BasePage {
                 .setSingleStringValueContains(location);
     }
 
+    @Step("Set Location choosing first")
+    public void setFirstLocation(String location) {
+        ObjectSearchField input = (ObjectSearchField) getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
+        input.setFirstResult(location);
+    }
+
     @Step("Set Physical Location using contains")
-    public void setPhysicalLocation(String preciseLocation) {
+    public void setPhysicalLocation(String physicalLocation) {
         getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
-                .setSingleStringValueContains(preciseLocation);
+                .setSingleStringValueContains(physicalLocation);
+    }
+
+    @Step("Set Physical Location choosing first")
+    public void setFirstPhysicalLocation(String physicalLocation) {
+        ObjectSearchField input = (ObjectSearchField) getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
+        input.setFirstResult(physicalLocation);
     }
 
     @Step("Set Precise Location using contains")
     public void setPreciseLocation(String preciseLocation) {
         getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME)
                 .setSingleStringValueContains(preciseLocation);
+    }
+
+    @Step("Set Precise Location choosing first")
+    public void setFirstPreciseLocation(String preciseLocation) {
+        ObjectSearchField input = (ObjectSearchField) getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
+        input.setFirstResult(preciseLocation);
     }
 
     @Step("Set Available Mounting Positions")

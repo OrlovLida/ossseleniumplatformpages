@@ -13,6 +13,7 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.TasksPageV2;
 import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.NewInventoryViewPage;
@@ -44,7 +45,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     private static final String HIERARCHY_VIEW_ID = "HierarchyView";
     private static final String PORT_NAME = "GE 0";
     private static final String CREATE_VLAN_ACTION_ID = "CreateVLANInterfaceContextAction";
-    private static final String LABEL_PATH = DEVICE + ".Ports." + PORT_NAME + ".Termination Points.EthernetInterface_TP." + PORT_NAME;
+    private static final String LABEL_PATH = DEVICE + ".Ports." + PORT_NAME + ".All Termination Points.EthernetInterface_TP." + PORT_NAME;
     private static final String DELETE_ADDRESS_IP_ID = "DeleteIPHostAddressAssignmentInternalAction";
     private static final String CONFIRMATION_REMOVAL_IP_BOX_ID = "ConfirmationBox_removeBoxId_action_button";
     private static final String CONFIRMATION_REMOVAL_BOX_ID = "ConfirmationBox_deleteBoxAppId_action_button";
@@ -74,8 +75,8 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Test(priority = 2)
     @Description("Start High Level Planning Task")
     public void startHLPTask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.startTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
     }
 
@@ -86,7 +87,7 @@ public class VLANInterfaceTest extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.searchObject(DEVICE).selectFirstRow();
         newInventoryViewPage.callAction(SHOW_ON_GROUP_ID, HIERARCHY_VIEW_ID);
-        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         hierarchyViewPage.selectNodeByLabelsPath(LABEL_PATH);
         hierarchyViewPage.callAction(CREATE_GROUP_ID, CREATE_VLAN_ACTION_ID);
         waitForPageToLoad();
@@ -141,7 +142,7 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Test(priority = 7)
     @Description("Finish rest of NRP and IP Tasks")
     public void finishProcessesTasks() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
 

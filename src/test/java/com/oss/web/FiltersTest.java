@@ -167,6 +167,7 @@ public class FiltersTest extends BaseTestCase {
     @Test(priority = 10)
     @Description("Sharing an existing Filters, Folder and checking that shared filters are visible for second user")
     public void sharingAnExistingFilter() {
+        filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL);
         filterManagerPage
                 .expandAllCategories()
                 .shareFilter(FILTER_NAME, USER2_LOGIN, "W")

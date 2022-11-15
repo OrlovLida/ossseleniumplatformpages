@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
+import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -282,7 +283,6 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.clearFiltersOnMainTree();
     }
 
-
     @Test(priority = 14)
     public void clickInlineAction() {
         hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID);
@@ -368,6 +368,19 @@ public class TreeWidgetTest extends BaseTestCase {
         viewPage.unselectFirstObject();
         Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_2_38);
 
+    }
+
+    @Test(priority = 19)
+    public void deleteRoot() {
+        HierarchyViewPage viewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, SUB_LOCATION_TYPE_ROOM, roomId_2.toString());
+        viewPage.selectFirstObject();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        viewPage.getMainTree().callActionById(ActionsContainer.EDIT_GROUP_ID, REMOVE_SUBLOCATION_ACTION);
+        ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(CONFIRM_DELETE_BUTTON);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        List<String> nodes = viewPage.getVisibleNodesLabel();
+        Assert.assertTrue(nodes.isEmpty());
+        Assert.assertTrue(viewPage.getMainTree().hasNoData());
     }
 
     @AfterClass

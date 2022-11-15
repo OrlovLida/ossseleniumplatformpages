@@ -6,23 +6,26 @@
 package com.oss.pages.transport.trail.v2;
 
 import org.openqa.selenium.WebDriver;
+
+import com.oss.pages.transport.trail.ConnectionWizardPage;
+
 import io.qameta.allure.Step;
 
-public class IPLinkTerminationStepPage extends TerminationStepPage {
-    
+public class IPLinkTerminationStepPage extends ConnectionWizardPage {
+
     private static final String CREATE_ETHERNET_LINK_COMPONENT_ID = "IPLink.CreateAssociatedEthernetLinkComboboxComponent";
-    
+
     public static IPLinkTerminationStepPage getIPLinkTerminationStepPage(WebDriver driver) {
         return new IPLinkTerminationStepPage(driver);
     }
-    
+
     protected IPLinkTerminationStepPage(WebDriver driver) {
         super(driver);
     }
-    
+
     @Step("Set Create Associated Ethernet Link - {createAssociatedEthernetLink}")
     public void setCreateAssociatedEthernetLink(boolean createAssociatedEthernetLink) {
         setCheckbox(CREATE_ETHERNET_LINK_COMPONENT_ID, createAssociatedEthernetLink);
     }
-    
+
 }

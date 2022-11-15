@@ -28,12 +28,13 @@ public class VRFWizardPage extends BasePage {
     private static final String DESCRIPTION_FIELD_ID = "uidFieldDescription";
     private static final String DEVICE_FIELD_ID = "uidFieldDevice";
     private static final String WIDGET_ID = "CommonHierarchyApp-vrfAppSelect";
+    private static final String ID = "NEEDS_TO_UPDATE_ID";
 
     private final Wizard wizard;
 
     public VRFWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, ID);
     }
 
     @Step("Set name to {name}")

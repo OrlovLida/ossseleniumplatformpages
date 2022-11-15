@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.comarch.oss.web.tests.platform</groupId>
     <artifactId>OSSSeleniumPlatformPages</artifactId>
-    <version>2.1.0-SNAPSHOT</version>
+    <version>2.2.0-SNAPSHOT</version>
 
     <scm>
-        <connection>scm:git:ssh://git@gitlab.czk.comarch:2222/toss/pfm/seleniumtests/ossseleniumplatformpages.git</connection>
-        <developerConnection>scm:git:ssh://git@gitlab.czk.comarch:2222/toss/pfm/seleniumtests/ossseleniumplatformpages.git</developerConnection>
+        <connection>scm:git:ssh://git@gitlab.czk.comarch:2222/toss/pfm/seleniumtests/ossseleniumplatformpages.git
+        </connection>
+        <developerConnection>
+            scm:git:ssh://git@gitlab.czk.comarch:2222/toss/pfm/seleniumtests/ossseleniumplatformpages.git
+        </developerConnection>
         <tag>HEAD</tag>
     </scm>
 
@@ -25,10 +29,10 @@
         <physicalinventory.version>2.1.55.Final</physicalinventory.version>
         <resource-hierarchy-api.version>0.1.0</resource-hierarchy-api.version>
         <addressinventory.version>1.17.32.Final</addressinventory.version>
-        <radio.version>4.2.3.Final</radio.version>
+        <radio.version>4.6.4.Final</radio.version>
         <resourcecatalog.version>2.7.1.Final</resourcecatalog.version>
         <planning.version>6.9.2.Final</planning.version>
-        <seleniumframework.version>2.1.0-SNAPSHOT</seleniumframework.version>
+        <seleniumframework.version>2.2.0-SNAPSHOT</seleniumframework.version>
         <fixedaccess.version>4.9.6</fixedaccess.version>
         <trail-api.version>3.20.0.Final</trail-api.version>
         <tmf.catalog.version>7.5.10</tmf.catalog.version>
@@ -200,6 +204,11 @@
             <groupId>com.github.javafaker</groupId>
             <artifactId>javafaker</artifactId>
             <version>${javafaker.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
         </dependency>
     </dependencies>
 
