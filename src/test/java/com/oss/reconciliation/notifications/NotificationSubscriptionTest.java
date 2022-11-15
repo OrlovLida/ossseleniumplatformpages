@@ -11,6 +11,8 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.notifications.SubscriptionConfigurationPage;
 
+import io.qameta.allure.Description;
+
 public class NotificationSubscriptionTest extends BaseTestCase {
 
     private static final Logger LOG = LoggerFactory.getLogger(NotificationSubscriptionTest.class);
@@ -34,7 +36,8 @@ public class NotificationSubscriptionTest extends BaseTestCase {
         driver.manage().deleteAllCookies();
     }
 
-    @Test(priority = 1)
+    @Test(priority = 1, description = "Move to Subscription Configuration View")
+    @Description("Open NDCV and move to Subscription Configuration View")
     public void openViewAndSelect() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
@@ -46,7 +49,8 @@ public class NotificationSubscriptionTest extends BaseTestCase {
         networkDiscoveryControlViewPage.moveToSubscriptionConfiguration();
     }
 
-    @Test(priority = 2)
+    @Test(priority = 2, description = "Check if going back to NDCV works correctly")
+    @Description("Check if going back to NDCV works correctly")
     public void goBackToNDCV() {
         subscriptionConfigurationPage = new SubscriptionConfigurationPage(driver);
         subscriptionConfigurationPage.goBackToNDCVWithoutSelectedSubscription();
@@ -64,7 +68,8 @@ public class NotificationSubscriptionTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Get Notification Attributes")
+    @Description("Get Notification Attributes")
     public void getNotificationAttributes() {
         subscriptionConfigurationPage = new SubscriptionConfigurationPage(driver);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -85,7 +90,8 @@ public class NotificationSubscriptionTest extends BaseTestCase {
         Assert.assertFalse(subscriptionConfigurationPage.getTabLabels().contains("Properties"));
     }
 
-    @Test(priority = 4)
+    @Test(priority = 4, description = "Check if everything on Enabled Notification works correctly")
+    @Description("Check if everything on Enabled Notification works correctly")
     public void checkEnabledNotification() {
         LOG.info("Searching for subscription");
         subscriptionConfigurationPage.searchForSubscription("Update");
@@ -149,7 +155,8 @@ public class NotificationSubscriptionTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, description = "Check if everything on Hold Notification works correctly")
+    @Description("Check if everything on Hold Notification works correctly")
     public void checkHoldNotification() {
         LOG.info("Searching for subscription");
         subscriptionConfigurationPage.searchForSubscription("Create");
@@ -177,7 +184,8 @@ public class NotificationSubscriptionTest extends BaseTestCase {
         Assert.assertEquals(subscriptionConfigurationPage.getCurrentOccupancy(), S_0);
     }
 
-    @Test(priority = 6)
+    @Test(priority = 6, description = "Check if everything on Disabled Notification works correctly")
+    @Description("Check if everything on Disabled Notification works correctly")
     public void checkDisabledNotification() {
         LOG.info("Searching for subscription");
         subscriptionConfigurationPage.searchForSubscription("Remove");
