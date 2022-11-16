@@ -4,11 +4,8 @@ import java.time.LocalDateTime;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.inputs.ComponentFactory;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.widgets.table.OldTable;
 
 import io.qameta.allure.Step;
@@ -19,7 +16,6 @@ import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 public class ThresholdPage extends BaseDfePage {
 
     private static final String DETAILS_TAB = "Details";
-    private static final Logger log = LoggerFactory.getLogger(ThresholdPage.class);
     private static final String TABLE_ID = "thresholdsAppId";
     private static final String ADD_NEW_THRESHOLD_LABEL = "Add New Threshold";
     private static final String EDIT_THRESHOLD_LABEL = "Edit Threshold";
@@ -97,7 +93,7 @@ public class ThresholdPage extends BaseDfePage {
     }
 
     @Step("I select found Threshold")
-    public void selectFoundThreshold() {
+    public void selectFirstThresholdInTable() {
         getTable().selectRow(0);
     }
 
@@ -146,22 +142,22 @@ public class ThresholdPage extends BaseDfePage {
 
     @Step("Search for Threshold with Problem ID")
     public void searchProblemId(String problemId) {
-        waitForPageToLoad(driver, wait);
         ComponentFactory.create(SEARCH_PROBLEM_ID, MULTI_COMBOBOX, driver, wait).setSingleStringValue(problemId);
+        waitForPageToLoad(driver, wait);
         log.debug("Filled Problem ID with id: {}", problemId);
     }
 
     @Step("Choose Status")
-    public void chooseStatus(String status) {
+    public void setStatusSearch(String status) {
+        ComponentFactory.create(SEARCH_STATUS_ID, driver, wait).setSingleStringValue(status);
         waitForPageToLoad(driver, wait);
-        ComponentFactory.create(SEARCH_STATUS_ID, Input.ComponentType.MULTI_COMBOBOX, driver, wait).setSingleStringValue(status);
         log.info("Choose status: {}", status);
     }
 
     @Step("Choose 'Is Active' Status")
-    public void chooseIsActive(String activity) {
+    public void setIsActive(String activity) {
+        ComponentFactory.create(SEARCH_IS_ACTIVE_ID, driver, wait).setSingleStringValue(activity);
         waitForPageToLoad(driver, wait);
-        ComponentFactory.create(SEARCH_IS_ACTIVE_ID, Input.ComponentType.MULTI_COMBOBOX, driver, wait).setSingleStringValue(activity);
         log.info("Setting is Active to: {}", activity);
     }
 

@@ -1,11 +1,8 @@
 package com.oss.iaa.bigdata.dfe;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
@@ -13,11 +10,9 @@ import com.oss.pages.iaa.bigdata.dfe.dictionary.DictionaryPage;
 import com.oss.pages.iaa.bigdata.dfe.dictionary.DictionaryPopupPage;
 import com.oss.pages.iaa.bigdata.dfe.dictionary.EntryPopupPage;
 import com.oss.pages.iaa.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({TestListener.class})
 public class DictionaryViewTest extends BaseTestCase {
 
     private static final String DICTIONARY_DESCRIPTION = "Dictionary Selenium Test";
@@ -27,8 +22,6 @@ public class DictionaryViewTest extends BaseTestCase {
     private static final String EDIT_WIZARD_TEST_ID = "edit-prompt-id_prompt-card";
     private static final String DICTIONARY_CATEGORY = "Selenium Tests";
     private static final String CATEGORY_COLUMN = "Category";
-
-    private static final Logger log = LoggerFactory.getLogger(DictionaryViewTest.class);
 
     private DictionaryPage dictionaryPage;
     private String dictionaryName;
@@ -80,8 +73,7 @@ public class DictionaryViewTest extends BaseTestCase {
 
             Assert.assertTrue(entryIsCreated, "Entry with key: " + ENTRIES_KEY + " doesn't exist");
         } else {
-            log.error("Dictionary with name: {} doesn't exist", dictionaryName);
-            Assert.fail();
+            Assert.fail(failMessage(dictionaryName));
         }
     }
 
@@ -97,17 +89,14 @@ public class DictionaryViewTest extends BaseTestCase {
                 dictionaryPage.clickDeleteEntry();
                 dictionaryPage.confirmDelete();
                 boolean entryDeleted = dictionaryPage.entryDeletedFromTable();
-
                 Assert.assertTrue(entryDeleted);
 
                 dictionaryPage.selectFoundDictionary();
             } else {
-                log.error("Entry with key: {} was not deleted", ENTRIES_KEY);
-                Assert.fail();
+                Assert.fail("Entry with key: " + ENTRIES_KEY + " was not deleted");
             }
         } else {
-            log.error("Dictionary with name: {} doesn't exist", dictionaryName);
-            Assert.fail();
+            Assert.fail(failMessage(dictionaryName));
         }
     }
 
@@ -125,8 +114,7 @@ public class DictionaryViewTest extends BaseTestCase {
 
             Assert.assertTrue(dictionaryIsCreated);
         } else {
-            log.error("Dictionary with name: {} doesn't exist", updatedDictionaryName);
-            Assert.fail();
+            Assert.fail(failMessage(updatedDictionaryName));
         }
     }
 
@@ -142,8 +130,11 @@ public class DictionaryViewTest extends BaseTestCase {
 
             Assert.assertTrue(dictionaryDeleted);
         } else {
-            log.error("Dictionary with name: {} was not deleted", updatedDictionaryName);
-            Assert.fail();
+            Assert.fail("Dictionary with name: " + updatedDictionaryName + " was not deleted");
         }
+    }
+
+    private String failMessage(String dictionaryName) {
+        return String.format("Dictionary with name: %s doesn't exist", dictionaryName);
     }
 }

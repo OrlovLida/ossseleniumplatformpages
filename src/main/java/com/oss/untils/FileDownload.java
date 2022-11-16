@@ -9,7 +9,7 @@ import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.qameta.allure.Attachment;
+import io.qameta.allure.Allure;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
@@ -70,13 +70,19 @@ public class FileDownload {
         return fileIsNotEmpty;
     }
 
-    @Attachment(value = "Exported XLSX file", fileExtension = ".xlsx")
-    public static byte[] attachXlsxFile(File file) throws IOException {
-        return FileUtils.readFileToByteArray(file);
+    public static void attachXlsxFile(File file) {
+        try {
+            Allure.addAttachment("Exported XLSX file", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", FileUtils.openInputStream(file), ".xlsx");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Attachment(value = "Exported file")
-    public static byte[] attachFile(File file) throws IOException {
-        return FileUtils.readFileToByteArray(file);
+    public static void attachFile(File file) {
+        try {
+            Allure.addAttachment("Exported file", FileUtils.openInputStream(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

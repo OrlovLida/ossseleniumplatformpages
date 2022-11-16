@@ -1,10 +1,7 @@
 package com.oss.iaa.bigdata.dfe;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
@@ -16,14 +13,10 @@ import com.oss.pages.iaa.bigdata.dfe.stepwizard.commons.StoragePage;
 import com.oss.pages.iaa.bigdata.dfe.stepwizard.commons.TransformationsPage;
 import com.oss.pages.iaa.bigdata.dfe.stepwizard.etlprocess.EtlProcessColumnMappingPage;
 import com.oss.pages.iaa.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({TestListener.class})
 public class EtlDataCollectionsTest extends BaseTestCase {
-
-    private static final Logger log = LoggerFactory.getLogger(EtlDataCollectionsTest.class);
 
     private EtlDataCollectionsPage etlDataCollectionsPage;
     private String etlProcessName;
@@ -75,9 +68,6 @@ public class EtlDataCollectionsTest extends BaseTestCase {
         DelayUtils.sleep(5000);
 
         boolean etlProcessIsCreated = etlDataCollectionsPage.etlProcessExistsIntoTable(etlProcessName);
-        if (!etlProcessIsCreated) {
-            log.info("Cannot find created ETL configuration");
-        }
         Assert.assertTrue(etlProcessIsCreated);
     }
 
@@ -86,7 +76,7 @@ public class EtlDataCollectionsTest extends BaseTestCase {
     public void editEtlProcess() {
         boolean etlProcessExists = etlDataCollectionsPage.etlProcessExistsIntoTable(etlProcessName);
         if (etlProcessExists) {
-            etlDataCollectionsPage.selectFoundEtlProcess();
+            etlDataCollectionsPage.selectFirstEtlInTable();
             etlDataCollectionsPage.clickEditEtlProcess();
 
             BasicInformationPage etlBasicInfoWizard = new BasicInformationPage(driver, webDriverWait, ETL_WIZARD_ID);
@@ -108,12 +98,8 @@ public class EtlDataCollectionsTest extends BaseTestCase {
             storageStep.clickAccept();
 
             boolean etlProcessIsEdited = etlDataCollectionsPage.etlProcessExistsIntoTable(updatedEtlProcessName);
-            if (!etlProcessIsEdited) {
-                log.info("Cannot find existing edited ETL {}", updatedEtlProcessName);
-            }
             Assert.assertTrue(etlProcessIsEdited);
         } else {
-            log.info("Cannot find existing ETL {}", etlProcessName);
             Assert.fail("Cannot find existing ETL " + etlProcessName);
         }
     }
@@ -123,14 +109,13 @@ public class EtlDataCollectionsTest extends BaseTestCase {
     public void deleteEtlProcess() {
         boolean aggregateExists = etlDataCollectionsPage.etlProcessExistsIntoTable(updatedEtlProcessName);
         if (aggregateExists) {
-            etlDataCollectionsPage.selectFoundEtlProcess();
+            etlDataCollectionsPage.selectFirstEtlInTable();
             etlDataCollectionsPage.clickDeleteEtlProcess();
             etlDataCollectionsPage.confirmDelete();
             boolean aggregateDeleted = !etlDataCollectionsPage.etlProcessExistsIntoTable(updatedEtlProcessName);
 
             Assert.assertTrue(aggregateDeleted);
         } else {
-            log.info("Cannot find existing edited ETL {}", updatedEtlProcessName);
             Assert.fail("Cannot find existing edited ETL " + updatedEtlProcessName);
         }
     }

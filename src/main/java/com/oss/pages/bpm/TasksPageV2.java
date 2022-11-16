@@ -76,9 +76,10 @@ public class TasksPageV2 extends BasePage {
         return TableWidget.createById(driver, TABLE_TASKS_ID, wait);
     }
 
-    public void clearFilters() {
+    public TasksPageV2 clearFilters() {
         TableWidget tasksTable = getTableWidget();
         tasksTable.clearAllFilters();
+        return this;
     }
 
     @Step("Checking is task started")
@@ -88,7 +89,9 @@ public class TasksPageV2 extends BasePage {
         return !getTableWidget().getCellValue(0, ASSIGNEE).isEmpty();
     }
 
-    public void findTask(String processCode, String taskName) {
+    public TasksPageV2 findTask(String processCode, String taskName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getTableWidget().unselectAllRows();
         DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
         table.clearAllFilters();
@@ -96,8 +99,9 @@ public class TasksPageV2 extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttribute(TASK_NAME_INPUT_ID, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        table.selectRowByAttributeValue(PROCESS_CODE_COLUMN_ID, processCode);
+        table.selectFirstRow();
         DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
     }
 
     private String getProcessCodeAndStartItIfNotStarted(String username, String taskName) {
@@ -122,9 +126,10 @@ public class TasksPageV2 extends BasePage {
         getIPDTaskForm().completeTask();
     }
 
-    public void setupIntegration(String processCode) {
+    public IntegrationProcessWizardPage setupIntegration(String processCode) {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
         getIPDTaskForm().setupIntegration();
+        return new IntegrationProcessWizardPage(driver);
     }
 
     public String startTaskByUsernameAndTaskName(String username, String taskName) {
@@ -155,12 +160,13 @@ public class TasksPageV2 extends BasePage {
         return getIPDTaskForm().getListOfAttachments();
     }
 
-    public void showCompletedTasks() {
+    public TasksPageV2 showCompletedTasks() {
         DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
         table.clearAllFilters();
         table.searchByAttribute(STATUS_INPUT_ID, FINISHED_STATUS);
         DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
     }
 
     public String getIPCodeByProcessName(String processIPName) {
@@ -195,8 +201,9 @@ public class TasksPageV2 extends BasePage {
         return ipCode;
     }
 
-    public void setQuickFilter(String filterName) {
+    public TasksPageV2 setQuickFilter(String filterName) {
         getTableWidget().setQuickFilter(filterName);
+        return this;
     }
 
     public List<String> getAppliedQuickFilters() {
@@ -211,8 +218,9 @@ public class TasksPageV2 extends BasePage {
         return getTableWidget().getActiveColumnHeaders();
     }
 
-    public void selectFirstTask() {
+    public TasksPageV2 selectFirstTask() {
         getTableWidget().selectFirstRow();
+        return this;
     }
 
     public String getColumnValueFromFirstRow(String columnId) {

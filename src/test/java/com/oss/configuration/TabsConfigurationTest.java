@@ -19,7 +19,6 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.utils.TestListener;
@@ -37,8 +36,8 @@ public class TabsConfigurationTest extends BaseTestCase {
     private static final String TEST_DIRECTOR = "TestDirector";
     private static final String TEST_ACTOR = "TestActor";
     private static final String INTERESTS = "Interests";
-    private static final String MATERIALS = "Materials";
-    private static final String TABLE_TYPE = "Table";
+    private static final String ATTACHMENTS = "Attachments";
+    private static final String TABLE_TYPE = " Table";
     private static final String MOVIES = "Movies";
     private static final String ME = "Me";
     private final static String USER2 = "webseleniumtests2";
@@ -77,7 +76,7 @@ public class TabsConfigurationTest extends BaseTestCase {
     @Test(priority = 1)
     public void saveNewConfigurationForTabsWidgetForSupertype() {
         selectObjectOfSuperType(TEST_ACTOR);
-        newInventoryViewPage.enableWidget(TABLE_TYPE, MATERIALS);
+        newInventoryViewPage.enableWidget(TABLE_TYPE, ATTACHMENTS);
         newInventoryViewPage.enableWidget(TABLE_TYPE, INTERESTS);
         newInventoryViewPage.saveConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET, createField(TYPE, TEST_ACTOR));
 
@@ -92,13 +91,13 @@ public class TabsConfigurationTest extends BaseTestCase {
     public void setDefaultConfigurationForTabsWidget() {
         newInventoryViewPage.applyConfigurationForTabs(DEFAULT_CONFIGURATION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertFalse(newInventoryViewPage.isTabVisible(MATERIALS));
+        Assert.assertFalse(newInventoryViewPage.isTabVisible(ATTACHMENTS));
     }
 
     @Test(priority = 3)
     public void chooseConfigurationForTabsWidget() {
         newInventoryViewPage.applyConfigurationForTabs(CONFIGURATION_NAME_TABS_WIDGET);
-        Assert.assertTrue(newInventoryViewPage.isTabVisible(MATERIALS));
+        Assert.assertTrue(newInventoryViewPage.isTabVisible(ATTACHMENTS));
     }
 
     @Test(priority = 4)

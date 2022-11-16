@@ -1,10 +1,7 @@
 package com.oss.iaa.bigdata.dfe;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
@@ -15,14 +12,10 @@ import com.oss.pages.iaa.bigdata.dfe.stepwizard.commons.StoragePage;
 import com.oss.pages.iaa.bigdata.dfe.stepwizard.commons.TransformationsPage;
 import com.oss.pages.iaa.bigdata.dfe.stepwizard.dimension.DimensionColumnMappingPage;
 import com.oss.pages.iaa.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({TestListener.class})
 public class DimensionsViewTest extends BaseTestCase {
-
-    private static final Logger log = LoggerFactory.getLogger(DimensionsViewTest.class);
 
     private static final String DATA_SOURCE_NAME = "t:CRUD#DSforDim";
     private static final String TRANSFORMATION_TYPE_NAME = "SQL Transformation";
@@ -48,10 +41,6 @@ public class DimensionsViewTest extends BaseTestCase {
         dimensionsPage.clickAddNewDimension();
         handleAddDimensionWizard();
         boolean dimensionIsCreated = dimensionsPage.dimensionExistsIntoTable(dimensionName);
-
-        if (!dimensionIsCreated) {
-            log.info("Cannot find created dimension");
-        }
         Assert.assertTrue(dimensionIsCreated);
     }
 
@@ -60,15 +49,13 @@ public class DimensionsViewTest extends BaseTestCase {
     public void editDimension() {
         boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(dimensionName);
         if (dimensionExists) {
-            dimensionsPage.selectFoundDimension();
+            dimensionsPage.selectFirstDimensionInTable();
             dimensionsPage.clickEditDimension();
             handleEditDimensionWizard();
             boolean dimensionIsCreated = dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
-
             Assert.assertTrue(dimensionIsCreated);
-
         } else {
-            Assert.fail("Dimension with name: {} doesn't exist"+ updatedDimensionName);
+            Assert.fail(String.format("Dimension with name: %s doesn't exist", updatedDimensionName));
         }
     }
 
@@ -77,14 +64,14 @@ public class DimensionsViewTest extends BaseTestCase {
     public void deleteDimension() {
         boolean dimensionExists = dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
         if (dimensionExists) {
-            dimensionsPage.selectFoundDimension();
+            dimensionsPage.selectFirstDimensionInTable();
             dimensionsPage.clickDeleteDimension();
             dimensionsPage.confirmDelete();
             boolean dimensionDeleted = !dimensionsPage.dimensionExistsIntoTable(updatedDimensionName);
 
             Assert.assertTrue(dimensionDeleted);
         } else {
-            Assert.fail("Dimension with name: {} was not deleted"+ updatedDimensionName);
+            Assert.fail(String.format("Dimension with name: %s was not deleted", updatedDimensionName));
         }
     }
 

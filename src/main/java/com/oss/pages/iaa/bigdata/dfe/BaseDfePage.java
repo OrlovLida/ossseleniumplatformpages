@@ -23,7 +23,7 @@ import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public abstract class BaseDfePage extends BasePage implements BaseDfePageInterface {
 
-    private static final Logger log = LoggerFactory.getLogger(BaseDfePage.class);
+    protected static final Logger log = LoggerFactory.getLogger(BaseDfePage.class);
     private static final String SAVE_LABEL = "Save";
     private static final String CATEGORY_COLUMN_LABEL = "Category";
     private static final String CATEGORY_ID = "category";

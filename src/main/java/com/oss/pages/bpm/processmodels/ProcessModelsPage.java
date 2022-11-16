@@ -58,6 +58,7 @@ public class ProcessModelsPage extends BasePage {
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String BPM_ADMINISTRATION = "BPM Administration";
     private static final String PROCESS_MODELS = "Process Models";
+    private static final String KEYWORDS_LABEL = "Keywords";
 
     public ProcessModelsPage(WebDriver driver) {
         super(driver);
@@ -77,19 +78,29 @@ public class ProcessModelsPage extends BasePage {
         return new ProcessModelsPage(driver);
     }
 
-    public void chooseDomain(String domain) {
+    public ProcessModelsPage chooseDomain(String domain) {
         DelayUtils.waitForPageToLoad(driver, wait);
         Input domainInput = ComponentFactory.create(DOMAIN_CHOOSER_COMBOBOX_ID, driver, wait);
         domainInput.clear();
         DelayUtils.waitForPageToLoad(driver, wait);
         domainInput.setSingleStringValue(domain);
         DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
     }
 
-    public void selectModelByName(String name) {
+    public ProcessModelsPage selectModelByName(String name) {
         getModelsTable().searchByAttributeWithLabel(NAME_LABEL, Input.ComponentType.TEXT_FIELD, name);
         getModelsTable().selectRow(0);
         DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
+    }
+
+    public ProcessModelsPage selectModel(String modelName, String modelKeyword) {
+        getModelsTable().searchByAttributeWithLabel(NAME_LABEL, Input.ComponentType.TEXT_FIELD, modelName);
+        getModelsTable().searchByAttributeWithLabel(KEYWORDS_LABEL, Input.ComponentType.TEXT_FIELD, modelKeyword);
+        getModelsTable().selectRow(0);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
     }
 
     public void callAction(String actionId) {
@@ -121,59 +132,60 @@ public class ProcessModelsPage extends BasePage {
         return false;
     }
 
-    public void deleteModel(String modelName) {
-        Wizard deleteWizard = openWizardForSelectedModel(modelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,
+    public boolean isModelExists(String modelName, String modelKeyword) {
+        try {
+            selectModel(modelName, modelKeyword);
+            return true;
+        } catch (IndexOutOfBoundsException e) {
+            return false;
+        }
+    }
+
+    public void deleteSelectedModel() {
+        Wizard deleteWizard = openWizardForSelectedModel(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,
                 DELETE_ACTION_BUTTON_ID, DELETE_MODEL_POPUP_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         deleteWizard.clickButtonById(DELETE_MODEL_CONFIRMATION_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void cloneModel(String baseModelName, String clonedModelName, String clonedIdentifier, String clonedDescription) {
-        Wizard cloneWizard = openWizardForSelectedModel(baseModelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,
+    public void cloneSelectedModel(String clonedModelName, String clonedIdentifier, String clonedDescription) {
+        Wizard cloneWizard = openWizardForSelectedModel(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,
                 CLONE_ACTION_BUTTON_ID, CLONE_MODEL_POPUP_ID);
-        setWizardAttributeValue(cloneWizard, NAME_FIELD_ID, Input.ComponentType.TEXT_FIELD, clonedModelName);
-        setWizardAttributeValue(cloneWizard, IDENTIFIER_FIELD_ID, Input.ComponentType.TEXT_FIELD, clonedIdentifier);
-        setWizardAttributeValue(cloneWizard, DESCRIPTION_FIELD_ID, Input.ComponentType.TEXT_FIELD, clonedDescription);
+        setWizardAttributeValue(cloneWizard, NAME_FIELD_ID, clonedModelName);
+        setWizardAttributeValue(cloneWizard, IDENTIFIER_FIELD_ID, clonedIdentifier);
+        setWizardAttributeValue(cloneWizard, DESCRIPTION_FIELD_ID, clonedDescription);
 
         cloneWizard.clickButtonById(CLONE_MODEL_ACCEPT_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    private void setWizardAttributeValue(Wizard wizard, String attributeId, Input.ComponentType inputType, String value) {
-        Input attribute = wizard.getComponent(attributeId, inputType);
+    private void setWizardAttributeValue(Wizard wizard, String attributeId, String value) {
+        Input attribute = wizard.getComponent(attributeId);
         attribute.clear();
         attribute.setSingleStringValue(value);
     }
 
-    public void setKeyword(String modelName, String keyword) {
-        Wizard editKeywordsWizard = openWizardForSelectedModel(modelName, MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,
+    public void setKeywordForSelectedModel(String keyword) {
+        Wizard editKeywordsWizard = openWizardForSelectedModel(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID,
                 EDIT_KEYWORDS_ACTION_BUTTON_ID, EDIT_KEYWORDS_POPUP_ID);
-        setWizardAttributeValue(editKeywordsWizard, KEYWORDS_INPUT_ID, Input.ComponentType.MULTI_SEARCH_FIELD, keyword);
+        Input attribute = editKeywordsWizard.getComponent(KEYWORDS_INPUT_ID);
+        attribute.setSingleStringValueContains(keyword);
         editKeywordsWizard.clickButtonById(EDIT_KEYWORDS_ACCEPT_BUTTON_ID);
     }
 
-    public Wizard openWizardForSelectedModel(String modelName, String actionId, String wizardPopUpId) {
+    public Wizard openWizardForSelectedModel(String groupingActionId, String actionId, String wizardPopUpId) {
         TableInterface modelsList = getModelsTable();
-        selectModelByName(modelName);
-        modelsList.callAction(actionId);
-        return Wizard.createByComponentId(driver, wait, wizardPopUpId);
-    }
-
-    public Wizard openWizardForSelectedModel(String modelName, String groupingActionId, String actionId, String wizardPopUpId) {
-        TableInterface modelsList = getModelsTable();
-        selectModelByName(modelName);
         modelsList.callAction(groupingActionId, actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
         return Wizard.createByComponentId(driver, wait, wizardPopUpId);
     }
 
-    public void exportModelAsBAR(String modelName) {
-        selectModelByName(modelName);
+    public void exportSelectedModelAsBAR() {
         callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EXPORT_AS_BAR_ACTION_BUTTON_ID);
     }
 
-    public void exportModelAsXML(String modelName) {
-        selectModelByName(modelName);
+    public void exportSelectedModelAsXML() {
         callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EXPORT_AS_XML_ACTION_BUTTON_ID);
     }
 
@@ -182,18 +194,20 @@ public class ProcessModelsPage extends BasePage {
         return OldTable.createById(driver, wait, MODEL_LIST_TABLE_ID);
     }
 
-    public void selectInitialParametersTab(String processModelName) {
-        selectModelByName(processModelName);
+    public ProcessModelsPage openInitialParametersTab() {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsWidget milestoneTab = TabsWidget.createById(driver, wait, MODELS_TABS_ID);
         milestoneTab.selectTabById(INITIAL_PARAMETERS_TAB_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
     }
 
-    public void selectMilestoneTab(String processModelName) {
-        selectModelByName(processModelName);
+    public ProcessModelsPage openMilestoneTab() {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsWidget milestoneTab = TabsWidget.createById(driver, wait, MODELS_TABS_ID);
         milestoneTab.selectTabById(MILESTONE_TAB_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
     }
 
     public String getMilestoneValue(String milestoneName, String attributeName) {
@@ -206,8 +220,7 @@ public class ProcessModelsPage extends BasePage {
         return milestoneList.getRows().isEmpty();
     }
 
-    public List<Milestone> addMilestonesForProcessModel(String processModelName, List<Milestone> milestones) {
-        selectModelByName(processModelName);
+    public List<Milestone> addMilestonesForSelectedModel(List<Milestone> milestones) {
         DelayUtils.waitForPageToLoad(driver, wait);
         callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_MILESTONE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -220,8 +233,7 @@ public class ProcessModelsPage extends BasePage {
         return addedMilestones;
     }
 
-    public List<Milestone> editMilestonesForProcessModel(String processModelName, List<Milestone> milestones) {
-        selectModelByName(processModelName);
+    public List<Milestone> editMilestonesForSelectedModel(List<Milestone> milestones) {
         DelayUtils.waitForPageToLoad(driver, wait);
         callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_MILESTONE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -237,8 +249,7 @@ public class ProcessModelsPage extends BasePage {
         return editedMilestones;
     }
 
-    public void removeMilestonesForProcessModel(String processModelName, int deleteMilestonesNumber) {
-        selectModelByName(processModelName);
+    public void removeMilestonesForSelectedModel(int deleteMilestonesNumber) {
         DelayUtils.waitForPageToLoad(driver, wait);
         callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EDIT_MILESTONE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);

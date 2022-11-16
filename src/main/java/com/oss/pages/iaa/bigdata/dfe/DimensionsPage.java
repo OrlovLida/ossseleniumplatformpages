@@ -4,8 +4,6 @@ import java.time.LocalDateTime;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import io.qameta.allure.Step;
 
@@ -13,10 +11,7 @@ import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class DimensionsPage extends BaseDfePage {
 
-    private static final Logger log = LoggerFactory.getLogger(DimensionsPage.class);
-
     private static final String TABLE_ID = "dimension-listAppId";
-
     private static final String ADD_NEW_DIMENSION_LABEL = "Add New Dimension";
     private static final String EDIT_DIMENSION_LABEL = "Edit Dimension";
     private static final String DELETE_DIMENSION_LABEL = "Delete Dimension";
@@ -76,7 +71,7 @@ public class DimensionsPage extends BaseDfePage {
     }
 
     @Step("I select found Dimension")
-    public void selectFoundDimension() {
+    public void selectFirstDimensionInTable() {
         getTable().selectRow(0);
     }
 

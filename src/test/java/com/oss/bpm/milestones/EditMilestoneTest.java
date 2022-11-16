@@ -14,7 +14,7 @@ import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.EditMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneViewPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.MilestonesStepWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.testng.Assert;
@@ -60,7 +60,6 @@ public class EditMilestoneTest extends BaseTestCase {
     @BeforeClass
     public void createMilestone() {
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        processOverviewPage.clearAllColumnFilters();
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -68,6 +67,7 @@ public class EditMilestoneTest extends BaseTestCase {
             processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        processOverviewPage.clearAllColumnFilters();
 
         String processName = PROCESS_NAME + (int) (Math.random() * 100001);
 
@@ -77,9 +77,10 @@ public class EditMilestoneTest extends BaseTestCase {
                 .setIsActive("true")
                 .setName(milestoneName).build();
 
-        ProcessWizardPage processWizardPage = processOverviewPage.openProcessCreationWizard();
-        processWizardPage.definedMilestoneInProcess(processName, 5L, DCP).addMilestoneRow(milestone1);
-        processWizardPage.clickAcceptButton();
+        MilestonesStepWizardPage milestonesStepWizardPage = processOverviewPage.openProcessCreationWizard()
+                .defineProcessAndGoToMilestonesStep(processName, 5L, DCP);
+        milestonesStepWizardPage.addMilestoneRow(milestone1);
+        milestonesStepWizardPage.clickAcceptButton();
     }
 
     @Test(priority = 1, description = "Edit Description")
@@ -272,9 +273,15 @@ public class EditMilestoneTest extends BaseTestCase {
         milestoneViewPage.changeUser(BPM_ADMIN_USER_LOGIN, BPM_ADMIN_USER_PASSWORD);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         milestoneViewPage.selectMilestone(newMilestoneName);
-        milestoneViewPage.chooseMilestoneAttributesConfiguration(BPM_CONFIGURATION_NAME);
+        String modifyUser;
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
-        String modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
+        try {
+            modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
+        } catch (NullPointerException e) {
+            milestoneViewPage.chooseMilestoneAttributesConfiguration(BPM_CONFIGURATION_NAME);
+            modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
+        }
+
         // when
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);

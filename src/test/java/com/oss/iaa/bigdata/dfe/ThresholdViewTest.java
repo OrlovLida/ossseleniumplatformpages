@@ -1,8 +1,6 @@
 package com.oss.iaa.bigdata.dfe;
 
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -16,7 +14,6 @@ import io.qameta.allure.Description;
 
 public class ThresholdViewTest extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(ThresholdViewTest.class);
     private static final String NOTIFICATION_STATUS = "Yes";
     private static final String AGGREGATION_PERIOD = "Five Minutes";
     private static final String DEBUG_MODE = "No";
@@ -61,10 +58,7 @@ public class ThresholdViewTest extends BaseTestCase {
         thresholdsStepWizardPage.clickAccept();
         boolean thresholdIsCreated = thresholdPage.thresholdExistsIntoTable(thresholdName);
 
-        if (!thresholdIsCreated) {
-            log.error("Cannot find created threshold configuration ");
-        }
-        Assert.assertTrue(thresholdIsCreated);
+        Assert.assertTrue(thresholdIsCreated, "Cannot find created threshold configuration");
     }
 
     @Test(priority = 2, testName = "Edit Threshold", description = "Edit Threshold")
@@ -72,7 +66,7 @@ public class ThresholdViewTest extends BaseTestCase {
     public void editThreshold() {
         boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(thresholdName);
         if (thresholdExists) {
-            thresholdPage.selectFoundThreshold();
+            thresholdPage.selectFirstThresholdInTable();
             thresholdPage.clickEditThreshold();
 
             WebDriverWait wait = new WebDriverWait(driver, 45);
@@ -83,14 +77,11 @@ public class ThresholdViewTest extends BaseTestCase {
             thresholdsStepWizardPage.clickAccept();
 
             boolean thresholdIsEdited = thresholdPage.thresholdExistsIntoTable(updatedThresholdName);
-            if (!thresholdIsEdited) {
-                log.info("Cannot find existing edited threshold {}", updatedThresholdName);
-            }
-            Assert.assertTrue(thresholdIsEdited);
+
+            Assert.assertTrue(thresholdIsEdited, "Cannot find existing edited threshold " + updatedThresholdName);
             Assert.assertEquals(thresholdPage.getCategoryName(0), CATEGORIES_TYPE);
         } else {
-            log.error("Cannot find existing threshold {}", thresholdName);
-            Assert.fail("Cannot find existing threshold " + thresholdName);
+            Assert.fail("Cannot find existing threshold with name: " + thresholdName);
         }
     }
 
@@ -106,15 +97,14 @@ public class ThresholdViewTest extends BaseTestCase {
     public void deleteThreshold() {
         boolean thresholdExists = thresholdPage.thresholdExistsIntoTable(updatedThresholdName);
         if (thresholdExists) {
-            thresholdPage.selectFoundThreshold();
+            thresholdPage.selectFirstThresholdInTable();
             thresholdPage.clickDeleteThreshold();
             thresholdPage.confirmDelete();
             boolean thresholdDeleted = !thresholdPage.thresholdExistsIntoTable(updatedThresholdName);
 
             Assert.assertTrue(thresholdDeleted);
         } else {
-            log.error("Threshold with name: {} was not deleted", updatedThresholdName);
-            Assert.fail();
+            Assert.fail(String.format("Threshold with name: %s was not deleted", updatedThresholdName));
         }
     }
 }

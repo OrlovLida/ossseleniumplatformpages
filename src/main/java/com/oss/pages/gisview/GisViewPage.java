@@ -1,6 +1,7 @@
 package com.oss.pages.gisview;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.portals.DropdownList;
@@ -16,15 +17,32 @@ import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 public class GisViewPage extends BasePage {
-    private static final String GIS_VIEW_TABS_ID = "gis_view_tabs";
 
-    public GisViewPage(WebDriver driver) {
-        super(driver);
+    private static final String GIS_VIEW_TABS_ID = "gis_view_tabs";
+    private static final String GIS_MAP_ID = "template-gisview";
+
+    private GisViewPage(WebDriver driver, WebDriverWait wait) {
+        super(driver, wait);
+    }
+
+    public static GisViewPage getGisViewPage(WebDriver driver, WebDriverWait wait) {
+        return new GisViewPage(driver, wait);
+    }
+
+    public boolean isCanvasPresent() {
+        return getGisMapInterface().isCanvasPresent();
+    }
+
+    public void setMap(String mapLabel) {
+        getGisMapInterface().setMap(mapLabel);
+    }
+
+    public String getCanvasObject() {
+        return getGisMapInterface().getCanvasObject();
     }
 
     public void searchResult(String value) {
-        GisMapInterface gisMap = GisMap.create(driver, wait);
-        gisMap.setValue(value);
+        getGisMapInterface().setValue(value);
     }
 
     public void chooseOptionFromDropDownList(String buttonId, String optionId) {
@@ -35,34 +53,20 @@ public class GisViewPage extends BasePage {
 
     public void useContextActionByLabel(String actionLabel) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        GisMapInterface gisMap = GisMap.create(driver, wait);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        gisMap.callActionByLabel(actionLabel);
+        getGisMapInterface().callActionByLabel(actionLabel);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void clickOnMapByCoordinates(int x, int y) {
-        GisMapInterface gisMap = GisMap.create(driver, wait);
-        gisMap.clickMapByCoordinates(x, y);
+        getGisMapInterface().clickMapByCoordinates(x, y);
     }
 
     public void doubleClickOnMapByCoordinates(int x, int y) {
-        GisMapInterface gisMap = GisMap.create(driver, wait);
-        gisMap.doubleClickMapByCoordinates(x, y);
-    }
-
-    public void chooseObjectFromList(String name, int x, int y) {
-        GisMapInterface gisMap = GisMap.create(driver, wait);
-        gisMap.clickMapByCoordinatesWithShift(x, y);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        //Nie wygląda mi to na button
-//        Button button = Button.create(driver, name);
-//        button.click();
+        getGisMapInterface().doubleClickMapByCoordinates(x, y);
     }
 
     public void dragAndDropObject(int xSource, int ySource, int xDestination, int yDestination) {
-        GisMapInterface gisMap = GisMap.create(driver, wait);
-        gisMap.dragAndDropObject(xSource, ySource, xDestination, yDestination);
+        getGisMapInterface().dragAndDropObject(xSource, ySource, xDestination, yDestination);
     }
 
     public void clickButtonInPopupByLabel(String label) {
@@ -71,10 +75,9 @@ public class GisViewPage extends BasePage {
     }
 
     public void enableLayerInTree(String layer) {
-        GisMapInterface gisMap = GisMap.create(driver, wait);
-        Button layersTreeButton = Button.createByLabel(driver, "template-gisview", "Layers tree");
+        Button layersTreeButton = Button.createByLabel(driver, GIS_MAP_ID, "Layers tree");
         layersTreeButton.click();
-        gisMap.getLayersTree().toggleNodeByPath(layer);
+        getGisMapInterface().getLayersTree().toggleNodeByPath(layer);
     }
 
     public void expandDockedPanel(String position) {
@@ -98,5 +101,9 @@ public class GisViewPage extends BasePage {
     public String getCellValue(int row, String label) {
         TableInterface table = OldTable.createById(driver, wait, GIS_VIEW_TABS_ID);
         return table.getCellValue(row, label);
+    }
+
+    private GisMapInterface getGisMapInterface() {
+        return GisMap.create(driver, wait, GIS_MAP_ID);
     }
 }

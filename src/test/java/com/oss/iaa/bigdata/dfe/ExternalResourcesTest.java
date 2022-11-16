@@ -1,26 +1,20 @@
 package com.oss.iaa.bigdata.dfe;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.bigdata.dfe.externalresource.ExternalResourcesPage;
 import com.oss.pages.iaa.bigdata.dfe.externalresource.ExternalResourcesPopupPage;
 import com.oss.pages.iaa.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({TestListener.class})
 public class ExternalResourcesTest extends BaseTestCase {
 
     private static final String EXTERNAL_RESOURCE_TYPE = "Database";
     private static final String CONNECTION_URL = "jdbc:";
-    private static final Logger log = LoggerFactory.getLogger(ExternalResourcesTest.class);
     private static final String ADD_WIZARD_ID = "add-prompt-id_prompt-card";
     private static final String EDIT_WIZARD_ID = "edit-prompt-id_prompt-card";
 
@@ -62,8 +56,7 @@ public class ExternalResourcesTest extends BaseTestCase {
 
             Assert.assertTrue(externalResourceIsCreated);
         } else {
-            log.error("External Resource with name: {} doesn't exist", externalResourceName);
-            Assert.fail();
+            Assert.fail(String.format("External Resource with name: %s doesn't exist", externalResourceName));
         }
     }
 
@@ -79,8 +72,7 @@ public class ExternalResourcesTest extends BaseTestCase {
 
             Assert.assertTrue(externalResourceDeleted);
         } else {
-            log.error("External Resource with name: {} was not deleted", externalResourceName);
-            Assert.fail();
+            Assert.fail(String.format("External Resource with name: %s was not deleted", externalResourceName));
         }
     }
 }

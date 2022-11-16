@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.Multimap;
 import com.oss.BaseTestCase;
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.ObjectSearchField;
 import com.oss.framework.components.table.TableComponent;
@@ -23,6 +24,7 @@ import com.oss.pages.platform.NewInventoryViewPage;
 
 public class AdvancedSearchCompactTest extends BaseTestCase {
     private final static String SIMPLE_ATTRIBUTE = "title";
+    private final static String TYPE_ID = "type";
     private final static String SIMPLE_ATTRIBUTE_LABEL = "Title";
     private final static String COMBO_ATTRIBUTE = "LifecycleState.lifecycleState";
     private final static String COMBO_ATTRIBUTE_ID = "gsLifecycleState";
@@ -30,6 +32,7 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
     private final static String OSF_ATTRIBUTE_LABEL = "director";
     private final static int DEFAULT_ROW_INDEX = 0;
     private final static String FILTER_NAME = "WEB_TEST_FILTER";
+    private final static String FILTER_NAME_PERSON = "WEB_TEST_FILTER_PERSON";
     private static final String LAST_NAME_ID = "lastName";
     private static final String NATIONALITY_COLUMN_ID = "nationality";
     private static final String NATIONALITY_LABEL = "Nationality";
@@ -39,14 +42,16 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
     private static final String LAST_NAME_LABEL = "Last Name";
     private static final String ACTORS_ATTRIBUTE_ID = "actors";
     private static final String ACTORS_LABEL = "Actors";
+    private static final String TEST_PERSON = "TestPerson";
+    private static final String TEST_MOVIE = "TestMovie";
+    private static final String QUICK_FILTERS_ID = "quick_filters";
 
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
 
     @BeforeClass
     public void goToInventoryView() {
-        String TYPE = "TestMovie";
-        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TYPE);
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_MOVIE);
         tableWidget = inventoryViewPage.getMainTable();
     }
 
@@ -177,8 +182,7 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
         Assert.assertTrue(filtersSecond.contains(ACTORS_LABEL));
     }
 
-    // Disabled until fix OSSWEB-19578
-    @Test(priority = 7, enabled = false)
+    @Test(priority = 7)
     public void backToDefaultSetting() {
         List<String> attributes = new ArrayList<>();
         attributes.add(COMBO_ATTRIBUTE);
@@ -198,8 +202,7 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
         Assert.assertEquals(attributes.indexOf(ACTORS_LABEL), 0);
     }
 
-    // Disabled until fix OSSWEB-19578
-    @Test(priority = 9, enabled = false)
+    @Test(priority = 9)
     public void unselectAttributteAndChangeOrder() {
         inventoryViewPage.setDefaultAdvanceSearchSettings();
         List<String> attributesDefault = inventoryViewPage.getAllVisibleFilters();
@@ -247,20 +250,45 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
         inventoryViewPage.clearFilters();
     }
 
-    // Disabled until fix OSSWEB-15793
-    @Test(priority = 12)
+    //Disabled until fix OSSWEB-21002, OSSWEB-20996
+    @Test(priority = 12, enabled = false)
+    public void useQuickFilterAndOtherFilter() {
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON);
+        int totalCount = inventoryViewPage.getMainTable().getPagination().getTotalCount();
+        String type = inventoryViewPage.getMainTable().getCellValue(DEFAULT_ROW_INDEX, TYPE_ID);
+        String lastname = inventoryViewPage.getMainTable().getCellValue(DEFAULT_ROW_INDEX, LAST_NAME_ID);
+        inventoryViewPage.searchByAttributeValue(LAST_NAME_ID, lastname, Input.ComponentType.TEXT_FIELD);
+        inventoryViewPage.getMainTable().saveAsNewFilter(FILTER_NAME_PERSON);
+        inventoryViewPage.clearFilter(LAST_NAME_LABEL);
+        inventoryViewPage.getMainTable().markFavoriteFilter(FILTER_NAME_PERSON);
+        Assert.assertTrue(ComponentFactory.create(QUICK_FILTERS_ID, Input.ComponentType.MULTI_COMBOBOX, driver, webDriverWait).getStringValues().isEmpty());
+
+        tableWidget.setQuickFilter(FILTER_NAME_PERSON);
+        inventoryViewPage.getMainTable().searchByAttribute(TYPE_ID, Input.ComponentType.MULTI_COMBOBOX, type);
+        Assert.assertEquals(inventoryViewPage.countOfVisibleTags(), 2);
+
+        inventoryViewPage.clearFilters();
+        Assert.assertEquals(inventoryViewPage.countOfVisibleTags(), 0);
+
+        int totalCountAfterClearFilters = inventoryViewPage.getMainTable().getPagination().getTotalCount();
+        Assert.assertEquals(totalCountAfterClearFilters, totalCount);
+    }
+
+    @Test(priority = 13)
     public void filterByOSFUsingAdvancedSearchWidget() {
         // given
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_MOVIE);
         ObjectSearchField actorsOSF =
-                (ObjectSearchField) tableWidget.getAdvancedSearch().getComponent(ACTORS_OSF_ID, Input.ComponentType.OBJECT_SEARCH_FIELD);
+                (ObjectSearchField) inventoryViewPage.getMainTable().getAdvancedSearch().getComponent(ACTORS_OSF_ID, Input.ComponentType.OBJECT_SEARCH_FIELD);
         AdvancedSearchWidget advancedSearchWidget = actorsOSF.openAdvancedSearchWidget();
         TableComponent tableComponent = advancedSearchWidget.getTableComponent();
         String lastName = tableComponent.getCellValue(1, LAST_NAME_ID);
         String nationality = tableComponent.getCellValue(1, NATIONALITY_COLUMN_ID);
-        advancedSearchWidget.getComponent(LAST_NAME_ID, Input.ComponentType.TEXT_FIELD).setSingleStringValue(lastName);
-        advancedSearchWidget.getComponent(NATIONALITY_COLUMN_ID, Input.ComponentType.MULTI_COMBOBOX)
+        advancedSearchWidget.getComponent(LAST_NAME_ID).setSingleStringValue(lastName);
+        advancedSearchWidget.getComponent(NATIONALITY_COLUMN_ID)
                 .setSingleStringValue(nationality);
         // when
+        DelayUtils.sleep();
         Multimap<String, String> visibleTags = advancedSearchWidget.getAppliedFilters();
         // then
         Assertions.assertThat(visibleTags.keys()).contains(LAST_NAME_LABEL);
@@ -271,8 +299,8 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
         advancedSearchWidget.clickAdd();
 
         Assertions.assertThat(actorsOSF.getStringValue()).isEqualTo(lastName);
-        tableWidget.getAdvancedSearch().clickApply();
-        Multimap<String, String> appliedFilters = tableWidget.getAppliedFilters();
+        inventoryViewPage.getMainTable().getAdvancedSearch().clickApply();
+        Multimap<String, String> appliedFilters = inventoryViewPage.getMainTable().getAppliedFilters();
         Assertions.assertThat(appliedFilters.keys()).contains(ACTORS_LABEL);
         Assertions.assertThat(appliedFilters.values()).contains(lastName);
     }

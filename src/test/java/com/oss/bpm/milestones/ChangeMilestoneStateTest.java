@@ -10,7 +10,7 @@ import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.EditMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneViewPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.MilestonesStepWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.testng.Assert;
@@ -24,10 +24,6 @@ import static com.oss.bpm.milestones.EditMilestoneTest.EDIT_MILESTONE_BUTTON;
 
 /**
  * @author Paweł Rother
- */
-
-/**
- * Tests must be run by user without BPMMilestone.ADMIN user permissions:
  */
 
 @Listeners({TestListener.class})
@@ -48,7 +44,9 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     private static final String NO_SYSTEM_MESSAGE_EXCEPTION = "There is no any System Message";
     private static final String NOT_ALL_MILESTONE_CHANGED_STATE_MESSAGE = "Not all milestones changed state.\n" +
             "Following milestones cannot be manually completed:";
-    private static final String EMPTY_ATTRIBUTE = "—";
+    private static final String EMPTY_ATTRIBUTE2 = "—";
+    private static final String EMPTY_ATTRIBUTE1 = "-";
+
     private static final String CHANGE_STATE_BUTTON = "setMilestonesStateContextAction";
     private static final String NEW_STATE = "New";
     private static final String NOT_NEEDED_STATE = "Not Needed";
@@ -61,15 +59,14 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     private final String milestoneName1 = "Milestone Update " + (int) (Math.random() * 100001);
     private final String milestoneName2 = "Milestone Update " + (int) (Math.random() * 100001);
     private final String milestoneName3 = "Milestone Update " + (int) (Math.random() * 100001);
-    private final String description = "Milestone Update " + (Math.random() * 100001);
     private final long PLUS_DAYS = 5L;
 
     private MilestoneViewPage milestoneViewPage;
     private ChangeStateMilestoneWizardPage changeStateMilestoneWizardPage;
 
     private void assertDueDate(String startDueDate, String dueDate, String newDueDate) {
-        if (startDueDate.equals(EMPTY_ATTRIBUTE)) {
-            Assert.assertEquals(newDueDate, EMPTY_ATTRIBUTE);
+        if (startDueDate.equals(EMPTY_ATTRIBUTE2) || startDueDate.equals(EMPTY_ATTRIBUTE1)) {
+            Assert.assertTrue(newDueDate.equals(EMPTY_ATTRIBUTE2) || newDueDate.equals(EMPTY_ATTRIBUTE1));
         } else {
             Assert.assertEquals(dueDate, newDueDate);
         }
@@ -119,7 +116,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         Assert.assertNotEquals(newModifyDate, startModifyDate);
         switch (nextState) {
             case NOT_NEEDED_STATE:
-                Assert.assertEquals(newCompletionDate, EMPTY_ATTRIBUTE);
+                Assert.assertTrue(newCompletionDate.equals(EMPTY_ATTRIBUTE2) || newCompletionDate.equals(EMPTY_ATTRIBUTE1));
                 assertDueDate(startDueDate, startDueDate, newDueDate);
                 break;
             case NEW_STATE:
@@ -147,8 +144,6 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     @BeforeClass
     public void createProcessWithMilestones() {
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        processOverviewPage.clearAllColumnFilters();
-        changeStateMilestoneWizardPage = new ChangeStateMilestoneWizardPage(driver);
 
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -156,6 +151,8 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
             changeStateMilestoneWizardPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
         }
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        processOverviewPage.clearAllColumnFilters();
+        changeStateMilestoneWizardPage = new ChangeStateMilestoneWizardPage(driver);
 
         String processName = PROCESS_NAME + (int) (Math.random() * 100001);
 
@@ -175,14 +172,12 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
                 .setIsManualCompletion("true")
                 .setName(milestoneName3).build();
 
-        ProcessWizardPage processWizardPage = processOverviewPage.openProcessCreationWizard();
-        ProcessWizardPage.MilestoneStepWizard milestoneStep = processWizardPage.definedMilestoneInProcess(processName,
-                5L, DCP);
-
-        milestoneStep.addMilestoneRow(milestone1);
-        milestoneStep.addMilestoneRow(milestone2);
-        milestoneStep.addMilestoneRow(milestone3);
-        processWizardPage.clickAcceptButton();
+        MilestonesStepWizardPage milestonesStepWizardPage = processOverviewPage.openProcessCreationWizard()
+                .defineProcessAndGoToMilestonesStep(processName, 5L, DCP);
+        milestonesStepWizardPage.addMilestoneRow(milestone1);
+        milestonesStepWizardPage.addMilestoneRow(milestone2);
+        milestonesStepWizardPage.addMilestoneRow(milestone3);
+        milestonesStepWizardPage.clickAcceptButton();
     }
 
     @Test(priority = 1, description = "First Milestone Change State Flow")

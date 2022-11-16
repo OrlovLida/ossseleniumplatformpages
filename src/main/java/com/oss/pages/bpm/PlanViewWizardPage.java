@@ -18,7 +18,7 @@ public class PlanViewWizardPage extends BasePage {
     private static final String OBJECT_TABLE_DATA_ATTRIBUTE_NAME = "plaPlanView_objectsApp";
     private static final String PROCEED_WITH_CANCELLATION_ID = "ConfirmationBox_plaCancelObjectsWizard_confirmBox_action_button";
     private static final String CANCEL_ID = "objectsRemoveAction";
-    private static final String TAB_ID = "plaPlanView_leftSideTabs";
+    private static final String TAB_ID = "plaPlanView_leftSideWindow";
     private static final String CLOSE_BUTTON_TITLE = "Close";
 
     public PlanViewWizardPage(WebDriver driver) {

@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.ImmutableList;
 import com.oss.BaseTestCase;
+import com.oss.framework.components.alerts.GlobalNotificationContainer;
 import com.oss.framework.components.attributechooser.AttributesChooser;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.utils.DelayUtils;
@@ -50,6 +51,7 @@ public class Tasks_Smoke_Test extends BaseTestCase {
     public void openTasksView() {
         waitForPageToLoad();
         checkErrorPage();
+        checkGlobalNotificationContainer();
         HomePage homePage = new HomePage(driver);
         homePage.chooseFromLeftSideMenu(TASKS, BPM_AND_PLANNING, PROCESS_OPERATIONS);
         waitForPageToLoad();
@@ -59,6 +61,7 @@ public class Tasks_Smoke_Test extends BaseTestCase {
     @Description("Select Uncompleted Tasks from Quick Filters")
     public void useQuickFilters() {
         checkErrorPage();
+        checkGlobalNotificationContainer();
         TasksPageV2 tasksPage = new TasksPageV2(driver);
         tasksPage.setQuickFilter(UNCOMPLETED_TASKS);
         waitForPageToLoad();
@@ -123,6 +126,15 @@ public class Tasks_Smoke_Test extends BaseTestCase {
             LOGGER.error(errorInformation.getErrorDescription());
             LOGGER.error(errorInformation.getErrorMessage());
             Assert.fail("Error Page is shown.");
+        }
+    }
+
+    private void checkGlobalNotificationContainer() {
+        GlobalNotificationContainer globalNotificationContainer = GlobalNotificationContainer.create(driver, webDriverWait);
+        if (globalNotificationContainer.isErrorNotificationPresent()) {
+            GlobalNotificationContainer.NotificationInformation information = globalNotificationContainer.getNotificationInformation();
+            LOGGER.error(information.getMessage());
+            Assert.fail("Global Notification shows error.");
         }
     }
 

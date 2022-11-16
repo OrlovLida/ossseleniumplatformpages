@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
@@ -13,11 +12,9 @@ import com.oss.pages.iaa.bigdata.dfe.stepwizard.aggregate.AggregateConfiguration
 import com.oss.pages.iaa.bigdata.dfe.stepwizard.aggregate.AggregateProcessSettingsPage;
 import com.oss.pages.iaa.bigdata.dfe.stepwizard.commons.BasicInformationPage;
 import com.oss.pages.iaa.bigdata.utils.ConstantsDfe;
-import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-@Listeners({TestListener.class})
 public class AggregateViewTest extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(AggregateViewTest.class);
@@ -70,7 +67,7 @@ public class AggregateViewTest extends BaseTestCase {
     public void editAggregate() {
         boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(aggregateName);
         if (aggregateExists) {
-            aggregatePage.selectFoundAggregate();
+            aggregatePage.selectFirstAggregateInTable();
             aggregatePage.clickEditAggregate();
 
             BasicInformationPage aggrBasicInfoWizard = new BasicInformationPage(driver, webDriverWait, AGGREGATE_WIZARD_ID);
@@ -89,8 +86,7 @@ public class AggregateViewTest extends BaseTestCase {
             }
             Assert.assertTrue(aggregateIsEdited);
         } else {
-            log.info("Cannot find existing aggregate {}", aggregateName);
-            Assert.fail("Cannot find existing aggregate " + aggregateName);
+            Assert.fail(failMessage(aggregateName));
         }
     }
 
@@ -99,15 +95,18 @@ public class AggregateViewTest extends BaseTestCase {
     public void deleteAggregate() {
         boolean aggregateExists = aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
         if (aggregateExists) {
-            aggregatePage.selectFoundAggregate();
+            aggregatePage.selectFirstAggregateInTable();
             aggregatePage.clickDeleteAggregate();
             aggregatePage.confirmDelete();
             boolean aggregateDeleted = !aggregatePage.aggregateExistsIntoTable(updatedAggregateName);
 
             Assert.assertTrue(aggregateDeleted);
         } else {
-            log.info("Cannot find existing aggregate {}", updatedAggregateName);
-            Assert.fail("Cannot find existing aggregate " + updatedAggregateName);
+            Assert.fail(failMessage(updatedAggregateName));
         }
+    }
+
+    private String failMessage(String aggregateName) {
+        return String.format("Cannot find existing aggregate %s", aggregateName);
     }
 }

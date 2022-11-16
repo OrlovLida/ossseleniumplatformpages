@@ -17,8 +17,8 @@ import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.tabs.TabWindowWidget;
 import com.oss.framework.widgets.tabs.TabsInterface;
+import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
@@ -45,6 +45,7 @@ public class VRFOverviewPage extends BasePage {
     private static final String BOTTOM_ROUTE_TARGET_TABLE_ID = "bottom_app_id";
     private static final String BOTTOM_INTERFACES_TAB_INTERFACE_NAME_COLUMN_LABEL = "Name";
     private static final String PROPERTY_PANEL_ID = "propertyPanel";
+    private static final String ID = "NEEDS_TO_UPDATE_ID";
 
     private final OldPropertyPanel propertyPanel;
 
@@ -99,13 +100,13 @@ public class VRFOverviewPage extends BasePage {
 
     @Step("Open bottom Interfaces tab")
     public void openInterfaceAssignmentTab() {
-        TabsInterface tabsWidget = TabWindowWidget.create(driver, wait);
+        TabsInterface tabsWidget = TabsWidget.createById(driver, wait, ID);
         tabsWidget.selectTabByLabel(INTERFACE_ASSIGNMENT_LABEL);
     }
 
     @Step("Open bottom Route Target tab")
     public void openRouteTargetTab() {
-        TabsInterface tabsWidget = TabWindowWidget.create(driver, wait);
+        TabsInterface tabsWidget = TabsWidget.createById(driver, wait, ID);
         tabsWidget.selectTabByLabel(ROUTE_TARGET_LABEL);
     }
 

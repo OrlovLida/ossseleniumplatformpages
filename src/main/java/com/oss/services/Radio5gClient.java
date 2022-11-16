@@ -1,15 +1,25 @@
 package com.oss.services;
 
-import com.comarch.oss.radio.api.dto.*;
+import java.util.List;
+
+import javax.ws.rs.core.Response;
+
+import com.comarch.oss.radio.api.dto.BaseStationResponseIdDTO;
+import com.comarch.oss.radio.api.dto.CarrierDTO;
+import com.comarch.oss.radio.api.dto.CarrierResponseDTO;
+import com.comarch.oss.radio.api.dto.Cell5gDTO;
+import com.comarch.oss.radio.api.dto.CellResponseIdDTO;
+import com.comarch.oss.radio.api.dto.GnodeBCUUPDTO;
+import com.comarch.oss.radio.api.dto.GnodeBDTO;
+import com.comarch.oss.radio.api.dto.GnodeBDUDTO;
+import com.comarch.oss.radio.api.dto.HostRelationDTO;
+import com.comarch.oss.radio.api.dto.RanBandType5GDTO;
+import com.comarch.oss.radio.api.dto.RanBandTypeResponseDTO;
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
 
-import javax.ws.rs.core.Response;
-import java.util.Collections;
-
 public class Radio5gClient {
-
 
     private static final String G_NODE_API_PATH = "/gnodeb";
     private static final String G_NODE_CU_UP_API_PATH = "/gnodeb/cu/up";
@@ -17,12 +27,15 @@ public class Radio5gClient {
     private static final String CELL_API_PATH = "/gnodeb/%s/cell";
     private static final String HOST_RELATION_G_NODE_API_PATH = "/gnodeb/%s/hostrelation";
     private static final String HOST_RELATION_CELL_API_PATH = "/gnodeb/%1$s/cell/%2$s/hostrelation";
+    private static final String BAND_TYPE = "bandtype";
+    private static final String CARRIER_BY_NAME_PATH = "carrier/name/";
+    private static final String CARRIER = "carrier";
 
     private static Radio5gClient instance;
-    private final Environment ENV;
+    private final Environment env;
 
     private Radio5gClient(Environment environment) {
-        ENV = environment;
+        env = environment;
     }
 
     public static Radio5gClient getInstance(Environment pEnvironment) {
@@ -36,7 +49,7 @@ public class Radio5gClient {
     private static final String PERSPECTIVE = "perspective";
 
     public BaseStationResponseIdDTO createGNodeB(GnodeBDTO pGNodeB) {
-        return ENV.getRadioCore5GSpecification()
+        return env.getRadioCore5GSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(pGNodeB)
@@ -51,7 +64,7 @@ public class Radio5gClient {
     }
 
     public BaseStationResponseIdDTO createGNodeBCUUP(GnodeBCUUPDTO pGNodeBCUUP) {
-        return ENV.getRadioCore5GSpecification()
+        return env.getRadioCore5GSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(pGNodeBCUUP)
@@ -66,7 +79,7 @@ public class Radio5gClient {
     }
 
     public BaseStationResponseIdDTO createGNodeBDU(GnodeBDUDTO pGNodeBDU) {
-        return ENV.getRadioCore5GSpecification()
+        return env.getRadioCore5GSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(pGNodeBDU)
@@ -82,7 +95,7 @@ public class Radio5gClient {
 
     public CellResponseIdDTO createCell5G(Cell5gDTO pCell5g, Long gNodeBId) {
         String cellPath = String.format(CELL_API_PATH, gNodeBId);
-        return ENV.getRadioCore5GSpecification()
+        return env.getRadioCore5GSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(pCell5g)
@@ -97,7 +110,7 @@ public class Radio5gClient {
 
     public void createHRGNodeB(HostRelationDTO hRENodeB, Long gNodeId) {
         String gNodeBHRPath = String.format(HOST_RELATION_G_NODE_API_PATH, gNodeId);
-        ENV.getRadioCore5GSpecification()
+        env.getRadioCore5GSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(hRENodeB)
@@ -111,7 +124,7 @@ public class Radio5gClient {
 
     public void createHRCell(HostRelationDTO hRGNodeB, Long gNodeId, Long cellId) {
         String cellHRPath = String.format(HOST_RELATION_CELL_API_PATH, gNodeId, cellId);
-        ENV.getRadioCore5GSpecification()
+        env.getRadioCore5GSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(hRGNodeB)
@@ -122,5 +135,56 @@ public class Radio5gClient {
                 .post(cellHRPath)
                 .then()
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
+    }
+
+    public List<Integer> getBandTypeByName(String bandTypeName) {
+        return env.getRadioCore5GSpecification()
+                .given()
+                .queryParam(Constants.COMMON_NAME_ATTRIBUTE, bandTypeName)
+                .when()
+                .get(BAND_TYPE)
+                .jsonPath()
+                .getList(Constants.ID);
+    }
+
+    public Long createBandType(RanBandType5GDTO ranBandType5GDTO) {
+        return env.getRadioCore5GSpecification()
+                .given()
+                .body(ranBandType5GDTO)
+                .when()
+                .post(BAND_TYPE)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat()
+                .log()
+                .body()
+                .extract()
+                .as(RanBandTypeResponseDTO.class)
+                .getId();
+    }
+
+    public boolean isCarriePresent(String carrierName) {
+        return env.getRadioCore5GSpecification()
+                .given()
+                .when()
+                .get(CARRIER_BY_NAME_PATH + carrierName)
+                .then()
+                .log()
+                .status()
+                .extract().response().getStatusCode() == Response.Status.OK.getStatusCode();
+    }
+
+    public void createCarrier(CarrierDTO carrierDTO) {
+        env.getRadioCore5GSpecification()
+                .given()
+                .body(carrierDTO)
+                .when()
+                .post(CARRIER)
+                .then()
+                .statusCode(Response.Status.OK.getStatusCode()).assertThat()
+                .log()
+                .body()
+                .extract()
+                .as(CarrierResponseDTO.class)
+                .getId();
     }
 }

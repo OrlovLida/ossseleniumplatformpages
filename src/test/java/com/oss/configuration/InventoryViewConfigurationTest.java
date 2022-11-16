@@ -55,7 +55,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private static final String ATTACHMENTS = "Attachments";
     private static final String NOT_VISIBLE_TAB_MESSAGE = "Tab %s shouldn't be visible";
     private static final String VISIBLE_TAB_MESSAGE = "Tab %s should be visible";
-    private static final String TABLE_TYPE = "Table";
+    private static final String TABLE_TYPE = " Table";
     private static final String MOVIES = "Movies";
     private static final String ME = "Me";
     private static final String HORIZONTAL_60_40_BUTTON_ID = "TWO_ROWS_60_40";
@@ -82,8 +82,8 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
 
     private void deleteOldConfiguration() {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
-        deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
         deleteOldConfigurations(inventoryViewPage.getPageConfigurationsName());
+        deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
         inventoryViewPage.selectFirstRow();
         deleteOldConfigurations(inventoryViewPage.getTabsConfigurationsName());
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);

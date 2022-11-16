@@ -113,7 +113,7 @@ public class HomePage extends BasePage {
     
     public HierarchyViewPage goToHierarchyViewPage(String url) {
         driver.get(url);
-        return new HierarchyViewPage(driver);
+        return HierarchyViewPage.getHierarchyViewPage(driver, wait);
     }
     
     public LanguageServicePage goToLanguageServicePage(String url) {

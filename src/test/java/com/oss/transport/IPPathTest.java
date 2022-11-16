@@ -11,10 +11,10 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.IPPathWizardPage;
@@ -23,9 +23,7 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
-@Listeners({ TestListener.class })
+@Listeners({TestListener.class})
 public class IPPathTest extends BaseTestCase {
 
     private String processNRPCode;
@@ -37,6 +35,9 @@ public class IPPathTest extends BaseTestCase {
     private static final String CAPACITY_VALUE_2 = "110";
     private static final String DEVICE_1 = "SeleniumTestDevice_IPPath_1";
     private static final String DEVICE_2 = "SeleniumTestDevice_IPPath_2";
+    private static final String NAME_COLUMN_LABEL = "Name";
+    private static final String CONNECTION_NAME_COLUMN_ID = "trail.name";
+
 
     @BeforeClass
     public void openWebConsole() {
@@ -49,7 +50,7 @@ public class IPPathTest extends BaseTestCase {
     @Description("Create NRP Process")
     public void createProcessNRP() {
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processNRPCode = processWizardPage.createSimpleNRP();
+        processNRPCode = processWizardPage.createSimpleNRPV2();
         checkMessageSize(1);
         checkMessageType();
         checkMessageContainsText(processNRPCode);
@@ -74,12 +75,13 @@ public class IPPathTest extends BaseTestCase {
 
         networkViewPage.useContextAction("add_to_view_group", "Connection");
         waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, TRAIL_FOR_ROUTING);
+        networkViewPage.queryElementAndAddItToView("name", TRAIL_FOR_ROUTING);
         waitForPageToLoad();
 
         networkViewPage.expandDockedPanel("left");
         waitForPageToLoad();
-        networkViewPage.unselectObject(TRAIL_FOR_ROUTING);
+
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_LABEL, TRAIL_FOR_ROUTING);
         waitForPageToLoad();
         networkViewPage.selectObjectInViewContent("Name", DEVICE_1);
         waitForPageToLoad();
@@ -115,16 +117,16 @@ public class IPPathTest extends BaseTestCase {
         waitForPageToLoad();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.startEditingSelectedTrail();
-        networkViewPage.unselectObject(IP_PATH_NAME_2);
-        networkViewPage.selectObject(TRAIL_FOR_ROUTING);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_LABEL, IP_PATH_NAME_2);
+        networkViewPage.selectObjectInViewContent(NAME_COLUMN_LABEL, TRAIL_FOR_ROUTING);
         RoutingWizardPage routingWizard = networkViewPage.addSelectedObjectsToRouting();
         routingWizard.proceed();
         waitForPageToLoad();
         networkViewPage.stopEditingTrail();
         waitForPageToLoad();
-        networkViewPage.unselectObject(TRAIL_FOR_ROUTING);
-        networkViewPage.selectObject(IP_PATH_NAME_2);
-        Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(TRAIL_FOR_ROUTING));
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_LABEL, TRAIL_FOR_ROUTING);
+        networkViewPage.selectObjectInViewContent(NAME_COLUMN_LABEL, IP_PATH_NAME_2);
+        Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(TRAIL_FOR_ROUTING, CONNECTION_NAME_COLUMN_ID));
     }
 
     @Test(priority = 6)
@@ -139,7 +141,7 @@ public class IPPathTest extends BaseTestCase {
         newInventoryViewPage.searchObject(IP_PATH_NAME_2);
         waitForPageToLoad();
         Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
-        Assert.assertEquals(IP_PATH_NAME_2, newInventoryViewPage.getMainTable().getCellValue(0, "Label"));
+        Assert.assertEquals(newInventoryViewPage.getMainTable().getCellValue(0, "Label"), IP_PATH_NAME_2);
         Assert.assertEquals(CAPACITY_VALUE_2 + "000000", newInventoryViewPage.getMainTable().getCellValue(0, "Capacity Value"));
     }
 
@@ -162,14 +164,14 @@ public class IPPathTest extends BaseTestCase {
         newInventoryViewPage.selectFirstRow();
         newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, "DeleteTrailWizardActionId");
         waitForPageToLoad();
-        Wizard.createWizard(driver, webDriverWait).clickButtonByLabel("Delete");
+        Popup.create(driver, webDriverWait).clickButtonByLabel("Delete");
         checkMessageType();
         newInventoryViewPage.refreshMainTable();
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
     private void checkMessageType() {
-        Assert.assertEquals(MessageType.SUCCESS, (getFirstMessage().getMessageType()));
+        Assert.assertEquals((getFirstMessage().getMessageType()), MessageType.SUCCESS);
     }
 
     private void checkMessageContainsText(String message) {

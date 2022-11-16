@@ -8,9 +8,9 @@ package com.oss.pages.transport.VRF;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
-import com.oss.framework.components.data.Data;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -23,12 +23,13 @@ public class VRFImpExpRouteTargetWizardPage extends BasePage {
 
     private static final String IMP_EXP_WIZARD_VIEW_ID = "Add_Imp/Exp_Route_Target_id";
     private static final String ADDRESS_FAMILY_FIELD_ID = "Address_Family_udi";
+    private static final String ID = "NEEDS_TO_UPDATE_ID";
 
     private final Wizard wizard;
 
     public VRFImpExpRouteTargetWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createWizard(driver, wait);
+        wizard = Wizard.createByComponentId(driver, wait, ID);
     }
 
     @Step("Set Route Target value to {routeTarget}")
