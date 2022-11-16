@@ -1,9 +1,5 @@
 package com.oss.configuration;
 
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.TYPE;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,9 +21,13 @@ import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.utils.TestListener;
 
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.TYPE;
+
 @Listeners({TestListener.class})
 public class InventoryViewConfigurationTest extends BaseTestCase {
-    
+
     private static final String TEST_PERSON_TYPE = "TestPerson";
     private final static String GROUP_NAME = "SeleniumTests";
     private final static String CONFIGURATION_NAME_IV = "IV_" + LocalDate.now();
@@ -53,6 +53,8 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private static final String TEST_DIRECTOR_TYPE = "TestDirector";
     private static final String INTERESTS = "Interests";
     private static final String ATTACHMENTS = "Attachments";
+    private static final String NOT_VISIBLE_TAB_MESSAGE = "Tab %s shouldn't be visible";
+    private static final String VISIBLE_TAB_MESSAGE = "Tab %s should be visible";
     private static final String TABLE_TYPE = "Table";
     private static final String MOVIES = "Movies";
     private static final String ME = "Me";
@@ -65,10 +67,11 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     private static final String TABS_WIDGET = "Tabs_Widget";
     private static final String TABLE = "Table";
     private static final String IV = "IV_";
+    private static final String LAYOUT_MESSAGE = "Layout for IV should be set to 60x40";
 
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
-    
+
     @BeforeClass
     public void goToInventoryView() {
         deleteOldConfiguration();
@@ -77,19 +80,24 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         tableWidget = inventoryViewPage.getMainTable();
     }
 
-    private void deleteOldConfiguration(){
+    private void deleteOldConfiguration() {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
         deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
         deleteOldConfigurations(inventoryViewPage.getPageConfigurationsName());
         inventoryViewPage.selectFirstRow();
         deleteOldConfigurations(inventoryViewPage.getTabsConfigurationsName());
+        inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_ACTOR_TYPE);
+        inventoryViewPage.selectFirstRow();
+        deleteOldConfigurations(inventoryViewPage.getTabsConfigurationsName());
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
         deleteOldConfigurations(inventoryViewPage.getPageConfigurationsName());
         deleteOldConfigurations(inventoryViewPage.getTableConfigurationsName());
+        inventoryViewPage.selectFirstRow();
+        deleteOldConfigurations(inventoryViewPage.getTabsConfigurationsName());
     }
 
     private void deleteOldConfigurations(List<String> configurationNames) {
-        List<String> savedConfigurations = configurationNames.stream().filter(name-> name.contains(TABS_WIDGET) || name.contains(TABLE) || name.contains(IV)).collect(Collectors.toList());
+        List<String> savedConfigurations = configurationNames.stream().filter(name -> name.contains(TABS_WIDGET) || name.contains(TABLE) || name.contains(IV)).collect(Collectors.toList());
         inventoryViewPage.deleteConfigurations(savedConfigurations);
     }
 
@@ -97,51 +105,51 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
     public void saveNewConfigurationForIVPage() {
         inventoryViewPage.disableColumnAndApply(GENDER_LABEL);
         inventoryViewPage.saveNewConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_VIEW_CONFIG);
-        
+
         saveConfigurationForTabsForSuperType(TEST_ACTOR_TYPE, TABLE_TYPE, INTERESTS,
                 CONFIGURATION_TEST_ACTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG);
         saveConfigurationForTabsForSuperType(TEST_DIRECTOR_TYPE, TABLE_TYPE, ATTACHMENTS,
                 CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG);
-        
+
         inventoryViewPage.setHorizontalLayout(HORIZONTAL_60_40_BUTTON_ID);
         inventoryViewPage.saveNewPageConfiguration(CONFIGURATION_NAME_IV);
-        
+
         assertSuccessMessage();
     }
-    
+
     @Test(priority = 2)
     public void setDefaultConfigurationForIVPage() {
         inventoryViewPage.applyConfigurationForPage(DEFAULT_CONFIGURATION);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
-        
+
         Assert.assertTrue(columnHeaders.contains(GENDER_LABEL));
         assertTabsNotVisible(TEST_ACTOR_TYPE, INTERESTS);
         assertTabsNotVisible(TEST_DIRECTOR_TYPE, ATTACHMENTS);
         Assert.assertTrue(inventoryViewPage.isHorizontal(HORIZONTAL_50_50_BUTTON_ID));
     }
-    
+
     @Test(priority = 3)
     public void chooseConfigurationForIVPage() {
         inventoryViewPage.applyConfigurationForPage(CONFIGURATION_NAME_IV);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
-        
+
         Assert.assertFalse(columnHeaders.contains(GENDER_LABEL));
         assertTabsVisible(TEST_ACTOR_TYPE, INTERESTS);
         assertTabsVisible(TEST_DIRECTOR_TYPE, ATTACHMENTS);
-        Assert.assertTrue(inventoryViewPage.isHorizontal(HORIZONTAL_60_40_BUTTON_ID));
+        Assert.assertTrue(inventoryViewPage.isHorizontal(HORIZONTAL_60_40_BUTTON_ID), LAYOUT_MESSAGE);
     }
-    
+
     @Test(priority = 4)
     public void checkConfigurationAfterRefreshPage() {
         inventoryViewPage.disableColumnAndApply(TYPE_LABEL);
         driver.navigate().refresh();
-        
+
         assertTabsVisible(TEST_ACTOR_TYPE, INTERESTS);
-        Assert.assertTrue(inventoryViewPage.isHorizontal(HORIZONTAL_60_40_BUTTON_ID));
+        Assert.assertTrue(inventoryViewPage.isHorizontal(HORIZONTAL_60_40_BUTTON_ID), LAYOUT_MESSAGE);
     }
-    
+
     @Test(priority = 5)
     public void updateConfigurationForPage() {
         inventoryViewPage.disableColumnAndApply(TYPE_LABEL);
@@ -150,30 +158,30 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         driver.navigate().refresh();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> columnHeaders = inventoryViewPage.getActiveColumnsHeaders();
-        Assert.assertFalse(columnHeaders.contains(TYPE_LABEL));
+        Assert.assertFalse(columnHeaders.contains(TYPE_LABEL),"Column "+ TYPE_LABEL+ " shouldn't be visible" );
     }
-    
+
     @Test(priority = 6)
     public void downloadConfigurationOfPage() {
         inventoryViewPage.downloadConfigurationForPage(CONFIGURATION_NAME_IV);
         assertSuccessMessage();
-        
+
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
         inventoryViewPage.downloadConfigurationForPage(CONFIGURATION_NAME_IV);
         assertSuccessMessage();
     }
-    
+
     @Test(priority = 7)
     public void tryRemoveConfigurationUsedInConfigurationOfPage() {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
         inventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_VIEW_CONFIG);
         assertDangerMessage();
-        
+
         selectObjectOfSuperType(TEST_DIRECTOR_TYPE);
         inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG);
         assertDangerMessage();
     }
-    
+
     @Test(priority = 8)
     public void removePageConfiguration() {
         inventoryViewPage.deletePageConfiguration(CONFIGURATION_NAME_IV);
@@ -191,7 +199,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_VIEW_CONFIG);
         assertSuccessMessage();
     }
-    
+
     @Test(priority = 9)
     public void saveDefaultViewConfigurationForUserForSuperType() {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
@@ -209,19 +217,19 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         inventoryViewPage.saveNewPageConfiguration(CONFIGURATION_NAME_IV_DEFAULT_FOR_USER, createField(DEFAULT_VIEW_FOR, ME));
         assertSuccessMessage();
     }
-    
+
     @Test(priority = 10)
     public void saveDefaultViewConfigurationForGroupForType() {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_PERSON_TYPE);
         saveConfigurationForTabsForSuperType(TEST_DIRECTOR_TYPE, TABLE_TYPE, ATTACHMENTS,
                 CONFIGURATION_TEST_DIRECTOR_TABS_WIDGET_USED_IN_DEFAULT_GROUP_CONFIG);
         inventoryViewPage.saveNewPageConfiguration(CONFIGURATION_NAME_IV_TYPE_DEFAULT_FOR_GROUP, createField(GROUPS, GROUP_NAME));
-        
+
         assertSuccessMessage();
         inventoryViewPage.chooseGroupContext(GROUP_NAME);
         assertTabsVisible(TEST_DIRECTOR_TYPE, ATTACHMENTS);
     }
-    
+
     @Test(priority = 11)
     public void groupAndTypeInheritanceDefaultViewConfiguration() {
         inventoryViewPage.changeUser(USER2, PASSWORD_2);
@@ -232,9 +240,9 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         int offset = 400;
         inventoryViewPage.chooseGroupContext(GROUP_NAME);
         inventoryViewPage.selectFirstRow();
-        Assert.assertTrue(inventoryViewPage.isTabVisible(ATTACHMENTS));
-        Assert.assertFalse(inventoryViewPage.isTabVisible(MOVIES));
-        
+        Assert.assertTrue(inventoryViewPage.isTabVisible(ATTACHMENTS), String.format(VISIBLE_TAB_MESSAGE, ATTACHMENTS));
+        Assert.assertFalse(inventoryViewPage.isTabVisible(MOVIES), String.format(NOT_VISIBLE_TAB_MESSAGE, MOVIES));
+
         inventoryViewPage.changeUser(USER1, PASSWORD_1);
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_DIRECTOR_TYPE);
         inventoryViewPage.chooseGroupContext(GROUP_NAME);
@@ -243,20 +251,21 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         Assert.assertEquals(defaultSize + offset, newSize);
 
         inventoryViewPage.selectFirstRow();
-        Assert.assertFalse(inventoryViewPage.isTabVisible(ATTACHMENTS));
-        Assert.assertTrue(inventoryViewPage.isTabVisible(INTERESTS));
+        Assert.assertFalse(inventoryViewPage.isTabVisible(ATTACHMENTS), String.format(NOT_VISIBLE_TAB_MESSAGE, ATTACHMENTS));
+        Assert.assertTrue(inventoryViewPage.isTabVisible(INTERESTS), String.format(VISIBLE_TAB_MESSAGE, INTERESTS));
 
     }
-    
+
     @AfterMethod
     public void unselectAllRows() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (!tableWidget.getSelectedObjectCount().equals("0 selected")) {
             tableWidget.unselectAllRows();
         }
     }
 
     @AfterClass
-    public void deleteConfiguration(){
+    public void deleteConfiguration() {
         inventoryViewPage.deletePageConfiguration(CONFIGURATION_NAME_IV_DEFAULT_FOR_USER);
         inventoryViewPage.deletePageConfiguration(CONFIGURATION_NAME_IV_TYPE_DEFAULT_FOR_GROUP);
         inventoryViewPage.selectFirstRow();
@@ -264,37 +273,37 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         inventoryViewPage.removeConfigurationForTabs(CONFIGURATION_TEST_PERSON_TABS_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG);
         inventoryViewPage.deleteConfigurationForMainTable(CONFIGURATION_NAME_TABLE_WIDGET_USED_IN_DEFAULT_VIEW_CONFIG);
     }
-    
+
     private SaveConfigurationWizard.Field createField(SaveConfigurationWizard.Property property, String... values) {
         return SaveConfigurationWizard.create(driver, webDriverWait).createField(property, values);
     }
-    
+
     private void saveConfigurationForTabsForSuperType(String typeValue, String widgetType, String widgetLabel, String configurationName) {
         selectObjectOfSuperType(typeValue);
         inventoryViewPage.enableWidget(widgetType, widgetLabel);
         inventoryViewPage.saveConfigurationForTabs(configurationName, createField(TYPE, typeValue));
         tableWidget.unselectAllRows();
     }
-    
+
     private void selectObjectOfSuperType(String typeValue) {
         inventoryViewPage.searchByAttributeValue(ATTRIBUTE_ID_TYPE, typeValue, Input.ComponentType.MULTI_COMBOBOX);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         inventoryViewPage.selectFirstRow();
         inventoryViewPage.clearFilters();
     }
-    
+
     private void assertTabsNotVisible(String typeValue, String widgetLabel) {
         selectObjectOfSuperType(typeValue);
-        Assert.assertFalse(inventoryViewPage.isTabVisible(widgetLabel));
+        Assert.assertFalse(inventoryViewPage.isTabVisible(widgetLabel), String.format(NOT_VISIBLE_TAB_MESSAGE, widgetLabel));
         tableWidget.unselectAllRows();
     }
-    
+
     private void assertTabsVisible(String typeValue, String widgetLabel) {
         selectObjectOfSuperType(typeValue);
-        Assert.assertTrue(inventoryViewPage.isTabVisible(widgetLabel));
+        Assert.assertTrue(inventoryViewPage.isTabVisible(widgetLabel), String.format(VISIBLE_TAB_MESSAGE, widgetLabel));
         tableWidget.unselectAllRows();
     }
-    
+
     private void assertSuccessMessage() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
@@ -302,7 +311,7 @@ public class InventoryViewConfigurationTest extends BaseTestCase {
         Assert.assertSame(messages.get(0).getMessageType(), (SystemMessageContainer.MessageType.SUCCESS));
         systemMessage.close();
     }
-    
+
     private void assertDangerMessage() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
