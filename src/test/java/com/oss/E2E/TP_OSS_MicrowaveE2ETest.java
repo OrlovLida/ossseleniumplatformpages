@@ -298,7 +298,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 //        createOutdoorUnit(OUTDOOR_UNIT_MODEL, SECOND_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
     }
 
-    @Test(priority = 2, description = "Create Microwave Channels with Terminations")
+    @Test(priority = 2, description = "Create Microwave Channels with Terminations", dependsOnMethods = {"createDevices"})
     @Description("Add Indoor Units to View and create Microwave Channel on them")
     public void createMicrowaveChannelWithTerminations() {
         openNetworkView();
@@ -327,7 +327,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_LABEL);
     }
 
-    @Test(priority = 3, description = "Create Microwave Channel and add Terminations")
+    @Test(priority = 3, description = "Create Microwave Channel and add Terminations", dependsOnMethods = {"createMicrowaveChannelWithTerminations"})
     @Description("Create Microwave Channel and add terminations using Terminations Tab")
     public void createMicrowaveChannelAndAddTerminations() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -376,7 +376,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_LABEL);
     }
 
-    @Test(priority = 4, description = "Create Microwave Link")
+    @Test(priority = 4, description = "Create Microwave Link", dependsOnMethods = {"createMicrowaveChannelAndAddTerminations"})
     @Description("Create Microwave Link and add Microwave Channel to routing")
     public void createMicrowaveLinkAndAddMicrowaveChannelToRouting() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
