@@ -28,6 +28,8 @@ public class SubscriptionConfigurationPage extends BasePage {
     private static final String OLDEST_NOTIFICATION_ID = "oldestNotificationTimestamp";
     private static final String REFRESH_BUTTON_ID = "refreshButton";
     private static final String TOTAL_CAPACITY_ID = "totalCapacity";
+    private static final String ZERO_PERCENT = "0%";
+    private static final String DATE_FORMAT = "\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d\\:\\d\\d\\:\\d\\d";
 
     public SubscriptionConfigurationPage(WebDriver driver) {
         super(driver);
@@ -106,7 +108,7 @@ public class SubscriptionConfigurationPage extends BasePage {
     }
 
     public boolean isBufferZeroPercent() {
-        return "0%".equals(getOccupancyPercent());
+        return ZERO_PERCENT.equals(getOccupancyPercent());
     }
 
     public void refreshPage() {
@@ -118,7 +120,7 @@ public class SubscriptionConfigurationPage extends BasePage {
     }
 
     public boolean isDateFormatCorrect(String date) {
-        return date.matches("\\d\\d\\d\\d\\-\\d\\d\\-\\d\\d \\d\\d\\:\\d\\d\\:\\d\\d");
+        return date.matches(DATE_FORMAT);
     }
 
     private TableWidget getTableWidget() {
