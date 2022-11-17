@@ -15,7 +15,7 @@ import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.PlanViewWizardPage;
+import com.oss.pages.bpm.ProcessDetailsPage;
 import com.oss.pages.bpm.ProcessOverviewPage;
 import com.oss.pages.bpm.TasksPageV2;
 import com.oss.pages.platform.HomePage;
@@ -252,16 +252,16 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         tasksPage.clickPlanViewButton();
         waitForPageToLoad();
-        PlanViewWizardPage planViewWizardPage = new PlanViewWizardPage(driver);
-        planViewWizardPage.selectTab("Validation Results");
-        Assert.assertTrue(planViewWizardPage.isValidationResultPresent());
+        ProcessDetailsPage processDetailsPage = new ProcessDetailsPage(driver);
+        processDetailsPage.selectTab("Validation Results");
+        Assert.assertTrue(processDetailsPage.isValidationResultPresent());
     }
 
     @Test(priority = 16, description = "Complete cells configuration", dependsOnMethods = {"validateProjectPlan"})
     @Description("Complete cells configuration")
     public void lowLevelLogicalDesign() {
-        PlanViewWizardPage planViewWizardPage = new PlanViewWizardPage(driver);
-        planViewWizardPage.closeProcessDetailsPromt();
+        ProcessDetailsPage processDetailsPage = new ProcessDetailsPage(driver);
+        processDetailsPage.closeProcessDetailsPromt();
         openCellSiteConfiguration();
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, ENODEB_NAME);

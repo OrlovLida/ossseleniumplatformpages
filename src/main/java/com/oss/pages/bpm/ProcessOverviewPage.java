@@ -40,9 +40,9 @@ public class ProcessOverviewPage extends BasePage {
     private static final String CODE_LABEL = "Code";
     private static final String STATUS_LABEL = "Status";
     private static final String REFRESH_TABLE_ID = "refresh-table";
-    private static final String BPM_AND_PLANNING = "BPM and Planning";
-    private static final String NETWORK_PLANNING = "Network Planning";
-    private static final String PROCESS_OVERVIEW = "Process Overview";
+    protected static final String BPM_AND_PLANNING = "BPM and Planning";
+    protected static final String NETWORK_PLANNING = "Network Planning";
+    protected static final String PROCESS_OVERVIEW = "Process Overview";
     private static final String RELOAD_TABLE_ACTION_ID = "refresh-table";
     private static final String FORECAST_TAB_ID = "bpm_processes_view_forecast-tab";
     private static final String PROCESS_ROLES_TAB_ID = "bpm_processes_view_roles-tab";
