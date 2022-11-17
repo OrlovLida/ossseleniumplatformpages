@@ -235,8 +235,8 @@ public class OverviewTicketTest extends BaseTestCase {
         Assert.assertEquals(messagesTab.checkMessageType(0), "NOTIFICATION");
     }
 
-    @Test(priority = 10, testName = "Check Messages Tab - add Internal Comment", description = "Check Messages Tab - add Internal Comment")
-    @Description("Check Messages Tab - add Internal Comment")
+    @Test(priority = 10, testName = "Check Messages Tab - Add Internal Comment", description = "Check Messages Tab - Add Internal Comment")
+    @Description("Check Messages Tab - Add Internal Comment")
     public void addInternalComment() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         messagesTab = issueDetailsPage.selectMessagesTab();
