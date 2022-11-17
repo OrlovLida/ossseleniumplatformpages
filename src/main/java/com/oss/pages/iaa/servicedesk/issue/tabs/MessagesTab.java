@@ -24,7 +24,7 @@ public class MessagesTab extends BaseSDPage {
     private static final Logger log = LoggerFactory.getLogger(MessagesTab.class);
 
     public static final String CREATE_NEW_COMMENT_BUTTON_TEXT = "Create New Comment";
-    private static final String CREATE_BUTTON_LABEL = "CREATE";
+    private static final String CREATE_BUTTON_LABEL = "Create";
     private static final String COMMENT_EDITOR_ID = "new-comment-editor";
     private static final String CREATE_NEW_NOTIFICATION_BUTTON_LABEL = "Create New Notification";
     private static final String MARK_AS_IMPORTANT_LABEL = "Mark as important";
@@ -117,6 +117,7 @@ public class MessagesTab extends BaseSDPage {
 
     @Step("Mark message as important")
     public void markAsImportant(int messageIndex) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         getMessageListWidget().getMessageItems().get(messageIndex).clickMessageAction(MARK_AS_IMPORTANT_LABEL);
         log.info("Marking message as important");
     }
