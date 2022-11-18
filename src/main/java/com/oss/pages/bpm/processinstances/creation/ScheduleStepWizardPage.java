@@ -1,4 +1,4 @@
-package com.oss.pages.bpm.processinstances;
+package com.oss.pages.bpm.processinstances.creation;
 
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static com.oss.pages.bpm.processinstances.ScheduleProperties.*;
+import static com.oss.pages.bpm.processinstances.creation.ScheduleProperties.*;
 
 /**
  * @author Paweł Rother

@@ -1,4 +1,4 @@
-package com.oss.pages.bpm.taskforms;
+package com.oss.pages.bpm.tasks.taskforms;
 
 import java.util.List;
 import java.util.stream.Collectors;

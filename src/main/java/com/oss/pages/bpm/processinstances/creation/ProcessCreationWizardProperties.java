@@ -1,4 +1,4 @@
-package com.oss.pages.bpm.processinstances;
+package com.oss.pages.bpm.processinstances.creation;
 
 import com.google.common.collect.Multimap;
 import com.oss.pages.bpm.forecasts.Forecast;

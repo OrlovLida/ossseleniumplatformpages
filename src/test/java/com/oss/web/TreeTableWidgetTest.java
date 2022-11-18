@@ -13,7 +13,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
-import com.oss.pages.bpm.PlannersViewPage;
+import com.oss.pages.bpm.processinstances.PlannersViewPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 
 /**

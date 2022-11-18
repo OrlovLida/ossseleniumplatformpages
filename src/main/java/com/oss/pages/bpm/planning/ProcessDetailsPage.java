@@ -1,4 +1,4 @@
-package com.oss.pages.bpm;
+package com.oss.pages.bpm.planning;
 
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.prompts.ConfirmationBox;
@@ -12,11 +12,11 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import static com.oss.pages.bpm.ProcessOverviewPage.BPM_AND_PLANNING;
-import static com.oss.pages.bpm.ProcessOverviewPage.NETWORK_PLANNING;
+import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.BPM_AND_PLANNING;
+import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NETWORK_PLANNING;
 
 public class ProcessDetailsPage extends BasePage {
-    protected static final String PROCESS_DETAILS = "Process Details";
+    public static final String PROCESS_DETAILS = "Process Details";
     private static final String VALIDATION_TABLE_DATA_ATTRIBUTE_NAME = "plaPlanView_validationTable";
     private static final String OBJECT_TABLE_DATA_ATTRIBUTE_NAME = "plaPlanView_objectsApp";
     private static final String PROCEED_WITH_CANCELLATION_ID = "ConfirmationBox_plaCancelObjectsWizard_confirmBox_action_button";

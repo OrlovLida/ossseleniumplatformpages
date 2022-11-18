@@ -1,4 +1,4 @@
-package com.oss.pages.bpm;
+package com.oss.pages.bpm.processinstances;
 
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.attributechooser.AttributesChooser;
@@ -12,8 +12,8 @@ import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidgetV2;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
-import com.oss.pages.bpm.processinstances.TerminateProcessWizardPage;
+import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.creation.TerminateProcessWizardPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;

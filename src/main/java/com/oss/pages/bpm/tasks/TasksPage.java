@@ -4,7 +4,7 @@
  * duplication or redistribution of this software is allowed only according to
  * separate agreement prepared in written between Comarch and authorized party.
  */
-package com.oss.pages.bpm;
+package com.oss.pages.bpm.tasks;
 
 import java.util.List;
 
@@ -18,8 +18,8 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.pages.BasePage;
-import com.oss.pages.bpm.taskforms.IPDTaskFormPage;
-import com.oss.pages.bpm.taskforms.KDTaskFormPage;
+import com.oss.pages.bpm.tasks.taskforms.IPDTaskFormPage;
+import com.oss.pages.bpm.tasks.taskforms.KDTaskFormPage;
 
 import io.qameta.allure.Step;
 

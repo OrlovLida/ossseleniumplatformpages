@@ -1,4 +1,4 @@
-package com.oss.pages.bpm.taskforms;
+package com.oss.pages.bpm.tasks.taskforms;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;

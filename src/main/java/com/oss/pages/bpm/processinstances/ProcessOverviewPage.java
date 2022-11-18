@@ -1,4 +1,4 @@
-package com.oss.pages.bpm;
+package com.oss.pages.bpm.processinstances;
 
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Input;
@@ -11,8 +11,8 @@ import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
-import com.oss.pages.bpm.processinstances.ProcessCreationWizardProperties;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.creation.ProcessCreationWizardProperties;
+import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
 import com.oss.pages.platform.HomePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
  */
 public class ProcessOverviewPage extends BasePage {
     public static final String NAME_LABEL = "Name";
+    public static final String BPM_AND_PLANNING = "BPM and Planning";
+    public static final String NETWORK_PLANNING = "Network Planning";
+    public static final String PROCESS_OVERVIEW = "Process Overview";
     private static final String PROCESS_VIEW = "bpm_processes_view_processes";
     private static final String PROCESS_TABS = "process-details-window";
     private static final String MILESTONE_TAB_ID = "bpm_processes_view_milestones-tab";
@@ -40,9 +43,6 @@ public class ProcessOverviewPage extends BasePage {
     private static final String CODE_LABEL = "Code";
     private static final String STATUS_LABEL = "Status";
     private static final String REFRESH_TABLE_ID = "refresh-table";
-    protected static final String BPM_AND_PLANNING = "BPM and Planning";
-    protected static final String NETWORK_PLANNING = "Network Planning";
-    protected static final String PROCESS_OVERVIEW = "Process Overview";
     private static final String RELOAD_TABLE_ACTION_ID = "refresh-table";
     private static final String FORECAST_TAB_ID = "bpm_processes_view_forecast-tab";
     private static final String PROCESS_ROLES_TAB_ID = "bpm_processes_view_roles-tab";

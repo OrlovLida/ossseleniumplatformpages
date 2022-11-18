@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.testng.Assert;
 import org.testng.annotations.AfterGroups;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -16,7 +15,7 @@ import com.oss.framework.utils.DelayUtils;
 
 import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
-import com.oss.pages.bpm.PlannersViewPage;
+import com.oss.pages.bpm.processinstances.PlannersViewPage;
 
 /**
  * @author Faustyna Szczepanik

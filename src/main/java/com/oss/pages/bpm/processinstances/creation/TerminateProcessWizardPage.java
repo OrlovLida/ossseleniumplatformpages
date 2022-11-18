@@ -1,4 +1,4 @@
-package com.oss.pages.bpm.processinstances;
+package com.oss.pages.bpm.processinstances.creation;
 
 import org.openqa.selenium.WebDriver;
 

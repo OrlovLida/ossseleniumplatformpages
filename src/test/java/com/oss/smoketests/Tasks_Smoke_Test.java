@@ -17,7 +17,7 @@ import com.oss.framework.components.attributechooser.AttributesChooser;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabs.TabsWidget;
-import com.oss.pages.bpm.TasksPageV2;
+import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.platform.HomePage;
 
 import io.qameta.allure.Description;

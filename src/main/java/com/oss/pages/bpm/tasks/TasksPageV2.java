@@ -1,4 +1,4 @@
-package com.oss.pages.bpm;
+package com.oss.pages.bpm.tasks;
 
 import java.util.List;
 
@@ -12,8 +12,8 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.bpm.taskforms.IPDTaskFormPage;
-import com.oss.pages.bpm.taskforms.KDTaskFormPage;
+import com.oss.pages.bpm.tasks.taskforms.IPDTaskFormPage;
+import com.oss.pages.bpm.tasks.taskforms.KDTaskFormPage;
 import com.oss.pages.platform.HomePage;
 
 import io.qameta.allure.Step;
