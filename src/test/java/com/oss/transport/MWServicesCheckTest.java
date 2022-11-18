@@ -45,9 +45,4 @@ public class MWServicesCheckTest {
         SERVICES_CHECKER.testHealth("web-management");
     }
 
-    @Test(priority = 5)
-    @Step("Check inventory-view-core")
-    public void checkInventoryViewCore() {
-        SERVICES_CHECKER.testHealth("inventory-view-core");
-    }
 }
