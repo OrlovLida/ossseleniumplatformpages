@@ -5,9 +5,9 @@
             <class name="com.oss.web.LayoutTest"/>
         </classes>
     </test>
-    <test name="FiltersTests">
+    <test name="InventoryViewTest">
         <classes>
-            <class name="com.oss.web.FilterManagerTest"/>
+            <class name="com.oss.web.InventoryViewTest"/>
         </classes>
     </test>
     <test name="CreateProcessNRPTest">
