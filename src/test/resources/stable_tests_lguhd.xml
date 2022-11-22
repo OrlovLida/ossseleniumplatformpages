@@ -11,9 +11,4 @@
             <class name="com.oss.web.LayoutTest"/>
         </classes>
     </test>
-    <test name="FiltersTests">
-        <classes>
-            <class name="com.oss.web.FiltersTest"/>
-        </classes>
-    </test>
 </suite>

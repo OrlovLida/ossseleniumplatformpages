@@ -69,12 +69,29 @@ public class FilterManagerPage extends BasePage {
     public FilterManagerPage createFolder(String name) {
         return openCreateNewFolderWizard().typeNameOfTheFolder(name).clickAccept();
     }
+
+    @Step("Edit Folder")
+    public FilterManagerPage editFolder(String name, String newName, String newDescription) {
+                return editFolder(name).typeNameOfTheFolder(newName).typeDescriptionOfTheFolder(newDescription).clickAccept();
+    }
+
+    @Step("Remove Folder")
+    public FilterManagerPage removeFolder(String name) {
+        getCommonList().getCategory(name).callAction(REMOVE_ACTION_ID);
+        return this;
+    }
+
     
     @Step("Open Create New Folder Wizard")
     public CreateFolderWizard openCreateNewFolderWizard() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getCommonList().callAction(NEW_FOLDER_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
+        return new CreateFolderWizard(driver);
+    }
+
+    public CreateFolderWizard editFolder(String name) {
+        getCommonList().getCategory(name).callAction("Edit");
         return new CreateFolderWizard(driver);
     }
     
