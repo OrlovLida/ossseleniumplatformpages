@@ -81,8 +81,6 @@ public class NewBookmarksPage extends BaseBookmarkAndDashboardPage {
         callActionById(ACTION_DELETE_BOOKMARK);
         Popup popup = Popup.create(driver, wait);
         popup.clickButtonByLabel(DELETE);
-        Assertions.assertThat(isObjectPresent(bookmarkName)).isFalse();
-        DelayUtils.sleep();
     }
 
     public void openBookmark(String nameBookmark) {

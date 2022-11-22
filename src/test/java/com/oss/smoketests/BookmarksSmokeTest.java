@@ -35,6 +35,7 @@ import static com.oss.web.NewBookmarksTest.BUTTON_SAVE_BOOKMARK;
 public class BookmarksSmokeTest extends BaseTestCase{
     private static final Logger LOGGER = LoggerFactory.getLogger(BookmarksSmokeTest.class);
     NewBookmarksPage bookmarksPage;
+    BaseBookmarkAndDashboardPage baseBookmarkAndDashboardPage;
     private NetworkViewPage networkViewPage;
     private AdvancedSearchWidget advancedSearchWidget;
     private static final String ADVANCED_SEARCH_WIDGET_ID = "advancedSearch";
@@ -131,6 +132,8 @@ public class BookmarksSmokeTest extends BaseTestCase{
     @Description("Delete Bookmark on Bookmarks View")
     public void deleteBookmarkOnBookmarksView(){
         bookmarksPage.deleteBookmark(UPDATED_BOOKMARK_NAME);
+        DelayUtils.sleep();
+        Assertions.assertThat(bookmarksPage.isObjectPresent(UPDATED_BOOKMARK_NAME)).isFalse();
         checkErrorPage(BOOKMARKS_PAGE);
         checkGlobalNotificationContainer(BOOKMARKS_PAGE);
     }
