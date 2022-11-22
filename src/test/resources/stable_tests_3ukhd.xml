@@ -7,17 +7,12 @@
     </test>
     <test name="FiltersTests">
         <classes>
-            <class name="com.oss.web.FiltersTest"/>
+            <class name="com.oss.web.FilterManagerTest"/>
         </classes>
     </test>
     <test name="CreateProcessNRPTest">
         <classes>
             <class name="com.oss.bpm.CreateProcessNRPTest"/>
-        </classes>
-    </test>
-    <test name="InventoryViewTest">
-        <classes>
-            <class name="com.oss.web.InventoryViewTest"/>
         </classes>
     </test>
 </suite>
