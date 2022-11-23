@@ -28,6 +28,7 @@ public class InfoManagementMessagesTest extends BaseTestCase {
     private static final String TO_ID = "to";
     private static final String EXPORT_FILE_NAME = "*.csv";
     private static final String E_MAIL_STATUS = "Sent";
+    private static final String MESSAGE_CHANNEL = "E-mail";
     private MessagesPage messagesPage;
     private SDWizardPage sdWizardPage;
 
@@ -37,7 +38,7 @@ public class InfoManagementMessagesTest extends BaseTestCase {
     }
 
     @Parameters({"emailTo", "emailFrom"})
-    @Test(priority = 1, testName = "Create Message", description = "Create New Message")
+    @Test(priority = 1, testName = "Create New Message", description = "Create New Message")
     @Description("Create New Message")
     public void createMessage(
             @Optional("kinga.balcar-mazur@comarch.com") String emailTo,
@@ -55,7 +56,7 @@ public class InfoManagementMessagesTest extends BaseTestCase {
         messagesPage.searchFullText(MESSAGE_SUBJECT);
         messagesPage.selectFirstMessage();
         Assert.assertEquals(messagesPage.getNotificationPreview().getMessageText(), E_MAIL_MESSAGE);
-        Assert.assertEquals(messagesPage.getNotificationPreview().getMessageChannel(), "E-mail");
+        Assert.assertEquals(messagesPage.getNotificationPreview().getMessageChannel(), MESSAGE_CHANNEL);
     }
 
     @Test(priority = 2, testName = "Check Message Status", description = "Check if Message was send")
@@ -145,5 +146,4 @@ public class InfoManagementMessagesTest extends BaseTestCase {
         Assert.assertEquals(messagesPage.getMessageTo(), emailTo);
         Assert.assertEquals(messagesPage.getMessageStatus(), E_MAIL_STATUS);
     }
-
 }
