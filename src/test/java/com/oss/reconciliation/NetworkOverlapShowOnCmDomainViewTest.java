@@ -14,7 +14,6 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkOverlapPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
@@ -31,13 +30,11 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
     private static final String SAMPLES_PATH = "recoSamples/NetworkOverlap/AT-SYS-Selenium-Overlap-ShowOn-IV-Device.json";
     private static final String OPEN = "OPEN";
     private static final String DEVICE_1_NAME = "AT-SYS-Selenium-Overlap-ShowOn-IV-Device1";
-    private static final String CHECKING_IF_TABLE_EMPTY_LOG = "Checking if table is empty";
     private static final String CHECKING_CMDOMAIN_PRESENT_LOG = "Checking if CMDomain is present";
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SoftAssert softAssert;
     private NetworkOverlapPage networkOverlapPage;
-    private NewInventoryViewPage inventoryViewPage;
 
     @BeforeClass
     public void openConsole() {
@@ -69,15 +66,11 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
         uploadSamples(CM_DOMAIN_NAME);
     }
 
-
-
     @Test(priority = 5, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples1"})
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample1() {
         runReconciliationWithFullSamples(CM_DOMAIN_NAME);
     }
-
-
 
     @Test(priority = 6, description = "Create CM Domain", dependsOnMethods = {"runReconciliationWithFullSample1"})
     @Description("Go to Network Discovery Control View and Create CM Domain")
