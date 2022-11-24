@@ -48,125 +48,53 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
     @Test(priority = 1, description = "Check if CMDomain1 is deleted")
     @Description("Check if CMDomain1 is deleted")
     public void checkIfDomain1IsDeleted() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME)) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
-            networkDiscoveryControlViewPage.clearOldNotifications();
-            networkDiscoveryControlViewPage.deleteCmDomain();
-            checkPopupMessageType();
-            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
-        } else {
-            log.info("CMDomain with name: " + CM_DOMAIN_NAME + " doesn't exist");
-        }
+        checkIfDomainIsDeleted(CM_DOMAIN_NAME);
     }
 
     @Test(priority = 2, description = "Check if CMDomain2 is deleted")
     @Description("Check if CMDomain2 is deleted")
     public void checkIfDomain2IsDeleted() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.searchForCmDomain(CM_DOMAIN_NAME_2);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME_2)) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME_2);
-            networkDiscoveryControlViewPage.clearOldNotifications();
-            networkDiscoveryControlViewPage.deleteCmDomain();
-            checkPopupMessageType();
-            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME_2 + " finished");
-        } else {
-            log.info("CMDomain with name: " + CM_DOMAIN_NAME_2 + " doesn't exist");
-        }
+        checkIfDomainIsDeleted(CM_DOMAIN_NAME_2);
     }
 
     @Test(priority = 3, description = "Create CM Domain")
     @Description("Go to Network Discovery Control View and Create CM Domain")
     public void createCmDomain1() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
+        createCMDomain(CM_DOMAIN_NAME);
     }
 
     @Test(priority = 4, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain1"})
     @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples1() throws URISyntaxException {
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-        networkDiscoveryControlViewPage.moveToSamplesManagement();
-        SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
-        samplesManagementPage.selectPath();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        samplesManagementPage.uploadSamples(SAMPLES_PATH);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        uploadSamples(CM_DOMAIN_NAME);
     }
+
+
 
     @Test(priority = 5, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples1"})
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample1() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.runReconciliation();
-        checkPopupMessageType();
-        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
-        networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        if (status.contains(SUCCESS_STATE)) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
-        } else {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
-        }
+        runReconciliationWithFullSamples(CM_DOMAIN_NAME);
     }
+
+
 
     @Test(priority = 6, description = "Create CM Domain", dependsOnMethods = {"runReconciliationWithFullSample1"})
     @Description("Go to Network Discovery Control View and Create CM Domain")
     public void createCmDomain2() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME_2, INTERFACE_NAME, DOMAIN);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        createCMDomain(CM_DOMAIN_NAME_2);
     }
 
     @Test(priority = 7, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain2"})
     @Description("Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples2() throws URISyntaxException {
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME_2);
-        networkDiscoveryControlViewPage.moveToSamplesManagement();
-        SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
-        samplesManagementPage.selectPath();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        samplesManagementPage.createDirectory(CM_DOMAIN_NAME_2);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        samplesManagementPage.uploadSamples(SAMPLES_PATH);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        uploadSamples(CM_DOMAIN_NAME_2);
     }
 
     @Test(priority = 8, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples2"})
     @Description("Go to Network Discovery Control View and run reconciliation and check if it ended without errors")
     public void runReconciliationWithFullSample2() {
-        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME_2);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        networkDiscoveryControlViewPage.runReconciliation();
-        checkPopupMessageType();
-        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
-        networkDiscoveryControlViewPage.selectLatestReconciliationState();
-        if (status.contains(SUCCESS_STATE)) {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
-        } else {
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
-            DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
-        }
+        runReconciliationWithFullSamples(CM_DOMAIN_NAME_2);
     }
 
     @Test(priority = 9, description = "Check conflict event", dependsOnMethods = {"runReconciliationWithFullSample2"})
@@ -190,6 +118,61 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
     public void checkIfCMDomainExists() {
         networkDiscoveryControlViewPage = new NetworkDiscoveryControlViewPage(driver);
         Assert.assertTrue(networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME_2), CHECKING_CMDOMAIN_PRESENT_LOG);
+    }
+
+    private void uploadSamples(String cmDomainName) throws URISyntaxException {
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.moveToSamplesManagement();
+        SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
+        samplesManagementPage.selectPath();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        samplesManagementPage.createDirectory(cmDomainName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        samplesManagementPage.uploadSamples(SAMPLES_PATH);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    private void checkIfDomainIsDeleted(String cmDomainName) {
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        networkDiscoveryControlViewPage.searchForCmDomain(cmDomainName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        if (networkDiscoveryControlViewPage.isCmDomainPresent(cmDomainName)) {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            networkDiscoveryControlViewPage.selectCmDomain(cmDomainName);
+            networkDiscoveryControlViewPage.clearOldNotifications();
+            networkDiscoveryControlViewPage.deleteCmDomain();
+            checkPopupMessageType();
+            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + cmDomainName + " finished");
+        } else {
+            log.info("CMDomain with name: " + cmDomainName + " doesn't exist");
+        }
+    }
+
+    private void createCMDomain(String cmDomainName) {
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage.createCMDomain(cmDomainName, INTERFACE_NAME, DOMAIN);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    private void runReconciliationWithFullSamples(String cmDomainName) {
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        networkDiscoveryControlViewPage.runReconciliation();
+        checkPopupMessageType();
+        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
+        networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        if (status.contains(SUCCESS_STATE)) {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+        } else {
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        }
     }
 
     private void checkPopupMessageType() {
