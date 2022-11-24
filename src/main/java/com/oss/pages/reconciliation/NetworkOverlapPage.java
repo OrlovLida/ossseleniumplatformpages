@@ -2,6 +2,7 @@ package com.oss.pages.reconciliation;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.widgets.list.EditableList;
@@ -23,6 +24,7 @@ public class NetworkOverlapPage extends BasePage {
     private static final String COMMENT_LABEL = "Comment";
     private static final String DOMAIN_HEADER_ID = "overlapCmDomain";
     private static final String ARCHIVE_CONFLICT_ID = "ARCHIVE_CONFLICT";
+    private static final String CM_DOMAIN_VIEW_ACTION_ID = "overlapCmDomainViewActionId";
     private String conflictTab = "CurrentConflictTableTabApp";
 
     protected NetworkOverlapPage(WebDriver driver) {
@@ -53,6 +55,12 @@ public class NetworkOverlapPage extends BasePage {
     @Step("click Resolve button")
     public void clickResolve() {
         getTabsInterface().callActionById(RESOLVE);
+    }
+
+    public void goToCmDomainView() {
+        EditableList.Row getFirstRow = getConflictedObjects().getRow(0);
+        getFirstRow.click();
+        getFirstRow.callAction(ActionsContainer.SHOW_ON_GROUP_ID, CM_DOMAIN_VIEW_ACTION_ID);
     }
 
     @Step("click Reopen button")
