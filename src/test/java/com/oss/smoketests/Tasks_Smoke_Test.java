@@ -111,6 +111,7 @@ public class Tasks_Smoke_Test extends BaseTestCase {
     @Description("Check Attributes tab")
     public void checkAttributesTab() {
         TasksPageV2 tasksPage = new TasksPageV2(driver);
+        tasksPage.selectFirstTask();
         String valueFromTable = tasksPage.getColumnValueFromFirstRow(PROCESS_INSTANCE_COLUMND_ID);
         tasksPage.getIPDTaskForm().selectTabByLabel(ATTRIBUTES);
         waitForPageToLoad();

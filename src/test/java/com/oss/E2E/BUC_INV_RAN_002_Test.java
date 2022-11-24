@@ -144,7 +144,7 @@ public class BUC_INV_RAN_002_Test extends BaseTestCase {
     @Description("Create three cells 5G")
     public void create5Gcells() {
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, GNODEB_NAME);
-        cellSiteConfigurationPage.createCell5GBulk(3, CELL5G_CARRIER, CELL5G_NAMES, LOCAL_CELLS_ID, PCI, RSI);//TODO krok z LLD z uzupełnieniem wyjaśnic
+        cellSiteConfigurationPage.createCell5GBulk(3, CELL5G_CARRIER, CELL5G_NAMES, LOCAL_CELLS_ID, PCI, RSI);
         checkMessageContainsText("Cells 5G created success", String.format(SYSTEM_MESSAGE_PATTERN, "Create 5G cells", "cells 5G create"));
         closeMessage();
     }

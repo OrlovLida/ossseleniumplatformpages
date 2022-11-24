@@ -22,7 +22,7 @@ public class CmDomainWizardPage extends BasePage {
     private static final String NETWORK_MODIFICATION_ID = "narComponent_networkDiscoveryControlViewIdmaxFutureNumberFieldId";
     private static final String SAVE_ID = "narComponent_networkDiscoveryControlViewIdCmDomainActionButtonsAppId-1";
     private static final String CANCEL_ID = "narComponent_networkDiscoveryControlViewIdCmDomainActionButtonsAppId-0";
-    private Wizard cmDomainWizard = Wizard.createByComponentId(driver, wait, CM_DOMAIN_WIZARD_ID);
+    private final Wizard cmDomainWizard = Wizard.createByComponentId(driver, wait, CM_DOMAIN_WIZARD_ID);
 
     public CmDomainWizardPage(WebDriver driver) {
         super(driver);
