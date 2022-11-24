@@ -1,8 +1,5 @@
 package com.oss.smoketests;
 
-import java.util.List;
-
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -10,7 +7,6 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.GlobalNotificationContainer;
-import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.components.mainheader.ButtonPanel;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
@@ -31,7 +27,6 @@ import static com.oss.web.NewBookmarksTest.BUTTON_SAVE_BOOKMARK;
 public class Bookmarks_Smoke_Test extends BaseTestCase {
     private static final Logger LOGGER = LoggerFactory.getLogger(Bookmarks_Smoke_Test.class);
     NewBookmarksPage bookmarksPage;
-    private AdvancedSearchWidget advancedSearchWidget;
     private static final String ADVANCED_SEARCH_WIDGET_ID = "advancedSearch";
     private static final int INDEX_OF_FIRST_ELEMENT_IN_TABLE = 0;
     public static final String LOCATION_ACTION = "add_to_view_group_Location-null";
@@ -76,7 +71,7 @@ public class Bookmarks_Smoke_Test extends BaseTestCase {
         toolsManagerWindow.openApplication(CATEGORY, VIEW_NAME);
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, LOCATION_ACTION);
-        advancedSearchWidget = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_WIDGET_ID);
+        AdvancedSearchWidget advancedSearchWidget = AdvancedSearchWidget.createById(driver, webDriverWait, ADVANCED_SEARCH_WIDGET_ID);
         advancedSearchWidget.getTableComponent().clickRow(INDEX_OF_FIRST_ELEMENT_IN_TABLE);
         advancedSearchWidget.clickAdd();
         checkErrorPage(NETWORK_PAGE);
@@ -150,13 +145,6 @@ public class Bookmarks_Smoke_Test extends BaseTestCase {
             LOGGER.error(errorInformation.getErrorMessage());
             Assert.fail(String.format("Error Page is shown on %s page.", viewName));
         }
-    }
-
-    private void checkSystemMessage() {
-        SystemMessageContainer systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, 5));
-        List<String> errors = systemMessage.getErrors();
-        errors.forEach(LOGGER::error);
-        Assert.assertTrue(errors.isEmpty(), "Some errors occurred during the test. Please check logs for details.\n");
     }
 
     private void checkGlobalNotificationContainer(String viewName) {
