@@ -198,5 +198,6 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
         softAssert.assertNotNull(messages);
         softAssert.assertEquals(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType(),
                 SystemMessageContainer.MessageType.INFO);
+        softAssert.assertAll();
     }
 }
