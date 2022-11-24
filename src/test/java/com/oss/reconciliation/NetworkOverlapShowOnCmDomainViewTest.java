@@ -31,6 +31,13 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
     private static final String OPEN = "OPEN";
     private static final String DEVICE_1_NAME = "AT-SYS-Selenium-Overlap-ShowOn-IV-Device1";
     private static final String CHECKING_CMDOMAIN_PRESENT_LOG = "Checking if CMDomain is present";
+    private static final String DELETING_DOMAIN_PATTERN_LOG = "Deleting CM Domain: %s finished";
+    private static final String CM_DOMAIN_DOES_NOT_EXIST_PATTERN_LOG = "CMDomain with name: %s doesn't exist";
+    private static final String CHECK_IF_CONFLICT_PRESENT_LOG = "Checking if conflict is present";
+    private static final String CHECKING_CONFLICT_OPEN_LOG = "Checking if conflict is open";
+    private static final String CHECKING_ISSUES_ERROR_LOG = "Checking issues of level type ERROR";
+    private static final String CHECKING_ISSUES_STARTUP_FATAL_LOG = "Checking issues of level type STARTUP_FATAL";
+    private static final String CHECKING_ISSUES_FATAL_LOG = "Checking issues of level type FATAL";
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SoftAssert softAssert;
@@ -93,7 +100,7 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
     @Test(priority = 9, description = "Check conflict event", dependsOnMethods = {"runReconciliationWithFullSample2"})
     @Description("Refresh and check if event with information about conflict has appeared")
     public void checkConflictEvent() {
-        Assert.assertTrue(networkDiscoveryControlViewPage.isConflictEventPresent());
+        Assert.assertTrue(networkDiscoveryControlViewPage.isConflictEventPresent(), CHECK_IF_CONFLICT_PRESENT_LOG);
     }
 
     @Test(priority = 10, description = "Select conflict", dependsOnMethods = {"runReconciliationWithFullSample2"})
@@ -101,7 +108,7 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
     public void moveToCmDomainView() {
         networkOverlapPage = NetworkOverlapPage.goToNetworkOverlapPage(driver, BASIC_URL);
         networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
-        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), OPEN);
+        Assert.assertEquals(networkOverlapPage.getConflictStatus(0), OPEN, CHECKING_CONFLICT_OPEN_LOG);
         networkOverlapPage.selectConflict(0);
         networkOverlapPage.goToCmDomainView();
     }
@@ -135,9 +142,9 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
             networkDiscoveryControlViewPage.clearOldNotifications();
             networkDiscoveryControlViewPage.deleteCmDomain();
             checkPopupMessageType();
-            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + cmDomainName + " finished");
+            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), String.format(DELETING_DOMAIN_PATTERN_LOG, cmDomainName));
         } else {
-            log.info("CMDomain with name: " + cmDomainName + " doesn't exist");
+            log.info(String.format(CM_DOMAIN_DOES_NOT_EXIST_PATTERN_LOG, cmDomainName));
         }
     }
 
@@ -159,12 +166,12 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         if (status.contains(SUCCESS_STATE)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR), CHECKING_ISSUES_ERROR_LOG);
         } else {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL), CHECKING_ISSUES_STARTUP_FATAL_LOG);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL), CHECKING_ISSUES_FATAL_LOG);
         }
     }
 
