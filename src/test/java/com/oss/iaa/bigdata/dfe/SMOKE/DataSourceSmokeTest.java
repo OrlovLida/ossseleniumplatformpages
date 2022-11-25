@@ -35,7 +35,7 @@ public class DataSourceSmokeTest extends BaseTestCase {
             dataSourcePage.setValueInTimePeriodChooser(1, 2, 1);
             dataSourcePage.setSeverity(SEVERITY_ERROR);
 
-            Assert.assertTrue(dataSourcePage.isLogsTableEmpty(), "In logs tab is at least one log with status Error");
+            Assert.assertTrue(dataSourcePage.isLogsTableEmpty(), "In logs tab is at least one log with status Error.");
 
             dataSourcePage.setSeverity(SEVERITY_ALL);
             Assert.assertTrue(dataSourcePage.isIfRunsFresh());

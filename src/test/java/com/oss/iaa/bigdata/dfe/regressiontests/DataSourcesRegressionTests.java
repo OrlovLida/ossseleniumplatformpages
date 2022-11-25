@@ -62,7 +62,7 @@ public class DataSourcesRegressionTests extends BaseTestCase {
         Assert.assertEquals(dataSourcePage.getValueFromFirstRow(CATEGORY_COLUMN), categoryName);
     }
 
-    @Test(priority = 3, testName = "Status search", description = "Check Status Search on Data Source View")
+    @Test(priority = 4, testName = "Status search", description = "Check Status Search on Data Source View")
     @Description("Check Status Search on Data Source View")
     public void statusSearch() {
         dataSourcePage.setStatus(WORKING_STATUS);
@@ -71,7 +71,7 @@ public class DataSourcesRegressionTests extends BaseTestCase {
     }
 
     @Parameters({"dataFormat"})
-    @Test(priority = 4, testName = "Data Format search", description = "Check Data Format Search on Data Source View")
+    @Test(priority = 5, testName = "Data Format search", description = "Check Data Format Search on Data Source View")
     @Description("Check Data Format Search on Data Source View")
     public void dataFormatSearch(
             @Optional("CSV File") String dataFormat
@@ -81,7 +81,7 @@ public class DataSourcesRegressionTests extends BaseTestCase {
         Assert.assertEquals(dataSourcePage.getValueFromFirstRow(DATA_FORMAT_COLUMN), dataFormat);
     }
 
-    @Test(priority = 5, testName = "Refresh Test", description = "Refresh Data Source table")
+    @Test(priority = 6, testName = "Refresh Test", description = "Refresh Data Source table")
     @Description("Refresh Data Source Table")
     public void refreshTest() {
         Assert.assertFalse(dataSourcePage.isDataSourceTableEmpty());
@@ -91,7 +91,7 @@ public class DataSourcesRegressionTests extends BaseTestCase {
     }
 
     @Parameters({"dataSourceName"})
-    @Test(priority = 6, testName = "Check Format Tab", description = "Check if Format Table is not empty")
+    @Test(priority = 7, testName = "Check Format Tab", description = "Check if Format Table is not empty")
     @Description("Check if Format Table is not empty")
     public void checkFormatTab(
             @Optional("t:SMOKE#DSforKqis") String dataSourceName

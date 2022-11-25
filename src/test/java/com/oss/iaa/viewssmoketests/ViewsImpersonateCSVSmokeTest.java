@@ -22,13 +22,14 @@ import com.oss.framework.components.alerts.GlobalNotificationContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.iaa.keycloak.KeycloakPage;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 
-public class ViewsCSVSmokeTest extends BaseTestCase {
+public class ViewsImpersonateCSVSmokeTest extends BaseTestCase {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ViewsCSVSmokeTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ViewsImpersonateCSVSmokeTest.class);
 
     private static final String BOOKMARKS = "Bookmarks";
     private static final String CUSTOM = "Custom";
@@ -56,12 +57,16 @@ public class ViewsCSVSmokeTest extends BaseTestCase {
             @Optional("6000") int expectedLoadTimeInMilisec
     ) {
         expectedTime = expectedLoadTimeInMilisec;
-        Assert.assertTrue(DelayUtils.isPageLoaded(driver, webDriverWait, 6000));
+        KeycloakPage keycloakPage = new KeycloakPage(driver);
+        keycloakPage.loginToKeycloak(BASIC_URL);
     }
 
     @Test(priority = 1, dataProvider = "views", testName = "Check View", description = "Check View")
     @Description("Check views")
-    public void checkView(String viewType, String chosenView) {
+    public void checkView(String viewType, String chosenView, String userName) {
+        KeycloakPage keycloakPage = new KeycloakPage(driver);
+        keycloakPage.impersonateLogin(BASIC_URL, userName);
+
         String url = String.format(getURLPattern(viewType), BASIC_URL, chosenView);
         driver.get(url);
         Assert.assertTrue(DelayUtils.isPageLoaded(driver, webDriverWait, expectedTime));
@@ -96,8 +101,8 @@ public class ViewsCSVSmokeTest extends BaseTestCase {
                 return MAP_MONITORING_VIEW_URL_PATTERN;
             }
             default:
+                throw new IllegalArgumentException(UNKNOWN_VIEW_TYPE);
         }
-        throw new IllegalArgumentException(UNKNOWN_VIEW_TYPE);
     }
 
     @Step("Check Global Notification container")

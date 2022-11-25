@@ -214,6 +214,7 @@ public class DataSourcePage extends BaseDfePage {
 
     @Step("Check if logs table is empty")
     public boolean isLogsTableEmpty() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createById(driver, wait, LOG_TAB_TABLE_ID).hasNoData();
     }
 
