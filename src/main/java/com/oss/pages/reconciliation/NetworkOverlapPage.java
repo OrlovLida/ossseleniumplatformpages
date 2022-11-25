@@ -17,7 +17,7 @@ public class NetworkOverlapPage extends BasePage {
 
     private static final String RESOLVE = "cmInventoryIntegration_CONFLICTActionRESOLVEId";
     private static final String REOPEN = "cmInventoryIntegration_CONFLICTActionREOPENId";
-    private static final String CONFLICTED_OBJECTS_TAB = "domainObjectConflictWindowId";
+    private static final String CONFLICTED_OBJECTS_TAB = "ConflictTabViewApp";
     private static final String EDITABLE_LIST_ID = "ExtendedList-ConflictedObjectEditableListTabApp";
     private static final String NETWORK_ELEMENT_NAME = "name";
     private static final String STATUS_LABEL = "Status";
@@ -55,6 +55,12 @@ public class NetworkOverlapPage extends BasePage {
     @Step("click Resolve button")
     public void clickResolve() {
         getTabsInterface().callActionById(RESOLVE);
+    }
+
+    public void goToCmDomainView() {
+        EditableList.Row getFirstRow = getConflictedObjects().getRow(0);
+        getFirstRow.click();
+        getFirstRow.callAction(ActionsContainer.SHOW_ON_GROUP_ID, CM_DOMAIN_VIEW_ACTION_ID);
     }
 
     @Step("click Reopen button")
