@@ -58,8 +58,8 @@ public class NetworkOverlapPage extends BasePage {
         getTabsInterface().callActionById(RESOLVE);
     }
 
-    public void goToCmDomainView() {
-        EditableList.Row getFirstRow = getConflictedObjects().getRow(0);
+    public void goToCmDomainViewByDomainName(String cmDomainName) {
+        EditableList.Row getFirstRow = getConflictedObjects().getRowByValue(DOMAIN_HEADER_ID, cmDomainName);
         getFirstRow.click();
         getFirstRow.callAction(ActionsContainer.SHOW_ON_GROUP_ID, CM_DOMAIN_VIEW_ACTION_ID);
     }
@@ -74,6 +74,11 @@ public class NetworkOverlapPage extends BasePage {
     @Step("Get Domain Name from Conflicted Objects tab")
     public String getDomainFromConflictedObjectsTab(int rowIndex) {
         return getConflictedObjects().getRow(rowIndex).getCellValue(DOMAIN_HEADER_ID);
+    }
+
+    @Step("Navigate to Inventory View")
+    public void goToInventoryView() {
+        getTabsInterface().callActionById(ActionsContainer.SHOW_ON_GROUP_ID, SHOW_ON_INVENTORY_VIEW_ID);
     }
 
     @Step("Search for object by name")

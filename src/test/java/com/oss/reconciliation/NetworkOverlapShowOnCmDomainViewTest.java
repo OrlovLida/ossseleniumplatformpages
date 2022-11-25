@@ -22,14 +22,6 @@ import io.qameta.allure.Description;
 
 public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
     private static final Logger log = LoggerFactory.getLogger(NetworkOverlapShowOnCmDomainViewTest.class);
-    private static final String CM_DOMAIN_NAME = "Selenium-NetworkOverlap-ShowOnIV-Domain1";
-    private static final String CM_DOMAIN_NAME_2 = "Selenium-NetworkOverlap-ShowOnIV-Domain2";
-    private static final String INTERFACE_NAME = "Comarch";
-    private static final String DOMAIN = "Comarch";
-    private static final String SUCCESS_STATE = "SUCCESS";
-    private static final String SAMPLES_PATH = "recoSamples/NetworkOverlap/AT-SYS-Selenium-Overlap-ShowOn-IV-Device.json";
-    private static final String OPEN = "OPEN";
-    private static final String DEVICE_1_NAME = "AT-SYS-Selenium-Overlap-ShowOn-IV-Device1";
     private static final String CM_DOMAIN_NAME = "Selenium-NetworkOverlap-ShowOn-CmDomainView-Domain1";
     private static final String CM_DOMAIN_NAME_2 = "Selenium-NetworkOverlap-ShowOn-CmDomainView-Domain2";
     private static final String INTERFACE_NAME = "Comarch";
@@ -118,14 +110,14 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
         networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
         Assert.assertEquals(networkOverlapPage.getConflictStatus(0), OPEN, CHECKING_CONFLICT_OPEN_LOG);
         networkOverlapPage.selectConflict(0);
-        networkOverlapPage.goToCmDomainView();
+        networkOverlapPage.goToCmDomainViewByDomainName(CM_DOMAIN_NAME);
     }
 
     @Test(priority = 11, description = "Check if CMDomain exists", dependsOnMethods = {"moveToCmDomainView"})
     @Description("Check if CMDomain exists on NDCV")
     public void checkIfCMDomainExists() {
         networkDiscoveryControlViewPage = new NetworkDiscoveryControlViewPage(driver);
-        Assert.assertTrue(networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME_2), CHECKING_CMDOMAIN_PRESENT_LOG);
+        Assert.assertTrue(networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME), CHECKING_CMDOMAIN_PRESENT_LOG);
     }
 
     private void uploadSamples(String cmDomainName) throws URISyntaxException {
