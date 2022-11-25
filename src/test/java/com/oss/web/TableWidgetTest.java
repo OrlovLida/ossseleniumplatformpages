@@ -39,7 +39,7 @@ public class TableWidgetTest extends BaseTestCase {
     private ArrayList<String> getValuesFromTableByKey(String key) {
         ArrayList<String> attributeValues = new ArrayList<>();
 
-        int rowsNumber = tableWidget.getRowsNumber();
+        int rowsNumber = tableWidget.countRows();
         for (int i = 0; i < rowsNumber; i++) {
             attributeValues.add(tableWidget.getCellValue(i, key));
         }
