@@ -47,7 +47,6 @@ public class NetworkOverlapShowOnInventoryViewTest extends BaseTestCase {
     private NetworkOverlapPage networkOverlapPage;
     private NewInventoryViewPage inventoryViewPage;
 
-
     @BeforeClass
     public void openConsole() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
