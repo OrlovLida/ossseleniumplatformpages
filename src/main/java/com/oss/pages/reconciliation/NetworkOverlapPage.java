@@ -17,14 +17,15 @@ public class NetworkOverlapPage extends BasePage {
 
     private static final String RESOLVE = "cmInventoryIntegration_CONFLICTActionRESOLVEId";
     private static final String REOPEN = "cmInventoryIntegration_CONFLICTActionREOPENId";
-    private static final String CONFLICTED_OBJECTS_TAB = "ConflictTabViewApp";
+    private static final String CONFLICTED_OBJECTS_TAB = "CurrentConflictTableTabApp";
     private static final String EDITABLE_LIST_ID = "ExtendedList-ConflictedObjectEditableListTabApp";
     private static final String NETWORK_ELEMENT_NAME = "name";
     private static final String STATUS_LABEL = "Status";
     private static final String COMMENT_LABEL = "Comment";
     private static final String DOMAIN_HEADER_ID = "overlapCmDomain";
     private static final String ARCHIVE_CONFLICT_ID = "ARCHIVE_CONFLICT";
-    private static final String SHOW_ON_INVENTORY_VIEW_ID = "overlapLegacyInventoryViewActionId";
+    private static final String CM_DOMAIN_VIEW_ACTION_ID = "overlapCmDomainViewActionId";
+    private static final String SHOW_ON_INVENTORY_VIEW_ID = "overlapInventoryViewActionId";
     private String conflictTab = "CurrentConflictTableTabApp";
 
     protected NetworkOverlapPage(WebDriver driver) {
