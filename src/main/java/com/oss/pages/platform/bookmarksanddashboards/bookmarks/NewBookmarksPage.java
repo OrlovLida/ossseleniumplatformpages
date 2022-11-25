@@ -1,17 +1,12 @@
 package com.oss.pages.platform.bookmarksanddashboards.bookmarks;
 
-import org.assertj.core.api.Assertions;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.prompts.Popup;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.platform.bookmarksanddashboards.BaseBookmarkAndDashboardPage;
 import com.oss.pages.platform.bookmarksanddashboards.CategoryWizardPage;
-
-import static com.oss.framework.components.contextactions.ActionsContainer.ASSIGN_GROUP_ID;
 
 public class NewBookmarksPage extends BaseBookmarkAndDashboardPage {
 
@@ -67,7 +62,7 @@ public class NewBookmarksPage extends BaseBookmarkAndDashboardPage {
         popup.clickButtonByLabel(DELETE);
     }
 
-    public void editBookmark(String bookmarkName, String newBookmarkName, String newDescription){
+    public void editBookmark(String bookmarkName, String newBookmarkName, String newDescription) {
         BookmarkWizardPage bookmarkWizardPage = new BookmarkWizardPage(driver, wait);
         selectObject(bookmarkName);
         callActionById(EDIT_BOOKMARK_ACTION);
@@ -76,7 +71,7 @@ public class NewBookmarksPage extends BaseBookmarkAndDashboardPage {
         bookmarkWizardPage.clickSave();
     }
 
-    public void deleteBookmark(String bookmarkName){
+    public void deleteBookmark(String bookmarkName) {
         selectObject(bookmarkName);
         callActionById(ACTION_DELETE_BOOKMARK);
         Popup popup = Popup.create(driver, wait);

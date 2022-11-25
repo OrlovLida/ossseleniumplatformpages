@@ -2,6 +2,7 @@ package com.oss.pages.reconciliation;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.widgets.list.EditableList;
@@ -16,13 +17,15 @@ public class NetworkOverlapPage extends BasePage {
 
     private static final String RESOLVE = "cmInventoryIntegration_CONFLICTActionRESOLVEId";
     private static final String REOPEN = "cmInventoryIntegration_CONFLICTActionREOPENId";
-    private static final String CONFLICTED_OBJECTS_TAB = "ConflictTabViewApp";
+    private static final String CONFLICTED_OBJECTS_TAB = "CurrentConflictTableTabApp";
     private static final String EDITABLE_LIST_ID = "ExtendedList-ConflictedObjectEditableListTabApp";
     private static final String NETWORK_ELEMENT_NAME = "name";
     private static final String STATUS_LABEL = "Status";
     private static final String COMMENT_LABEL = "Comment";
     private static final String DOMAIN_HEADER_ID = "overlapCmDomain";
     private static final String ARCHIVE_CONFLICT_ID = "ARCHIVE_CONFLICT";
+    private static final String CM_DOMAIN_VIEW_ACTION_ID = "overlapCmDomainViewActionId";
+    private static final String SHOW_ON_INVENTORY_VIEW_ID = "overlapInventoryViewActionId";
     private String conflictTab = "CurrentConflictTableTabApp";
 
     protected NetworkOverlapPage(WebDriver driver) {
@@ -55,6 +58,12 @@ public class NetworkOverlapPage extends BasePage {
         getTabsInterface().callActionById(RESOLVE);
     }
 
+    public void goToCmDomainView() {
+        EditableList.Row getFirstRow = getConflictedObjects().getRow(0);
+        getFirstRow.click();
+        getFirstRow.callAction(ActionsContainer.SHOW_ON_GROUP_ID, CM_DOMAIN_VIEW_ACTION_ID);
+    }
+
     @Step("click Reopen button")
     public void reopenConflict() {
         getTabsInterface().callActionById(REOPEN);
@@ -65,6 +74,11 @@ public class NetworkOverlapPage extends BasePage {
     @Step("Get Domain Name from Conflicted Objects tab")
     public String getDomainFromConflictedObjectsTab(int rowIndex) {
         return getConflictedObjects().getRow(rowIndex).getCellValue(DOMAIN_HEADER_ID);
+    }
+
+    @Step("Navigate to Inventory View")
+    public void goToInventoryView() {
+        getTabsInterface().callActionById(ActionsContainer.SHOW_ON_GROUP_ID, SHOW_ON_INVENTORY_VIEW_ID);
     }
 
     @Step("Search for object by name")
