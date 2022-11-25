@@ -13,15 +13,18 @@ import org.testng.asserts.SoftAssert;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkOverlapPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
 
 import io.qameta.allure.Description;
 
-public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
-    private static final Logger log = LoggerFactory.getLogger(NetworkOverlapShowOnCmDomainViewTest.class);
+public class NetworkOverlapShowOnInventoryViewTest extends BaseTestCase {
+
+    private static final Logger log = LoggerFactory.getLogger(NetworkOverlapShowOnInventoryViewTest.class);
     private static final String CM_DOMAIN_NAME = "Selenium-NetworkOverlap-ShowOnIV-Domain1";
     private static final String CM_DOMAIN_NAME_2 = "Selenium-NetworkOverlap-ShowOnIV-Domain2";
     private static final String INTERFACE_NAME = "Comarch";
@@ -30,26 +33,19 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
     private static final String SAMPLES_PATH = "recoSamples/NetworkOverlap/AT-SYS-Selenium-Overlap-ShowOn-IV-Device.json";
     private static final String OPEN = "OPEN";
     private static final String DEVICE_1_NAME = "AT-SYS-Selenium-Overlap-ShowOn-IV-Device1";
-    private static final String CM_DOMAIN_NAME = "Selenium-NetworkOverlap-ShowOn-CmDomainView-Domain1";
-    private static final String CM_DOMAIN_NAME_2 = "Selenium-NetworkOverlap-ShowOn-CmDomainView-Domain2";
-    private static final String INTERFACE_NAME = "Comarch";
-    private static final String DOMAIN = "Comarch";
-    private static final String SUCCESS_STATE = "SUCCESS";
-    private static final String SAMPLES_PATH = "recoSamples/NetworkOverlap/AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device.json";
-    private static final String OPEN = "OPEN";
-    private static final String DEVICE_1_NAME = "AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device1";
-    private static final String CHECKING_CMDOMAIN_PRESENT_LOG = "Checking if CMDomain is present";
+    private static final String CHECKING_IF_TABLE_NOT_EMPTY_LOG = "Checking if table is not empty";
     private static final String DELETING_DOMAIN_PATTERN_LOG = "Deleting CM Domain: %s finished";
     private static final String CM_DOMAIN_DOES_NOT_EXIST_PATTERN_LOG = "CMDomain with name: %s doesn't exist";
     private static final String CHECK_IF_CONFLICT_PRESENT_LOG = "Checking if conflict is present";
-    private static final String CHECKING_CONFLICT_OPEN_LOG = "Checking if conflict is open";
     private static final String CHECKING_ISSUES_ERROR_LOG = "Checking issues of level type ERROR";
     private static final String CHECKING_ISSUES_STARTUP_FATAL_LOG = "Checking issues of level type STARTUP_FATAL";
     private static final String CHECKING_ISSUES_FATAL_LOG = "Checking issues of level type FATAL";
+    private static final String CHECKING_CONFLICT_OPEN_LOG = "Checking if conflict is open";
 
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SoftAssert softAssert;
     private NetworkOverlapPage networkOverlapPage;
+    private NewInventoryViewPage inventoryViewPage;
 
     @BeforeClass
     public void openConsole() {
@@ -63,13 +59,13 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
         checkIfDomainIsDeleted(CM_DOMAIN_NAME);
     }
 
-    @Test(priority = 2, description = "Check if CMDomain2 is deleted")
+    @Test(priority = 2, description = "Check if CMDomain2 is deleted", dependsOnMethods = {"checkIfDomain1IsDeleted"})
     @Description("Check if CMDomain2 is deleted")
     public void checkIfDomain2IsDeleted() {
         checkIfDomainIsDeleted(CM_DOMAIN_NAME_2);
     }
 
-    @Test(priority = 3, description = "Create CM Domain")
+    @Test(priority = 3, description = "Create CM Domain", dependsOnMethods = {"checkIfDomain2IsDeleted"})
     @Description("Go to Network Discovery Control View and Create CM Domain")
     public void createCmDomain1() {
         createCMDomain(CM_DOMAIN_NAME);
@@ -111,21 +107,22 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
         Assert.assertTrue(networkDiscoveryControlViewPage.isConflictEventPresent(), CHECK_IF_CONFLICT_PRESENT_LOG);
     }
 
-    @Test(priority = 10, description = "Select conflict", dependsOnMethods = {"runReconciliationWithFullSample2"})
+    @Test(priority = 10, description = "Select conflict", dependsOnMethods = {"checkConflictEvent"})
     @Description("Go to Network Overlap View Page and select conflict")
-    public void moveToCmDomainView() {
+    public void moveToInventoryView() {
         networkOverlapPage = NetworkOverlapPage.goToNetworkOverlapPage(driver, BASIC_URL);
+        PerspectiveChooser.create(driver, webDriverWait).setNetworkPerspective();
         networkOverlapPage.searchByObjectName(DEVICE_1_NAME);
         Assert.assertEquals(networkOverlapPage.getConflictStatus(0), OPEN, CHECKING_CONFLICT_OPEN_LOG);
         networkOverlapPage.selectConflict(0);
-        networkOverlapPage.goToCmDomainView();
+        networkOverlapPage.goToInventoryView();
     }
 
-    @Test(priority = 11, description = "Check if CMDomain exists", dependsOnMethods = {"moveToCmDomainView"})
-    @Description("Check if CMDomain exists on NDCV")
-    public void checkIfCMDomainExists() {
-        networkDiscoveryControlViewPage = new NetworkDiscoveryControlViewPage(driver);
-        Assert.assertTrue(networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME_2), CHECKING_CMDOMAIN_PRESENT_LOG);
+    @Test(priority = 11, description = "Check if object exists", dependsOnMethods = {"moveToInventoryView"})
+    @Description("Check if object exists on Inventory View")
+    public void checkIfObjectExists() {
+        inventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
+        Assert.assertFalse(inventoryViewPage.checkIfTableIsEmpty(), CHECKING_IF_TABLE_NOT_EMPTY_LOG);
     }
 
     private void uploadSamples(String cmDomainName) throws URISyntaxException {
@@ -147,8 +144,11 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
         if (networkDiscoveryControlViewPage.isCmDomainPresent(cmDomainName)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             networkDiscoveryControlViewPage.selectCmDomain(cmDomainName);
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
             networkDiscoveryControlViewPage.clearOldNotifications();
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
             networkDiscoveryControlViewPage.deleteCmDomain();
+            DelayUtils.waitForPageToLoad(driver, webDriverWait);
             checkPopupMessageType();
             Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), String.format(DELETING_DOMAIN_PATTERN_LOG, cmDomainName));
         } else {
