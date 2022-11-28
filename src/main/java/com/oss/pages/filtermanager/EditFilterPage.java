@@ -38,7 +38,7 @@ public class EditFilterPage extends FilterManagerPage {
 
     @Step("Change Name of filter")
     public EditFilterPage changeName(String folderName) {
-       filterWizard.getComponent(NAME_TEXT_FIELD_ID, TEXT_FIELD).setSingleStringValue(folderName);
+        filterWizard.getComponent(NAME_TEXT_FIELD_ID, TEXT_FIELD).setSingleStringValue(folderName);
         return this;
     }
 
@@ -47,7 +47,6 @@ public class EditFilterPage extends FilterManagerPage {
         filterWizard.getComponent(DESCRIPTION_TEXT_FIELD_ID, TEXT_FIELD).setSingleStringValue(folderDescription);
         return this;
     }
-
 
     @Step("Click on Accept and close the wizard")
     public FilterManagerPage clickAccept() {
