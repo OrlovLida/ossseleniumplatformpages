@@ -28,7 +28,7 @@ public class SDWizardPage extends BaseSDPage {
 
     private static final Logger log = LoggerFactory.getLogger(SDWizardPage.class);
 
-    private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION";
+    private static final String INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION_LABEL";
     private static final String CHANGE_INCIDENT_DESCRIPTION_ID = "TT_WIZARD_INPUT_INCIDENT_DESCRIPTION_LABEL";
     private static final String EMAIL_MESSAGE_ID = "message-component";
     private static final String EXPECTED_RESOLUTION_DATE_ID = "TT_WIZARD_INPUT_EXPECTED_RESOLUTION_DATE_LABEL";

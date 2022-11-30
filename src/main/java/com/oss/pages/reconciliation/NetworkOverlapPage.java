@@ -58,8 +58,8 @@ public class NetworkOverlapPage extends BasePage {
         getTabsInterface().callActionById(RESOLVE);
     }
 
-    public void goToCmDomainView() {
-        EditableList.Row getFirstRow = getConflictedObjects().getRow(0);
+    public void goToCmDomainViewByDomainName(String cmDomainName) {
+        EditableList.Row getFirstRow = getConflictedObjects().getRowByValue(DOMAIN_HEADER_ID, cmDomainName);
         getFirstRow.click();
         getFirstRow.callAction(ActionsContainer.SHOW_ON_GROUP_ID, CM_DOMAIN_VIEW_ACTION_ID);
     }
