@@ -5,6 +5,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static com.oss.serviceClient.ServicesClient.BASIC_URL;
 
 public class ElasticPage extends BaseAdminPanelPage {
@@ -21,7 +23,7 @@ public class ElasticPage extends BaseAdminPanelPage {
     }
 
     public static ElasticPage goToElasticPage(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, 90);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
         goToPage(driver, wait, ELASTIC_PAGE_URL);
         return new ElasticPage(driver, wait);
     }

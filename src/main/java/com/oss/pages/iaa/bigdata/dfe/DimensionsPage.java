@@ -1,5 +1,6 @@
 package com.oss.pages.iaa.bigdata.dfe;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.openqa.selenium.WebDriver;
@@ -44,7 +45,7 @@ public class DimensionsPage extends BaseDfePage {
 
     @Step("I Open Dimensions View")
     public static DimensionsPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
 
         BaseDfePage.openDfePage(driver, basicURL, wait, "dimension");
         return new DimensionsPage(driver, wait);

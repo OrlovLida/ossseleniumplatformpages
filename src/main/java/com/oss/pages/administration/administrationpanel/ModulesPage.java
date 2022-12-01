@@ -7,6 +7,8 @@ import com.oss.untils.FileDownload;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static com.oss.serviceClient.ServicesClient.BASIC_URL;
 
 public class ModulesPage extends BaseAdminPanelPage {
@@ -26,7 +28,7 @@ public class ModulesPage extends BaseAdminPanelPage {
     }
 
     public static ModulesPage goToModulesPage(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, 90);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(90));
         goToPage(driver, wait, MODULES_PAGE_URL);
         return new ModulesPage(driver, wait);
     }

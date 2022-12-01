@@ -1,5 +1,6 @@
 package com.oss.smoketests;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -99,7 +100,7 @@ public class Tasks_Smoke_Test extends BaseTestCase {
         tasksPage.selectFirstTask();
         waitForPageToLoad();
         try {
-            TabsWidget tabsWidget = TabsWidget.createById(driver, new WebDriverWait(driver, 5), TasksPageV2.TABS_TASKS_VIEW_ID);
+            TabsWidget tabsWidget = TabsWidget.createById(driver, new WebDriverWait(driver, Duration.ofSeconds(5)), TasksPageV2.TABS_TASKS_VIEW_ID);
             String actionLabel = tabsWidget.getActionsInterface().getActionLabel(SAVE_TASK_ID);
             Assert.assertTrue(actionLabel.equals(SAVE_TASK_LABEL) || actionLabel.equals(NOT_LOADED_SAVE_TASK_LABEL));
         } catch (TimeoutException ex) {

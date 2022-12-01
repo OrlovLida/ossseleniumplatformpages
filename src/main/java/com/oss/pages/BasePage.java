@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.util.NoSuchElementException;
 
@@ -31,7 +32,7 @@ public class BasePage {
 
     public BasePage(WebDriver driver) {
         this.driver = driver;
-        this.wait = new WebDriverWait(driver, 45);
+        this.wait = new WebDriverWait(driver,  Duration.ofSeconds(45));
         PageFactory.initElements(driver, this);
     }
 

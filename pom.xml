@@ -45,12 +45,12 @@
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>3.141.59</version>
+            <version>4.6.0</version>
         </dependency>
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.1.1</version>
+            <version>5.3.1</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
@@ -108,6 +108,12 @@
             <groupId>com.comarch.oss.inventory.fixedaccess</groupId>
             <artifactId>fixed-access-api</artifactId>
             <version>${fixedaccess.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.comarch.oss.inventory.transport.trail.framework</groupId>
@@ -184,6 +190,12 @@
             <groupId>com.comarch.oss.planning</groupId>
             <artifactId>validation-results-api</artifactId>
             <version>7.3.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.comarch.oss.rso.resource.catalog</groupId>

@@ -1,5 +1,6 @@
 package com.oss.pages.iaa.faultmanagement.filtermanager;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,7 +41,7 @@ public class FMFilterManagerPage extends BaseManagerPage {
 
     @Step("Open Filter Manager Page")
     public static FMFilterManagerPage goToFilterManagerPage(WebDriver driver, String baseURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 90);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
         driver.get(String.format(HTTP_URL_TO_FM_FILTER_MANAGER, baseURL));
         log.info("Opening filter manager page");
         return new FMFilterManagerPage(driver, wait);

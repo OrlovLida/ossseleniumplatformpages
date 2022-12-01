@@ -1,5 +1,7 @@
 package com.oss.E2E;
 
+import java.time.Duration;
+
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
@@ -28,7 +30,7 @@ public class Testowy extends BaseTestCase {
     }
 
     private SystemMessageInterface getSuccesSystemMessage() {
-        return SystemMessageContainer.create(driver, new WebDriverWait(driver, 10));
+        return SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(10)));
     }
 
     private void waitForPageToLoad() {

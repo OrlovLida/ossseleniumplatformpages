@@ -8,6 +8,8 @@ import com.oss.pages.iaa.bigdata.dfe.BaseDfePage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class KqiPage extends BaseDfePage {
 
     private static final String ADD_NEW_KQI_LABEL = "Add New KQI";
@@ -31,7 +33,7 @@ public class KqiPage extends BaseDfePage {
 
     @Step("Open KQIs View")
     public static KqiPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
         BaseDfePage.openDfePage(driver, basicURL, wait, "kqi");
         return new KqiPage(driver, wait);
     }

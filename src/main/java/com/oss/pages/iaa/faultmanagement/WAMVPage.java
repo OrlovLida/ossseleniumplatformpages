@@ -1,5 +1,6 @@
 package com.oss.pages.iaa.faultmanagement;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -54,7 +55,7 @@ public class WAMVPage extends BasePage {
 
     @Step("I initialize a new WAMV")
     public static WAMVPage createWAMV(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, 90);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(90));
         log.info("Initialization of WAMV page");
         return new WAMVPage(driver, wait);
     }

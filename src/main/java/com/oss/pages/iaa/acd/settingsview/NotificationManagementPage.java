@@ -12,6 +12,8 @@ import com.oss.pages.iaa.acd.BaseACDPage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class NotificationManagementPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(NotificationManagementPage.class);
@@ -32,7 +34,7 @@ public class NotificationManagementPage extends BaseACDPage {
 
     @Step("I open Settings View")
     public static NotificationManagementPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 150);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(150));
 
         String pageUrl = String.format(SYSTEM_SETTINGS_VIEW_SUFFIX, basicURL);
         driver.get(pageUrl);

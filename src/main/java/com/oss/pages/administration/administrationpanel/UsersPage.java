@@ -9,6 +9,8 @@ import com.oss.pages.platform.LoginPage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static com.oss.serviceClient.ServicesClient.BASIC_URL;
 
 public class UsersPage extends BaseAdminPanelPage {
@@ -29,7 +31,7 @@ public class UsersPage extends BaseAdminPanelPage {
     }
 
     public static UsersPage goToUsersPage(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
         goToPage(driver, wait, USERS_PAGE_URL);
         return new UsersPage(driver, wait);
     }
