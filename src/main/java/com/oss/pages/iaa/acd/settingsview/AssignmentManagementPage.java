@@ -14,6 +14,8 @@ import com.oss.pages.iaa.acd.BaseACDPage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class AssignmentManagementPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(AssignmentManagementPage.class);
@@ -32,7 +34,7 @@ public class AssignmentManagementPage extends BaseACDPage {
 
     @Step("I open Settings View")
     public static AssignmentManagementPage goToPage(WebDriver driver, String suffixURL, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 150);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(150));
 
         String pageUrl = String.format(suffixURL, basicURL);
         driver.get(pageUrl);

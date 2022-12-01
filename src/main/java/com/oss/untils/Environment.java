@@ -13,6 +13,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Lists;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.authentication.OAuthSignature;
 import com.jayway.restassured.http.ContentType;

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -117,7 +118,7 @@ public class ViewsImpersonateCSVSmokeTest extends BaseTestCase {
 
     @Step("Check System Message")
     private void checkSystemMessage() {
-        SystemMessageContainer systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, 5));
+        SystemMessageContainer systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, Duration.ofSeconds(5)));
         List<String> errors = systemMessage.getErrors();
         errors.forEach(LOGGER::error);
         Assert.assertTrue(errors.isEmpty(), "Some errors occurred during the test. Please check logs for details.\n");

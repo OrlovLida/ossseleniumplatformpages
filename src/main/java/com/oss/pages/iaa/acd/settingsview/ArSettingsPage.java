@@ -15,6 +15,8 @@ import com.oss.pages.iaa.acd.BaseACDPage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class ArSettingsPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(ArSettingsPage.class);
@@ -30,7 +32,7 @@ public class ArSettingsPage extends BaseACDPage {
 
     @Step("I Open AR Settings View")
     public static ArSettingsPage goToPage(WebDriver driver, String suffixURL, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 150);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(150));
 
         String pageUrl = String.format(suffixURL, basicURL);
         driver.get(pageUrl);

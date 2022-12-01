@@ -1,5 +1,7 @@
 package com.oss.pages.administration.administrationpanel;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -20,7 +22,7 @@ public class ServicesPage extends BaseAdminPanelPage {
     }
 
     public static ServicesPage goToServicesPage(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, 90);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
         goToPage(driver, wait, SERVICES_PAGE_URL);
         return new ServicesPage(driver, wait);
     }

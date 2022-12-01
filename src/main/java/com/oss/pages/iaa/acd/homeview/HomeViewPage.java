@@ -15,6 +15,8 @@ import com.oss.pages.iaa.acd.BaseACDPage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class HomeViewPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(HomeViewPage.class);
@@ -33,7 +35,7 @@ public class HomeViewPage extends BaseACDPage {
 
     @Step("I Open ACD Home View")
     public static HomeViewPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 150);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(150));
 
         String pageUrl = String.format("%s/#/dashboard/predefined/id/_Automation_Control_Desk", basicURL);
         driver.get(pageUrl);

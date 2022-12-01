@@ -19,6 +19,8 @@ import com.oss.pages.physical.DeviceWizardPage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class NetworkInconsistenciesViewPage extends BasePage {
 
     private static final String APPLY_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionApplyId";
@@ -70,7 +72,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         TableInterface table = OldTable.createById(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
         table.callAction(ActionsContainer.EDIT_GROUP_ID, CHANGE_LOCATION_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
-        Wizard wizard = Wizard.createByComponentId(driver, new WebDriverWait(driver, 90), PHYSICAL_WIZARD_ID);
+        Wizard wizard = Wizard.createByComponentId(driver, new WebDriverWait(driver, Duration.ofSeconds(90)), PHYSICAL_WIZARD_ID);
         Input input = wizard.getComponent(DeviceWizardPage.DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME);
         input.setSingleStringValueContains(preciseLocation);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -124,7 +126,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Check notification about accepting inconsistencies")
     public String checkNotificationAfterApplyInconsistencies() {
-        return Notifications.create(driver, new WebDriverWait(driver, 150)).getNotificationMessage();
+        return Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage();
     }
 
     @Step("Check inconsistencies operation type for first object")

@@ -1,5 +1,6 @@
 package com.oss.pages.iaa.bigdata.dfe;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.openqa.selenium.WebDriver;
@@ -46,7 +47,7 @@ public class AggregatePage extends BaseDfePage {
 
     @Step("I Open Aggregates View")
     public static AggregatePage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
 
         openDfePage(driver, basicURL, wait, "aggregates");
         return new AggregatePage(driver, wait);

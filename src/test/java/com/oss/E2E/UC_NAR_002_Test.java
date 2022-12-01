@@ -1,6 +1,7 @@
 package com.oss.E2E;
 
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -558,7 +559,7 @@ public class UC_NAR_002_Test extends BaseTestCase {
     }
 
     private void checkMessage(String systemMessageLog) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(90)));
         Optional<SystemMessageContainer.Message> firstSystemMessage = systemMessage.getFirstMessage();
         softAssert.assertTrue(firstSystemMessage.isPresent(), systemMessageLog);
         if (firstSystemMessage.isPresent()) {

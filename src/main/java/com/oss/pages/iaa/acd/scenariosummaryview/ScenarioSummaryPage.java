@@ -1,5 +1,6 @@
 package com.oss.pages.iaa.acd.scenariosummaryview;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -38,7 +39,7 @@ public class ScenarioSummaryPage extends BaseACDPage {
 
     @Step("I Open {suffixURL} Scenario Summary View")
     public static ScenarioSummaryPage goToPage(WebDriver driver, String basicURL, String chosenView) {
-        WebDriverWait wait = new WebDriverWait(driver, 150);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(150));
         String pageUrl = String.format("%s/#/view/acd/%s", basicURL, chosenView);
         driver.get(pageUrl);
         DelayUtils.waitForPageToLoad(driver, wait);
