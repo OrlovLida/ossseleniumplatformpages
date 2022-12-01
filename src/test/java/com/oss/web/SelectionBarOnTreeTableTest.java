@@ -106,7 +106,7 @@ public class SelectionBarOnTreeTableTest extends BaseTestCase {
 
     @Test(priority = 6)
     public void unselectChildProcess() {
-        plannersViewPage.unselectObjectByRowId(2);
+        plannersViewPage.unselectObjectByAttributeValue(NAME_ID, PROCESS_NAME);
         treeTableWidget.showAllRows();
         String selectedObjectCount = treeTableWidget.getSelectedObjectCount();
         Assert.assertEquals(selectedObjectCount, ZERO_SELECTED);
