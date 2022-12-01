@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.iaa.servicedesk.BaseSearchPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
 
@@ -27,6 +28,8 @@ public class MessagesPage extends BaseSearchPage {
     private static final String MARK_AS_UNREAD_BUTTON_ID = "notification-mark-unread-action";
     private static final String ASSIGN_TO_OBJECT_BUTTON_ID = "notification-relink-action";
     private static final String ASSIGN_TO_OBJECT_WIZARD_ID = "card-content_notification-relink-wizard-view_prompt-card";
+    private static final String NOTIFICATION_WIZARD_ID = "notification-wizard";
+    private static final String WIZARD_CANCEL_BUTTON_ID = "wizard-cancel-button-notification-wizard";
 
     public MessagesPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -134,6 +137,22 @@ public class MessagesPage extends BaseSearchPage {
     private void clickTableButton(String buttonId) {
         getIssueTable().callAction(buttonId);
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Check if wizard is visible")
+    public boolean isNotificationWizardVisible() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        if (getNotificationWizard().isElementPresentById(WIZARD_CANCEL_BUTTON_ID)) {
+            log.info("Notification wizard is opened and cancel button is visible");
+            return true;
+        } else {
+            log.error("Notification wizard is not opened");
+            return false;
+        }
+    }
+
+    public Wizard getNotificationWizard() {
+        return Wizard.createByComponentId(driver, wait, NOTIFICATION_WIZARD_ID);
     }
 
     @Override

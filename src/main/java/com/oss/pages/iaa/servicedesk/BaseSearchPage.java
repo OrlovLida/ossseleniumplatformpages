@@ -121,6 +121,20 @@ public abstract class BaseSearchPage extends BaseSDPage {
         log.info("Clicking Refresh Button");
     }
 
+    @Step("Check if Tickets Table is visible")
+    public boolean checkTicketsTableVisibility() {
+        if (isIssueTableEmpty()) {
+            log.info("Tickets Table exists and is empty");
+            return true;
+        } else if (!isIssueTableEmpty()) {
+            log.info("Tickets Table exists and has some data");
+            return true;
+        } else {
+            log.info("Ticket table is not visible");
+            return false;
+        }
+    }
+
     public void exportFromSearchViewTable(String exportWizardId) {
         NotificationWrapperPage notificationWrapperPage = new NotificationWrapperPage(driver);
         notificationWrapperPage.openNotificationPanel();
