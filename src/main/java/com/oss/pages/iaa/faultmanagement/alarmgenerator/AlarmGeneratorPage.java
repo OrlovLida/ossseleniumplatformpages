@@ -14,6 +14,8 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class AlarmGeneratorPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(AlarmGeneratorPage.class);
@@ -36,7 +38,7 @@ public class AlarmGeneratorPage extends BasePage {
 
     @Step("I open Alarm Generator Page")
     public static AlarmGeneratorPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 90);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
         String webURL = String.format(HTTP_URL_TO_ALARM_GENERATOR, basicURL);
         driver.navigate().to(webURL);
         DelayUtils.waitForPageToLoad(driver, wait);

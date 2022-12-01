@@ -6,6 +6,7 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.oss.framework.components.data.Data;
@@ -62,7 +63,7 @@ public class InputsWizardTest extends BaseTestCase {
         testComponent(InputsWizardPage.COMBOBOX_ID, combobox);
     }
     
-    @Test
+    @Test()
     public void testCoordinates() {
         Coordinates coordinates = (Coordinates) inputsWizardPage
                 .getComponent(InputsWizardPage.COORDINATES_ID);

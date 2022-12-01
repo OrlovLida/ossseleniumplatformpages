@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.time.Duration;
 import java.util.Optional;
 
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -388,7 +389,7 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     }
 
     private SystemMessageInterface getSuccesSystemMessage(String systemMessageLog) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(90)));
         Optional<Message> firstSystemMessage = systemMessage.getFirstMessage();
         softAssert.assertTrue(firstSystemMessage.isPresent(), systemMessageLog);
         if (firstSystemMessage.isPresent()) {

@@ -1,5 +1,6 @@
 package com.oss.pages.iaa.servicedesk;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -39,7 +40,7 @@ public abstract class BaseSDPage extends BasePage {
     }
 
     public void openPage(WebDriver driver, String url) {
-        WebDriverWait wait = new WebDriverWait(driver, 150);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(150));
         driver.get(url);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Opening page: {}", url);

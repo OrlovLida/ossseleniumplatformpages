@@ -1,5 +1,6 @@
 package com.oss.pages.iaa.faultmanagement;
 
+import java.time.Duration;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
@@ -32,7 +33,7 @@ public class FMSMDashboardPage extends BasePage {
 
     @Step("I open chosen Dashboard")
     public static FMSMDashboardPage goToPage(WebDriver driver, String basicURL, String chosenDashboard) {
-        WebDriverWait wait = new WebDriverWait(driver, 90);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(90));
         String webURL = String.format(HTTP_URL_TO_FM_SM_DASHBOARD, basicURL, chosenDashboard);
         driver.navigate().to(webURL);
         DelayUtils.waitForPageToLoad(driver, wait);

@@ -1,5 +1,6 @@
 package com.oss.pages.platform;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -42,7 +43,7 @@ public class HierarchyViewPage extends BasePage {
 
     public static HierarchyViewPage openHierarchyViewPage(WebDriver driver, String basicURL, String type) {
         driver.get(String.format("%s/#/views/management/views/hierarchy-view/%s?perspective=LIVE", basicURL, type));
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
         DelayUtils.waitForPageToLoad(driver, wait);
         return new HierarchyViewPage(driver, wait);
     }

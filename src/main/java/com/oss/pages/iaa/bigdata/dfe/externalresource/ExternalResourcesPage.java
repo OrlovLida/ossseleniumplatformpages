@@ -9,6 +9,8 @@ import com.oss.pages.iaa.bigdata.dfe.BaseDfePage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class ExternalResourcesPage extends BaseDfePage {
 
     private static final String TABLE_ID = "ExternalResourcesTableWindowId";
@@ -27,7 +29,7 @@ public class ExternalResourcesPage extends BaseDfePage {
 
     @Step("Open External Resources View")
     public static ExternalResourcesPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(45));
 
         BaseDfePage.openDfePage(driver, basicURL, wait, "external-resources");
         return new ExternalResourcesPage(driver, wait);

@@ -1,5 +1,6 @@
 package com.oss.pages.iaa.acd.settingsview;
 
+import java.time.Duration;
 import java.util.HashMap;
 
 import org.openqa.selenium.WebDriver;
@@ -25,7 +26,7 @@ public class SubsystemsHealthPage extends BaseACDPage {
 
     @Step("I go to Settings View")
     public static SubsystemsHealthPage goToSettingsView(WebDriver driver, String settingsViewSuffixURL, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 150);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(150));
 
         String pageUrl = String.format(settingsViewSuffixURL, basicURL);
         driver.get(pageUrl);

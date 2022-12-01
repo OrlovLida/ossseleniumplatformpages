@@ -1,5 +1,6 @@
 package com.oss.pages.platform;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -63,7 +64,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Open Inventory View")
     public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String type) {
         driver.get(String.format("%s/#/views/management/views/inventory-view/%s?perspective=LIVE", basicURL, type));
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(45));
         DelayUtils.waitForPageToLoad(driver, wait);
         return new NewInventoryViewPage(driver, wait);
     }

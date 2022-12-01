@@ -18,6 +18,7 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.List;
@@ -55,7 +56,7 @@ public class PlannersViewPage extends BasePage {
 
     public static PlannersViewPage goToPlannersViewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/views/planning/planners-view?perspective=LIVE", basicURL));
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
         DelayUtils.waitForPageToLoad(driver, wait);
         return new PlannersViewPage(driver, wait);
     }

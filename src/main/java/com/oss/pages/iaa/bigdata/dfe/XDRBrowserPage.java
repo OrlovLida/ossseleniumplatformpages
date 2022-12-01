@@ -13,6 +13,8 @@ import com.oss.framework.widgets.table.TableWidget;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static com.oss.framework.utils.DelayUtils.sleep;
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
@@ -31,7 +33,7 @@ public class XDRBrowserPage extends BaseDfePage {
 
     @Step("I open XDR Browser View")
     public static XDRBrowserPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(45));
 
         openDfePage(driver, basicURL, wait, XDR_BROWSER_VIEW_URL);
         return new XDRBrowserPage(driver, wait);
