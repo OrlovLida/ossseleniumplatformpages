@@ -184,12 +184,7 @@
         <dependency>
             <groupId>com.comarch.oss.planning</groupId>
             <artifactId>planning-api</artifactId>
-            <version>7.3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.comarch.oss.planning</groupId>
-            <artifactId>validation-results-api</artifactId>
-            <version>7.3.0</version>
+            <version>6.9.9.Final</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.guava</groupId>
