@@ -116,6 +116,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     private final static String INFRASTRUCTURE_MANAGEMENT = "Infrastructure Management";
     private final static String CREATE_INFRASTRUCTURE = "Create Infrastructure";
     private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
+    private final static String HIERARCHY_VIEW_NOT_EMPTY_EXCEPTION = "Hierarchy view still contains some data.";
     private String HIERARCHY_VIEW_URL = "";
     private SoftAssert softAssert;
 
@@ -746,7 +747,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         clickConfirmationBoxByLabel();//TODO po OSSPHY-56052 zmienić na id
         checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete location", "location delete"));
         waitForPageToLoad();
-        Assert.assertTrue(hierarchyViewPage.hasNoData());
+        Assert.assertTrue(hierarchyViewPage.hasNoData(), HIERARCHY_VIEW_NOT_EMPTY_EXCEPTION);
     }
 
     @Test(priority = 46, description = "Checking system message summary")
