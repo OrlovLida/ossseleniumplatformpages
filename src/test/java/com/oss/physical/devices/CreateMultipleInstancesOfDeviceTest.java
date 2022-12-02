@@ -444,7 +444,6 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
     }
 
     private void selectProductPropertyPanelConfiguration() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.setPropertyPanelConfiguration(PRODUCT_PROPERTY_PANEL_CONFIGURATION);
     }
 

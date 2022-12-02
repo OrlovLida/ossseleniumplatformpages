@@ -117,6 +117,7 @@ public class HierarchyViewPage extends BasePage {
 
     @Step("Select configuration for Property Panel")
     public void setPropertyPanelConfiguration(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
         PropertyPanel.createById(driver, wait, PROPERTY_PANEL_WIDGET_ID)
                 .callAction(SETTINGS_ID, CHOOSE_PROPERTY_CONFIG_ID);
         ChooseConfigurationWizard.create(driver, wait)
