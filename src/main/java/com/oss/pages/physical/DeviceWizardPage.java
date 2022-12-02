@@ -249,6 +249,48 @@ public class DeviceWizardPage extends BasePage {
         getDeviceWizard().setComponentValue(devicePowerCapacityDataAttributeName, powerCapacity);
     }
 
+    @Step("Set MAC")
+    public void setMac(String mac) {
+        String deviceMACDataAttributeName =
+                DEVICE_TYPE_PATTERN + getEquipmentType() + "___MAC";
+        getDeviceWizard().setComponentValue(deviceMACDataAttributeName, mac);
+    }
+
+    @Step("Set Mechanical Tilt")
+    public void setMechanicalTilt(String mechanicalTilt) {
+        String deviceMechanicalTiltDataAttributeName =
+                DEVICE_TYPE_PATTERN + getEquipmentType() + "___ElevationAngle";
+        getDeviceWizard().setComponentValue(deviceMechanicalTiltDataAttributeName, mechanicalTilt);
+    }
+
+    @Step("Set Azimuth")
+    public void setAzimuth(String azimuth) {
+        String deviceAzimuthDataAttributeName =
+                DEVICE_TYPE_PATTERN + getEquipmentType() + "___AzimuthAngle";
+        getDeviceWizard().setComponentValue(deviceAzimuthDataAttributeName, azimuth);
+    }
+
+    @Step("Set Height")
+    public void setHeight(String height) {
+        String deviceHeightDataAttributeName =
+                DEVICE_TYPE_PATTERN + getEquipmentType() + "___Height";
+        getDeviceWizard().setComponentValue(deviceHeightDataAttributeName, height);
+    }
+
+    @Step("Set Side Tilt")
+    public void setSideTilt(String sideTilt) {
+        String deviceSideTiltDataAttributeName =
+                DEVICE_TYPE_PATTERN + getEquipmentType() + "___SideAngle";
+        getDeviceWizard().setComponentValue(deviceSideTiltDataAttributeName, sideTilt);
+    }
+
+    @Step("Set Mounting Type")
+    public void setMountingType(String mountingType) {
+        String deviceMountingTypeDataAttributeName =
+                DEVICE_TYPE_PATTERN + getEquipmentType() + "___MountingType";
+        getDeviceWizard().setComponentValue(deviceMountingTypeDataAttributeName, mountingType);
+    }
+
     @Step("Click Cancel button")
     public void cancel() {
         getDeviceWizard().clickCancel();
