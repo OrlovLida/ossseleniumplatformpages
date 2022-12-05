@@ -40,7 +40,7 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     private static final String DESCRIPTION_LABEL = "Description";
     private static final String LEAD_TIME_LABEL = "Lead time (days)";
     private static final String MANUAL_COMPLETION_LABEL = "Manual completion";
-    private static final String CHECK_MARK_ICON_NAME = "fa-check";
+    private static final String CHECK_MARK_ICON_NAME = "commonIcon-CHECK";
     private static final String SECOND_TASK_NAME = "Second Task";
     private static final String MISSING_NAME_EXCEPTION = "Missing Name";
     private static final String DOMAIN = "Inventory Processes";

@@ -55,6 +55,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
     private static final String NAME_ATTRIBUTE = "Name";
     private static final String SERIAL_NUMBER_ATTRIBUTE = "Serial Number";
     private static final String HOSTNAME_ATTRIBUTE = "Hostname";
+    private static final String LOCATION_ATTRIBUTE = "Location";
     private static final String TEST_LOCATION_TYPE = "Building";
     private static final String NAME_FIELD_IN_WIZARD_ID = "name";
     private static final String HOSTNAME_FIELD_IN_WIZARD_ID = "hostname";
@@ -65,6 +66,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
     private static final String DEVICE_WIZARD_SECOND_STEP_TITLE = "2. Locations";
     private static final String DEVICE_WIZARD_THIRD_STEP_TITLE = "3. Specific Attributes";
     private static final String ADDRESS_TYPE = "Address";
+    private static final String PRODUCT_PROPERTY_PANEL_CONFIGURATION = "85d9f1c4-3bfc-4061-b5bc-751285dd4539";
 
     private static final String DEVICES_HAVE_BEEN_CREATED_MESSAGE = "Devices have been created successfully";
     private static final String VALUE_TOO_LARGE_MESSAGE = "Value too large. Maximum: 20";
@@ -79,13 +81,13 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
     private static final String SPECIFIC_ATTRIBUTES_TABLE_ID = "ExtendedList-AttributesTable";
     private static final String PROPERTY_PANEL_WIDGET_ID = "PropertyPanelWidget";
 
-    private static final String ID_PATTERN = "id=[\\d]+";
-    private static final Pattern PATTERN = Pattern.compile(ID_PATTERN);
+    private static final Pattern ID_PATTERN = Pattern.compile("id=[\\d]+");
 
     private DeviceWizardPage deviceWizard;
     private HierarchyViewPage hierarchyViewPage;
     private SoftAssert softAssert;
     private int initialNumberOfSteps;
+    private String timestamp;
     private String testLocationId;
     private HashMap<String, String> attributesLabelToValueMap;
     private List<String> availableNameValues;
@@ -107,6 +109,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         availableNameValues = new LinkedList<>(Arrays.asList("testName1", "testName2", "testName3", "testName4", "testName5"));
         availableSerialNumberValues = new LinkedList<>(Arrays.asList("testSerialNumber1", "testSerialNumber2", "testSerialNumber3", "testSerialNumber4", "testSerialNumber5"));
         availableHostnameValues = new LinkedList<>(Arrays.asList("testHostname1", "testHostname2", "testHostname3", "testHostname4", "testHostname5"));
+        timestamp = getTimestamp();
         testLocationId = createPhysicalLocation();
         setLivePerspective();
     }
@@ -216,7 +219,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
     private void setLivePerspective() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
-        if(!perspectiveChooser.getCurrentPerspective().equals(LIVE_PERSPECTIVE_TEXT)) {
+        if (!perspectiveChooser.getCurrentPerspective().equals(LIVE_PERSPECTIVE_TEXT)) {
             perspectiveChooser.setLivePerspective();
         }
     }
@@ -282,6 +285,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         validateAttributeValue(NAME_ATTRIBUTE, deviceId);
         validateAttributeValue(SERIAL_NUMBER_ATTRIBUTE, deviceId);
         validateAttributeValue(HOSTNAME_ATTRIBUTE, deviceId);
+        validateLocationAttributeValue(deviceId);
         validateIndex(deviceId);
     }
 
@@ -327,6 +331,15 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         }
     }
 
+    private void validateLocationAttributeValue(String deviceId) {
+        String attributeValue = getAttributeValue(LOCATION_ATTRIBUTE);
+        if (attributeValue != null) {
+            softAssert.assertEquals(attributeValue, getLocationName(), String.format(WRONG_VALUE_FOR_ATTRIBUTE_VALIDATION, LOCATION_ATTRIBUTE, deviceId));
+        } else {
+            softAssert.fail(String.format(ATTRIBUTE_DOES_NOT_EXIST_ON_PROPERTY_PANEL_VALIDATION, LOCATION_ATTRIBUTE, deviceId));
+        }
+    }
+
     private void validateIndex(String deviceId) {
         String nameValue = getAttributeValue(NAME_ATTRIBUTE);
         String serialNumberValue = getAttributeValue(SERIAL_NUMBER_ATTRIBUTE);
@@ -342,7 +355,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
     }
 
     private static String getLastCharacterFromString(String string) {
-        return string.substring(string.length()-1);
+        return string.substring(string.length() - 1);
     }
 
     @Step("Fill Name, Hostname and Serial Number for all devices in the last step of wizard")
@@ -351,7 +364,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         Assert.assertEquals(specificAttributesList.size(), 5, SPECIFIC_ATTRIBUTES_TABLE_HAS_WRONG_SIZE_VALIDATION);
 
         for (int index = 0; index < specificAttributesList.size(); index++) {
-            deviceWizard.setDeviceNameInList(index, availableNameValues.get(index) + "_" + getTimestamp());
+            deviceWizard.setDeviceNameInList(index, availableNameValues.get(index) + "_" + timestamp);
             deviceWizard.setDeviceHostnameInList(index, availableHostnameValues.get(index));
             deviceWizard.setDeviceSerialNumberInList(index, availableSerialNumberValues.get(index));
         }
@@ -387,7 +400,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
 
     private String createPhysicalLocation() {
         Long addressId = planningRepository.getFirstObjectWithType(ADDRESS_TYPE);
-        return locationInventoryRepository.createLocation("testBuilding_" + getTimestamp(), TEST_LOCATION_TYPE, addressId);
+        return locationInventoryRepository.createLocation(getLocationName(), TEST_LOCATION_TYPE, addressId);
     }
 
     private Optional<SystemMessageContainer.Message> getMessageWithText() {
@@ -399,8 +412,12 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
     }
 
     private String getTimestamp() {
-       long timestamp = new Timestamp(System.currentTimeMillis()).getTime();
-       return Long.toString(timestamp);
+        long timestamp = new Timestamp(System.currentTimeMillis()).getTime();
+        return Long.toString(timestamp);
+    }
+
+    private String getLocationName() {
+        return "testBuilding_" + timestamp;
     }
 
     private List<String> getCreatedDevicesIds() {
@@ -411,6 +428,7 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
 
     private void performSelectionWithValidation(String deviceId) {
         selectDeviceOnHierarchyView(deviceId);
+        selectProductPropertyPanelConfiguration();
         loadPropertyPanelAttributesAndValues();
         checkDeviceAttributesAndValues(deviceId);
         selectDeviceOnHierarchyView(deviceId);
@@ -425,9 +443,13 @@ public class CreateMultipleInstancesOfDeviceTest extends BaseTestCase {
         return physicalInventoryRepository.getResourceHierarchy("PhysicalDevice", deviceId, "Root");
     }
 
+    private void selectProductPropertyPanelConfiguration() {
+        hierarchyViewPage.setPropertyPanelConfiguration(PRODUCT_PROPERTY_PANEL_CONFIGURATION);
+    }
+
     private static Set<Long> getIdFromString(String string) {
         Set<Long> ids = new HashSet<>();
-        Matcher matcher = PATTERN.matcher(string);
+        Matcher matcher = ID_PATTERN.matcher(string);
         while (matcher.find()) {
             String stringId = matcher.group();
             Long id = Long.parseLong(stringId.split("=")[1]);

@@ -30,7 +30,9 @@ public abstract class BaseSearchPage extends BaseSDPage {
     private static final String EXPORT_BUTTON_ID = "exportButton";
     private static final String REFRESH_BUTTON_ID = "refreshButton";
     private static final String EXPORT_WIZARD_ID = "exportgui-wizard-widget";
+    private static final String TABLE_ATTRIBUTE_TYPE = "ticketOut.issueOut.type";
     private static final int MAX_SEARCH_TIME_6_HOURS = 360;
+    public static final String ID_ATTRIBUTE_SEVERITY = "ticketOut.issueOut.severity";
 
     protected BaseSearchPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -61,6 +63,11 @@ public abstract class BaseSearchPage extends BaseSDPage {
     public String getIdForNthTicketInTable(int n) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return getAttributeFromTable(n, ID_ATTRIBUTE);
+    }
+
+    public String getSeverityForNthTicketInTable(int n){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getAttributeFromTable(n, ID_ATTRIBUTE_SEVERITY);
     }
 
     private String getAttributeFromTable(int index, String attributeName) {
@@ -133,6 +140,19 @@ public abstract class BaseSearchPage extends BaseSDPage {
             log.info("Ticket table is not visible");
             return false;
         }
+    }
+
+    @Step("I get Id for first Ticket excluding {excludedTicketType} type")
+    public String getIdOfFirstFilteredTicket(String excludedTicketType) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        int rowsNumber = getIssueTable().countRows();
+        for (int row = 0; row < rowsNumber; row++) {
+            if (!getAttributeFromTable(row, TABLE_ATTRIBUTE_TYPE).equals(excludedTicketType)) {
+                return getIdForNthTicketInTable(row);
+            }
+        }
+        log.info("Only {} tickets are available on the list", excludedTicketType);
+        return getIdForNthTicketInTable(0);
     }
 
     public void exportFromSearchViewTable(String exportWizardId) {

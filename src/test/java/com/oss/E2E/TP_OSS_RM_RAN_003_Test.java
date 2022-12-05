@@ -133,7 +133,8 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         softAssert.assertEquals(messages.size(), 1, systemMessageLog);
         softAssert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS, systemMessageLog);
-        softAssert.assertTrue((messages.get(0).getText()).contains(text), systemMessageLog);
+        String message = messages.get(0).getText();
+        softAssert.assertTrue(message.contains(text), systemMessageLog + ". " + message);
         systemMessage.close();
     }
 

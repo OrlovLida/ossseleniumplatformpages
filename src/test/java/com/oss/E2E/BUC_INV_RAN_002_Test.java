@@ -329,8 +329,9 @@ public class BUC_INV_RAN_002_Test extends BaseTestCase {
     }
 
     private void checkMessageContainsText(String message, String systemMessageLog) {
-        softAssert.assertTrue((getFirstMessage().getText())
-                .contains(message), systemMessageLog);
+        String actualMessage = getFirstMessage().getText();
+        softAssert.assertTrue(actualMessage
+                .contains(message), systemMessageLog + ". " + actualMessage);
     }
 
     private void checkMessageText(String systemMessageLog) {

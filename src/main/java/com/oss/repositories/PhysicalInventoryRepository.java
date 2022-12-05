@@ -1,5 +1,6 @@
 package com.oss.repositories;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,6 +14,7 @@ import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
 import com.comarch.oss.physicalinventory.api.dto.SearchDTO;
 import com.comarch.oss.resourcehierarchy.api.dto.ResourceHierarchyDTO;
 import com.oss.services.PhysicalInventoryClient;
+import com.oss.transport.infrastructure.planning.PlanningContext;
 import com.oss.untils.Environment;
 
 public class PhysicalInventoryRepository {
@@ -95,6 +97,11 @@ public class PhysicalInventoryRepository {
 
     public void deleteDevice(String deviceId) {
         client.deleteDevice(deviceId);
+    }
+
+    public void deleteDeviceV3(Collection<String> deviceIds,
+                               PlanningContext context) {
+        client.deleteDeviceV3(deviceIds, context);
     }
 
     public Long getDeviceId(String locationId, String deviceName) {

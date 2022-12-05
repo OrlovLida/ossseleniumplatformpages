@@ -15,9 +15,11 @@ import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.components.tree.TreeComponent.Node;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
+import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidgetV2;
 import com.oss.pages.BasePage;
+import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard.Field;
 
@@ -28,6 +30,9 @@ public class HierarchyViewPage extends BasePage {
     public static final String OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID = "HierarchyView";
     private static final String BOTTOM_TABS_WIDGET_ID = "BottomDetailCard";
     private static final String HIERARCHY_VIEW_TREE_WIDGET_ID = "HierarchyTreeWidget";
+    private static final String PROPERTY_PANEL_WIDGET_ID = "PropertyPanelWidget";
+    private static final String CHOOSE_PROPERTY_CONFIG_ID = "chooseConfiguration";
+    private static final String SETTINGS_ID = "frameworkCustomButtonsSecondaryGroup";
 
     private HierarchyViewPage(WebDriver driver) {
         super(driver);
@@ -108,6 +113,16 @@ public class HierarchyViewPage extends BasePage {
         ButtonPanel.create(driver, wait).clickButton("ButtonSaveViewConfig");
         SaveConfigurationWizard.create(driver, wait).saveAsNew(configurationName, fields);
         return this;
+    }
+
+    @Step("Select configuration for Property Panel")
+    public void setPropertyPanelConfiguration(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        PropertyPanel.createById(driver, wait, PROPERTY_PANEL_WIDGET_ID)
+                .callAction(SETTINGS_ID, CHOOSE_PROPERTY_CONFIG_ID);
+        ChooseConfigurationWizard.create(driver, wait)
+                .chooseConfiguration(configurationName)
+                .apply();
     }
 
     @Step("Select First Object on Tree Widget")
