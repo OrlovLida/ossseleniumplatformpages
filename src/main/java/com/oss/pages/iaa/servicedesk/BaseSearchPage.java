@@ -32,6 +32,7 @@ public abstract class BaseSearchPage extends BaseSDPage {
     private static final String EXPORT_WIZARD_ID = "exportgui-wizard-widget";
     private static final String TABLE_ATTRIBUTE_TYPE = "ticketOut.issueOut.type";
     private static final int MAX_SEARCH_TIME_6_HOURS = 360;
+    public static final String ID_ATTRIBUTE_SEVERITY = "ticketOut.issueOut.severity";
 
     protected BaseSearchPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -62,6 +63,11 @@ public abstract class BaseSearchPage extends BaseSDPage {
     public String getIdForNthTicketInTable(int n) {
         DelayUtils.waitForPageToLoad(driver, wait);
         return getAttributeFromTable(n, ID_ATTRIBUTE);
+    }
+
+    public String getSeverityForNthTicketInTable(int n){
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getAttributeFromTable(n, ID_ATTRIBUTE_SEVERITY);
     }
 
     private String getAttributeFromTable(int index, String attributeName) {
