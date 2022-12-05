@@ -23,12 +23,13 @@ import static com.oss.web.NewBookmarksTest.BUTTON_SAVE_BOOKMARK;
 
 public class BookmarksTest extends BaseTestCase {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookmarksTest.class);
+
     private static final String TAB_TOOLS_ID = "tab_tab_tools";
     private static final String BOOKMARKS_PAGE = "Bookmarks";
     private static final String CATEGORY_NAME = "Selenium Category";
     private static final String DESCRIPTION_CATEGORY = "Selenium Test";
     private static final String BOOKMARK_NAME = "SeleniumBookmark";
-    private static final Logger LOGGER = LoggerFactory.getLogger(BookmarksTest.class);
     private static final String CATEGORY = "Incident Management";
     private static final String VIEW_NAME = "Tickets Search";
     private static final String BOOKMARK_DESCRIPTION = "Selenium test";
@@ -134,5 +135,4 @@ public class BookmarksTest extends BaseTestCase {
             Assert.fail(String.format("Error Page is shown on %s page.", viewName));
         }
     }
-
 }
