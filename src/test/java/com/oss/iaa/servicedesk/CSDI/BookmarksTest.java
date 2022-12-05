@@ -18,9 +18,6 @@ import com.oss.pages.platform.bookmarksanddashboards.bookmarks.NewBookmarksPage;
 
 import io.qameta.allure.Description;
 
-import static com.oss.pages.platform.bookmarksanddashboards.bookmarks.NewBookmarksPage.MANAGEMENT_VIEW_CONTAINER_TABSCARD;
-import static com.oss.web.NewBookmarksTest.BUTTON_SAVE_BOOKMARK;
-
 public class BookmarksTest extends BaseTestCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BookmarksTest.class);
@@ -37,6 +34,9 @@ public class BookmarksTest extends BaseTestCase {
     private static final String UPDATED_BOOKMARK_DESCRIPTION = "Selenium test updated";
     private static final String SEVERITY_COMBOBOX_ID = "ticketOut.issueOut.severity";
     private static final String SEVERITY_TYPE = "Minor";
+    private static final String BUTTON_SAVE_BOOKMARK = "ButtonSaveBookmark";
+    private static final String MANAGEMENT_VIEW_CONTAINER_TABSCARD = "management-view__container__tabscard";
+
     NewBookmarksPage bookmarksPage;
 
     @BeforeMethod
