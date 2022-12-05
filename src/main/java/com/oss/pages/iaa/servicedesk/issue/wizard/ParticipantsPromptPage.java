@@ -10,6 +10,8 @@ public class ParticipantsPromptPage extends SDWizardPage {
     private static final String PARTICIPANT_FIRST_NAME_ID = "firstName";
     private static final String PARTICIPANT_SURNAME_ID = "surname";
     private static final String PARTICIPANT_ROLE_ID = "role";
+    private static final String PARTICIPANT_EMAIL_ID = "_email";
+    private static final String PARTICIPANT_NAME_ID = "name";
     private static final String ADD_PARTICIPANT_ID = "AddParticipantButtonId";
     private static final String SAVE_BUTTON_ID = "EditParticipantButtonId";
     private static final String SEARCH_PARTICIPANT_BOX_ID = "search_participant";
@@ -21,6 +23,12 @@ public class ParticipantsPromptPage extends SDWizardPage {
     @Step("Set Participant Name")
     public ParticipantsPromptPage setParticipantName(String participantName) {
         insertValueToComponent(participantName, PARTICIPANT_FIRST_NAME_ID);
+        return this;
+    }
+
+    @Step("Set Participant Name")
+    public ParticipantsPromptPage setParticipantNameDTAG(String participantName) {
+        insertValueToComponent(participantName, PARTICIPANT_NAME_ID);
         return this;
     }
 
@@ -39,6 +47,12 @@ public class ParticipantsPromptPage extends SDWizardPage {
     @Step("Search for existing participant")
     public ParticipantsPromptPage searchParticipant(String participantName) {
         insertValueContainsToComponent(participantName, SEARCH_PARTICIPANT_BOX_ID);
+        return this;
+    }
+
+    @Step("Set Participant Email")
+    public ParticipantsPromptPage setParticipantEmail(String participantEmail) {
+        insertValueContainsToComponent(participantEmail, PARTICIPANT_EMAIL_ID);
         return this;
     }
 

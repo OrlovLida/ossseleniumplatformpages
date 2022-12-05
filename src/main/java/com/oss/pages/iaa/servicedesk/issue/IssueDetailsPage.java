@@ -194,7 +194,7 @@ public class IssueDetailsPage extends BaseSDPage {
     }
 
     public DescriptionTab selectDescriptionTab() {
-        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, DESCRIPTION_TAB_ID, DESCRIPTION_TAB_LABEL);
+        selectTabFromTablesWindow(DESCRIPTION_TAB_ID, DESCRIPTION_TAB_LABEL);
         log.info("Selecting Description Tab");
 
         return new DescriptionTab(driver, wait);
@@ -304,6 +304,26 @@ public class IssueDetailsPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Check Same MO TT Table");
         return !OldTable.createById(driver, wait, SAME_MO_TT_TABLE_ID).hasNoData();
+    }
+
+    @Step("I check if {tableId} table exists")
+    public boolean checkIfTableExists(String tableId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("I check if {} table exists", tableId);
+        if (!getOldTable(tableId).hasNoData()) {
+            log.info("Table exists and has some data");
+            return true;
+        } else if (getOldTable(tableId).hasNoData()) {
+            log.info("Table exists and it's empty");
+            return true;
+        } else {
+            log.error("Table doesn't exist");
+            return false;
+        }
+    }
+
+    public OldTable getOldTable(String tableId) {
+        return OldTable.createById(driver, wait, tableId);
     }
 
     protected OldActionsContainer getDetailsViewOldActionsContainer() {
