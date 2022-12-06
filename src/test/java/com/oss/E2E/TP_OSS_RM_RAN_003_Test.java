@@ -11,8 +11,8 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.ProcessOverviewPage;
-import com.oss.pages.bpm.TasksPageV2;
+import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
+import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
@@ -133,7 +133,8 @@ public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         softAssert.assertEquals(messages.size(), 1, systemMessageLog);
         softAssert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS, systemMessageLog);
-        softAssert.assertTrue((messages.get(0).getText()).contains(text), systemMessageLog);
+        String message = messages.get(0).getText();
+        softAssert.assertTrue(message.contains(text), systemMessageLog + ". " + message);
         systemMessage.close();
     }
 

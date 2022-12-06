@@ -29,7 +29,8 @@ public class ResourceCatalog_Smoke_Test extends BaseTestCase {
     private static final String LOGICAL_FUNCTION = "Logical Function";
     private static final String TERMINATION_POINT = "Termination Point";
     private static final String NAME_ATTRIBUTE = "name";
-    private static final String LOG_PATTENR = "Checking if specification with name %s exists.";
+    private static final String LOG_PATTERN = "Checking if specification with name %s exists.";
+    private static final String ERROR_PATTERN = "Specification with type %s is not present.";
 
     @Test(priority = 1, description = "Open Resource Catalog view")
     @Description("Open Resource Catalog view")
@@ -57,8 +58,8 @@ public class ResourceCatalog_Smoke_Test extends BaseTestCase {
     @Test(dataProvider = "types", priority = 3, description = "Search for specifications and check if it exists")
     @Description("Search for specifications and check if it exists")
     public void searchSpecification(String type) {
-        LOGGER.info(String.format(LOG_PATTENR, type));
-        Assert.assertTrue(checkSpecification(type));
+        LOGGER.info(String.format(LOG_PATTERN, type));
+        Assert.assertTrue(checkSpecification(type), String.format(ERROR_PATTERN, type));
     }
 
     @Step("Checking {specificationName} specification.")

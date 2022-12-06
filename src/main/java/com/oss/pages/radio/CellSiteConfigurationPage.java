@@ -40,7 +40,6 @@ public class CellSiteConfigurationPage extends BasePage {
     private static final String TYPE_5G = "5G";
     private static final String DEVICES_TAB = "Devices";
     private static final String BASE_STATIONS_TAB = "Base Stations";
-    private static final String CREATE_DEVICE_ACTION_ID = "CreateDeviceOnLocationWizardAction";
     private static final String HOST_ON_DEVICE_ACTION_ID = "hostOnLogicalFunction";
     private static final String HOST_ON_ANTENNA_ARRAY_ACTION_ID = "hostOnAntennaArray";
     private static final String HOSTING_TAB_LABEL = "Hosting";
@@ -82,7 +81,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Filter and select {objectName} row")
     public CellSiteConfigurationPage filterObject(String columnName, String objectName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         getTabTable().searchByAttributeWithLabel(columnName, Input.ComponentType.TEXT_FIELD, objectName);
         selectRowByAttributeValueWithLabel(columnName, objectName);
         return this;
@@ -90,7 +89,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Clear {columnName}")
     public CellSiteConfigurationPage clearColumnFilter(String columnName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         getTabTable().clearColumnValue(columnName);
         return this;
     }
@@ -217,7 +216,7 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     public boolean hasNoData() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         return getTabTable().hasNoData();
     }
 
@@ -258,8 +257,8 @@ public class CellSiteConfigurationPage extends BasePage {
     }
 
     @Step("Create {amountOfCells} Cells 5G by bulk wizard with Carrier = {carrier}")
-    public void createCell5GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID) {
-        openCell5GBulkWizard().createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID);
+    public void createCell5GBulk(int amountOfCells, String carrier, String[] cellNames, int[] cellsID, String[] pci, String[] rsi) {
+        openCell5GBulkWizard().createCell5GBulkWizardWithDefaultValues(amountOfCells, carrier, cellNames, cellsID, pci, rsi);
     }
 
     @Step("Create Base Band Unit with following attributes: Type = {bbuEquipmentType}, Name = {bbuName}, Model = {baseBandUnitModel}, Location = {locationName}")
@@ -267,7 +266,7 @@ public class CellSiteConfigurationPage extends BasePage {
         waitForPageToLoad();
         selectTab(DEVICES_TAB);
         waitForPageToLoad();
-        clickPlusIconAndSelectOptionById(CREATE_DEVICE_ACTION_ID);
+        getTabTable().callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_PHYSICAL_DEVICE_ACTION_ID);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         waitForPageToLoad();
         deviceWizardPage.setEquipmentType(bbuEquipmentType);
@@ -285,7 +284,7 @@ public class CellSiteConfigurationPage extends BasePage {
 
     @Step("Create Radio Unit with following attributes: Type = {radioUnitEquipmentType}, Name = {radioUnitName}, Model = {radioUnitModel}, Location = {locationName}")
     public void createRadioUnit(String radioUnitEquipmentType, String radioUnitModel, String radioUnitName, String locationName) {
-        clickPlusIconAndSelectOptionById(CREATE_DEVICE_ACTION_ID);
+        getTabTable().callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_PHYSICAL_DEVICE_ACTION_ID);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         waitForPageToLoad();
         deviceWizardPage.setEquipmentType(radioUnitEquipmentType);
@@ -322,7 +321,7 @@ public class CellSiteConfigurationPage extends BasePage {
     public void createHostingOnDevice(String deviceName, boolean onlyCompatible) {
         selectTab(HOSTING_TAB_LABEL);
         waitForPageToLoad();
-        useTableContextActionById(HOST_ON_DEVICE_ACTION_ID);
+        clickPlusIconAndSelectOptionById(HOST_ON_DEVICE_ACTION_ID);
         HostingWizardPage hostOnDeviceWizard = new HostingWizardPage(driver);
         waitForPageToLoad();
         hostOnDeviceWizard.onlyCompatible(String.valueOf(onlyCompatible));

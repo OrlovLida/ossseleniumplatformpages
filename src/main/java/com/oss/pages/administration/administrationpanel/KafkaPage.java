@@ -7,6 +7,8 @@ import com.oss.framework.utils.DelayUtils;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static com.oss.serviceClient.ServicesClient.BASIC_URL;
 
 public class KafkaPage extends BaseAdminPanelPage {
@@ -27,7 +29,7 @@ public class KafkaPage extends BaseAdminPanelPage {
     }
 
     public static KafkaPage goToKafkaPage(WebDriver driver) {
-        WebDriverWait wait = new WebDriverWait(driver, 90);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
         goToPage(driver, wait, KAFKA_PAGE_URL);
         return new KafkaPage(driver, wait);
     }

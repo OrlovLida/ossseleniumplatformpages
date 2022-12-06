@@ -9,6 +9,8 @@ import com.oss.pages.iaa.bigdata.dfe.BaseDfePage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class ProblemsPage extends BaseDfePage {
@@ -30,7 +32,7 @@ public class ProblemsPage extends BaseDfePage {
 
     @Step("I Open Problems View")
     public static ProblemsPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
 
         BaseDfePage.openDfePage(driver, basicURL, wait, "problems");
         return new ProblemsPage(driver, wait);

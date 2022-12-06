@@ -9,11 +9,11 @@ import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.ProcessOverviewPage;
+import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.forecasts.Forecast;
 import com.oss.pages.bpm.milestones.Milestone;
-import com.oss.pages.bpm.processinstances.ProcessCreationWizardProperties;
-import com.oss.pages.bpm.processinstances.ScheduleProperties;
+import com.oss.pages.bpm.processinstances.creation.ProcessCreationWizardProperties;
+import com.oss.pages.bpm.processinstances.creation.ScheduleProperties;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.assertj.core.api.Assertions;
@@ -29,7 +29,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static com.oss.pages.bpm.ProcessOverviewPage.NAME_LABEL;
+import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NAME_LABEL;
 
 
 @Listeners({TestListener.class})
@@ -83,6 +83,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
             .endPlusDaysShortWay(plus5Days)
             .endPlusDaysLongWay(plus10Days)
             .longWorkWeakLongWay(true)
+            .longWorkWeakShortWay(false)
             .build();
 
     private final List<Forecast> processForecasts = Lists.newArrayList(
@@ -91,6 +92,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
                     .startPlusDays(0L)
                     .endPlusDaysShortWay(plus5Days)
                     .longWorkWeakShortWay(true)
+                    .longWorkWeakLongWay(false)
                     .build(),
 
             Forecast.builder()
@@ -98,6 +100,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
                     .startPlusDays(0L)
                     .endPlusDaysLongWay(plus10Days)
                     .longWorkWeakLongWay(true)
+                    .longWorkWeakShortWay(false)
                     .build());
 
     private void waitForPageToLoad() {

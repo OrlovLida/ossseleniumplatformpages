@@ -14,8 +14,8 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
-import com.oss.pages.bpm.PlannersViewPage;
-import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.PlannersViewPage;
+import com.oss.pages.bpm.tasks.TasksPage;
 
 import io.qameta.allure.Description;
 

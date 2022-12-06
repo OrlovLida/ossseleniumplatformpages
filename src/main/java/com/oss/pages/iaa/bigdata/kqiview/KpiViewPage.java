@@ -18,6 +18,8 @@ import com.oss.untils.FileDownload;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class KpiViewPage extends KpiViewSetupPage {
@@ -47,7 +49,7 @@ public class KpiViewPage extends KpiViewSetupPage {
 
     @Step("I Open KPI View")
     public static KpiViewPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 90);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(90));
 
         String pageUrl = String.format("%s/#/view/indicators-view/indicators-view", basicURL);
         driver.get(pageUrl);

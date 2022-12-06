@@ -1,5 +1,6 @@
 package com.oss.pages.iaa.bigdata.dfe.datasource;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.openqa.selenium.WebDriver;
@@ -58,7 +59,7 @@ public class DataSourcePage extends BaseDfePage {
 
     @Step("Open Data Source View")
     public static DataSourcePage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
 
         BaseDfePage.openDfePage(driver, basicURL, wait, "datasource");
         return new DataSourcePage(driver, wait);
@@ -214,6 +215,7 @@ public class DataSourcePage extends BaseDfePage {
 
     @Step("Check if logs table is empty")
     public boolean isLogsTableEmpty() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createById(driver, wait, LOG_TAB_TABLE_ID).hasNoData();
     }
 

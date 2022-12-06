@@ -9,6 +9,8 @@ import com.oss.pages.iaa.bigdata.dfe.BaseDfePage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 import static com.oss.framework.utils.DelayUtils.waitForPageToLoad;
 
 public class DictionaryPage extends BaseDfePage {
@@ -35,7 +37,7 @@ public class DictionaryPage extends BaseDfePage {
 
     @Step("I Open Dictionaries View")
     public static DictionaryPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(45));
 
         BaseDfePage.openDfePage(driver, basicURL, wait, "dictionaries");
         return new DictionaryPage(driver, wait);

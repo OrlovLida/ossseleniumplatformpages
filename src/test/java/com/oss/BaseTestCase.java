@@ -1,5 +1,8 @@
 package com.oss;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +36,6 @@ import com.oss.serviceClient.Environment;
 import com.oss.serviceClient.EnvironmentRequestClient;
 import com.oss.utils.TestListener;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
 @Listeners({TestListener.class})
@@ -59,7 +60,7 @@ public class BaseTestCase implements IHookable {
         } else {
             startFirefoxDriver();
         }
-        webDriverWait = new WebDriverWait(driver, 50);
+        webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(50));
         LoginPage loginPage = new LoginPage(driver, BASIC_URL).open();
         addCookies(driver);
         this.homePage = loginPage.login();
@@ -83,7 +84,7 @@ public class BaseTestCase implements IHookable {
         cb.runTestMethod(testResult);
         if (CONFIGURATION.getCheckErrors().equals("true")) {
             try {
-                SystemMessageContainer systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, 5));
+                SystemMessageContainer systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, Duration.ofSeconds(5)));
                 List<String> errors = systemMessage.getErrors();
                 errors.forEach(LOGGER::error);
                 Assert.assertTrue(errors.isEmpty(), "Some errors occurred during the test. Please check logs for details.\n");

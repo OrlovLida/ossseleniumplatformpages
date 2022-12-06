@@ -20,6 +20,7 @@ public abstract class BaseBookmarkAndDashboardPage extends BasePage {
     private static final String ID_COLUMN_ID = "id";
     private static final String TABS_CONTAINER_ID = "management-view__container__tabscard";
     private static final String REFRESH_BUTTON_ID = "refreshButton";
+    public static final String DESCRIPTION_COLUMN_ID = "description";
 
     public abstract String getTreeTableId();
 
@@ -65,7 +66,7 @@ public abstract class BaseBookmarkAndDashboardPage extends BasePage {
     }
 
     public void clickLinkToView(String objectName) {
-        getTreeTable().clickLink(getRowByName(objectName), ID_COLUMN_ID);
+        getTreeTable().clickLink(getRowByName(objectName), NAME_COLUMN_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Clicking Link to: {}", objectName);
     }
@@ -109,6 +110,15 @@ public abstract class BaseBookmarkAndDashboardPage extends BasePage {
     public void setCellValueByInlineEditor(int row, String columnId, String value) {
         getTreeTable().setCellValue(row, columnId, value);
         log.info("Setting value: {} in row: {}", value, row);
+    }
+
+    public String getDescription(String categoryName) {
+        int index = getTreeTable().getRowNumber(categoryName, NAME_COLUMN_ID);
+        return getTreeTable().getCellValue(index, DESCRIPTION_COLUMN_ID);
+    }
+
+    public boolean isObjectPresent(String name) {
+        return getTreeTable().isValuePresent(name, NAME_COLUMN_ID);
     }
 
     protected TreeTableWidget getTreeTable() {

@@ -8,6 +8,8 @@ import com.oss.pages.iaa.bigdata.dfe.BaseDfePage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class ServerGroupPage extends BaseDfePage {
 
     private static final String TABLE_ID = "server-groupAppId";
@@ -30,7 +32,7 @@ public class ServerGroupPage extends BaseDfePage {
 
     @Step("I Open Server Group View")
     public static ServerGroupPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
         BaseDfePage.openDfePage(driver, basicURL, wait, "server-group");
 
         return new ServerGroupPage(driver, wait);

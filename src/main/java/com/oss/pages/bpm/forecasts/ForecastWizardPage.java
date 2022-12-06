@@ -87,14 +87,18 @@ public class ForecastWizardPage extends BasePage {
                 setRowValue(row, LocalDate.now().plusDays(endPlusDaysLongWay).toString(),
                         BPM_FORECAST_END_DATE_LONG, BPM_FORECAST_END_DATE_LONG_INPUT));
 
-        forecast.getLongWorkWeakShortWay().ifPresent(longWorkWeakShortWay -> {
-            if (Boolean.TRUE.equals(longWorkWeakShortWay))
-                setRowValue(row, "7", BPM_FORECAST_WORK_DAYS_SHORT, BPM_FORECAST_WORK_DAYS_SHORT_INPUT);
-        });
-
         forecast.getLongWorkWeakLongWay().ifPresent(longWorkWeakLongWay -> {
             if (Boolean.TRUE.equals(longWorkWeakLongWay))
                 setRowValue(row, "7", BPM_FORECAST_WORK_DAYS_LONG, BPM_FORECAST_WORK_DAYS_LONG_INPUT);
+            else
+                setRowValue(row, "5", BPM_FORECAST_WORK_DAYS_LONG, BPM_FORECAST_WORK_DAYS_LONG_INPUT);
+        });
+
+        forecast.getLongWorkWeakShortWay().ifPresent(longWorkWeakShortWay -> {
+            if (Boolean.TRUE.equals(longWorkWeakShortWay))
+                setRowValue(row, "7", BPM_FORECAST_WORK_DAYS_SHORT, BPM_FORECAST_WORK_DAYS_SHORT_INPUT);
+            else
+                setRowValue(row, "5", BPM_FORECAST_WORK_DAYS_SHORT, BPM_FORECAST_WORK_DAYS_SHORT_INPUT);
         });
     }
 

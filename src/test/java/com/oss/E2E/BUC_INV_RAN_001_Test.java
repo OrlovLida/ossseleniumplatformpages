@@ -1,5 +1,8 @@
 package com.oss.E2E;
 
+import java.time.Duration;
+import java.util.Optional;
+
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -9,21 +12,20 @@ import org.testng.asserts.SoftAssert;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
-import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.PlanViewWizardPage;
-import com.oss.pages.bpm.ProcessOverviewPage;
-import com.oss.pages.bpm.TasksPageV2;
+import com.oss.pages.bpm.planning.ProcessDetailsPage;
+import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
+import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.platform.HomePage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
-import com.oss.services.Radio4gClient;
+import com.oss.repositories.Radio4gRepository;
 import com.oss.services.RadioClient;
 import com.oss.untils.Environment;
 
@@ -41,9 +43,9 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     private static final String[] RADIO_UNIT_NAMES = {"BTS5900,Denver1/0/MRRU,80", "BTS5900,Denver1/0/MRRU,81", "BTS5900,Denver1/0/MRRU,82"};
     private static final String RAN_ANTENNA_MODEL = "HUAWEI Technology Co.,Ltd APE4518R14V06";
     private static final String[] ANTENNA_NAMES = {"ANT-1", "ANT-2", "ANT-3"};
-    private static final String[] ANTENNA_ARRAYS_1 = {"ANT-1/APE4518R14V06 Ly1/Freq(1695-2690)", "ANT-1/APE4518R14V06 Ry2/Freq(1695-2690)"};
-    private static final String[] ANTENNA_ARRAYS_2 = {"ANT-2/APE4518R14V06 Ly1/Freq(1695-2690)", "ANT-2/APE4518R14V06 Ry2/Freq(1695-2690)"};
-    private static final String[] ANTENNA_ARRAYS_3 = {"ANT-3/APE4518R14V06 Ly1/Freq(1695-2690)", "ANT-3/APE4518R14V06 Ry2/Freq(1695-2690)"};
+    private static final String[] ANTENNA_ARRAYS_1 = {"ANT-1/APE4518R14V06_Ly1/Freq(1695-2690)", "ANT-1/APE4518R14V06_Ry2/Freq(1695-2690)"};
+    private static final String[] ANTENNA_ARRAYS_2 = {"ANT-2/APE4518R14V06_Ly1/Freq(1695-2690)", "ANT-2/APE4518R14V06_Ry2/Freq(1695-2690)"};
+    private static final String[] ANTENNA_ARRAYS_3 = {"ANT-3/APE4518R14V06_Ly1/Freq(1695-2690)", "ANT-3/APE4518R14V06_Ry2/Freq(1695-2690)"};
     private static final String BBU_EQUIPMENT_TYPE = "Base Band Unit";
     private static final String RADIO_UNIT_EQUIPMENT_TYPE = "Remote Radio Head/Unit";
     private static final String[] CELL_NAMES = new String[]{"Denver411", "Denver412", "Denver413"};
@@ -75,6 +77,7 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     private static final String MCC = "999";
     private static final String MNC = "1";
     private static final String BAND_TYPE_NAME = "L800-B20";
+    private static final String VALIDATION_RESULT_NOT_PRESENT_EXCEPTION = "Validation result is not present.";
     private static final int DL_FREQUENCY_END = 821;
     private static final int DL_FREQUENCY_START = 791;
     private static final int UL_FREQUENCY_END = 862;
@@ -84,10 +87,11 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     private static final int UPLINK_CHANNEL = 24175;
     private static final int DL_CENTRE_FREQUENCY = 793;
     private static final int UL_CENTRE_FREQUENCY = 834;
+    private final Environment env = Environment.getInstance();
 
     private SoftAssert softAssert;
-    private Environment env = Environment.getInstance();
     private CellSiteConfigurationPage cellSiteConfigurationPage;
+    private Radio4gRepository radio4gRepository;
     private String processNRPCode;
     private String processIPCode;
 
@@ -95,6 +99,7 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     public void openConsole() {
         waitForPageToLoad();
         softAssert = new SoftAssert();
+        radio4gRepository = new Radio4gRepository(env);
     }
 
     @Test(priority = 1, description = "Check prerequisites")
@@ -249,16 +254,16 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         tasksPage.clickPlanViewButton();
         waitForPageToLoad();
-        PlanViewWizardPage planViewWizardPage = new PlanViewWizardPage(driver);
-        planViewWizardPage.selectTab("Validation Results");
-        Assert.assertTrue(planViewWizardPage.isValidationResultPresent());
+        ProcessDetailsPage processDetailsPage = new ProcessDetailsPage(driver);
+        processDetailsPage.selectTab("Validation Results");
+        Assert.assertTrue(processDetailsPage.isValidationResultPresent(), VALIDATION_RESULT_NOT_PRESENT_EXCEPTION);
     }
 
     @Test(priority = 16, description = "Complete cells configuration", dependsOnMethods = {"validateProjectPlan"})
     @Description("Complete cells configuration")
     public void lowLevelLogicalDesign() {
-        PlanViewWizardPage planViewWizardPage = new PlanViewWizardPage(driver);
-        planViewWizardPage.closeProcessDetailsPromt();
+        ProcessDetailsPage processDetailsPage = new ProcessDetailsPage(driver);
+        processDetailsPage.closeProcessDetailsPromt();
         openCellSiteConfiguration();
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         cellSiteConfigurationPage.expandTreeToBaseStation(SITE, LOCATION_NAME, ENODEB_NAME);
@@ -300,10 +305,17 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
         checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete process NRP", "complete verification task"));
     }
 
-    @Test(priority = 19, description = "Delete antennas, BBU, RRU", dependsOnMethods = {"createBaseBandUnit", "createRadioUnit"})
+    @Test(priority = 19, description = "Delete eNodeB", dependsOnMethods = {"createENodeB"})
+    @Description("Delete eNodeB")
+    public void deleteENodeB() {
+        openCellSiteConfiguration();
+        waitForPageToLoad();
+        cellSiteConfigurationPage.removeBaseStation(NAME, ENODEB_NAME);
+    }
+
+    @Test(priority = 20, description = "Delete antennas, BBU, RRU", dependsOnMethods = {"createBaseBandUnit", "createRadioUnit"})
     @Description("Delete antennas, BBU, RRU")
     public void deleteDevices() {
-        openCellSiteConfiguration();
         waitForPageToLoad();
         cellSiteConfigurationPage.removeDevice("Base Band Units", MANUFACTURER, BBU_NAME);
         checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete devices", "BBU delete"));
@@ -316,13 +328,6 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
             checkMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete devices", "antenna delete"));
             waitForPageToLoad();
         }
-    }
-
-    @Test(priority = 20, description = "Delete eNodeB", dependsOnMethods = {"createENodeB"})
-    @Description("Delete eNodeB")
-    public void deleteNodeB() {
-        waitForPageToLoad();
-        cellSiteConfigurationPage.removeBaseStation(NAME, ENODEB_NAME);
     }
 
     @Test(priority = 21, description = "Checking system message summary")
@@ -354,8 +359,8 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     }
 
     private void checkMessageContainsText(String systemMessageLog) {
-        softAssert.assertTrue((getFirstMessage().getText())
-                .contains(BUC_INV_RAN_001_Test.TASK_COMPLETED), systemMessageLog);
+        String message = getFirstMessage().getText();
+        softAssert.assertTrue(message.contains(BUC_INV_RAN_001_Test.TASK_COMPLETED), systemMessageLog + ". " + message);
     }
 
     private void checkMessageText(String message, String systemMessageLog) {
@@ -381,12 +386,17 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     private void checkMessageType(String systemMessageLog) {
         SystemMessageInterface systemMessage = getSuccesSystemMessage(systemMessageLog);
         systemMessage.close();
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        waitForPageToLoad();
     }
 
     private SystemMessageInterface getSuccesSystemMessage(String systemMessageLog) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
-        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), MessageType.SUCCESS, systemMessageLog);
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(90)));
+        Optional<Message> firstSystemMessage = systemMessage.getFirstMessage();
+        softAssert.assertTrue(firstSystemMessage.isPresent(), systemMessageLog);
+        if (firstSystemMessage.isPresent()) {
+            softAssert.assertEquals((systemMessage.getFirstMessage()
+                    .orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), SystemMessageContainer.MessageType.SUCCESS, systemMessageLog);
+        }
         return systemMessage;
     }
 
@@ -410,10 +420,10 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     }
 
     private Long getOrCreateBandType() {
-        return Radio4gClient.getInstance(Environment.getInstance()).getOrCreateBandType(BAND_TYPE_NAME, DL_FREQUENCY_START, DL_FREQUENCY_END, UL_FREQUENCY_START, UL_FREQUENCY_END);
+        return radio4gRepository.getOrCreateBandType(BAND_TYPE_NAME, DL_FREQUENCY_START, DL_FREQUENCY_END, UL_FREQUENCY_START, UL_FREQUENCY_END);
     }
 
     private void getOrCreateCarrier() {
-        Radio4gClient.getInstance(Environment.getInstance()).getOrCreateCarrier(CARRIER_NAME, DOWNLINK_CHANNEL, UPLINK_CHANNEL, DL_CENTRE_FREQUENCY, UL_CENTRE_FREQUENCY, getOrCreateBandType());
+        radio4gRepository.getOrCreateCarrier(CARRIER_NAME, DOWNLINK_CHANNEL, UPLINK_CHANNEL, DL_CENTRE_FREQUENCY, UL_CENTRE_FREQUENCY, getOrCreateBandType());
     }
 }

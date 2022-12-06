@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.time.Duration;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -115,6 +116,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     private final static String INFRASTRUCTURE_MANAGEMENT = "Infrastructure Management";
     private final static String CREATE_INFRASTRUCTURE = "Create Infrastructure";
     private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
+    private final static String HIERARCHY_VIEW_NOT_EMPTY_EXCEPTION = "Hierarchy view still contains some data.";
     private String HIERARCHY_VIEW_URL = "";
     private SoftAssert softAssert;
 
@@ -263,6 +265,8 @@ public class ISPConfigurationTest extends BaseTestCase {
     public void openChangeCardWizard() {
         waitForPageToLoad();
         HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
+        hierarchyViewPage.getMainTree().unselectAllNodes();
+        waitForPageToLoad();
         String labelpath = PHYSICAL_DEVICE_NAME + ".Chassis." + PHYSICAL_DEVICE_NAME + "/Chassis.Slots.LT3.Card.NELT-B";
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         waitForPageToLoad();
@@ -743,7 +747,7 @@ public class ISPConfigurationTest extends BaseTestCase {
         clickConfirmationBoxByLabel();//TODO po OSSPHY-56052 zmienić na id
         checkPopupAndCloseMessage(String.format(SYSTEM_MESSAGE_PATTERN, "Delete location", "location delete"));
         waitForPageToLoad();
-        Assert.assertTrue(hierarchyViewPage.hasNoData());
+        Assert.assertTrue(hierarchyViewPage.hasNoData(), HIERARCHY_VIEW_NOT_EMPTY_EXCEPTION);
     }
 
     @Test(priority = 46, description = "Checking system message summary")
@@ -764,7 +768,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     }
 
     private SystemMessageInterface getSuccesSystemMessage(String systemMessageLog) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(90)));
         Optional<SystemMessageContainer.Message> firstSystemMessage = systemMessage.getFirstMessage();
         softAssert.assertTrue(firstSystemMessage.isPresent(), systemMessageLog);
         if (firstSystemMessage.isPresent()) {

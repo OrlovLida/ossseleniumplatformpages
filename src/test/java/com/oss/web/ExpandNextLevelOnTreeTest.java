@@ -130,8 +130,12 @@ public class ExpandNextLevelOnTreeTest extends BaseTestCase {
         Assertions.assertThat(room1.isExpanded()).isFalse();
     }
 
-    @Test(priority = 5, enabled = false)
+    @Test(priority = 5)
     public void expandNextLevelLocationAfterFiltering() {
+        hierarchyViewPage.selectNodeByLabelsPath(LOCATION_NAME);
+        hierarchyViewPage.getMainTree().callActionById(SHOW_ON_GROUP_ID,
+                HierarchyViewPage.OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID);
+        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         TreeComponent.Node location = hierarchyViewPage.getMainTree()
                 .getNodeByLabelsPath(PATH_1ST_LOCATIONS_RELATION);
         location.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, ROOM_NAME_1);
@@ -139,7 +143,6 @@ public class ExpandNextLevelOnTreeTest extends BaseTestCase {
         location.searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, ROOM_NAME_2);
         Assertions.assertThat(hierarchyViewPage.getVisibleNodesLabel()).contains(ROOM_NAME_2).doesNotContain(ROOM_NAME_1);
         clearFilter(location);
-
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         TreeComponent.Node room1 = hierarchyViewPage.getMainTree()
                 .getNodeByLabelsPath(ROOM_1_PATH);

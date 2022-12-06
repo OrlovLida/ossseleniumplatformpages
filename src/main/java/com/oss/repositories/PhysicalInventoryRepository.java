@@ -1,6 +1,8 @@
 package com.oss.repositories;
 
+import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import com.comarch.oss.physicalinventory.api.dto.AttributeDTO;
 import com.comarch.oss.physicalinventory.api.dto.CardDTO;
@@ -9,9 +11,10 @@ import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.PluggableModuleDTO;
 import com.comarch.oss.physicalinventory.api.dto.PortDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
-import com.comarch.oss.physicalinventory.api.dto.SearchResultDTO;
+import com.comarch.oss.physicalinventory.api.dto.SearchDTO;
 import com.comarch.oss.resourcehierarchy.api.dto.ResourceHierarchyDTO;
 import com.oss.services.PhysicalInventoryClient;
+import com.oss.transport.infrastructure.planning.PlanningContext;
 import com.oss.untils.Environment;
 
 public class PhysicalInventoryRepository {
@@ -91,18 +94,30 @@ public class PhysicalInventoryRepository {
                 .name(portName)
                 .build();
     }
-    
+
     public void deleteDevice(String deviceId) {
         client.deleteDevice(deviceId);
     }
-    
-    public Long getDeviceId(String locationId, String deviceName) {
-        SearchResultDTO deviceId = client.getDeviceId(locationId, "Name==" + deviceName);
-        return deviceId.getSearchResult().get(0).getId();
+
+    public void deleteDeviceV3(Collection<String> deviceIds,
+                               PlanningContext context) {
+        client.deleteDeviceV3(deviceIds, context);
     }
-    
+
+    public Long getDeviceId(String locationId, String deviceName) {
+        return getDeviceSearchDTO(locationId, deviceName).get(0).getId();
+    }
+
+    public boolean isDevicePresent(String locationId, String deviceName) {
+        return !getDeviceSearchDTO(locationId, deviceName).isEmpty();
+    }
+
+    private List<SearchDTO> getDeviceSearchDTO(String locationId, String deviceName) {
+        return client.getDeviceId(locationId, "Name==" + deviceName).getSearchResult();
+    }
+
     private PhysicalDeviceDTO buildDevice(String locationType, Long locationId, Long deviceModelId, String deviceName,
-            String deviceModelType) {
+                                          String deviceModelType) {
         return PhysicalDeviceDTO.builder()
                 .deviceModel(getDeviceModelId(deviceModelId, deviceModelType))
                 .location(getLocation(locationId, locationType))

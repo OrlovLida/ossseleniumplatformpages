@@ -1,8 +1,10 @@
 package com.oss.E2E;
 
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.List;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -153,7 +155,7 @@ public class UC_NAR_001_Test extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        NotificationsInterface notifications = Notifications.create(driver, webDriverWait);
+        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(180)));
         notifications.clearAllNotification();
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);

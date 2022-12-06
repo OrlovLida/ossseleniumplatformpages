@@ -28,6 +28,10 @@ public class CategoryWizardPage extends BasePage {
         getPopup().clickButtonByLabel(SAVE_BUTTON_LABEL);
     }
 
+    public void clickButton(String buttonId) {
+        getPopup().clickButtonById(buttonId);
+    }
+
     protected Popup getPopup() {
         return Popup.create(driver, wait);
     }

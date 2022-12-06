@@ -12,6 +12,8 @@ import com.oss.pages.iaa.bigdata.utils.ConstantsDfe;
 
 import io.qameta.allure.Description;
 
+import java.time.Duration;
+
 public class ThresholdViewTest extends BaseTestCase {
 
     private static final String NOTIFICATION_STATUS = "Yes";
@@ -45,7 +47,7 @@ public class ThresholdViewTest extends BaseTestCase {
     @Description("Add new Threshold")
     public void addThreshold() {
         thresholdPage.clickAddNewThreshold();
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
         ThresholdStepWizardPage thresholdsStepWizardPage = new ThresholdStepWizardPage(driver, wait);
         thresholdsStepWizardPage.getThresholdsConfigurationStep().fillThresholdConfigurationStep(thresholdName, NOTIFICATION_STATUS, PROBLEM_NAME, AGGREGATION_PERIOD, DEBUG_MODE);
         thresholdsStepWizardPage.getThresholdsConfigurationStep().fillSimpleConditionStep(CONDITION_TYPE, THRESHOLD_FORMULA, SEVERITY);
@@ -69,7 +71,7 @@ public class ThresholdViewTest extends BaseTestCase {
             thresholdPage.selectFirstThresholdInTable();
             thresholdPage.clickEditThreshold();
 
-            WebDriverWait wait = new WebDriverWait(driver, 45);
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
             ThresholdStepWizardPage thresholdsStepWizardPage = new ThresholdStepWizardPage(driver, wait);
             thresholdsStepWizardPage.getThresholdsConfigurationStep().fillName(updatedThresholdName);
             thresholdsStepWizardPage.getThresholdsConfigurationStep().fillCategories(CATEGORIES_TYPE);

@@ -1,0 +1,98 @@
+[
+  {
+    "type": "IPDeviceFunction",
+	"distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device1",
+	"isRoot": true,
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device1",
+	"simpleAttributes": {
+	  "Hostname": "AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device1",
+	  "Name": "AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device1",
+	  "DeviceType": "IPDevice"
+	}	
+  },
+  {
+    "type": "IPDeviceFunction",
+	"distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device2",
+	"isRoot": true,
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device2",
+	"simpleAttributes": {
+	  "Hostname": "AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device2",
+	  "Name": "AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device2",
+	  "DeviceType": "IPDevice"
+	}	
+  },
+  {
+    "type": "IPDeviceFunction",
+	"distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device3",
+	"isRoot": true,
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device3",
+	"simpleAttributes": {
+	  "Hostname": "AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device3",
+	  "Name": "AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device3",
+	  "DeviceType": "IPDevice"
+	}	
+  },
+  {
+    "type": "Device",
+    "distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device1##Device@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device1",
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device1",
+    "simpleAttributes": {
+      "Name": "AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device1",
+      "Type": "IPDevice",
+      "Manufacturer": "Alcatel",
+      "ManagementDomain": "Comarch",
+	  "ModelName": "AT-SYS-BlackBoxModelComarchTest1 (AT-SYS-Creation-PartNumberComarchTest1)",
+	  "Description": "Device with given PartNumber and ModelName and not found in DL, BlackBox Device - Creation",
+	  "SerialNumber": "ATN910I-TC DC",
+	  "ManufactureDate": "2004-02-12T15:19:21+00:00",
+	  "Software": "AT-SYS-Creation-Software",
+	  "HardwareVersion": "AT-SYS-Creation-HardwareVersionComarchTest1",
+	  "NeFunctionName": "AT-SYS-Creation-NeFunctionNameComarchTes1t",
+	  "ChassisID": "AT-SYS-Creation-ChassisIDComarchTest1",
+	  "NetworkDomain": "AT-SYS-Creation-NetworkDomainComarchTest1",
+	  "DeviceCategory": "AT-SYS-Creation-DeviceCategoryComarchTest1"
+    }
+  },
+  {
+    "type": "Device",
+    "distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device12##Device@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device2",
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device2",
+    "simpleAttributes": {
+      "Name": "AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device2",
+      "Type": "IPDevice",
+      "Manufacturer": "Alcatel",
+      "ManagementDomain": "Comarch",
+	  "ModelName": "AT-SYS-BlackBoxModelComarchTest2 (AT-SYS-Creation-PartNumberComarchTest2)",
+	  "Description": "Device with given PartNumber and ModelName and not found in DL, BlackBox Device - Creation",
+	  "SerialNumber": "ATN910I-TC DC",
+	  "ManufactureDate": "2004-02-12T15:19:21+00:00",
+	  "Software": "AT-SYS-Creation-Software",
+	  "HardwareVersion": "AT-SYS-Creation-HardwareVersionComarchTest2",
+	  "NeFunctionName": "AT-SYS-Creation-NeFunctionNameComarchTest2",
+	  "ChassisID": "AT-SYS-Creation-ChassisIDComarchTest2",
+	  "NetworkDomain": "AT-SYS-Creation-NetworkDomainComarchTest2",
+	  "DeviceCategory": "AT-SYS-Creation-DeviceCategoryComarchTest2"
+    }
+  },
+  {
+    "type": "Device",
+    "distinguishName": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device13##Device@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device3",
+	"groupId": "IPDeviceFunction@@AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device3",
+    "simpleAttributes": {
+      "Name": "AT-SYS-Selenium-Overlap-ShowOn-CmDomainView-Device3",
+      "Type": "IPDevice",
+      "Manufacturer": "Alcatel",
+      "ManagementDomain": "Comarch",
+	  "ModelName": "AT-SYS-BlackBoxModelComarchTest3 (AT-SYS-Creation-PartNumberComarchTest3)",
+	  "Description": "Device with given PartNumber and ModelName and not found in DL, BlackBox Device - Creation",
+	  "SerialNumber": "ATN910I-TC DC",
+	  "ManufactureDate": "2004-02-12T15:19:21+00:00",
+	  "Software": "AT-SYS-Creation-Software",
+	  "HardwareVersion": "AT-SYS-Creation-HardwareVersionComarchTest3",
+	  "NeFunctionName": "AT-SYS-Creation-NeFunctionNameComarchTest3",
+	  "ChassisID": "AT-SYS-Creation-ChassisIDComarchTest3",
+	  "NetworkDomain": "AT-SYS-Creation-NetworkDomainComarchTest3",
+	  "DeviceCategory": "AT-SYS-Creation-DeviceCategoryComarchTest3"
+    }
+  }
+]

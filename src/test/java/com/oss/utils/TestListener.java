@@ -1,5 +1,7 @@
 package com.oss.utils;
 
+import java.time.Duration;
+
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -66,7 +68,7 @@ public class TestListener extends BaseTestCase implements ITestListener {
             log.info("Screenshot captured for test case:" + testMethodName);
             saveScreenshotPNG(driver);
             try {
-                SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 5));
+                SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(5)));
                 systemMessage.close();
             } catch (Exception e) {
                 log.error("Page didn't load.");

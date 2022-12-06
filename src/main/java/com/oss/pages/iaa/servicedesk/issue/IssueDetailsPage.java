@@ -18,6 +18,7 @@ import com.oss.pages.iaa.servicedesk.issue.tabs.AffectedTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.DescriptionTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.ExternalTab;
+import com.oss.pages.iaa.servicedesk.issue.tabs.ImprovementTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.MessagesTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.ParticipantsTab;
@@ -25,16 +26,19 @@ import com.oss.pages.iaa.servicedesk.issue.tabs.ProblemSolutionTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.RelatedChangesTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.RelatedProblemsTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.RelatedTicketsTab;
+import com.oss.pages.iaa.servicedesk.issue.tabs.ResolutionTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.RolesTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.RootCausesTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.SummaryTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.TasksTab;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketOverviewTab;
+import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.AFFECTED_TAB_LABEL;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.ATTACHMENTS_TAB_LABEL;
+import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.COMMON_WIZARD_ID;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.DESCRIPTION_TAB_LABEL;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.EXTERNAL_TAB_LABEL;
@@ -54,10 +58,8 @@ import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_
 
 public class IssueDetailsPage extends BaseSDPage {
 
-    private static final Logger log = LoggerFactory.getLogger(IssueDetailsPage.class);
-
     public static final String DETAILS_PAGE_URL_PATTERN = "%s/#/view/service-desk/%s/details/%s";
-
+    private static final Logger log = LoggerFactory.getLogger(IssueDetailsPage.class);
     private static final String DETAILS_VIEW_ACTIONS_CONTAINER_ID = "_detailsWindow-windowToolbar";
     private static final String CHECKLIST_APP_ID = "_checklistApp";
     private static final String SKIP_BUTTON_LABEL = "SKIP";
@@ -82,6 +84,12 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String TASK_TAB_ID = "_tasksWindow";
     private static final String AFFECTED_TAB_ID = "_affectedServicesTab";
     private static final String SUMMARY_TAB_ID = "_summaryTab";
+    private static final String MORE_BUTTON_ID = "frameworkCustomMore";
+    private static final String EDIT_DETAILS_ID = "EditDetailsButtonId";
+    private static final String RESOLUTION_TAB_LABEL = "Resolution";
+    private static final String IMPROVEMENT_TAB_LABEL = "Improvement";
+    private static final String RESOLUTION_TAB_ARIA_CONTROLS = "_resolutionDescriptionTab";
+    private static final String IMPROVEMENT_TAB_ARIA_CONTROLS = "_improvementNotesTab";
 
     public IssueDetailsPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -186,7 +194,7 @@ public class IssueDetailsPage extends BaseSDPage {
     }
 
     public DescriptionTab selectDescriptionTab() {
-        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, DESCRIPTION_TAB_ID, DESCRIPTION_TAB_LABEL);
+        selectTabFromTablesWindow(DESCRIPTION_TAB_ID, DESCRIPTION_TAB_LABEL);
         log.info("Selecting Description Tab");
 
         return new DescriptionTab(driver, wait);
@@ -225,6 +233,20 @@ public class IssueDetailsPage extends BaseSDPage {
         return new AffectedTab(driver, wait);
     }
 
+    public ResolutionTab selectResolutionTab() {
+        selectTabFromDetailsWindow(RESOLUTION_TAB_ARIA_CONTROLS, RESOLUTION_TAB_LABEL);
+        log.info("Selecting tab Resolution");
+
+        return new ResolutionTab(driver, wait);
+    }
+
+    public ImprovementTab selectImprovementTab() {
+        selectTabFromDetailsWindow(IMPROVEMENT_TAB_ARIA_CONTROLS, IMPROVEMENT_TAB_LABEL);
+        log.info("Selecting tab Improvement");
+
+        return new ImprovementTab(driver, wait);
+    }
+
     @Step("Skipping all actions on checklist")
     public void skipAllActionsOnCheckList() {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -246,6 +268,11 @@ public class IssueDetailsPage extends BaseSDPage {
                     DelayUtils.waitForPageToLoad(driver, wait);
                     return row.isActionIconPresentByLabel(SKIP_BUTTON_LABEL);
                 });
+    }
+
+    @Step("I open Edit details wizard")
+    public SDWizardPage openEditDetailsWizard() {
+        return SDWizardPage.openCreateWizard(driver, wait, EDIT_DETAILS_ID, MORE_BUTTON_ID, COMMON_WIZARD_ID);
     }
 
     public String checkExistingDictionary() {
@@ -277,6 +304,26 @@ public class IssueDetailsPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Check Same MO TT Table");
         return !OldTable.createById(driver, wait, SAME_MO_TT_TABLE_ID).hasNoData();
+    }
+
+    @Step("I check if {tableId} table exists")
+    public boolean checkIfTableExists(String tableId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("I check if {} table exists", tableId);
+        if (!getOldTable(tableId).hasNoData()) {
+            log.info("Table exists and has some data");
+            return true;
+        } else if (getOldTable(tableId).hasNoData()) {
+            log.info("Table exists and it's empty");
+            return true;
+        } else {
+            log.error("Table doesn't exist");
+            return false;
+        }
+    }
+
+    public OldTable getOldTable(String tableId) {
+        return OldTable.createById(driver, wait, tableId);
     }
 
     protected OldActionsContainer getDetailsViewOldActionsContainer() {

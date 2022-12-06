@@ -12,6 +12,8 @@ import com.oss.pages.iaa.acd.BaseACDPage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class TimeSeriesViewPage extends BaseACDPage {
 
     private static final Logger log = LoggerFactory.getLogger(TimeSeriesViewPage.class);
@@ -34,7 +36,7 @@ public class TimeSeriesViewPage extends BaseACDPage {
 
     @Step("I open Time Series View")
     public static TimeSeriesViewPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 150);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(150));
 
         String pageUrl = String.format(timeSeriesViewSuffixUrl, basicURL);
         driver.get(pageUrl);

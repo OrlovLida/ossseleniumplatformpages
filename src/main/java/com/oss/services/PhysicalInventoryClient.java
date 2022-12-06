@@ -1,5 +1,6 @@
 package com.oss.services;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import javax.ws.rs.core.Response;
@@ -15,6 +16,8 @@ import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
 import com.comarch.oss.physicalinventory.api.dto.SearchResultDTO;
 import com.comarch.oss.resourcehierarchy.api.dto.ResourceHierarchyDTO;
 import com.jayway.restassured.http.ContentType;
+import com.jayway.restassured.specification.RequestSpecification;
+import com.oss.transport.infrastructure.planning.PlanningContext;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
 
@@ -23,6 +26,7 @@ public class PhysicalInventoryClient {
     private static final String DEVICES_API_PATH = "/devices";
     private static final String DEVICE_STRUCTURE_API_PATH = "/devices/%s/devicestructurebyjpa";
     private static final String DEVICE_DELETE_API_PATH = "/devices/v2/%s";
+    private static final String DEVICE_DELETE_V3_API_PATH = "/devices/v3";
     private static final String PROJECT_ID = "project_id";
     private static final String CHECK_COMPATIBILITY = "checkCompatibility";
     private static final String FALSE = "false";
@@ -205,6 +209,25 @@ public class PhysicalInventoryClient {
                 .then()
                 .statusCode(200).assertThat();
         
+    }
+
+    public void deleteDeviceV3(Collection<String> deviceIds,
+                               PlanningContext context) {
+        RequestSpecification requestSpecification = env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .queryParam("id", deviceIds)
+                .queryParam("markUsedObjectsAsObsolete", false);
+        if (context.isProjectContext()) {
+            requestSpecification.queryParam(PlanningContext.PROJECT_PARAM, context.getProjectId());
+        } else {
+            requestSpecification.queryParam(PlanningContext.PERSPECTIVE_PARAM, context.getPerspective());
+        }
+        requestSpecification
+                .when()
+                .delete(DEVICE_DELETE_V3_API_PATH)
+                .then()
+                .log().body()
+                .statusCode(200).assertThat();
     }
     
     private PhysicalDeviceDTO getDeviceStructure(Long deviceId) {

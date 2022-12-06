@@ -11,6 +11,8 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class NavigationPanelPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(NavigationPanelPage.class);
@@ -24,7 +26,7 @@ public class NavigationPanelPage extends BasePage {
 
     @Step("Open Home Page")
     public static NavigationPanelPage goToHomePage(WebDriver driver, String baseURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 90);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(90));
         driver.get(baseURL);
         log.info("Opening Home Page");
         DelayUtils.waitForPageToLoad(driver, wait);

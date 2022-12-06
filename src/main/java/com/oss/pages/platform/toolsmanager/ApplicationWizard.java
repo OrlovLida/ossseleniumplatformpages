@@ -62,6 +62,7 @@ public class ApplicationWizard {
 
     public void clickSave() {
         wizard.clickSave();
+        wizard.waitToClose();
     }
 
     public void addQueryParam(String key, String testValue) {

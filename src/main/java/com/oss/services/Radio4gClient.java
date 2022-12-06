@@ -101,21 +101,6 @@ public class Radio4gClient {
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
     }
 
-    public Long getOrCreateBandType(String bandTypeName, int dLfrequencyStart, int dLfrequencyEnd, int uLfrequencyStart, int uLfrequencyEnd) {
-        List<Integer> bandTypeIds = instance.getBandTypeByName(bandTypeName);
-        if (bandTypeIds.isEmpty()) {
-            RanBandType4GDTO ranBandType4GDTO = RanBandType4GDTO.builder()
-                    .name(bandTypeName)
-                    .dLfrequencyStart(dLfrequencyStart)
-                    .dLfrequencyEnd(dLfrequencyEnd)
-                    .uLfrequencyStart(uLfrequencyStart)
-                    .uLfrequencyEnd(uLfrequencyEnd)
-                    .build();
-            return createBandType(ranBandType4GDTO);
-        }
-        return Long.valueOf(bandTypeIds.get(0));
-    }
-
     public List<Integer> getBandTypeByName(String bandTypeName) {
         return env.getRadioCore4GSpecification()
                 .given()
@@ -139,20 +124,6 @@ public class Radio4gClient {
                 .extract()
                 .as(RanBandTypeResponseDTO.class)
                 .getId();
-    }
-
-    public void getOrCreateCarrier(String carrierName, int downlinkChannel, int uplinkChannel, int dlCentreFrequency, int ulCentreFrequency, Long bandTypeId) {
-        if (!instance.isCarriePresent(carrierName)) {
-            CarrierDTO carrierDTO = CarrierDTO.builder()
-                    .name(carrierName)
-                    .downlinkChannel(downlinkChannel)
-                    .uplinkChannel(uplinkChannel)
-                    .dlCentreFrequency(dlCentreFrequency)
-                    .ulCentreFrequency(ulCentreFrequency)
-                    .bandTypeId(bandTypeId)
-                    .build();
-            createCarrier(carrierDTO);
-        }
     }
 
     public boolean isCarriePresent(String carrierName) {
