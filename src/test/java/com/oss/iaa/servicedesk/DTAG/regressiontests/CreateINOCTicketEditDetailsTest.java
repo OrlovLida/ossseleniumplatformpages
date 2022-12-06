@@ -1,5 +1,6 @@
 package com.oss.iaa.servicedesk.DTAG.regressiontests;
 
+import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 
 import org.testng.Assert;
@@ -37,7 +38,6 @@ import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.TYPE_COMMENT;
 
 public class CreateINOCTicketEditDetailsTest extends BaseTestCase {
-
 
     private TicketDashboardPage ticketDashboardPage;
     private TicketOverviewTab ticketOverviewTab;
@@ -102,9 +102,11 @@ public class CreateINOCTicketEditDetailsTest extends BaseTestCase {
 
     private static final String REMAINDER_NOTE = "Selenium Description Note";
     private static final String EDITED_REMAINDER_NOTE = "Edited Remainder Text";
-    private static final String PARTICIPANT_FIRST_NAME = "SeleniumTest";
+    private static final String PARTICIPANT_FIRST_NAME = "Selenium_Test";
+    private static final String PARTICIPANT_NAME_ID = "Name";
     private static final String PARTICIPANT_EMAIL = "Seleniumtest@comarch.com";
     private static final String PARTICIPANT_ROLE = "Notification recipient";
+    private static final String PARTICIPANT_ROLE_TABLE = "NOTIFICATION_RECIPIENT";
 
     private static final String USER_NAME = "sd_selenium_inoc";
     private static final String FILE_TO_UPLOAD_PATH = "DataSourceCSV/CPU_USAGE_INFO_RAW-MAP.xlsx";
@@ -113,11 +115,15 @@ public class CreateINOCTicketEditDetailsTest extends BaseTestCase {
      private static final String STATUS_IN_PROGRESS = "In Progress";
 
     @BeforeMethod
-    public void goToTicketDashboardPage() {
+    public void goToTicketDashboardPage(Method method) {
         ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
+        if (ticketID != null) {
+            issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        } else if (!method.getName().equals("createINOCTicket")) {
+            Assert.fail("Ticket has not been created.");
+        }
     }
-
-
+    
     @Parameters({"MOIdentifier"})
     @Test(priority = 1, testName = "Create 'INOC Service' Ticket", description = "Create 'INOC Service' Ticket")
     @Description("Create 'INOC Service' Ticket")
@@ -193,7 +199,7 @@ public class CreateINOCTicketEditDetailsTest extends BaseTestCase {
         dictionarySDWizardPage.insertValueToComponent(TT_INOC_FAILURE_CAUSES, WIZARD_INOC_FAILURE_CAUSES);
         dictionarySDWizardPage.insertValueToComponent(TT_FAILURE_SPECIFICATION, WIZARD_FAILURE_SPECIFICATION);
         dictionarySDWizardPage.clickAcceptButtonInWizard();
-        Assert.assertEquals(issueDetailsPage.checkExistingDictionary(), TT_INOC_FAILURE_CAUSES);
+        Assert.assertTrue(issueDetailsPage.checkDictionaryPresence(TT_LIBRARY_TYPE));
     }
 
     @Parameters("InternalNotificationTo")
@@ -348,9 +354,9 @@ public class CreateINOCTicketEditDetailsTest extends BaseTestCase {
         participantsPromptPage.setParticipantEmail(PARTICIPANT_EMAIL);
         participantsPromptPage.setParticipantRole(PARTICIPANT_ROLE);
         participantsPromptPage.clickAddParticipantInPrompt();
-        int newParticipantRow = participantsTab.participantRow(PARTICIPANT_FIRST_NAME);
+        int newParticipantRow = participantsTab.participantRowByAttribute(PARTICIPANT_FIRST_NAME, PARTICIPANT_NAME_ID);
 
-        Assert.assertEquals(participantsTab.checkParticipantRole(newParticipantRow), PARTICIPANT_ROLE.toUpperCase());
+        Assert.assertEquals(participantsTab.checkParticipantRole(newParticipantRow), PARTICIPANT_ROLE_TABLE);
     }
 
     @Test(priority = 18, testName = "Add attachment to ticket", description = "Add attachment to ticket")

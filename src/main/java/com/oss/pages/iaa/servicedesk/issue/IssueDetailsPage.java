@@ -66,6 +66,7 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String EXTERNAL_TAB_ARIA_CONTROLS = "_detailsExternalTab";
     private static final String DICTIONARIES_TABLE_ID = "_dictionariesTableId";
     private static final String DICTIONARY_VALUE_TABLE_LABEL = "Dictionary Value";
+    private static final String DICTIONARY_NAME_VALUE_TABLE_LABEL = "Dictionary Name";
     private static final String SAME_MO_TT_TABLE_ID = "_sameMOTTTableWidget";
     private static final String ATTACHMENTS_TAB_ARIA_CONTROLS = "attachmentManager";
     private static final String MESSAGES_TAB_ARIA_CONTROLS = "_messagesTab";
@@ -278,6 +279,11 @@ public class IssueDetailsPage extends BaseSDPage {
     public String checkExistingDictionary() {
         DelayUtils.waitForPageToLoad(driver, wait);
         return OldTable.createById(driver, wait, DICTIONARIES_TABLE_ID).getCellValue(0, DICTIONARY_VALUE_TABLE_LABEL);
+    }
+
+    public boolean checkDictionaryPresence(String dictionaryNameValue) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createById(driver, wait, DICTIONARIES_TABLE_ID).isValuePresent(DICTIONARY_NAME_VALUE_TABLE_LABEL, dictionaryNameValue);
     }
 
     public String getDisplayedText(String windowId, String fieldId) {
