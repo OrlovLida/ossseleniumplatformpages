@@ -23,7 +23,7 @@ public abstract class TrailWizardPage extends BasePage {
     private static final String CAPACITY_UNIT_COMPONENT_ID = "uid_capacity_unit";
     private static final String CAPACITY_VALUE_COMPONENT_ID = "uid_capacity_value";
     private static final String UNDEFINED = "Undefined";
-    private static final String ID = "NEEDS_TO_UPDATE_ID";
+    private static final String ID = "trailWizardId_prompt-card";
 
     private final Wizard wizard;
 
