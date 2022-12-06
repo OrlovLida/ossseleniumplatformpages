@@ -84,6 +84,8 @@ public class EthernetLinkTest extends BaseTestCase {
     private static final String TYPE_COLUMN_LABEL = "Type";
     private static final String DEVICE_TYPE = "IP Device";
     private static final String ROUTED_CONNECTION_NAME = "SeleniumRoutingConnection";
+    private static final String LATENCY_ATTRIBUTE_NAME = "Latency";
+    private static final String ROLE_ATTRIBUTE_NAME = "Role";
     private String processNRPCode;
 
     @BeforeClass
@@ -93,7 +95,7 @@ public class EthernetLinkTest extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 110)
+    @Test(priority = 1, description = "Create NRP Process")
     @Description("Create NRP Process")
     public void createProcessNRP() {
         ProcessOverviewPage processOverviewPage = new ProcessOverviewPage(driver);
@@ -105,7 +107,7 @@ public class EthernetLinkTest extends BaseTestCase {
         checkMessageContainsText(processNRPCode);
     }
 
-    @Test(priority = 12)
+    @Test(priority = 2, description = "Start HLP Task", dependsOnMethods = {"createProcessNRP"})
     @Description("Start High Level Planning Task")
     public void startHLPTask() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
@@ -113,7 +115,7 @@ public class EthernetLinkTest extends BaseTestCase {
         checkTaskAssignment();
     }
 
-    @Test(priority = 3)
+    @Test(priority = 3, description = "Create Ethernet Link")
     @Description("Create Ethernet Link")
     public void createEthernetLink() {
         EthernetLinkAttributes ethernetLinkAttributes = getELAttributesForCreate();
@@ -127,7 +129,7 @@ public class EthernetLinkTest extends BaseTestCase {
         assertEthernetLinkAttributes(networkViewPage, ethernetLinkAttributes);
     }
 
-    @Test(priority = 14)
+    @Test(priority = 4, description = "Update Ethernet Link", dependsOnMethods = {"createEthernetLink"})
     @Description("Update Ethernet Link Attributes")
     public void updateEthernetLinkAttributes() {
         EthernetLinkAttributes ethernetLinkAttributes = getELAttributesForUpdate();
@@ -143,7 +145,7 @@ public class EthernetLinkTest extends BaseTestCase {
         assertEthernetLinkAttributes(networkViewPage, ethernetLinkAttributes);
     }
 
-    @Test(priority = 5)
+    @Test(priority = 5, description = "Terminate Ethernet Link", dependsOnMethods = {"createEthernetLink"})
     @Description("Terminate Ethernet Link")
     public void terminateEthernetLink() {
         addTerminationDeviceToNetworkView(DEVICE_1_NAME);
@@ -173,7 +175,7 @@ public class EthernetLinkTest extends BaseTestCase {
         //assertPresenceOfObjectInTab(1, TERMINATION_POINT_NAME_COLUMN, TERMINATIONS_TAB_ID, TERMINATION_POINT_NAME);
     }
 
-    @Test(priority = 16)
+    @Test(priority = 6, description = "Add trail to ELs routing", dependsOnMethods = {"createEthernetLink"})
     @Description("Add selected trail to Ethernet Links routing")
     public void addSelectedTrailToRouting() {
         addCreatedTrailToNetworkView();
@@ -184,7 +186,7 @@ public class EthernetLinkTest extends BaseTestCase {
         assertPresenceOfObjectInTab(0, CONNECTION_NAME_COLUMN, ROUTING_1ST_LEVEL_TAB_ID, ROUTED_TRAIL_NAME);
     }
 
-    @Test(priority = 7)
+    @Test(priority = 7, description = "Add device to ELs routing", dependsOnMethods = {"terminateEthernetLink"})
     @Description("Add selected IP Device to Ethernet Links element routing")
     public void addSelectedDeviceToRouting() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -199,7 +201,7 @@ public class EthernetLinkTest extends BaseTestCase {
         assertPresenceOfObjectInOldTab();
     }
 
-    @Test(priority = 18)
+    @Test(priority = 8, description = "Modify termination and create IP Link", dependsOnMethods = {"terminateEthernetLink"})
     @Description("Modify termination and Create associated IP Link")
     public void modifyTerminationAndCreateIPLink() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -216,7 +218,7 @@ public class EthernetLinkTest extends BaseTestCase {
         connectionWizardPage.clickAccept();
     }
 
-    @Test(priority = 19)
+    @Test(priority = 9, description = "Remove termination", dependsOnMethods = {"terminateEthernetLink"})
     @Description("Remove terminations")
     public void removeTerminations() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -227,7 +229,7 @@ public class EthernetLinkTest extends BaseTestCase {
         assertIfTableIsEmpty(TERMINATIONS_TAB_ID);
     }
 
-    @Test(priority = 100)
+    @Test(priority = 10, description = "Remove ELs routing", dependsOnMethods = {"addSelectedTrailToRouting"})
     @Description("Remove trails from Ethernet Links routing")
     public void removeRouting() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -236,7 +238,7 @@ public class EthernetLinkTest extends BaseTestCase {
         assertIfTableIsEmpty(ROUTING_1ST_LEVEL_TAB_ID);
     }
 
-    @Test(priority = 11)
+    @Test(priority = 11, description = "Remove element routing", dependsOnMethods = {"addSelectedDeviceToRouting"})
     @Description("Remove objects from Ethernet Links element routing")
     public void removeElementRouting() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -245,14 +247,14 @@ public class EthernetLinkTest extends BaseTestCase {
         assertIfOldTableIsEmpty();
     }
 
-    @Test(priority = 12)
+    @Test(priority = 12, description = "Finish NRP and IP task", dependsOnMethods = {"startHLPTask"})
     @Description("Finish rest of NRP and IP task")
     public void finishProcessesTask() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
 
-    @Test(priority = 13)
+    @Test(priority = 13, description = "Delete EL", dependsOnMethods = {"createEthernetLink"})
     @Description("Delete Ethernet Link")
     public void removeEthernetLink() {
         navigateToELInventoryView();
@@ -278,20 +280,20 @@ public class EthernetLinkTest extends BaseTestCase {
     private void assertPresenceOfObjectInTab(Integer index, String columnId, String tabId, String objectName) {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         String objectValue = networkViewPage.getObjectValueFromTab(index, columnId, tabId);
-        Assert.assertEquals(objectValue, objectName);
+        Assert.assertEquals(objectValue, objectName, String.format("%s value is not correct", objectName));
     }
 
     private void assertPresenceOfObjectInOldTab() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        Assert.assertTrue(networkViewPage.isObjectInRoutingElements(NAME_COLUMN_LABEL, DEVICE_1_NAME));
+        Assert.assertTrue(networkViewPage.isObjectInRoutingElements(NAME_COLUMN_LABEL, DEVICE_1_NAME), "Element Routing Table is empty");
     }
 
     private void assertIfTableIsEmpty(String tabID) {
-        Assert.assertTrue(TableWidget.createById(driver, tabID, webDriverWait).hasNoData());
+        Assert.assertTrue(TableWidget.createById(driver, tabID, webDriverWait).hasNoData(), "The object has not been removed");
     }
 
     private void assertIfOldTableIsEmpty() {
-        Assert.assertTrue(OldTable.createById(driver, webDriverWait, ELEMENT_ROUTING_TAB_ID).hasNoData());
+        Assert.assertTrue(OldTable.createById(driver, webDriverWait, ELEMENT_ROUTING_TAB_ID).hasNoData(), "The object has not been removed");
     }
 
     private void selectAndRemoveTermination() {
@@ -316,13 +318,11 @@ public class EthernetLinkTest extends BaseTestCase {
     }
 
     private void assertEthernetLinkAttributes(NetworkViewPage networkViewPage, EthernetLinkAttributes ethernetLinkAttributes) {
-        String latencyAttribute = "Latency";
-        String actualLatency = networkViewPage.getAttributeValue(latencyAttribute);
-        String roleAttribute = "Role";
-        String actualRole = networkViewPage.getAttributeValue(roleAttribute);
+        String actualLatency = networkViewPage.getAttributeValue(LATENCY_ATTRIBUTE_NAME);
+        String actualRole = networkViewPage.getAttributeValue(ROLE_ATTRIBUTE_NAME);
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(actualLatency, ethernetLinkAttributes.latency, String.format(ASSERT_MESSAGE_PATTERN, latencyAttribute));
-        softAssert.assertEquals(actualRole, ethernetLinkAttributes.role, String.format(ASSERT_MESSAGE_PATTERN, roleAttribute));
+        softAssert.assertEquals(actualLatency, ethernetLinkAttributes.latency, String.format(ASSERT_MESSAGE_PATTERN, LATENCY_ATTRIBUTE_NAME));
+        softAssert.assertEquals(actualRole, ethernetLinkAttributes.role, String.format(ASSERT_MESSAGE_PATTERN, ROLE_ATTRIBUTE_NAME));
         softAssert.assertAll();
     }
 
