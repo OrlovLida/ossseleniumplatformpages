@@ -1,0 +1,13 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="DPE" thread-count="2" parallel="tests" verbose="1">
+    <test name="GlobalQVPTest">
+        <classes>
+            <class name="com.oss.iaa.dpe.GlobalQuickViewPolicyTest"/>
+        </classes>
+    </test>
+    <test name="DPENavigationTest">
+        <classes>
+            <class name="com.oss.iaa.dpe.DPENavigationTest"/>
+        </classes>
+    </test>
+</suite>

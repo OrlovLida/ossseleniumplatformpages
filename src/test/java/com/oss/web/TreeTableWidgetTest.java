@@ -2,7 +2,6 @@ package com.oss.web;
 
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -14,7 +13,8 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
-import com.oss.pages.bpm.PlannersViewPage;
+import com.oss.pages.bpm.processinstances.PlannersViewPage;
+import com.oss.pages.platform.NewInventoryViewPage;
 
 /**
  * @author Faustyna Szczepanik
@@ -119,24 +119,24 @@ public class TreeTableWidgetTest extends BaseTestCase {
         treeTableWidget.getPagination().goOnNextPage();
         Assert.assertTrue(treeTableWidget.getPagination().isFirstPageButtonPresent());
         Assert.assertTrue(treeTableWidget.getPagination().isPreviousPageButtonPresent());
-        Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), treeTableWidget.getPagination().getStep() + 1);
-        Assert.assertEquals(treeTableWidget.getPagination().getTopRageOfRows(), treeTableWidget.getPagination().getStep() * 2);
+        Assert.assertEquals(treeTableWidget.getPagination().getBottomRangeOfRows(), treeTableWidget.getPagination().getStep() + 1);
+        Assert.assertEquals(treeTableWidget.getPagination().getTopRangeOfRows(), treeTableWidget.getPagination().getStep() * 2);
     }
 
     @Test(priority = 10)
     public void goOnPreviousPage() {
         treeTableWidget.getPagination().goOnNextPage();
         treeTableWidget.getPagination().goOnPrevPage();
-        Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), treeTableWidget.getPagination().getStep() + 1);
-        Assert.assertEquals(treeTableWidget.getPagination().getTopRageOfRows(), treeTableWidget.getPagination().getStep() * 2);
+        Assert.assertEquals(treeTableWidget.getPagination().getBottomRangeOfRows(), treeTableWidget.getPagination().getStep() + 1);
+        Assert.assertEquals(treeTableWidget.getPagination().getTopRangeOfRows(), treeTableWidget.getPagination().getStep() * 2);
     }
 
     @Test(priority = 11)
     public void backToFirstPage() {
         treeTableWidget.getPagination().goOnFirstPage();
         treeTableWidget.getPagination().goOnPrevPage();
-        Assert.assertEquals(treeTableWidget.getPagination().getBottomRageOfRows(), 1);
-        Assert.assertEquals(treeTableWidget.getPagination().getTopRageOfRows(), treeTableWidget.getPagination().getStep());
+        Assert.assertEquals(treeTableWidget.getPagination().getBottomRangeOfRows(), 1);
+        Assert.assertEquals(treeTableWidget.getPagination().getTopRangeOfRows(), treeTableWidget.getPagination().getStep());
     }
 
     @Test(priority = 12)
@@ -201,7 +201,7 @@ public class TreeTableWidgetTest extends BaseTestCase {
         String nameFirstRow = plannersViewPage.getAttributeValue(NAME_COL_ID, 0);
         plannersViewPage.searchObject(nameFirstRow);
         List<TableRow> allRows = plannersViewPage.getRows();
-        Assert.assertEquals(treeTableWidget.getCellValueById(0, NAME_COL_ID), nameFirstRow);
+        Assert.assertEquals(treeTableWidget.getCellValue(0, NAME_COL_ID), nameFirstRow);
         plannersViewPage.clearFilters();
     }
 
@@ -220,8 +220,8 @@ public class TreeTableWidgetTest extends BaseTestCase {
     public void useContextActionOnTreeTable() {
         plannersViewPage.getFirstRow().callAction(ActionsContainer.SHOW_ON_GROUP_ID, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String headerNameIV = driver.findElement(By.className(HEADER_TITLE_CLASS)).getText();
-        Assert.assertEquals(headerNameIV, INVENTORY_VIEW_TITLE);
+        NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
+        Assert.assertEquals(inventoryViewPage.getViewTitle(), INVENTORY_VIEW_TITLE);
     }
 
     private int getRowsCount() {

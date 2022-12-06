@@ -1,6 +1,19 @@
 package com.oss.repositories;
 
-import com.comarch.oss.radio.api.dto.*;
+import java.util.List;
+
+import com.comarch.oss.radio.api.dto.CardIdentificationDTO;
+import com.comarch.oss.radio.api.dto.CarrierDTO;
+import com.comarch.oss.radio.api.dto.Cell5gDTO;
+import com.comarch.oss.radio.api.dto.CellResponseIdDTO;
+import com.comarch.oss.radio.api.dto.GnodeBCUUPDTO;
+import com.comarch.oss.radio.api.dto.GnodeBDTO;
+import com.comarch.oss.radio.api.dto.GnodeBDUDTO;
+import com.comarch.oss.radio.api.dto.HniDTO;
+import com.comarch.oss.radio.api.dto.HostRelationDTO;
+import com.comarch.oss.radio.api.dto.HostingResourceDTO;
+import com.comarch.oss.radio.api.dto.PortIdentificationDTO;
+import com.comarch.oss.radio.api.dto.RanBandType5GDTO;
 import com.oss.services.Radio5gClient;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
@@ -66,6 +79,37 @@ public class Radio5gRepository {
     public void createHRCellDeviceCard(Long hostingResourceId, Long gNodeBId, Long cellId, String slotName, String cardName) {
         Radio5gClient client = Radio5gClient.getInstance(env);
         client.createHRCell(buildDeviceCardHR(hostingResourceId, slotName, cardName), gNodeBId, cellId);
+    }
+
+    public void getOrCreateCarrier(String carrierName, int downlinkChannel, int uplinkChannel, int dlCentreFrequency, int ulCentreFrequency, Long bandTypeId) {
+        Radio5gClient client = Radio5gClient.getInstance(env);
+        if (!client.isCarriePresent(carrierName)) {
+            CarrierDTO carrierDTO = CarrierDTO.builder()
+                    .name(carrierName)
+                    .downlinkChannel(downlinkChannel)
+                    .uplinkChannel(uplinkChannel)
+                    .dlCentreFrequency(dlCentreFrequency)
+                    .ulCentreFrequency(ulCentreFrequency)
+                    .bandTypeId(bandTypeId)
+                    .build();
+            client.createCarrier(carrierDTO);
+        }
+    }
+
+    public Long getOrCreateBandType(String bandTypeName, int dLfrequencyStart, int dLfrequencyEnd, int uLfrequencyStart, int uLfrequencyEnd) {
+        Radio5gClient client = Radio5gClient.getInstance(env);
+        List<Integer> bandTypeIds = client.getBandTypeByName(bandTypeName);
+        if (bandTypeIds.isEmpty()) {
+            RanBandType5GDTO ranBandType5GDTO = RanBandType5GDTO.builder()
+                    .name(bandTypeName)
+                    .dLfrequencyStart(dLfrequencyStart)
+                    .dLfrequencyEnd(dLfrequencyEnd)
+                    .uLfrequencyStart(uLfrequencyStart)
+                    .uLfrequencyEnd(uLfrequencyEnd)
+                    .build();
+            return client.createBandType(ranBandType5GDTO);
+        }
+        return Long.valueOf(bandTypeIds.get(0));
     }
 
     private HostRelationDTO buildDeviceHR(Long hostingResourceId) {

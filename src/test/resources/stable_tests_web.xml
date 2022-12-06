@@ -1,8 +1,8 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="RegressionSuiteWeb-WEB" thread-count="2" parallel="tests" verbose="1">
+<suite name="RegressionSuiteWeb-WEB" thread-count="1" parallel="tests" verbose="1">
     <test name="AdvancedSearchComponent">
         <classes>
-            <class name="com.oss.web.AdvancedSearchCompact"/>
+            <class name="com.oss.web.AdvancedSearchCompactTest"/>
         </classes>
     </test>
     <test name="TableWidgetTest">
@@ -53,6 +53,31 @@
     <test name="TreeTableWidgetTest">
         <classes>
             <class name="com.oss.web.TreeTableWidgetTest"/>
+        </classes>
+    </test>
+    <test name="SelectionBarOnTreeTableTest">
+        <classes>
+            <class name="com.oss.web.SelectionBarOnTreeTableTest"/>
+        </classes>
+    </test>
+    <test name="InputsWizardTest">
+        <classes>
+            <class name="com.oss.InputsWizardTest"/>
+        </classes>
+    </test>
+    <test name="ExpandNextLevelOnTreeTest">
+        <classes>
+            <class name="com.oss.web.ExpandNextLevelOnTreeTest"/>
+        </classes>
+    </test>
+    <test name="AddExistingObjectToHVTest">
+        <classes>
+            <class name="com.oss.web.AddExistingObjectToHVTest"/>
+        </classes>
+    </test>
+    <test name="TabsWidgetTest">
+        <classes>
+            <class name="com.oss.web.TabsWidgetTest"/>
         </classes>
     </test>
 </suite>

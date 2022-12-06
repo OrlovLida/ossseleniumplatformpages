@@ -9,6 +9,7 @@ package com.oss.nfv.networkSlice;
 import java.util.List;
 import java.util.Optional;
 
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.pages.logicalfunction.LogicalFunctionWizardPreStep;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -75,6 +76,7 @@ public class CreateNetworkSliceTest extends BaseTestCase {
     @Description("Got to Resource Specifications view, find and select NetworkSlice specification and open NetworkSlice wizard from context menu")
     public void openCreateNetworkSliceWizard() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //given
         SideMenuService.goToCreateLogicalFunctionView(driver, webDriverWait);
         //when

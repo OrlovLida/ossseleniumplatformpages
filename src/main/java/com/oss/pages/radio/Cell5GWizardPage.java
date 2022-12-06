@@ -18,7 +18,7 @@ public class Cell5GWizardPage extends BasePage {
     private static final String CELL5G_USE_FIRST_AVAILABLE_ID_DATA_ATTRIBUTE_NAME = "useFirstAvailableId";
     private static final String CELL5G_ADMINISTRATIVE_STATE_DATA_ATTRIBUTE_NAME = "administrativeState";
     private static final String CELL5G_OPERATIONAL_STATE_DATA_ATTRIBUTE_NAME = "operationalState";
-    private static final String CELL5G_LOCATION_DATA_ATTRIBUTE_NAME = "location_OSF";
+    private static final String CELL5G_LOCATION_DATA_ATTRIBUTE_NAME = "location";
     private static final String CELL5G_CARRIER_DATA_ATTRIBUTE_NAME = "carrier";
     private static final String CELL5G_COVERAGE_DATA_ATTRIBUTE_NAME = "coverage";
     private static final String CELL5G_MIMO_DATA_ATTRIBUTE_NAME = "mimoMode";

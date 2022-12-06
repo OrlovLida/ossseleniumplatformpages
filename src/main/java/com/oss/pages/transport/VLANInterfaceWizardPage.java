@@ -2,7 +2,7 @@ package com.oss.pages.transport;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.commonhierarchy.CommonHierarchyApp;
 import com.oss.framework.wizard.Wizard;
@@ -15,7 +15,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class VLANInterfaceWizardPage extends BasePage {
 
-    private static final String TYPE_ID = "typeSelectionApp";
+    private static final String TYPE_ID = "typesSelectionComboId";
     private static final String SUBINTERFACE_ID = "subinterface-id-uid";
     private static final String WIZARD_ID = "vlanInterfaceWizard";
     private static final String ACCEPT_ID = "vlanInterfaceWizardApp-finish";
@@ -30,7 +30,7 @@ public class VLANInterfaceWizardPage extends BasePage {
 
     @Step("Set VLAN Interface type to {type}")
     public void setType(String type) {
-        getWizard().setComponentValue(TYPE_ID, type, ComponentType.COMBOBOX);
+        getWizard().setComponentValue(TYPE_ID, type);
     }
 
     @Step("Set Subinterface ID to {subinterfaceId}")

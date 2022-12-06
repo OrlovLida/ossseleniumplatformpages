@@ -2,6 +2,7 @@ package com.oss.pages.radio;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -45,6 +46,14 @@ public class HostingWizardPage extends BasePage {
     @Step("Select hosting object using contains")
     public void setHostingContains(String hostingObjectName) {
         getHostingWizard().getComponent(HOSTING_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(hostingObjectName);
+    }
+
+    @Step("Select hosting object")
+    public void setHostingContains(String[] hostingObjectNames) {
+        Input input = getHostingWizard().getComponent(HOSTING_DATA_ATTRIBUTE_NAME);
+        for (String hostingObjectName : hostingObjectNames) {
+            input.setSingleStringValueContains(hostingObjectName);
+        }
     }
 
     @Step("Select hosting object")

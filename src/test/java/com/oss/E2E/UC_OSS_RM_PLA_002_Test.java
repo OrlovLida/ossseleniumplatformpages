@@ -20,8 +20,8 @@ import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.TasksPageV2;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
+import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
+import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.filtermanager.ShareFilterPage;
 import com.oss.pages.mediation.CLIConfigurationWizardPage;
 import com.oss.pages.mediation.ViewConnectionConfigurationPage;
@@ -44,8 +44,6 @@ import com.oss.pages.transport.trail.ConnectionWizardPage;
 
 import io.qameta.allure.Description;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-
 public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private static final String DEVICE_MODEL = "CISCO1941/K9";
     private static final String LOCATION_NAME = "Poznan-BU1";
@@ -60,6 +58,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private static final String PASSWORD = "cisco";
     private static final String COMMAND_TIMEOUT = "20";
     private static final String CONNECTION_TIMEOUT = "20";
+    private static final String IP_ADDRESS_WIZARD_MODE = "New address selection";
     private static final String IP_NETWORK = "E2ESeleniumTest";
     private static final String TEMPLATE_EXECUTION_NOTIFICATION = "Script execution finished";
     private static final String BOOKMARKS = "Bookmarks";
@@ -68,7 +67,12 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private static final String NAME = "Name";
     private static final String LEFT = "left";
     private static final String RIGHT = "right";
-    String URL = "";
+    private static final String TYPE_COLUMN_ID = "col-type";
+    private static final String VALIDATION_RESULT_TYPE = "INCOMPLETE_ROUTING_STATUS";
+    private static final String SUPPRESSION_REASON = "Unnecessary in this scenario";
+    private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
+
+    private String URL = "";
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SoftAssert softAssert;
     private String serialNumber = "SN-" + (int) (Math.random() * 1001);
@@ -85,15 +89,13 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Description("Create and start NRP Process")
     public void createProcessNRP() {
         waitForPageToLoad();
-        ProcessInstancesPage processInstancesPage = ProcessInstancesPage.goToProcessInstancesPage(driver, webDriverWait);
+        ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processNRPCode = processInstancesPage.createSimpleNRP();
-        checkMessageSize();
-        checkMessageType(MessageType.SUCCESS);
-        checkMessageContainsText(processNRPCode);
         waitForPageToLoad();
+        closeMessage();
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
-        checkTaskAssignment();
+        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, "Create process NRP", "high level planning task start"));
     }
 
     @Test(priority = 2, description = "Open Network View", dependsOnMethods = {"createProcessNRP"})
@@ -139,8 +141,8 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         deviceWizardPage.setPreciseLocation(LOCATION_NAME);
         waitForPageToLoad();
         deviceWizardPage.accept();
-        checkMessageSize();
-        checkMessageType(MessageType.SUCCESS);
+        checkMessageSize(String.format(SYSTEM_MESSAGE_PATTERN, "Create device", "device create"));
+        checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Create device", "device create"));
     }
 
     @Test(priority = 5, description = "Open device in Hierarchy View", dependsOnMethods = {"createDevice"})
@@ -161,7 +163,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     @Test(priority = 6, description = "Select ethernet interface and open it in New Inventory View", dependsOnMethods = {"moveToHierarchyView"})
     @Description("Select Ethernet Interface in Hierarchy View and open it in New Inventory View")
     public void selectEthernetInterface() {
-        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         String labelpath = DEVICE_NAME + ".Ports." + PORT_NAME + ".Termination Points.EthernetInterface_TP." + PORT_NAME;
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         waitForPageToLoad();
@@ -179,7 +181,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
-                .address(ADDRESS).subnet("10.10.20.0/24 [" + IP_NETWORK + "]").isPrimary("false").build();
+                .wizardMode(IP_ADDRESS_WIZARD_MODE).subnet("10.10.20.0/24 [" + IP_NETWORK + "]").address(ADDRESS).isPrimary("false").build();
         ipAddressAssignmentWizardPage.assignMoToIPAddress(ipAddressAssignmentWizardProperties);
         waitForPageToLoad();
     }
@@ -192,7 +194,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
         waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("serialNumber", TEXT_FIELD, serialNumber);
+        networkViewPage.queryElementAndAddItToView("serialNumber", serialNumber);
         networkViewPage.expandDockedPanel(LEFT);
         waitForPageToLoad();
         networkViewPage.selectObjectInViewContent(NAME, "H1");
@@ -208,7 +210,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.clickNext();
         waitForPageToLoad();
-        connectionWizardPage.selectConnectionTermination("1_1");
+        connectionWizardPage.selectConnectionTermination("1.1_1");
         waitForPageToLoad();
         connectionWizardPage.terminateCardComponent("No Card/Component");
         waitForPageToLoad();
@@ -216,7 +218,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.terminateTerminationPort(PORT_NAME);
         waitForPageToLoad();
-        connectionWizardPage.selectConnectionTermination("1_2");
+        connectionWizardPage.selectConnectionTermination("1.1_2");
         waitForPageToLoad();
         connectionWizardPage.terminateCardComponent("No Card/Component");
         waitForPageToLoad();
@@ -236,7 +238,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel("bottom");
         waitForPageToLoad();
-        networkViewPage.supressValidationResult("Unnecessary in this scenario");
+        networkViewPage.suppressValidationResult(TYPE_COLUMN_ID, VALIDATION_RESULT_TYPE, SUPPRESSION_REASON);
         networkViewPage.hideDockedPanel("bottom");
     }
 
@@ -270,8 +272,8 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         cliConfigurationWizardPage.setAuthPassword(PASSWORD);
         waitForPageToLoad();
         cliConfigurationWizardPage.clickAccept();
-        checkMessageSize();
-        checkMessageType(MessageType.SUCCESS);
+        checkMessageSize(String.format(SYSTEM_MESSAGE_PATTERN, "Create mediation configuration", "mediation configuration create"));
+        checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Create mediation configuration", "mediation configuration create"));
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         systemMessage.clickMessageLink();
         waitForPageToLoad();
@@ -339,7 +341,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
             assert resource != null;
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
             tasksPage.addFile(processIPCode, TasksPageV2.IMPLEMENTATION_TASK, absolutePatch);
-            checkMessageType(MessageType.SUCCESS);
+            checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Assign file", "adding file"));
         } catch (URISyntaxException e) {
             throw new RuntimeException("Cannot load file", e);
         }
@@ -353,15 +355,15 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     public void completeIpAndNrp() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processIPCode, TasksPageV2.IMPLEMENTATION_TASK);
-        checkTaskCompleted();
+        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete IP and NRP", "implementation task complete"));
         tasksPage.startTask(processIPCode, TasksPageV2.ACCEPTANCE_TASK);
-        checkTaskAssignment();
+        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, "Complete IP and NRP", "acceptance task start"));
         tasksPage.completeTask(processIPCode, TasksPageV2.ACCEPTANCE_TASK);
-        checkTaskCompleted();
+        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete IP and NRP", "acceptance task complete"));
         tasksPage.startTask(processNRPCode, TasksPageV2.VERIFICATION_TASK);
-        checkTaskAssignment();
+        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, "Complete IP and NRP", "verification task start"));
         tasksPage.completeTask(processNRPCode, TasksPageV2.VERIFICATION_TASK);
-        checkTaskCompleted();
+        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete IP and NRP", "verification task complete"));
     }
 
     @Test(priority = 16, description = "Create CM Domain", dependsOnMethods = {"createDevice"})
@@ -407,10 +409,12 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
         networkDiscoveryControlViewPage.runReconciliation();
-        checkMessageType(MessageType.INFO);
+        checkMessageType(MessageType.INFO, String.format(SYSTEM_MESSAGE_PATTERN, "Run reconciliation", "reconciliation start"));
         waitForPageToLoad();
         String status = networkDiscoveryControlViewPage.waitForEndOfReco();
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        waitForPageToLoad();
+        networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.INFO);
         if (status.equals("SUCCESS")) {
             waitForPageToLoad();
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
@@ -446,7 +450,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         waitForPageToLoad();
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
-        checkMessageType(MessageType.INFO);
+        checkMessageType(MessageType.INFO, String.format(SYSTEM_MESSAGE_PATTERN, "Delete CM Domain", "CM Domain delete"));
         waitForPageToLoad();
         Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
@@ -463,7 +467,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.CONNECTION_ACTION);
         waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("label", TEXT_FIELD, TRAIL_NAME);
+        networkViewPage.queryElementAndAddItToView("label", TRAIL_NAME);
         networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID, ConfirmationBox.DELETE);
     }
 
@@ -503,29 +507,35 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
         waitForPageToLoad();
-        networkViewPage.queryElementAndAddItToView("name", TEXT_FIELD, DEVICE_NAME);
+        networkViewPage.queryElementAndAddItToView("name", DEVICE_NAME);
         networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_DEVICE_ACTION, ConfirmationBox.YES);
-        checkMessageSize();
-        checkMessageType(MessageType.SUCCESS);
+        checkMessageSize(String.format(SYSTEM_MESSAGE_PATTERN, "Delete device", "device delete"));
+        checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Delete device", "device delete"));
     }
 
-    private void checkMessageType(MessageType messageType) {
-        softAssert.assertEquals((getFirstMessage().getMessageType()), messageType);
+    @Test(priority = 25, description = "Checking system message summary")
+    @Description("Checking system message summary")
+    public void systemMessageSummary() {
+        softAssert.assertAll();
     }
 
-    private void checkMessageContainsText(String message) {
+    private void checkMessageType(MessageType messageType, String systemMessageLog) {
+        softAssert.assertEquals((getFirstMessage().getMessageType()), messageType, systemMessageLog);
+    }
+
+    private void checkMessageContainsText(String systemMessageLog) {
         softAssert.assertTrue((getFirstMessage().getText())
-                .contains(message));
+                .contains("Task properly completed."), systemMessageLog);
     }
 
-    private void checkMessageText() {
-        softAssert.assertEquals((getFirstMessage().getText()), "The task properly assigned.");
+    private void checkMessageText(String systemMessageLog) {
+        softAssert.assertEquals((getFirstMessage().getText()), "The task properly assigned.", systemMessageLog);
     }
 
-    private void checkMessageSize() {
+    private void checkMessageSize(String systemMessageLog) {
         softAssert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages()
-                .size()), 1);
+                .size()), 1, systemMessageLog);
     }
 
     private Message getFirstMessage() {
@@ -534,14 +544,19 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
                 .orElseThrow(() -> new RuntimeException("The list is empty"));
     }
 
-    private void checkTaskAssignment() {
-        checkMessageType(MessageType.SUCCESS);
-        checkMessageText();
+    private void checkTaskAssignment(String systemMessageLog) {
+        checkMessageType(MessageType.SUCCESS, systemMessageLog);
+        checkMessageText(systemMessageLog);
     }
 
-    private void checkTaskCompleted() {
-        checkMessageType(MessageType.SUCCESS);
-        checkMessageContainsText("Task properly completed.");
+    private void checkTaskCompleted(String systemMessageLog) {
+        checkMessageType(MessageType.SUCCESS, systemMessageLog);
+        checkMessageContainsText(systemMessageLog);
+    }
+
+    private void closeMessage() {
+        SystemMessageContainer.create(driver, webDriverWait).close();
+        waitForPageToLoad();
     }
 
     private void waitForPageToLoad() {

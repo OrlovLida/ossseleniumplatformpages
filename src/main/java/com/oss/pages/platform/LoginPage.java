@@ -11,7 +11,7 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 
 public class LoginPage extends BasePage {
 
-    private String url;
+    private final String url;
 
     @FindBy(id = "username")
     private WebElement userInput;
@@ -45,5 +45,9 @@ public class LoginPage extends BasePage {
         userInput.sendKeys(user);
         passwordInput.sendKeys(password);
         loginButton.click();
+    }
+
+    public boolean isLoginPageDisplayed() {
+        return userInput.isDisplayed() && passwordInput.isDisplayed() && loginButton.isDisplayed();
     }
 }

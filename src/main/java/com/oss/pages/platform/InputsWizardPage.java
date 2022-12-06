@@ -50,23 +50,23 @@ public class InputsWizardPage extends BasePage {
         super(driver);
     }
 
-    public void setComponentValue(String componentId, String value, Input.ComponentType componentType) {
-        Input input = getWizard().getComponent(componentId, componentType);
+    public void setComponentValue(String componentId, String value) {
+        Input input = getWizard().getComponent(componentId);
         input.setSingleStringValue(value);
     }
 
-    public String getComponentValue(String componentId, Input.ComponentType componentType) {
-        Input input = getWizard().getComponent(componentId, componentType);
+    public String getComponentValue(String componentId) {
+        Input input = getWizard().getComponent(componentId);
         return input.getStringValue();
     }
 
-    public Input getComponent(String componentId, Input.ComponentType componentType) {
-        return getWizard().getComponent(componentId, componentType);
+    public Input getComponent(String componentId) {
+        return getWizard().getComponent(componentId);
     }
 
     public void setControllerValue(String controllerId, String componentId) {
-        setComponentValue(controllerId, componentId, ComponentType.MULTI_COMBOBOX);
-        DelayUtils.sleep();
+        setComponentValue(controllerId, componentId);
+        wizard.waitForWizardToLoad();
     }
 
     public void clearController(String controllerId) {
@@ -91,7 +91,7 @@ public class InputsWizardPage extends BasePage {
     //Lazy
     private Wizard getWizard() {
         if (this.wizard == null) {
-            this.wizard = Wizard.createWizard(this.driver, this.wait);
+            this.wizard = Wizard.createByComponentId(this.driver, this.wait, WIZARD_ID);
         }
         return this.wizard;
     }

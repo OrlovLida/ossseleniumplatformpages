@@ -1,5 +1,6 @@
 package com.oss.services;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import javax.ws.rs.core.Response;
@@ -13,7 +14,10 @@ import com.comarch.oss.physicalinventory.api.dto.PluggableModuleDTO;
 import com.comarch.oss.physicalinventory.api.dto.PortDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
 import com.comarch.oss.physicalinventory.api.dto.SearchResultDTO;
+import com.comarch.oss.resourcehierarchy.api.dto.ResourceHierarchyDTO;
 import com.jayway.restassured.http.ContentType;
+import com.jayway.restassured.specification.RequestSpecification;
+import com.oss.transport.infrastructure.planning.PlanningContext;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
 
@@ -22,6 +26,7 @@ public class PhysicalInventoryClient {
     private static final String DEVICES_API_PATH = "/devices";
     private static final String DEVICE_STRUCTURE_API_PATH = "/devices/%s/devicestructurebyjpa";
     private static final String DEVICE_DELETE_API_PATH = "/devices/v2/%s";
+    private static final String DEVICE_DELETE_V3_API_PATH = "/devices/v3";
     private static final String PROJECT_ID = "project_id";
     private static final String CHECK_COMPATIBILITY = "checkCompatibility";
     private static final String FALSE = "false";
@@ -32,6 +37,8 @@ public class PhysicalInventoryClient {
     private static final String CHASSIS_STRUCTURE_API_PATH = "/chassis/%s/structure";
     private static final String CARDS_STRUCTURE_API_PATH = "/cards/%s/structure";
     private static final String CARDS_CREATE_API_PATH = "/cards/sync?checkCompatibility=true";
+    private static final String RESOURCE_HIERARCHY_API_PATH = "/physical-resource/hierarchy/%s/%s?hierarchyMode=%s";
+    private static final String DEVICE_GET_API_PATH = "/devices/%s";
     private static PhysicalInventoryClient instance;
     private final Environment env;
     
@@ -203,9 +210,41 @@ public class PhysicalInventoryClient {
                 .statusCode(200).assertThat();
         
     }
+
+    public void deleteDeviceV3(Collection<String> deviceIds,
+                               PlanningContext context) {
+        RequestSpecification requestSpecification = env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .queryParam("id", deviceIds)
+                .queryParam("markUsedObjectsAsObsolete", false);
+        if (context.isProjectContext()) {
+            requestSpecification.queryParam(PlanningContext.PROJECT_PARAM, context.getProjectId());
+        } else {
+            requestSpecification.queryParam(PlanningContext.PERSPECTIVE_PARAM, context.getPerspective());
+        }
+        requestSpecification
+                .when()
+                .delete(DEVICE_DELETE_V3_API_PATH)
+                .then()
+                .log().body()
+                .statusCode(200).assertThat();
+    }
     
     private PhysicalDeviceDTO getDeviceStructure(Long deviceId) {
         String devicePath = String.format(DEVICE_STRUCTURE_API_PATH, deviceId);
+        return env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .get(devicePath)
+                .then()
+                .log().body()
+                .extract()
+                .as(PhysicalDeviceDTO.class);
+    }
+
+    public PhysicalDeviceDTO getDevice(String deviceId) {
+        String devicePath = String.format(DEVICE_GET_API_PATH, deviceId);
         return env.getPhysicalInventoryCoreRequestSpecification()
                 .given()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
@@ -242,5 +281,17 @@ public class PhysicalInventoryClient {
                 .extract()
                 .as(CardDTO.class);
     }
-    
+
+    public ResourceHierarchyDTO getResourceHierarchy(String resourceType, String resourceId, String mode) {
+        String resourceHierarchyPath = String.format(RESOURCE_HIERARCHY_API_PATH, resourceType, resourceId, mode);
+        return env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .get(resourceHierarchyPath)
+                .then()
+                .log().body()
+                .extract()
+                .as(ResourceHierarchyDTO.class);
+    }
 }

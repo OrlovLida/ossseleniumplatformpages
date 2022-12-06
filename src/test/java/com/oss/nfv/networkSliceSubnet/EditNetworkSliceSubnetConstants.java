@@ -16,9 +16,12 @@ public class EditNetworkSliceSubnetConstants {
     public static final String OPERATIONAL_STATE_VALUE = "ENABLED";
     public static final String ADMINISTRATIVE_STATE_VALUE = "UNLOCKED";
 
+    public static final String CAPACITY_SLICE_PROFILE_NAME = "CAPACITY-SLICE-PROFILE-EDIT-SELENIUM-TEST";
     public static final String SLICE_PROFILE_NAME = "SLICE-PROFILE-EDIT-SELENIUM-TEST";
     public static final String PLMN_INFO_DEFAULT_LABEL_PATH = SLICE_PROFILE_NAME
             + ".PLMN Info 0 (mcc: 805, mnc: 6015, sd: 16007215, sst: 145)";
+    public static final String CAPACITY_PLMN_INFO_DEFAULT_LABEL_PATH = CAPACITY_SLICE_PROFILE_NAME
+            + ".PLMN Info 0 (mcc: , mnc: , sd: , sst: 145)";
     public static final String MCC_VALUE = "805";
     public static final String MNC_VALUE = "6015";
     public static final String SST_VALUE = "145";

@@ -14,8 +14,8 @@ public class RanAntennaWizardPage extends BasePage {
     private static final String RAN_ANTENNA_NAME_DATA_ATTRIBUTE_NAME = "name";
     private static final String RAN_ANTENNA_DESCRIPTION_DATA_ATTRIBUTE_NAME = "description";
     private static final String RAN_ANTENNA_MODEL_DATA_ATTRIBUTE_NAME = "model";
-    private static final String RAN_ANTENNA_LOCATION_DATA_ATTRIBUTE_NAME = "location_OSF";
-    private static final String RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME = "preciseLocation_OSF";
+    private static final String RAN_ANTENNA_LOCATION_DATA_ATTRIBUTE_NAME = "location";
+    private static final String RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME = "preciseLocation";
     private static final String RAN_ANTENNA_MECHANICAL_TILT_DATA_ATTRIBUTE_NAME = "mechanicalTilt";
     private static final String RAN_ANTENNA_AZIMUTH_DATA_ATTRIBUTE_NAME = "azimuth";
     private static final String RAN_ANTENNA_HEIGHT_AGL_DATA_ATTRIBUTE_NAME = "heightAgl";
@@ -61,7 +61,7 @@ public class RanAntennaWizardPage extends BasePage {
 
     @Step("Set precise location")
     public void setPreciseLocation(String location) {
-        getRanAntennaWizard().setComponentValue(RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME, location);
+        getRanAntennaWizard().getComponent(RAN_ANTENNA_PRECISE_LOCATION_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(location);
     }
 
     @Step("Set mechanical tilt")

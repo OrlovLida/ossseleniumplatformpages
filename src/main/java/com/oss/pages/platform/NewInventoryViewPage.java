@@ -1,5 +1,6 @@
 package com.oss.pages.platform;
 
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -49,12 +50,12 @@ public class NewInventoryViewPage extends BasePage {
     private static final String DOWNLOAD_PROPERTY_CONFIG_ID = "propertyPanelDownload";
     private static final String SAVE_NEW_CONFIG_ID = "saveNewConfig";
     private static final String CHANGE_LABEL = "Change";
-    private static final String TABS_CONTAINER_ID = "DetailTabsWidget";
+    private static final String TABS_CONTAINER_ID = "DetailTabsCard";
     private static final String OPEN_HIERARCHY_VIEW_ACTION_ID = "HierarchyView";
     public static final String KEBAB_OBJECT_GROUP_ID = "frameworkObjectButtonsGroup";
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
     private static final String PROPERTY_PANEL_ID = "PropertyPanelWidget";
-    private static String table_id = "MainTableWidget";
+    private static String tableId = "MainTableWidget";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -63,7 +64,7 @@ public class NewInventoryViewPage extends BasePage {
     @Step("Open Inventory View")
     public static NewInventoryViewPage goToInventoryViewPage(WebDriver driver, String basicURL, String type) {
         driver.get(String.format("%s/#/views/management/views/inventory-view/%s?perspective=LIVE", basicURL, type));
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(45));
         DelayUtils.waitForPageToLoad(driver, wait);
         return new NewInventoryViewPage(driver, wait);
     }
@@ -75,13 +76,13 @@ public class NewInventoryViewPage extends BasePage {
 
     public static NewInventoryViewPage getInventoryViewPage(WebDriver driver, WebDriverWait wait, String mainTableId) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        table_id = mainTableId;
+        tableId = mainTableId;
         return new NewInventoryViewPage(driver, wait);
     }
 
     public TableWidget getMainTable() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        return TableWidget.createById(driver, table_id, wait);
+        return TableWidget.createById(driver, tableId, wait);
     }
 
     public List<String> getColumnsHeaders() {
@@ -118,7 +119,7 @@ public class NewInventoryViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void selectSeveralObjectsByRowId(int... indexes) {
+    public void selectObjectsByRowId(int... indexes) {
         List<Integer> rows = Arrays.stream(indexes).boxed().collect(Collectors.toList());
         rows.forEach(this::selectObjectByRowId);
     }
@@ -152,7 +153,7 @@ public class NewInventoryViewPage extends BasePage {
         return filterValues;
     }
 
-    public List<String> getSavedFilters() {
+        public List<String> getSavedFilters() {
         return getAdvancedSearch().getSavedFilters();
     }
 
@@ -176,6 +177,14 @@ public class NewInventoryViewPage extends BasePage {
 
     public void unselectVisibilitySearchAttributes(List<String> attributeIds) {
         getMainTable().unselectVisibilitySearchAttributes(attributeIds);
+    }
+
+    public void setDefaultAdvanceSearchSettings() {
+        getMainTable().getAdvancedSearch().backToDefault();
+    }
+
+    public void changeAdvanceSearchAttributeOrder(String attributeId, int position) {
+        getMainTable().getAdvancedSearch().changeAttributesOrder(attributeId,position);
     }
 
     public List<String> getAllVisibleFilters() {
@@ -553,10 +562,9 @@ public class NewInventoryViewPage extends BasePage {
     }
 
     @Step("Open Hierarchy View for selected object")
-    public HierarchyViewPage goToHierarchyViewForSelectedObject() {
+    public void goToHierarchyViewForSelectedObject() {
         DelayUtils.waitForPageToLoad(driver, wait);
         callAction(ActionsContainer.SHOW_ON_GROUP_ID, OPEN_HIERARCHY_VIEW_ACTION_ID);
-        return new HierarchyViewPage(driver);
     }
 
     public boolean isTabVisible(String tabLabel) {
@@ -614,4 +622,7 @@ public class NewInventoryViewPage extends BasePage {
         return WidgetChooser.create(driver, wait);
     }
 
+    public void clickConfirmationBoxByLabel(String buttonLabel) {
+        getConfirmationBox().clickButtonByLabel(buttonLabel);
+    }
 }

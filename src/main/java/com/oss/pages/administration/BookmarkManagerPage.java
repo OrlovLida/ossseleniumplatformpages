@@ -9,6 +9,8 @@ import com.oss.framework.utils.DelayUtils;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class BookmarkManagerPage extends BaseManagerPage {
 
     private static final Logger log = LoggerFactory.getLogger(BookmarkManagerPage.class);
@@ -23,7 +25,7 @@ public class BookmarkManagerPage extends BaseManagerPage {
 
     @Step("Go to Bookmark Manager page")
     public static BookmarkManagerPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(45));
         String pageUrl = String.format("%s/#/view/bookmarkmanager/main", basicURL);
         driver.get(pageUrl);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -65,7 +67,8 @@ public class BookmarkManagerPage extends BaseManagerPage {
 
     @Step("Click Delete Bookmark")
     public void clickDeleteBookmark(String bookmarkName) {
-        clickDeleteElement(CONFIRM_DELETE_BUTTON_ID, bookmarkName);
+        clickDeleteElementOnList(bookmarkName);
+        confirmDeleteElement(CONFIRM_DELETE_BUTTON_ID);
         log.info("Click delete Bookmark");
     }
 

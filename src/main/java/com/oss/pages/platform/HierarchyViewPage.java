@@ -1,7 +1,9 @@
 package com.oss.pages.platform;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.WebDriver;
@@ -13,9 +15,11 @@ import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.components.tree.TreeComponent.Node;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.Widget;
+import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidgetV2;
 import com.oss.pages.BasePage;
+import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard.Field;
 
@@ -24,11 +28,13 @@ import io.qameta.allure.Step;
 public class HierarchyViewPage extends BasePage {
 
     public static final String OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID = "HierarchyView";
-    private static final String BOTTOM_TABS_WIDGET_ID = "HierarchyView_BottomDetailTabs_%s";
+    private static final String BOTTOM_TABS_WIDGET_ID = "BottomDetailCard";
     private static final String HIERARCHY_VIEW_TREE_WIDGET_ID = "HierarchyTreeWidget";
+    private static final String PROPERTY_PANEL_WIDGET_ID = "PropertyPanelWidget";
+    private static final String CHOOSE_PROPERTY_CONFIG_ID = "chooseConfiguration";
+    private static final String SETTINGS_ID = "frameworkCustomButtonsSecondaryGroup";
 
-    // TODO: change to private
-    public HierarchyViewPage(WebDriver driver) {
+    private HierarchyViewPage(WebDriver driver) {
         super(driver);
     }
 
@@ -36,9 +42,13 @@ public class HierarchyViewPage extends BasePage {
         super(driver, wait);
     }
 
+    public static HierarchyViewPage getHierarchyViewPage(WebDriver driver, WebDriverWait wait) {
+        return new HierarchyViewPage(driver, wait);
+    }
+
     public static HierarchyViewPage openHierarchyViewPage(WebDriver driver, String basicURL, String type) {
         driver.get(String.format("%s/#/views/management/views/hierarchy-view/%s?perspective=LIVE", basicURL, type));
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
         DelayUtils.waitForPageToLoad(driver, wait);
         return new HierarchyViewPage(driver, wait);
     }
@@ -70,7 +80,7 @@ public class HierarchyViewPage extends BasePage {
 
     public void searchObject(String text) {
         TreeWidgetV2 treeWidgetV2 = getMainTree();
-        treeWidgetV2.typeIntoSearch(text);
+        treeWidgetV2.fullTextSearch(text);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -86,9 +96,15 @@ public class HierarchyViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public TabsWidget getBottomTabsWidget(String type) {
+    public TabsWidget getBottomTabsWidget() {
         Widget.waitForWidget(wait, TabsWidget.TABS_WIDGET_CLASS);
-        return TabsWidget.createById(driver, wait, String.format(BOTTOM_TABS_WIDGET_ID, type));
+        return TabsWidget.createById(driver, wait, BOTTOM_TABS_WIDGET_ID);
+    }
+
+    @Step("Check if tree has no data")
+    public boolean hasNoData() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getMainTree().hasNoData();
     }
 
     @Step("Save new configuration for page")
@@ -99,10 +115,19 @@ public class HierarchyViewPage extends BasePage {
         return this;
     }
 
+    @Step("Select configuration for Property Panel")
+    public void setPropertyPanelConfiguration(String configurationName) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        PropertyPanel.createById(driver, wait, PROPERTY_PANEL_WIDGET_ID)
+                .callAction(SETTINGS_ID, CHOOSE_PROPERTY_CONFIG_ID);
+        ChooseConfigurationWizard.create(driver, wait)
+                .chooseConfiguration(configurationName)
+                .apply();
+    }
+
     @Step("Select First Object on Tree Widget")
-    public HierarchyViewPage selectFirstObject() {
+    public void selectFirstObject() {
         getMainTree().selectNode(0);
-        return this;
     }
 
     @Step("Unselect First Object on Tree Widget")
@@ -133,6 +158,14 @@ public class HierarchyViewPage extends BasePage {
         getMainTree().expandNodeWithLabel(label);
     }
 
+    public void collapseNodeByPath(String path) {
+        getMainTree().getNodeByPath(path).collapseNode();
+    }
+
+    public Set<String> getNodeChildrenByPath(String path) {
+        return getMainTree().getNodeChildrenByPath(path);
+    }
+
     @Step("Select tree node by label - {label}")
     public void selectNodeByLabel(String label) {
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -144,6 +177,13 @@ public class HierarchyViewPage extends BasePage {
     public void selectNodeByLabelsPath(String labels) {
         Node node = getMainTree().getNodeByLabelsPath(labels);
         if (!node.isToggled()) {
+            node.toggleNode();
+        }
+    }
+
+    public void unselectNodeByLabelsPath(String labels) {
+        Node node = getMainTree().getNodeByLabelsPath(labels);
+        if (node.isToggled()) {
             node.toggleNode();
         }
     }

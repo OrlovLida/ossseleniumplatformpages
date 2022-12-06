@@ -7,7 +7,7 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.tasks.TasksPage;
 
 public class CancelUnfinishedTasksTest extends BaseTestCase {
 

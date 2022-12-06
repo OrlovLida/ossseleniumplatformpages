@@ -1,5 +1,7 @@
 package com.oss.pages.reconciliation;
 
+import java.util.List;
+
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
@@ -26,7 +28,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private static final String TREE_ID = "narComponent_networkDiscoveryControlViewIdcmDomainsTreeId";
     private static final String RECONCILIATION_ACTION_ID = "narComponent_CmDomainActionFullReconciliationId";
-    private static final String RECONCILIATION_TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainTabsId";
+    private static final String RECONCILIATION_TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainDetailsWindowId";
     private static final String RECONCILIATION_STATE_TABLE_ID = "narComponent_networkDiscoveryControlViewIdreconciliationStatesTableId";
     private static final String RECONCILIATION_TREE_TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId";
     private static final String CREATE_CM_DOMAIN_ACTION_ID = "narComponent_CmDomainActionCreateId";
@@ -42,8 +44,10 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String REASON = "Reason";
     private static final String CONFLICT = "conflict";
     private static final String RECONCILIATION_WITH_ID = "Reconciliation with ID";
+    private static final String MOVE_TO_NOTIFICATION_SUBSCRIPTIONS_ID = "narComponent_CmDomainActionNotificationSubscriptionsId";
+    private static final String TYPE = "Type";
 
-    protected NetworkDiscoveryControlViewPage(WebDriver driver) {
+    public NetworkDiscoveryControlViewPage(WebDriver driver) {
         super(driver);
     }
 
@@ -67,6 +71,13 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         openCmDomainWizard();
         CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
         wizard.fillCmDomainWizard(name, cmInterface, domain);
+    }
+
+    @Step("Create CM Domain with Name: {name}, CM Interface: {cmInterface}, Domain: {domain}")
+    public void createCMDomain(String name, String cmInterface, String domain, String stopOn) {
+        openCmDomainWizard();
+        CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
+        wizard.fillCmDomainWizard(name, cmInterface, domain, stopOn);
     }
 
     public TreeWidget getTreeView() {
@@ -110,17 +121,17 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         OldTable.createById(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
-        String status = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
+        String status = getRecoStateTable().getCellValue(0, STATUS);
         while (status.contains("IN_PROGRESS") || status.contains("PENDING")) {
             DelayUtils.sleep(5000);
             DelayUtils.waitForPageToLoad(driver, wait);
             OldTable.createById(driver, wait, RECONCILIATION_TAB_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, RECO_STATE_REFRESH_BUTTON_ID);
             DelayUtils.waitForPageToLoad(driver, wait);
             try {
-                status = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
+                status = getRecoStateTable().getCellValue(0, STATUS);
             } catch (StaleElementReferenceException e) {
                 DelayUtils.waitForPageToLoad(driver, wait);
-                status = OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).getCellValue(0, STATUS);
+                status = getRecoStateTable().getCellValue(0, STATUS);
             }
         }
         return status;
@@ -146,6 +157,11 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         notifications.clearAllNotification();
     }
 
+    @Step("Count reconciliation states")
+    public int countReconciliationStates() {
+        return getRecoStateTable().countRows(TYPE);
+    }
+
     @Step("Move from Network Discovery Control View to Network Inconsistencies View in context of selected CM Domain")
     public void moveToNivFromNdcv() {
         TabsInterface ndcvTabs = getTabsInterface();
@@ -160,6 +176,12 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         ndcvTabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         ndcvTabs.callActionById(ActionsContainer.SHOW_ON_GROUP_ID, SHOW_SAMPLES_MANAGEMENT_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Move from Network Discovery Control View to Subscription Configuration view in context of selected CM Domain")
+    public void moveToSubscriptionConfiguration() {
+        getTabsInterface().callActionById(ActionsContainer.SHOW_ON_GROUP_ID, MOVE_TO_NOTIFICATION_SUBSCRIPTIONS_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
@@ -185,7 +207,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Select latest reconciliation state")
     public void selectLatestReconciliationState() {
-        OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID).selectRow(0);
+        getRecoStateTable().selectRow(0);
     }
 
     @Step("Check if conflict event appeared during reconciliation")
@@ -207,6 +229,10 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, RECONCILIATION_WITH_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         return getIssuesTable().getCellValue(0, REASON);
+    }
+
+    public List<String> getTabsLabels() {
+        return TabsWidget.createById(driver, wait,  RECONCILIATION_TAB_ID).getTabLabels();
     }
 
     private void logIssues(String type) {
@@ -231,6 +257,10 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     private OldTable getIssuesTable() {
         return OldTable.createById(driver, wait, ISSUES_TABLE_ID);
+    }
+
+    private OldTable getRecoStateTable() {
+        return OldTable.createById(driver, wait, RECONCILIATION_STATE_TABLE_ID);
     }
 
     private TabsInterface getTabsInterface() {

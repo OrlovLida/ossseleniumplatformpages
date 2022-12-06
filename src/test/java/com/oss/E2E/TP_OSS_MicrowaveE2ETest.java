@@ -1,8 +1,10 @@
 package com.oss.E2E;
 
 import java.util.Random;
+import java.util.UUID;
 
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -10,7 +12,6 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
@@ -21,6 +22,9 @@ import com.oss.pages.platform.toolsmanager.ToolsManagerPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.v2.MicrowaveChannelWizardPage;
 import com.oss.pages.transport.trail.v2.MicrowaveLinkWizardPage;
+import com.oss.repositories.AddressRepository;
+import com.oss.repositories.LocationInventoryRepository;
+import com.oss.untils.Environment;
 
 import io.qameta.allure.Description;
 
@@ -28,13 +32,24 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
+    private static final String SITE = "Site";
+    private static final String COUNTRY_NAME = "Polska";
+    private static final String REGION_NAME_1 = "Woj. Pomorskie";
+    private static final String REGION_NAME_2 = "Woj. Lubelskie";
+    private static final String DISTRICT_NAME_1 = "District 1";
+    private static final String DISTRICT_NAME_2 = "District 2";
+    private static final String CITY_NAME_1 = "Bobowo";
+    private static final String CITY_NAME_2 = "Frampol";
+    private static final String POSTAL_CODE_NAME_1 = "80011";
+    private static final String POSTAL_CODE_NAME_2 = "80012";
+
     private static final String NAME_COMPONENT_ID = "name";
     private static final String NAME_COLUMN_NAME = "Name";
     private static final String MICROWAVE_CHANNEL_TRAIL_TYPE = "Microwave Channel";
     private static final String MICROWAVE_CHANNEL_PARTIAL_NAME = "MicrowaveChannel";
     private static final String MICROWAVE_LINK_TRAIL_TYPE = "Microwave Link";
-    private static final String INFRASTRUCTURE_MANAGEMENT_CATEGORY_NAME = "Infrastructure management";
-    private static final String CREATE_DEVICE_APPLICATION_NAME = "Create Device";
+    private static final String INFRASTRUCTURE_MANAGEMENT_CATEGORY_NAME = "Infrastructure Management";
+    private static final String CREATE_DEVICE_APPLICATION_NAME = "Create Physical Device";
     private static final String RESOURCE_INVENTORY_CATEGORY_NAME = "Resource Inventory";
     private static final String NETWORK_VIEW_APPLICATION_NAME = "Network View";
     private static final String CREATE_CARD_BUTTON_ID = "CreateCardOnDeviceAction";
@@ -42,7 +57,8 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String CARD_SHORT_IDENTIFIER_COLUMN = "card.shortIdentifier";
     private static final String PORT_SHORT_IDENTIFIER_COLUMN = "port.shortIdentifier";
     private static final String TERMINATIONS_TAB_ID = "TerminationWidget";
-    private static final String DOCKED_PANEL_POSITION = "left";
+    private static final String CONTENT_DOCKED_PANEL_POSITION = "left";
+    private static final String DETAILS_DOCKED_PANEL_POSITION = "bottom";
 
     private static final String NAME_ATTRIBUTE_LABEL = "Name";
     private static final String BAND_ATTRIBUTE_LABEL = "Band";
@@ -242,7 +258,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String END_ATTENUATOR_LOSS2 = "20";
 
     private static final String USER_LABEL = "userLabel987";
-    private static final String LINK_ID = "7";
     private static final String TECHNOLOGY_TYPE = "PDH";
     private static final String AGGREGATION_CONFIGURATION = "1+1";
     private static final String NUMBER_OF_WORKING_CHANNELS = "1";
@@ -253,12 +268,19 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private static final String MWL_DESCRIPTION = "desc691";
 
     private static final String MICROWAVE_CHANNEL_CONFIGURATION = "SeleniumAttributesPanelMicrowaveChannel";
+    private final Environment env = Environment.getInstance();
 
     private SoftAssert softAssert;
     private String secondMicrowaveChannel;
     private String firstMicrowaveChannel;
 
     private static Random rand = new Random();
+
+    @BeforeClass
+    public void checkPrereq() {
+        getOrCreateFirstLocations();
+        getOrCreateSecondLocations();
+    }
 
     @Test(priority = 1, description = "Create Physical Devices")
     @Description("Create All Physical Devices from prerequisites")
@@ -276,20 +298,20 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 //        createOutdoorUnit(OUTDOOR_UNIT_MODEL, SECOND_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
     }
 
-    @Test(priority = 2, description = "Create Microwave Channels with Terminations")
+    @Test(priority = 2, description = "Create Microwave Channels with Terminations", dependsOnMethods = {"createDevices"})
     @Description("Add Indoor Units to View and create Microwave Channel on them")
     public void createMicrowaveChannelWithTerminations() {
         openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        addObjectToView(NAME_COMPONENT_ID, TEXT_FIELD, FIRST_INDOOR_UNIT_NAME);
+        addObjectToView(NAME_COMPONENT_ID, FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
-        addObjectToView(NAME_COMPONENT_ID, TEXT_FIELD, SECOND_INDOOR_UNIT_NAME);
+        addObjectToView(NAME_COMPONENT_ID, SECOND_INDOOR_UNIT_NAME);
         waitForPageToLoad();
         networkViewPage.expandViewContentPanel();
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
 
-        networkViewPage.openWizardPage(MICROWAVE_CHANNEL_TRAIL_TYPE);
+        networkViewPage.openConnectionWizard(MICROWAVE_CHANNEL_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveChannelAttributes firstMicrowaveChannelAttributes = getFirstMicrowaveChannelAttributes();
         MicrowaveChannelWizardPage firstMicrowaveChannelWizardPage = new MicrowaveChannelWizardPage(driver);
@@ -305,7 +327,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_LABEL);
     }
 
-    @Test(priority = 3, description = "Create Microwave Channel and add Terminations")
+    @Test(priority = 3, description = "Create Microwave Channel and add Terminations", dependsOnMethods = {"createMicrowaveChannelWithTerminations"})
     @Description("Create Microwave Channel and add terminations using Terminations Tab")
     public void createMicrowaveChannelAndAddTerminations() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
@@ -313,17 +335,17 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
         firstMicrowaveChannel = getMicrowaveChannel(0);
         waitForPageToLoad();
-        networkViewPage.unselectObject(firstMicrowaveChannel);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, firstMicrowaveChannel);
         waitForPageToLoad();
 
-        networkViewPage.openWizardPage(MICROWAVE_CHANNEL_TRAIL_TYPE);
+        networkViewPage.openConnectionWizard(MICROWAVE_CHANNEL_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveChannelAttributes secondMicrowaveChannelAttributes = getSecondMicrowaveChannelAttributes();
         MicrowaveChannelWizardPage secondMicrowaveChannelWizardPage = new MicrowaveChannelWizardPage(driver);
         fillMicrowaveChannelWizard(secondMicrowaveChannelWizardPage, secondMicrowaveChannelAttributes);
         waitForPageToLoad();
         assertMicrowaveChannel(networkViewPage, secondMicrowaveChannelAttributes);
-        // Czekamy na: OSSTRAIL-5488
+        TODO:
         //Add Terminations using Terminations Tab
 
         networkViewPage.startEditingSelectedTrail();
@@ -335,32 +357,36 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         waitForPageToLoad();
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, SECOND_INDOOR_UNIT_NAME);
         waitForPageToLoad();
-        networkViewPage.unselectObject(secondMicrowaveChannel);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, secondMicrowaveChannel);
         waitForPageToLoad();
         networkViewPage.addSelectedObjectsToTermination();
         waitForPageToLoad();
         fillTerminationWizardPage();
 
-        networkViewPage.selectObject(secondMicrowaveChannel);
+        networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, secondMicrowaveChannel);
         waitForPageToLoad();
-        networkViewPage.unselectObject(FIRST_INDOOR_UNIT_NAME);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
-        networkViewPage.unselectObject(SECOND_INDOOR_UNIT_NAME);
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, SECOND_INDOOR_UNIT_NAME);
         waitForPageToLoad();
-        networkViewPage.hideDockedPanel(DOCKED_PANEL_POSITION);
+        networkViewPage.hideDockedPanel(CONTENT_DOCKED_PANEL_POSITION);
         waitForPageToLoad();
         networkViewPage.openTerminationsTab();
         assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, CARD_NAME);
         assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_LABEL);
     }
 
-    @Test(priority = 4, description = "Create Microwave Link")
+    @Test(priority = 4, description = "Create Microwave Link", dependsOnMethods = {"createMicrowaveChannelAndAddTerminations"})
     @Description("Create Microwave Link and add Microwave Channel to routing")
     public void createMicrowaveLinkAndAddMicrowaveChannelToRouting() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.unselectObject(secondMicrowaveChannel);
+        networkViewPage.hideDockedPanel(DETAILS_DOCKED_PANEL_POSITION);
+        waitForPageToLoad();
+        networkViewPage.expandViewContentPanel();
+        waitForPageToLoad();
+        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_NAME, secondMicrowaveChannel);
 
-        networkViewPage.openWizardPage(MICROWAVE_LINK_TRAIL_TYPE);
+        networkViewPage.openConnectionWizard(MICROWAVE_LINK_TRAIL_TYPE);
         waitForPageToLoad();
         MicrowaveLinkAttributes microwaveLinkAttributes = getMicrowaveLinkAttributes();
         MicrowaveLinkWizardPage microwaveLinkWizardPage = new MicrowaveLinkWizardPage(driver);
@@ -398,10 +424,10 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         toolsManagerWindow.openApplication(categoryName, applicationName);
     }
 
-    private void addObjectToView(String componentId, Input.ComponentType componentType, String value) {
+    private void addObjectToView(String componentId, String value) {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
-        networkViewPage.queryElementAndAddItToView(componentId, componentType, value);
+        networkViewPage.queryElementAndAddItToView(componentId, value);
     }
 
     private void createPhysicalDevice(String deviceModel, String deviceName, String locationName) {
@@ -556,7 +582,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     private MicrowaveLinkAttributes getMicrowaveLinkAttributes() {
         MicrowaveLinkAttributes attributes = new MicrowaveLinkAttributes();
         attributes.userLabel = USER_LABEL;
-        attributes.linkId = LINK_ID + rand.nextInt(990 + 9 + 1) * 100;
+        attributes.linkId = UUID.randomUUID().toString();
         attributes.technologyType = TECHNOLOGY_TYPE;
         attributes.aggregationConfiguration = AGGREGATION_CONFIGURATION;
         attributes.numberOfWorkingChannels = NUMBER_OF_WORKING_CHANNELS;
@@ -725,6 +751,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     }
 
     private void fillMicrowaveLinkWizard(MicrowaveLinkWizardPage microwaveLinkWizardPage, MicrowaveLinkAttributes microwaveLinkAttributes) {
+        microwaveLinkWizardPage.clickNext();
         microwaveLinkWizardPage.setUserLabel(microwaveLinkAttributes.userLabel);
         microwaveLinkWizardPage.setLinkId(microwaveLinkAttributes.linkId);
         microwaveLinkWizardPage.setTechnologyType(microwaveLinkAttributes.technologyType);
@@ -880,7 +907,7 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
     }
 
     private void addCardToPhysicalDevice(String modelName, String slotName) {
-        HierarchyViewPage hierarchyViewPage = new HierarchyViewPage(driver);
+        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         hierarchyViewPage.selectFirstObject();
         waitForPageToLoad();
         hierarchyViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_CARD_BUTTON_ID);
@@ -900,5 +927,25 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    private void getOrCreateFirstLocations() {
+        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
+        locationInventoryRepository.getOrCreateLocation(FIRST_LOCATION_NAME, SITE, prepareFirstAddress());
+    }
+
+    private Long prepareFirstAddress() {
+        AddressRepository addressRepository = new AddressRepository(Environment.getInstance());
+        return addressRepository.updateOrCreateAddress(COUNTRY_NAME, POSTAL_CODE_NAME_1, REGION_NAME_1, CITY_NAME_1, DISTRICT_NAME_1);
+    }
+
+    private void getOrCreateSecondLocations() {
+        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
+        locationInventoryRepository.getOrCreateLocation(SECOND_LOCATION_NAME, SITE, prepareSecondAddress());
+    }
+
+    private Long prepareSecondAddress() {
+        AddressRepository addressRepository = new AddressRepository(Environment.getInstance());
+        return addressRepository.updateOrCreateAddress(COUNTRY_NAME, POSTAL_CODE_NAME_2, REGION_NAME_2, CITY_NAME_2, DISTRICT_NAME_2);
     }
 }

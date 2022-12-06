@@ -49,26 +49,26 @@ public class Cell5GBulkWizardPage extends BasePage {
     }
 
     @Step("Create Cells 5G in Bulk Wizard with default values")
-    public void createCell5GBulkWizardWithDefaultValues(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId) {
+    public void createCell5GBulkWizardWithDefaultValues(int amountOfCells, String carrier, String[] cellNames, int[] localCellsId, String[] pci, String[] rsi) {
         setCellsAmount(String.valueOf(amountOfCells));
         setCarrier(carrier);
         setSameLocation();
         setBandwidthUl("100");
         setBandwidthDl("100");
-        setTxPower("25");
-        setTac("11000");
+        setTxPower("34.9");
+        setTac("600");
         setTxDirection("DOWNLINK_AND_UPLINK");
-        setMimo("2Tx2Rx");
+        setMimo("64Tx64Rx");
         clickNext();
         setFirstAvailableId();
-        int rowNumber = amountOfCells;
+        int rowNumber = 1;
         for (String cellName : cellNames) {
             Row row = EditableList.createById(driver, wait, CELLS_LIST_ID).getRow(rowNumber - 1);
             row.setValue(cellName, COLUMN_NAME, NAME);
             row.setValue(String.valueOf(localCellsId[rowNumber - 1]), COLUMN_LOCAL_CELL_ID, LOCAL_CELL_ID);
-            row.setValue("5", COLUMN_PCI, PCI);
-            row.setValue("10", COLUMN_RSI, RSI);
-            rowNumber--;
+            row.setValue(pci[rowNumber - 1], COLUMN_PCI, PCI);
+            row.setValue(rsi[rowNumber - 1], COLUMN_RSI, RSI);
+            rowNumber++;
         }
         DelayUtils.waitForPageToLoad(driver, wait);
         clickAccept();

@@ -4,7 +4,7 @@
         <parameter name="parentProblem" value="50"/>
         <parameter name="taskAssignee" value="ca_kodrobinska"/>
         <classes>
-            <class name="com.oss.servicedesk.problemmanagement.TasksTest"/>
+            <class name="com.oss.iaa.servicedesk.problemmanagement.TasksTest"/>
         </classes>
     </test>
 </suite>

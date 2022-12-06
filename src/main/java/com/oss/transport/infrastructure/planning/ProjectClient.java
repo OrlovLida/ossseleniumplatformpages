@@ -9,7 +9,7 @@ import com.comarch.oss.planning.api.dto.ProjectIdDTO;
 import com.comarch.oss.planning.api.dto.ProjectSearchResultContainerDTO;
 import com.google.common.base.Preconditions;
 import com.jayway.restassured.http.ContentType;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 
 import java.net.URI;
 import java.time.OffsetDateTime;

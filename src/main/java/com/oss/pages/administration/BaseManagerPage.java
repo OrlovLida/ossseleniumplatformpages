@@ -44,10 +44,14 @@ public abstract class BaseManagerPage extends BasePage {
         return !getList().hasNoData();
     }
 
-    @Step("Click Delete Element")
-    public void clickDeleteElement(String confirmDeleteButtonId, String elementName) {
+    @Step("Click Delete Element on List")
+    public void clickDeleteElementOnList(String elementName) {
         getList().getRow(ROW_ATTRIBUTE_NAME, elementName).callActionByLabel(DELETE_LABEL);
         DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Confirm Delete Element")
+    public void confirmDeleteElement(String confirmDeleteButtonId) {
         Button.createById(driver, confirmDeleteButtonId).click();
         DelayUtils.waitForPageToLoad(driver, wait);
     }

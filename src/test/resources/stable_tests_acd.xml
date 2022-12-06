@@ -1,43 +1,56 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="ACD-SMOKE" thread-count="2" parallel="tests" verbose="1">
+<suite name="ACD-SMOKE" thread-count="1" parallel="tests" verbose="1">
     <test name="HomeViewTest">
         <classes>
-            <class name="com.oss.acd.HomeViewTest"/>
+            <class name="com.oss.iaa.acd.HomeViewTest"/>
         </classes>
     </test>
     <test name="AsdScenarioSummaryViewTest">
+        <parameter name="chosenView" value="asd"/>
         <classes>
-            <class name="com.oss.acd.AsdScenarioSummaryViewTest"/>
+            <class name="com.oss.iaa.acd.ScenarioSummaryViewTest"/>
         </classes>
     </test>
     <test name="AbgadScenarioSummaryViewTest">
+        <parameter name="chosenView" value="abgad"/>
         <classes>
-            <class name="com.oss.acd.AbgadScenarioSummaryViewTest"/>
+            <class name="com.oss.iaa.acd.ScenarioSummaryViewTest"/>
         </classes>
     </test>
     <test name="ApdScenarioSummaryViewTest">
+        <parameter name="chosenView" value="apd"/>
         <classes>
-            <class name="com.oss.acd.ApdScenarioSummaryViewTest"/>
+            <class name="com.oss.iaa.acd.ScenarioSummaryViewTest"/>
         </classes>
     </test>
     <test name="ArSettingsTest">
         <classes>
-            <class name="com.oss.acd.ArSettingsTest"/>
+            <class name="com.oss.iaa.acd.ArSettingsTest"/>
         </classes>
     </test>
     <test name="SubsystemsHealthTest">
         <classes>
-            <class name="com.oss.acd.SubsystemsHealthTest"/>
+            <class name="com.oss.iaa.acd.SubsystemsHealthTest"/>
         </classes>
     </test>
     <test name="AssignmentManagementTest">
         <classes>
-            <class name="com.oss.acd.AssignmentManagementTest"/>
+            <class name="com.oss.iaa.acd.AssignmentManagementTest"/>
         </classes>
     </test>
     <test name="NotificationManagementTest">
         <classes>
-            <class name="com.oss.acd.NotificationManagementTest"/>
+            <class name="com.oss.iaa.acd.NotificationManagementTest"/>
+        </classes>
+    </test>
+    <test name="TimeSeriesViewTest">
+        <classes>
+            <class name="com.oss.iaa.acd.TimeSeriesViewTest"/>
+        </classes>
+    </test>
+    <test name="AcdNavigationPanelTest">
+        <classes>
+            <class name="com.oss.iaa.acd.AcdNavigationPanelTest"/>
         </classes>
     </test>
 </suite>

@@ -9,6 +9,7 @@ package com.oss.nfv.networkSliceSubnet;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardFirstStep;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardPage;
@@ -29,6 +30,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.ADMINISTRATIVE_STATE_VALUE;
+import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.CAPACITY_PLMN_INFO_DEFAULT_LABEL_PATH;
+import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.CAPACITY_SLICE_PROFILE_NAME;
 import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.OPERATIONAL_STATE_VALUE;
 import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.MCC_VALUE;
 import static com.oss.nfv.networkSliceSubnet.EditNetworkSliceSubnetConstants.MNC_VALUE;
@@ -66,6 +69,7 @@ public class EditNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         //given
         NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, "NetworkSliceSubnet");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         //when
         searchForNetworkSliceSubnet(inventoryViewPage);
         selectNetworkSliceSubnetInTree(inventoryViewPage);
@@ -97,6 +101,17 @@ public class EditNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         selectPLMNInfo(secondStep);
         //then
         validatePLMNInfoParams(secondStep);
+        validateCapacitySliceProfileInTree(secondStep);
+        //when
+        selectCapacitySliceProfile(secondStep);
+        //then
+        validateCapacitySliceProfileParams(secondStep);
+        validateCapacityPLMNInfoInTree(secondStep);
+        //when
+        selectCapacityPLMNInfo(secondStep);
+        //then
+        validateCapacityPLMNInfoParams(secondStep);
+
         wizard.goToNextStep();
         wizard.goToNextStep();
         wizard.goToNextStep();
@@ -113,9 +128,19 @@ public class EditNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         assertThatThereIsOneSuccessfulMessage();
     }
 
+    private void validateCapacitySliceProfileInTree(NetworkSliceSubnetWizardSecondStep secondStep) {
+        assertTrue(secondStep.nodeExists(CAPACITY_SLICE_PROFILE_NAME),
+                "No node with name " + CAPACITY_SLICE_PROFILE_NAME + " has been found");
+    }
+
     private void validateSliceProfileInTree(NetworkSliceSubnetWizardSecondStep secondStep) {
         assertTrue(secondStep.nodeExists(SLICE_PROFILE_NAME),
                 "No node with name " + SLICE_PROFILE_NAME + " has been found");
+    }
+
+    private void validateCapacityPLMNInfoInTree(NetworkSliceSubnetWizardSecondStep secondStep) {
+        assertTrue(secondStep.nodeExists(CAPACITY_PLMN_INFO_DEFAULT_LABEL_PATH),
+                "No node with name " + CAPACITY_PLMN_INFO_DEFAULT_LABEL_PATH + " has been found");
     }
 
     private void validatePLMNInfoInTree(NetworkSliceSubnetWizardSecondStep secondStep) {
@@ -150,16 +175,32 @@ public class EditNetworkSliceSubnetTest extends BaseNetworkSliceSubnetTest {
         softly.assertAll();
     }
 
+    private void selectCapacitySliceProfile(NetworkSliceSubnetWizardSecondStep secondStep) {
+        secondStep.selectNode(CAPACITY_SLICE_PROFILE_NAME);
+    }
+
     private void selectSliceProfile(NetworkSliceSubnetWizardSecondStep secondStep) {
         secondStep.selectNode(SLICE_PROFILE_NAME);
+    }
+
+    private void selectCapacityPLMNInfo(NetworkSliceSubnetWizardSecondStep secondStep) {
+        secondStep.selectNode(CAPACITY_PLMN_INFO_DEFAULT_LABEL_PATH);
     }
 
     private void selectPLMNInfo(NetworkSliceSubnetWizardSecondStep secondStep) {
         secondStep.selectNode(PLMN_INFO_DEFAULT_LABEL_PATH);
     }
 
+    private void validateCapacitySliceProfileParams(NetworkSliceSubnetWizardSecondStep secondStep) {
+        assertEquals(secondStep.getSliceProfileName(), CAPACITY_SLICE_PROFILE_NAME, "Name has not been set");
+    }
+
     private void validateSliceProfileParams(NetworkSliceSubnetWizardSecondStep secondStep) {
         assertEquals(secondStep.getSliceProfileName(), SLICE_PROFILE_NAME, "Name has not been set");
+    }
+
+    private void validateCapacityPLMNInfoParams(NetworkSliceSubnetWizardSecondStep secondStep) {
+        assertEquals(secondStep.getPLMNInfoSST(), SST_VALUE, "SST has not been set");
     }
 
     private void validatePLMNInfoParams(NetworkSliceSubnetWizardSecondStep secondStep) {

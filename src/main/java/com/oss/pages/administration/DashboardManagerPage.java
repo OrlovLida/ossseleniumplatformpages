@@ -9,6 +9,8 @@ import com.oss.framework.utils.DelayUtils;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class DashboardManagerPage extends BaseManagerPage {
 
     private static final Logger log = LoggerFactory.getLogger(DashboardManagerPage.class);
@@ -24,7 +26,7 @@ public class DashboardManagerPage extends BaseManagerPage {
 
     @Step("Go to Dashboard Manager page")
     public static DashboardManagerPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
         String pageUrl = String.format("%s/#/view/dashboardmanager/main", basicURL);
         driver.get(pageUrl);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -53,7 +55,8 @@ public class DashboardManagerPage extends BaseManagerPage {
 
     @Step("Click Delete Dashboard")
     public void clickDeleteDashboard(String dashboardName) {
-        clickDeleteElement(CONFIRM_DELETE_BUTTON_ID, dashboardName);
+        clickDeleteElementOnList(dashboardName);
+        confirmDeleteElement(CONFIRM_DELETE_BUTTON_ID);
         log.info("Click delete Dashboard");
     }
 

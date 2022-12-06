@@ -44,5 +44,12 @@ public class PlanningRepository {
                 .build();
         planningClient.moveProject(projectId, perspectiveDTO);
     }
-    
+
+    public Long getFirstObjectWithType(String objectType) {
+        PlanningClient planningClient = new PlanningClient(env);
+        return planningClient.getObjectByType(objectType, "1", "1")
+                .getObjectIds()
+                .get(0)
+                .getId();
+    }
 }

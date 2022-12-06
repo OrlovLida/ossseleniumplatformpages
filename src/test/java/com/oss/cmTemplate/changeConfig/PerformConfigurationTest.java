@@ -15,6 +15,8 @@ import com.oss.pages.templatecm.changeconfig.SetParametersWizardPage;
 
 import io.qameta.allure.Description;
 
+import java.time.Duration;
+
 public class PerformConfigurationTest extends BaseTestCase {
 
     private static final String DEVICE_NAME = "SeleniumTemplateTestDevice";
@@ -67,7 +69,7 @@ public class PerformConfigurationTest extends BaseTestCase {
         changeConfigurationPage.deployImmediately();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        Notifications.create(driver, new WebDriverWait(driver, 180)).openDetails(TEMPLATE_EXECUTION_NOTIFICATION, "FINISHED");
+        Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(180))).openDetails(TEMPLATE_EXECUTION_NOTIFICATION, "FINISHED");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         LogManagerPage logManagerPage = new LogManagerPage(driver);
         Assertions.assertThat(logManagerPage.getStatus()).isEqualTo("UPLOAD_SUCCESS");

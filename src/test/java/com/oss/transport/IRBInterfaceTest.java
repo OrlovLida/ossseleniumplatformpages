@@ -11,8 +11,9 @@ import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.TasksPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
+import com.oss.pages.bpm.tasks.TasksPageV2;
+import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
 import com.oss.pages.transport.IRBInterfaceWizardPage;
@@ -32,8 +33,8 @@ public class IRBInterfaceTest extends BaseTestCase {
     private static final String MTU_VALUE = "1000";
     private static final String DESCRIPTION = "IRBInterfaceSeleniumTest" + (int) (Math.random() * 1001);
     private static final String IRB_INTERFACE_DEVICE_NAME = "IRBInterfaceSeleniumTest";
-    private static final String IP_SUBNET = "10.10.20.0/24 [E2ESeleniumTest]";
     private static final String IP_ADDRESS = "10.10.20.3";
+    private static final String IP_ADDRESS_WIZARD_MODE = "Existing address selection";
     private static final String IRB_INTERFACE_SEARCH_NIV = "IRB Interface";
     private static final String CREATE_IRB_INTERFACE_ID = "CreateIRBInterfaceContextAction";
     private static final String DELETE_ADDRESS_IP_ID = "DeleteIPHostAddressAssignmentInternalAction";
@@ -45,7 +46,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @BeforeClass
     public void openWebConsole() {
         waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("Process Instances", "BPM and Planning", "Business Process Management");
+        homePage.chooseFromLeftSideMenu("Process Overview", "BPM and Planning", "Network Planning");
         newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         waitForPageToLoad();
     }
@@ -53,8 +54,10 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Test(priority = 1)
     @Description("Create NRP Process")
     public void createProcessNRP() {
+        ProcessOverviewPage processOverviewPage = new ProcessOverviewPage(driver);
+        processOverviewPage.openProcessCreationWizard();
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processNRPCode = processWizardPage.createSimpleNRP();
+        processNRPCode = processWizardPage.createSimpleNRPV2();
         checkMessageSize();
         checkMessageType();
         checkMessageContainsText(processNRPCode);
@@ -63,8 +66,8 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Test(priority = 2)
     @Description("Start High Level Planning Task")
     public void startHLPTask() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(processNRPCode, TasksPage.HIGH_LEVEL_PLANNING_TASK);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.startTask(processNRPCode, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
         checkTaskAssignment();
     }
 
@@ -101,7 +104,7 @@ public class IRBInterfaceTest extends BaseTestCase {
         newInventoryViewPage.callAction(ActionsContainer.ASSIGN_GROUP_ID, "AssignIPv4Host");
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
-                .address(IP_ADDRESS).subnet(IP_SUBNET).isPrimary("true").build();
+                .address(IP_ADDRESS).isPrimary("true").wizardMode(IP_ADDRESS_WIZARD_MODE).build();
         ipAddressAssignmentWizardPage.assignMoToIPAddress(ipAddressAssignmentWizardProperties);
         waitForPageToLoad();
     }
@@ -124,7 +127,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     @Test(priority = 7)
     @Description("Finish rest of NRP and IP Tasks")
     public void finishProcessesTasks() {
-        TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
 
@@ -183,7 +186,7 @@ public class IRBInterfaceTest extends BaseTestCase {
     }
 
     private void searchInInventoryView(String object_type) {
-        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory ");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType(object_type);
     }

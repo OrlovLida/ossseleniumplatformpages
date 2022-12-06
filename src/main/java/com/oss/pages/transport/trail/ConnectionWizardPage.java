@@ -2,7 +2,9 @@ package com.oss.pages.transport.trail;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.tree.TreeComponent;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -15,7 +17,7 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class ConnectionWizardPage extends BasePage {
 
-    private static final String WIZARD_ID = "trailWizardId";
+    private static final String WIZARD_ID = "trailWizardId_prompt-card";
     private static final String NAME_ID = "trailNameComponent";
     private static final String TERMINATE_CARD_ID = "terminationFormCardComponent";
     private static final String TERMINATE_PORT_ID = "terminationFormPortComponent";
@@ -24,6 +26,7 @@ public class ConnectionWizardPage extends BasePage {
     private static final String CAPACITY_VALUE_ID = "trailCapacityValueComponent";
     private static final String ETHERNET_LINK_SPEED_ID = "oss.transport.trail.type.Ethernet Link.Speed";
     private static final String ADDRESS_TO_OPPOSITE_INTERFACE_ID = "oss.transport.trail.type.IP Link.AssignIPHostAddressComboboxComponent";
+    private static final String NONEXISTENT_CARD_VALUE = "No Card/Component";
 
     public ConnectionWizardPage(WebDriver driver) {
         super(driver);
@@ -61,15 +64,22 @@ public class ConnectionWizardPage extends BasePage {
         wizard.clickAccept();
     }
 
-    @Step("Select connection termination by position = {position}")
-    public void selectConnectionTermination(String dataGuid) {
+    @Step("Select connection termination by dataPath = {dataPath}")
+    public void selectConnectionTermination(String dataPath) {
         TreeComponent treeComponent = wizard.getTreeComponent();
-        treeComponent.toggleNodeByPath(dataGuid);
+        treeComponent.toggleNodeByPath(dataPath);
     }
 
     @Step("Terminate Card/Component")
     public void terminateCardComponent(String value) {
         wizard.setComponentValue(TERMINATE_CARD_ID, value, SEARCH_FIELD);
+    }
+
+    @Step("Set nonexistent card")
+    public void setNonexistentCard() {
+        Input searchField = wizard.getComponent(TERMINATE_CARD_ID);
+        searchField.setSingleStringValueContains(NONEXISTENT_CARD_VALUE);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Terminate Port")
@@ -85,5 +95,31 @@ public class ConnectionWizardPage extends BasePage {
     @Step("Assign IP Host Address to the opposite interface = {value}")
     public void assignAddressToOpositeInteface(boolean value) {
         wizard.setComponentValue(ADDRESS_TO_OPPOSITE_INTERFACE_ID, String.valueOf(value), CHECKBOX);
+    }
+
+    public void setCheckbox(String componentId, Boolean value) {
+        wizard.setComponentValue(componentId, value.toString());
+    }
+
+    @Step("Choose termination in tree - {terminationType}")
+    public void chooseTerminationType(ConnectionWizardPage.TerminationType terminationType) {
+        TreeComponent treeComponent = wizard.getTreeComponent();
+        treeComponent.toggleNodeByPath(terminationType.getLabel());
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public enum TerminationType {
+        START("1_1"),
+        END("1_2");
+
+        private final String label;
+
+        private TerminationType(String value) {
+            label = value;
+        }
+
+        private String getLabel() {
+            return label;
+        }
     }
 }

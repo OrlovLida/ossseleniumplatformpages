@@ -1,10 +1,20 @@
 package com.oss.transport.ipam;
 
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.processinstances.ProcessInstancesPage;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
-import com.oss.pages.bpm.TasksPage;
+import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
+import com.oss.pages.bpm.tasks.TasksPage;
+import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
 import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.IPSubnetWizardPage;
@@ -12,18 +22,15 @@ import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import com.oss.pages.transport.ipam.helper.IPSubnetFilterProperties;
 import com.oss.pages.transport.ipam.helper.IPSubnetWizardProperties;
 import com.oss.utils.TestListener;
+
 import io.qameta.allure.Description;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.*;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_ASSIGNMENT_PROPERTY_ASSIGNED_TO;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_ASSIGNMENT_PROPERTY_IDENTIFIER;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_PROPERTY_IDENTIFIER;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.NETWORK_PROPERTY_NAME;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.NEW_ADDRESS_MODE;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.PHYSICAL_DEVICE;
 
 @Listeners({TestListener.class})
 public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
@@ -75,7 +82,6 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
         initializeFirstSubnetTree();
         initializeSecondSubnetTree();
     }
-
 
     @Test(priority = 1)
     @Description("Create IP networks")
@@ -146,10 +152,10 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     @Test(priority = 5)
     @Description("Creating DCP process")
     public void createDCPProcess() {
-        ProcessInstancesPage.goToProcessInstancesPage(driver, BASIC_URL);
+        ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        dcpProcessCode = processWizardPage.createSimpleDCP();
+        dcpProcessCode = processWizardPage.createSimpleDCPV2();
         TasksPage tasksPage = TasksPage.goToTasksPage(driver, webDriverWait, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         tasksPage.startTask(dcpProcessCode, TasksPage.CORRECT_DATA_TASK);

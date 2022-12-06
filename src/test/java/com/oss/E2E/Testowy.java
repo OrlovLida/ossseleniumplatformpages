@@ -1,5 +1,7 @@
 package com.oss.E2E;
 
+import java.time.Duration;
+
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
@@ -7,7 +9,6 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.processinstances.ProcessWizardPage;
 
 public class Testowy extends BaseTestCase {
 
@@ -22,23 +23,14 @@ public class Testowy extends BaseTestCase {
 
     @Test(priority = 2)
     public void testowy2() {
-        homePage.chooseFromLeftSideMenu(PROCESS_INSTANCES, BPM_AND_PLANNING, BUSINESS_PROCESS_MANAGEMENT);
+        driver.get("https://oneossga-lb.krakow.comarch:25081/#/views/management/views/hierarchy-view/Building?id=1390860&perspective=LIVE");
         waitForPageToLoad();
-        ProcessWizardPage processWizardPage = new ProcessWizardPage(driver);
-        processWizardPage.createSimpleNRP();
-        SystemMessageInterface systemMessage = getSuccesSystemMessage();
-        systemMessage.close();
-        System.out.println("SIZE= " + systemMessage.getMessages());
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }
 
-    @Test(priority = 3)
-    public void testowy4() {
         waitForPageToLoad();
     }
 
     private SystemMessageInterface getSuccesSystemMessage() {
-        return SystemMessageContainer.create(driver, new WebDriverWait(driver, 10));
+        return SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(10)));
     }
 
     private void waitForPageToLoad() {

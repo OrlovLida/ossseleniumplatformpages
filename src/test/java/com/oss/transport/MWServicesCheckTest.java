@@ -2,8 +2,8 @@ package com.oss.transport;
 
 import org.testng.annotations.Test;
 
-import com.oss.transport.infrastructure.Environment;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.Environment;
+import com.oss.serviceClient.EnvironmentRequestClient;
 import com.oss.transport.infrastructure.servicecheck.ServicesChecker;
 
 import io.qameta.allure.Step;
@@ -45,9 +45,4 @@ public class MWServicesCheckTest {
         SERVICES_CHECKER.testHealth("web-management");
     }
 
-    @Test(priority = 5)
-    @Step("Check inventory-view-core")
-    public void checkInventoryViewCore() {
-        SERVICES_CHECKER.testHealth("inventory-view-core");
-    }
 }

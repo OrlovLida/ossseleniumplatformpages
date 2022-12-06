@@ -6,8 +6,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.RADIO_BUTTON;
-
 public class OnboardNetworkServiceWizardPage extends OnboardWizardPage {
 
     private static final String WIZARD_ID = "nsOnboardWizardId";
@@ -24,7 +22,7 @@ public class OnboardNetworkServiceWizardPage extends OnboardWizardPage {
     }
 
     public void selectRadioButton(String label) {
-        getWizard().setComponentValue(ONBOARD_RADIO_BUTTONS_COMPONENT_ID, label, RADIO_BUTTON);
+        getWizard().setComponentValue(ONBOARD_RADIO_BUTTONS_COMPONENT_ID, label);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 

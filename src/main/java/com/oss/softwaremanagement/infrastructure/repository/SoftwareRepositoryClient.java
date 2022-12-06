@@ -1,7 +1,7 @@
 package com.oss.softwaremanagement.infrastructure.repository;
 
 import com.jayway.restassured.http.ContentType;
-import com.oss.transport.infrastructure.EnvironmentRequestClient;
+import com.oss.serviceClient.EnvironmentRequestClient;
 
 /**
  * Created by Bartłomiej Jędrzejczyk on 2022-04-19
