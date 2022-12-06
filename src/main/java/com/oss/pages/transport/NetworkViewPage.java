@@ -59,7 +59,7 @@ public class NetworkViewPage extends BasePage {
     private static final String DELETE_TERMINATION_ACTION_ID = "DeleteTerminationActionId";
     private static final String ADVANCED_SEARCH_WIDGET_ID = "advancedSearch";
     private static final String TRAIL_TYPE_COMBOBOX_ID = "trailTypeCombobox";
-    private static final String LEFT_PANEL_TAB_ID = "LeftPanelWidget";
+    private static final String LEFT_PANEL_TAB_ID = "dockedPanel-left";
     private static final String VALIDATION_RESULT_ID = "Validation Results";
     private static final String ELEMENT_ROUTING_TABLE_APP_ID = "routing-elements-table-app";
     private static final String TERMINATION_TABLE_APP_ID = "TerminationIndexedWidget";
@@ -324,7 +324,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Delete Routing Element")
     public void deleteSelectedElementsFromRouting() {
-        getTabsWidget(OLD_TABLE_ID).callActionById(REMOVE_FROM_ELEMENT_ROUTING_BUTTON_ID);
+        OldTable.createTableForActiveTab(driver, wait).callAction(REMOVE_FROM_ELEMENT_ROUTING_BUTTON_ID);
         waitForPageToLoad();
         clickConfirmationBoxButtonByLabel(DELETE_BUTTON_LABEL);
         refreshElementRoutingTab();
