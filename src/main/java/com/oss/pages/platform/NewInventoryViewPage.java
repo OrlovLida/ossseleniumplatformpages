@@ -56,6 +56,7 @@ public class NewInventoryViewPage extends BasePage {
     private static final String CONFIRM_REMOVAL_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
     private static final String PROPERTY_PANEL_ID = "PropertyPanelWidget";
     private static String tableId = "MainTableWidget";
+    private static String sublocationsTableId = "SublocationsWidget";
 
     public NewInventoryViewPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -193,6 +194,10 @@ public class NewInventoryViewPage extends BasePage {
 
     public AdvancedSearch getAdvancedSearch() {
         return getMainTable().getAdvancedSearch();
+    }
+
+    public AdvancedSearch getAdvancedSearchForSublocationsTab() {
+        return getSublocationsTable().getAdvancedSearch();
     }
 
     public String getAttributeValue(String columnId, int rowId) {
@@ -624,5 +629,10 @@ public class NewInventoryViewPage extends BasePage {
 
     public void clickConfirmationBoxByLabel(String buttonLabel) {
         getConfirmationBox().clickButtonByLabel(buttonLabel);
+    }
+
+    public TableWidget getSublocationsTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return TableWidget.createById(driver, sublocationsTableId, wait);
     }
 }

@@ -6,6 +6,10 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.oss.framework.components.search.AdvancedSearch;
+import com.oss.framework.widgets.propertypanel.PropertyPanel;
+import com.oss.framework.widgets.table.TableRow;
+import com.oss.framework.widgets.table.TableWidget;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -33,6 +37,8 @@ public class HierarchyViewPage extends BasePage {
     private static final String PROPERTY_PANEL_WIDGET_ID = "PropertyPanelWidget";
     private static final String CHOOSE_PROPERTY_CONFIG_ID = "chooseConfiguration";
     private static final String SETTINGS_ID = "frameworkCustomButtonsSecondaryGroup";
+    private static String tableId = "MainTableWidget";
+    private static String sublocationsTableId = "SublocationsWidget";
 
     private HierarchyViewPage(WebDriver driver) {
         super(driver);
@@ -228,4 +234,33 @@ public class HierarchyViewPage extends BasePage {
     public int getMainTreeSize() {
         return getMainTree().getVisibleNodes().size();
     }
+
+    public AdvancedSearch getAdvancedSearch() {
+        return getMainTable().getAdvancedSearch();
+    }
+    public AdvancedSearch getAdvancedSearchForSublocationsTab() {
+        return getSublocationsTable().getAdvancedSearch();
+    }
+
+    public TableWidget getMainTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return TableWidget.createById(driver, tableId, wait);
+    }
+
+    public TableWidget getSublocationsTable() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return TableWidget.createById(driver, sublocationsTableId, wait);
+    }
+
+    public void selectRow(String attributeId, String value) {
+        getMainTable().selectRowByAttributeValue(attributeId, value);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void unselectObjectByRowId(int rowId) {
+        TableWidget mainTable = getMainTable();
+        mainTable.unselectRow(rowId);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
 }
