@@ -87,7 +87,7 @@ public class EthernetLinkTest extends BaseTestCase {
     private static final String LATENCY_ATTRIBUTE_NAME = "Latency";
     private static final String ROLE_ATTRIBUTE_NAME = "Role";
     private static final String MESSAGE_NOT_REMOVED = "The object has not been removed";
-    private static final String SYSTEM_MESSAGE_NOT_FOUND = "Expected message not found:";
+    private static final String SYSTEM_MESSAGE_NOT_FOUND = "Expected message not found: ";
     private String processNRPCode;
 
     @BeforeClass
