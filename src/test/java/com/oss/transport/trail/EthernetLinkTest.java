@@ -86,6 +86,8 @@ public class EthernetLinkTest extends BaseTestCase {
     private static final String ROUTED_CONNECTION_NAME = "SeleniumRoutingConnection";
     private static final String LATENCY_ATTRIBUTE_NAME = "Latency";
     private static final String ROLE_ATTRIBUTE_NAME = "Role";
+    private static final String MESSAGE_NOT_REMOVED = "The object has not been removed";
+    private static final String SYSTEM_MESSAGE_NOT_FOUND = "Expected message not found:";
     private String processNRPCode;
 
     @BeforeClass
@@ -289,11 +291,11 @@ public class EthernetLinkTest extends BaseTestCase {
     }
 
     private void assertIfTableIsEmpty(String tabID) {
-        Assert.assertTrue(TableWidget.createById(driver, tabID, webDriverWait).hasNoData(), "The object has not been removed");
+        Assert.assertTrue(TableWidget.createById(driver, tabID, webDriverWait).hasNoData(), MESSAGE_NOT_REMOVED);
     }
 
     private void assertIfOldTableIsEmpty() {
-        Assert.assertTrue(OldTable.createById(driver, webDriverWait, ELEMENT_ROUTING_TAB_ID).hasNoData(), "The object has not been removed");
+        Assert.assertTrue(OldTable.createById(driver, webDriverWait, ELEMENT_ROUTING_TAB_ID).hasNoData(), MESSAGE_NOT_REMOVED);
     }
 
     private void selectAndRemoveTermination() {
@@ -414,8 +416,9 @@ public class EthernetLinkTest extends BaseTestCase {
     }
 
     private void checkMessageContainsText(String message) {
-        Assert.assertTrue((getFirstMessage().getText())
-                .contains(message));
+        String actualMessage = getFirstMessage().getText();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(actualMessage.contains(message), SYSTEM_MESSAGE_NOT_FOUND + " " + actualMessage);
     }
 
     private void checkMessageText() {
