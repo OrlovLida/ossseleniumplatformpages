@@ -1,5 +1,6 @@
 package com.oss.pages.physical;
 
+import com.oss.framework.components.data.Data;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input.ComponentType;
@@ -19,8 +20,9 @@ public class SublocationWizardPage extends BasePage {
     private static final String QUANTITY = "quantity";
     private static final String WIZARD_ID = "sublocation-wizard";
     private static final String DESCRIPTION = "description";
+    private static final String REMARKS = "remarks";
     private static final String SUBMIT_BUTTON_ID = "wizard-submit-button-sublocation-wizard";
-
+    private static final String SUBLOCATION_MODEL_DATA_ATTRIBUTE_NAME = "input_model";
     private static final String CREATE_BUTTON_ID = "wizard-submit-button-sublocation-wizard";
     private static final String NAMING_PREVIEW_LIST_ID = "namingPreviewList";
     private static final String NAME_IN_LIST_POPUP_FIELD_ID = "name-TEXT_FIELD";
@@ -58,6 +60,12 @@ public class SublocationWizardPage extends BasePage {
         wizard.getComponent(PRECISE_LOCATION).setSingleStringValueContains(preciseLocation);
     }
 
+    @Step("Set Sublocation Model")
+    public void setSublocationModel(String sublocationModel) {
+        wizard.getComponent(SUBLOCATION_MODEL_DATA_ATTRIBUTE_NAME, ComponentType.SEARCH_FIELD)
+                .setValueContains(Data.createSingleData(sublocationModel));
+    }
+
     @Step("Set Width")
     public void setWidth(String width) {
         wizard.setComponentValue(WIDTH, width, ComponentType.NUMBER_FIELD);
@@ -75,7 +83,12 @@ public class SublocationWizardPage extends BasePage {
 
     @Step("Set Description")
     public void setDescription(String description) {
-        wizard.setComponentValue(DESCRIPTION, description, ComponentType.TEXT_FIELD);
+        wizard.setComponentValue(DESCRIPTION, description);
+    }
+
+    @Step("Set Remarks")
+    public void setRemarks(String remarks) {
+        wizard.setComponentValue(REMARKS, remarks);
     }
 
     @Step("Click Next Step button")
@@ -91,5 +104,10 @@ public class SublocationWizardPage extends BasePage {
     @Step("Click Create button")
     public void create() {
         wizard.clickButtonById(SUBMIT_BUTTON_ID);
+    }
+
+    @Step("Check if attributes is autocompleted")
+    public String getComponentValue(String componentId) {
+        return wizard.getComponent(componentId).getStringValue();
     }
 }
