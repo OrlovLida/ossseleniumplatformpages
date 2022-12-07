@@ -66,6 +66,7 @@ public class IssueDetailsPage extends BaseSDPage {
     private static final String EXTERNAL_TAB_ARIA_CONTROLS = "_detailsExternalTab";
     private static final String DICTIONARIES_TABLE_ID = "_dictionariesTableId";
     private static final String DICTIONARY_VALUE_TABLE_LABEL = "Dictionary Value";
+    private static final String DICTIONARY_NAME_VALUE_TABLE_LABEL = "Dictionary Name";
     private static final String SAME_MO_TT_TABLE_ID = "_sameMOTTTableWidget";
     private static final String ATTACHMENTS_TAB_ARIA_CONTROLS = "attachmentManager";
     private static final String MESSAGES_TAB_ARIA_CONTROLS = "_messagesTab";
@@ -194,7 +195,7 @@ public class IssueDetailsPage extends BaseSDPage {
     }
 
     public DescriptionTab selectDescriptionTab() {
-        selectTabFromTabsWidget(DESCRIPTIONS_WINDOW_ID, DESCRIPTION_TAB_ID, DESCRIPTION_TAB_LABEL);
+        selectTabFromTablesWindow(DESCRIPTION_TAB_ID, DESCRIPTION_TAB_LABEL);
         log.info("Selecting Description Tab");
 
         return new DescriptionTab(driver, wait);
@@ -280,6 +281,11 @@ public class IssueDetailsPage extends BaseSDPage {
         return OldTable.createById(driver, wait, DICTIONARIES_TABLE_ID).getCellValue(0, DICTIONARY_VALUE_TABLE_LABEL);
     }
 
+    public boolean checkDictionaryPresence(String dictionaryNameValue) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return OldTable.createById(driver, wait, DICTIONARIES_TABLE_ID).isValuePresent(DICTIONARY_NAME_VALUE_TABLE_LABEL, dictionaryNameValue);
+    }
+
     public String getDisplayedText(String windowId, String fieldId) {
         return ListApp.createFromParent(driver, wait, windowId).getValueFromField(fieldId);
     }
@@ -304,6 +310,26 @@ public class IssueDetailsPage extends BaseSDPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Check Same MO TT Table");
         return !OldTable.createById(driver, wait, SAME_MO_TT_TABLE_ID).hasNoData();
+    }
+
+    @Step("I check if {tableId} table exists")
+    public boolean checkIfTableExists(String tableId) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("I check if {} table exists", tableId);
+        if (!getOldTable(tableId).hasNoData()) {
+            log.info("Table exists and has some data");
+            return true;
+        } else if (getOldTable(tableId).hasNoData()) {
+            log.info("Table exists and it's empty");
+            return true;
+        } else {
+            log.error("Table doesn't exist");
+            return false;
+        }
+    }
+
+    public OldTable getOldTable(String tableId) {
+        return OldTable.createById(driver, wait, tableId);
     }
 
     protected OldActionsContainer getDetailsViewOldActionsContainer() {

@@ -1,6 +1,7 @@
 package com.oss.E2E;
 
 import java.net.URISyntaxException;
+import java.time.Duration;
 
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -177,7 +178,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, 180));
+        NotificationsInterface notifications = Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(180)));
         notifications.clearAllNotification();
         newInventoryViewPage.callAction(ActionsContainer.OTHER_GROUP_ID, "run-narrow-reconciliation");
         DelayUtils.sleep(3000);
@@ -265,7 +266,7 @@ public class UC_NAR_005_Test extends BaseTestCase {
     }
 
     private Message getFirstMessage() {
-        return SystemMessageContainer.create(driver, new WebDriverWait(driver, 90))
+        return SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(90)))
                 .getFirstMessage()
                 .orElseThrow(() -> new RuntimeException("The list is empty"));
     }

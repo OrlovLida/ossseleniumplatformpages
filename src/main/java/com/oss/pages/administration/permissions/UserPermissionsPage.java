@@ -15,6 +15,8 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class UserPermissionsPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(UserPermissionsPage.class);
@@ -34,7 +36,7 @@ public class UserPermissionsPage extends BasePage {
 
     @Step("Go to User Permissions page")
     public static UserPermissionsPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
         String pageUrl = String.format("%s/#/view/authorization-service/user-permissions", basicURL);
         driver.get(pageUrl);
         DelayUtils.waitForPageToLoad(driver, wait);

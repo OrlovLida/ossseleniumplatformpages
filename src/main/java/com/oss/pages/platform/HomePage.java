@@ -20,6 +20,8 @@ import com.oss.pages.schedulerservice.SchedulerServicePage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class HomePage extends BasePage {
     
     private static final Logger log = LoggerFactory.getLogger(HomePage.class);
@@ -61,7 +63,7 @@ public class HomePage extends BasePage {
     }
     
     public String getPageTitle() {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
         DelayUtils.waitForPageToLoad(driver, wait);
         return pageTitle.getText();
     }
@@ -85,7 +87,7 @@ public class HomePage extends BasePage {
     }
     
     public Popup goToCreateBookmarkPopUp() {
-        WebDriverWait wait = new WebDriverWait(driver, 45);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
         DelayUtils.waitForVisibility(wait, saveBookmarksButton);
         saveBookmarksButton.click();
         return Popup.create(driver, wait);

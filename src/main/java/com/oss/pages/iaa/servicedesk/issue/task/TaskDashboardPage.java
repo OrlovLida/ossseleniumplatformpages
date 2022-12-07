@@ -13,6 +13,8 @@ import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Step;
 
+import java.time.Duration;
+
 public class TaskDashboardPage extends BaseDashboardPage {
 
     private static final Logger log = LoggerFactory.getLogger(TaskDashboardPage.class);
@@ -38,7 +40,7 @@ public class TaskDashboardPage extends BaseDashboardPage {
 
     @Step("I Open task dashboard View")
     public static TaskDashboardPage goToPage(WebDriver driver, String basicURL) {
-        WebDriverWait wait = new WebDriverWait(driver, 150);
+        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(150));
 
         String pageUrl = String.format(TASKS_URL_PATTERN, basicURL);
         driver.get(pageUrl);

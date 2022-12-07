@@ -11,21 +11,24 @@ import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
 
-public class CreateINOCTicketDTAGTest extends BaseTestCase {
+public class CreateVoiceTicketDTAGReadOnlyTest extends BaseTestCase {
 
     private TicketDashboardPage ticketDashboardPage;
     private SDWizardPage SDWizardPage;
 
     private final static String TT_WIZARD_PRODUCT = "TT_WIZARD_INPUT_PRODUCT_LABEL";
-    private final static String TT_WIZARD_SLA_CONTRACT= "TT_WIZARD_INPUT_SLA_CONTRACT_LABEL";
+    private final static String TT_WIZARD_PRIORITY = "TT_WIZARD_INPUT_PRIORITY_LABEL";
+    private final static String TT_WIZARD_DESTINATION = "TT_WIZARD_INPUT_DESTINATION_VOICE_LABEL";
     private final static String TT_WIZARD_REPORTED_INCIDENT_TYPE = "TT_WIZARD_INPUT_REPORTED_INCIDENT_TYPE_LABEL";
+    private final static String TT_WIZARD_TROUBLE_CATEGORY = "TT_WIZARD_INPUT_TROUBLE_CATEGORY_LABEL";
     private final static String TT_WIZARD_CANCEL_BUTTON_ID = "wizard-cancel-button-TT_WIZARD";
-    private static final String TT_WIZARD_INPUT_INCIDENT_TYPE = "TT_WIZARD_INPUT_INCIDENT_TITLE_LABEL";
 
-    private final static String TT_PRODUCT = "GTEL";
-    private final static String TT_SLA_CONTRACT= "BEST EFFORT";
+    private final static String TT_PRODUCT = "Inbound traffic";
+    private final static String TT_PRIORITY = "Prio Nr5 720h";
+    private final static String TT_DESTINATION = "Poland";
     private final static String TT_INCIDENT_DESCRIPTION = "Test selenium";
-    private final static String TT_REPORTED_INCIDENT_TYPE = "Erroring";
+    private final static String TT_REPORTED_INCIDENT_TYPE = "ACD";
+    private final static String TT_TROUBLE_CATEGORY = "No product";
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
@@ -33,20 +36,21 @@ public class CreateINOCTicketDTAGTest extends BaseTestCase {
     }
 
     @Parameters({"MOIdentifier"})
-    @Test(priority = 1, testName = "Create 'INOC Service' Ticket", description = "Create 'INOC Service' Ticket")
-    @Description("Create 'INOC Service' Ticket")
-    public void createINOCTicket(
-            @Optional("TEST_MO_PATH") String MOIdentifier
+    @Test(priority = 1, testName = "Create 'Voice Other' Ticket", description = "Create 'Voice Other' Ticket")
+    @Description("Create 'Voice Other' Ticket")
+    public void createVoiceOtherTicket(
+            @Optional("ANAM/IRL10/-/SMS+protect/22044/Z030A/0VS/100 (22044144824)") String MOIdentifier
     ) {
-        SDWizardPage = ticketDashboardPage.openCreateTicketWizard("INOC_Service");
+        SDWizardPage = ticketDashboardPage.openCreateTicketWizard("Voice_Other");
         SDWizardPage.getMoStep().enterTextIntoMOIdentifierField(MOIdentifier);
         SDWizardPage.getMoStep().selectRowInMOTable("0");
         SDWizardPage.clickNextButtonInWizard();
         SDWizardPage.insertValueContainsToComponent(TT_PRODUCT, TT_WIZARD_PRODUCT);
-        SDWizardPage.insertValueContainsToComponent(TT_SLA_CONTRACT, TT_WIZARD_SLA_CONTRACT);
-        SDWizardPage.insertValueContainsToComponent("Test Selenium",TT_WIZARD_INPUT_INCIDENT_TYPE);
+        SDWizardPage.insertValueContainsToComponent(TT_PRIORITY, TT_WIZARD_PRIORITY);
+        SDWizardPage.insertValueContainsToComponent(TT_DESTINATION, TT_WIZARD_DESTINATION);
         SDWizardPage.enterIncidentDescription(TT_INCIDENT_DESCRIPTION);
         SDWizardPage.insertValueContainsToComponent(TT_REPORTED_INCIDENT_TYPE, TT_WIZARD_REPORTED_INCIDENT_TYPE);
+        SDWizardPage.insertValueContainsToComponent(TT_TROUBLE_CATEGORY, TT_WIZARD_TROUBLE_CATEGORY);
         SDWizardPage.clickNextButtonInWizard();
         SDWizardPage.clickButton(TT_WIZARD_CANCEL_BUTTON_ID);
     }

@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.time.Duration;
 import java.util.Optional;
 
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -317,7 +318,7 @@ public class BUC_INV_RAN_002_Test extends BaseTestCase {
     }
 
     private SystemMessageInterface getSuccesSystemMessage(String systemMessageLog) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(90)));
         Optional<SystemMessageContainer.Message> firstSystemMessage = systemMessage.getFirstMessage();
         softAssert.assertTrue(firstSystemMessage.isPresent(), systemMessageLog);
         if (firstSystemMessage.isPresent()) {
@@ -328,8 +329,9 @@ public class BUC_INV_RAN_002_Test extends BaseTestCase {
     }
 
     private void checkMessageContainsText(String message, String systemMessageLog) {
-        softAssert.assertTrue((getFirstMessage().getText())
-                .contains(message), systemMessageLog);
+        String actualMessage = getFirstMessage().getText();
+        softAssert.assertTrue(actualMessage
+                .contains(message), systemMessageLog + ". " + actualMessage);
     }
 
     private void checkMessageText(String systemMessageLog) {

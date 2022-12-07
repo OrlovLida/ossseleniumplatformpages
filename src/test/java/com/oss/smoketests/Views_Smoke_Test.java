@@ -1,5 +1,6 @@
 package com.oss.smoketests;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -148,7 +149,7 @@ public class Views_Smoke_Test extends BaseTestCase {
     }
 
     private void checkSystemMessage() {
-        SystemMessageContainer systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, 5));
+        SystemMessageContainer systemMessage = SystemMessageContainer.create(this.driver, new WebDriverWait(this.driver, Duration.ofSeconds(5)));
         List<String> errors = systemMessage.getErrors();
         errors.forEach(LOGGER::error);
         Assert.assertTrue(errors.isEmpty(), "Some errors occurred during the test. Please check logs for details.\n");

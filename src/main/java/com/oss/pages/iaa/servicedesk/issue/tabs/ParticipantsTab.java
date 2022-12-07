@@ -101,6 +101,12 @@ public class ParticipantsTab extends BaseSDPage {
         return getParticipantTable().getRowNumber(firstName, FIRST_NAME_ATTRIBUTE_ID);
     }
 
+    @Step("Check in which row is new participant using '{attributeID}' attribute")
+    public int participantRowByAttribute(String attribute, String attributeID) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getParticipantTable().getRowNumber(attribute, attributeID);
+    }
+
     @Step("Count Participants in Table")
     public int countParticipantsInTable() {
         return getParticipantTable().countRows(FIRST_NAME_ATTRIBUTE_ID);

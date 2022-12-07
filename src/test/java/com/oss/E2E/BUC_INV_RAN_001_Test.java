@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.time.Duration;
 import java.util.Optional;
 
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -76,6 +77,7 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     private static final String MCC = "999";
     private static final String MNC = "1";
     private static final String BAND_TYPE_NAME = "L800-B20";
+    private static final String VALIDATION_RESULT_NOT_PRESENT_EXCEPTION = "Validation result is not present.";
     private static final int DL_FREQUENCY_END = 821;
     private static final int DL_FREQUENCY_START = 791;
     private static final int UL_FREQUENCY_END = 862;
@@ -254,7 +256,7 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
         waitForPageToLoad();
         ProcessDetailsPage processDetailsPage = new ProcessDetailsPage(driver);
         processDetailsPage.selectTab("Validation Results");
-        Assert.assertTrue(processDetailsPage.isValidationResultPresent());
+        Assert.assertTrue(processDetailsPage.isValidationResultPresent(), VALIDATION_RESULT_NOT_PRESENT_EXCEPTION);
     }
 
     @Test(priority = 16, description = "Complete cells configuration", dependsOnMethods = {"validateProjectPlan"})
@@ -357,8 +359,8 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     }
 
     private void checkMessageContainsText(String systemMessageLog) {
-        softAssert.assertTrue((getFirstMessage().getText())
-                .contains(BUC_INV_RAN_001_Test.TASK_COMPLETED), systemMessageLog);
+        String message = getFirstMessage().getText();
+        softAssert.assertTrue(message.contains(BUC_INV_RAN_001_Test.TASK_COMPLETED), systemMessageLog + ". " + message);
     }
 
     private void checkMessageText(String message, String systemMessageLog) {
@@ -388,7 +390,7 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     }
 
     private SystemMessageInterface getSuccesSystemMessage(String systemMessageLog) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, 90));
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(90)));
         Optional<Message> firstSystemMessage = systemMessage.getFirstMessage();
         softAssert.assertTrue(firstSystemMessage.isPresent(), systemMessageLog);
         if (firstSystemMessage.isPresent()) {

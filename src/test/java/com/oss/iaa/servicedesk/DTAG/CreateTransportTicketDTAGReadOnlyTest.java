@@ -11,7 +11,7 @@ import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
 
-public class CreateTransportTicketDTAGTest extends BaseTestCase {
+public class CreateTransportTicketDTAGReadOnlyTest extends BaseTestCase {
 
     private TicketDashboardPage ticketDashboardPage;
     private SDWizardPage SDWizardPage;

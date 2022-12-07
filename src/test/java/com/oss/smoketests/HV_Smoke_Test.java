@@ -9,6 +9,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.GlobalNotificationContainer;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.layout.ErrorCard;
+import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.pages.platform.HierarchyViewPage;
@@ -27,6 +28,8 @@ public class HV_Smoke_Test extends BaseTestCase {
         waitForPageToLoad();
         checkErrorPage();
         checkGlobalNotificationContainer();
+        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
+        waitForPageToLoad();
         HomePage homePage = new HomePage(driver);
         homePage.chooseFromLeftSideMenu("Hierarchy View", "Resource Inventory");
         waitForPageToLoad();
