@@ -40,6 +40,9 @@ public class FilterManagerTest extends BaseTestCase {
     private static final String FOLDER_NAME = "SeleniumFilterTest " + LocalDate.now();
     private static final String FOLDER_NEW_NAME = "NewSeleniumFilterTest " + LocalDate.now();
     private static final String FOLDER_DESCRITPION = "DescriptionSeleniumFilterTest ";
+    private static final String FOLDER_IS_NOT_VISIBLE = "Folder" + FOLDER_NEW_NAME + " is not visible on Filter Manager View";
+    private static final String FILTER_HAS_NOT_WRITE_PERMISSION ="Filter" + FILTER_NAME + "has not write permission";
+    private static final String FILTER_HAS_WRITE_PERMISSION ="Filter" + NEW_FILTER_NAME + "has write permisssion";
     private static final String USER2_LOGIN = "webseleniumtests2";
     private static final String USER2_PASSWORD = "oss";
     private static final String ATTRIBUTE_ID = "id";
@@ -128,9 +131,9 @@ public class FilterManagerTest extends BaseTestCase {
         filterManagerPage.expandAllCategories();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(filterManagerPage.isFilterVisible(FILTER_NAME) && filterManagerPage.isFilterVisible(NEW_FILTER_NAME) /*&& filterManagerPage.isFilterVisible(FILTER2_NAME) //disabled until fix OSSWEB-21137*/);
-        Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME), "Folder" + FOLDER_NEW_NAME + " is not visible on Filter Manager View ");
-        Assert.assertTrue(filterManagerPage.isEditActionVisible(FILTER_NAME), "Filter" + FILTER_NAME + "has not write permisssion ");
-        Assert.assertFalse(filterManagerPage.isEditActionVisible(NEW_FILTER_NAME), "Filter" + NEW_FILTER_NAME + "has write permisssion ");
+        Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME), FOLDER_IS_NOT_VISIBLE);
+        Assert.assertTrue(filterManagerPage.isEditActionVisible(FILTER_NAME), FILTER_HAS_NOT_WRITE_PERMISSION);
+        Assert.assertFalse(filterManagerPage.isEditActionVisible(NEW_FILTER_NAME), FILTER_HAS_WRITE_PERMISSION);
     }
 
     //disabled until fix OSSWEB-19547
