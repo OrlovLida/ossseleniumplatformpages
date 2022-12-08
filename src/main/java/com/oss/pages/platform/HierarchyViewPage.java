@@ -142,6 +142,11 @@ public class HierarchyViewPage extends BasePage {
     }
 
     @Step("Use tree context action")
+    public void callActionById(String actionId) {
+        getMainTree().callActionById(actionId);
+    }
+
+    @Step("Use tree context action")
     public void callActionByLabel(String groupLabel, String actionLabel) {
         getMainTree().callActionByLabel(groupLabel, actionLabel);
     }
@@ -181,9 +186,25 @@ public class HierarchyViewPage extends BasePage {
         }
     }
 
+    @Step("Select tree node by path")
+    public void selectNodeByPath(String path) {
+        Node node =  getMainTree().getNodeByPath(path);
+        if (!node.isToggled()){
+            node.toggleNode();
+        }
+    }
+
     public void unselectNodeByLabelsPath(String labels) {
         Node node = getMainTree().getNodeByLabelsPath(labels);
         if (node.isToggled()) {
+            node.toggleNode();
+        }
+    }
+
+    @Step("Unselect tree node by path")
+    public void unselectNodeByPath(String path) {
+        Node node =  getMainTree().getNodeByPath(path);
+        if (node.isToggled()){
             node.toggleNode();
         }
     }
@@ -202,5 +223,9 @@ public class HierarchyViewPage extends BasePage {
 
     public boolean isNodePresent(String pathLabel) {
         return getMainTree().findNodeByLabelsPath(pathLabel).isPresent();
+    }
+
+    public int getMainTreeSize() {
+        return getMainTree().getVisibleNodes().size();
     }
 }
