@@ -7,6 +7,7 @@
 package com.oss.repositories;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import com.comarch.oss.planning.api.dto.PlanningPerspectiveDTO;
 import com.comarch.oss.planning.api.dto.v2.ProjectDTO;
@@ -51,5 +52,10 @@ public class PlanningRepository {
                 .getObjectIds()
                 .get(0)
                 .getId();
+    }
+
+    public Optional<Long> getObjectIdByTypeAndName(String objectType, String name) {
+        PlanningClient planningClient = new PlanningClient(env);
+        return planningClient.findObjectIdByNameAndType(name, objectType);
     }
 }
