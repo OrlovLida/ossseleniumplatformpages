@@ -16,6 +16,8 @@ public class CreateTransportTicketDTAGReadOnlyTest extends BaseTestCase {
     private TicketDashboardPage ticketDashboardPage;
     private SDWizardPage SDWizardPage;
 
+    private final static String TRANSPORT_DASHBOARD_SUFFIX = "ForTransport";
+
     private final static String TT_WIZARD_SLA_CONTRACT= "TT_WIZARD_INPUT_SLA_CONTRACT_LABEL";
     private final static String TT_WIZARD_REPORTED_INCIDENT_TYPE = "TT_WIZARD_INPUT_REPORTED_INCIDENT_TYPE_LABEL";
     private final static String TT_WIZARD_TROUBLE_CATEGORY = "TT_WIZARD_INPUT_TROUBLE_CATEGORY_LABEL";
@@ -28,7 +30,7 @@ public class CreateTransportTicketDTAGReadOnlyTest extends BaseTestCase {
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
-        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
+        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, TRANSPORT_DASHBOARD_SUFFIX);
     }
 
     @Parameters({"MOIdentifier"})
