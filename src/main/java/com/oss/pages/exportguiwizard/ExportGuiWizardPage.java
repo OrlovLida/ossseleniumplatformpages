@@ -33,7 +33,7 @@ public class ExportGuiWizardPage extends BasePage {
     private static final String COMBOBOX_CSV_DELIMITER_ID = "exportgui-components-csvdelimitertxt";
     private static final String COMBOBOX_QUOTE_CHARACTER_ID = "exportgui-components-csvquotechartxt";
     private static final String TEXTFIELD_FILE_NAME_ID = "exportgui-components-filenametxt";
-    private static final String TYPE_OF_SCHEDULE_ID = "exportgui-components-scheduledcronexprtxt";
+    private static final String TYPE_OF_SCHEDULE_ID = "exportgui-components-scheduledcronexprtxt_scheduleType";
     private String wizardId = "exportgui-wizard-widget";
 
     public Wizard getWizard() {

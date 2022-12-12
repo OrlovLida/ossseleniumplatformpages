@@ -55,6 +55,8 @@ public class CreateINOCTicketEditDetailsTest extends BaseTestCase {
     private ParticipantsPromptPage participantsPromptPage;
     private String ticketID;
 
+    private final static String INOC_DASHBOARD_SUFFIX = "ForInoc";
+
     private final static String TT_WIZARD_PRODUCT = "TT_WIZARD_INPUT_PRODUCT_LABEL";
     private final static String TT_WIZARD_REPORTED_INCIDENT_TYPE = "TT_WIZARD_INPUT_REPORTED_INCIDENT_TYPE_LABEL";
     private static final String TT_WIZARD_INPUT_INCIDENT_TYPE = "TT_WIZARD_INPUT_INCIDENT_TITLE_LABEL";
@@ -116,7 +118,7 @@ public class CreateINOCTicketEditDetailsTest extends BaseTestCase {
 
     @BeforeMethod
     public void goToTicketDashboardPage(Method method) {
-        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
+        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, INOC_DASHBOARD_SUFFIX);
         if (ticketID != null) {
             issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         } else if (!method.getName().equals("createINOCTicket")) {

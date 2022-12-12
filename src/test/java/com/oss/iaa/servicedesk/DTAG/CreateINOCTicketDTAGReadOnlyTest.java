@@ -16,6 +16,8 @@ public class CreateINOCTicketDTAGReadOnlyTest extends BaseTestCase {
     private TicketDashboardPage ticketDashboardPage;
     private SDWizardPage SDWizardPage;
 
+    private final static String INOC_DASHBOARD_SUFFIX = "ForInoc";
+
     private final static String TT_WIZARD_PRODUCT = "TT_WIZARD_INPUT_PRODUCT_LABEL";
     private final static String TT_WIZARD_SLA_CONTRACT= "TT_WIZARD_INPUT_SLA_CONTRACT_LABEL";
     private final static String TT_WIZARD_REPORTED_INCIDENT_TYPE = "TT_WIZARD_INPUT_REPORTED_INCIDENT_TYPE_LABEL";
@@ -26,11 +28,10 @@ public class CreateINOCTicketDTAGReadOnlyTest extends BaseTestCase {
     private final static String TT_SLA_CONTRACT= "BEST EFFORT";
     private final static String TT_INCIDENT_DESCRIPTION = "Test selenium";
     private final static String TT_REPORTED_INCIDENT_TYPE = "Erroring";
-    private final static String TT_MANAGED_OBJECTS = "Managed Objects";
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
-        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
+        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, INOC_DASHBOARD_SUFFIX);
     }
 
     @Parameters({"MOIdentifier"})

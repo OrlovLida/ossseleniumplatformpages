@@ -17,6 +17,8 @@ public class CreateVoiceTicketDTAGTest extends BaseTestCase {
     private TicketDashboardPage ticketDashboardPage;
     private SDWizardPage SDWizardPage;
 
+    private final static String VOICE_DASHBOARD_SUFFIX = "ForVoice";
+
     private final static String TT_WIZARD_PRODUCT = "TT_WIZARD_INPUT_PRODUCT_LABEL";
     private final static String TT_WIZARD_PRIORITY = "TT_WIZARD_INPUT_PRIORITY_LABEL";
     private final static String TT_WIZARD_DESTINATION = "TT_WIZARD_INPUT_DESTINATION_VOICE_LABEL";
@@ -33,7 +35,7 @@ public class CreateVoiceTicketDTAGTest extends BaseTestCase {
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
-        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
+        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL, VOICE_DASHBOARD_SUFFIX);
     }
 
     @Parameters({"MOIdentifier"})
