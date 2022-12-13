@@ -9,6 +9,7 @@ import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
 import io.qameta.allure.Step;
 
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.COMMON_WIZARD_ID;
+import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.PREDEFINED_DASHBOARD_URL_PATTERN;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.TICKET_DASHBOARD;
 
 public class TicketDashboardPage extends BaseDashboardPage {
@@ -24,6 +25,14 @@ public class TicketDashboardPage extends BaseDashboardPage {
     @Step("I Open ticket dashboard View")
     public TicketDashboardPage goToPage(WebDriver driver, String basicURL) {
         openPage(driver, getDashboardURL(basicURL, TICKET_DASHBOARD));
+
+        return new TicketDashboardPage(driver, wait);
+    }
+
+    @Step("I Open ticket dashboard View for Dashboard Type: {suffixURL}")
+    public TicketDashboardPage goToPage(WebDriver driver, String basicURL, String suffixURL) {
+        String ticketDashboardType = TICKET_DASHBOARD + suffixURL;
+        openPage(driver, String.format(PREDEFINED_DASHBOARD_URL_PATTERN, basicURL, ticketDashboardType));
 
         return new TicketDashboardPage(driver, wait);
     }

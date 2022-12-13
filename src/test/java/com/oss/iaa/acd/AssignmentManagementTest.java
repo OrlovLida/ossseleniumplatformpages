@@ -31,13 +31,13 @@ public class AssignmentManagementTest extends BaseTestCase {
     private final String QUERY_STRING_FIELD_ID = "queryStringFieldId";
     private final String QUERY_STRING_FIELD_VALUE = "Test_Query_String";
     private final String SCENARIO_COMBOBOX_ID = "scenarioComboBoxId";
-    private final String SCENARIO_VALUE = "APD";
+    private final String SCENARIO_VALUE = "ASD";
     private final String RULE_ORDER_COMBOBOX_ID = "ruleOrderSearchId";
     private final String RULE_ORDER_VALUE = "1";
     private final String ASSIGNED_GROUP_COMBOBOX_ID = "assignedGroupComboBoxId";
-    private final String ASSIGNED_GROUP_VALUE = "APD SysAdmin";
+    private final String ASSIGNED_GROUP_VALUE = "ASD SysAdmin";
     private final String ASSIGNED_USER_COMBOBOX_ID = "assignedUserComboBoxId";
-    private final String ASSIGNED_USER_VALUE = "acdadmin";
+    private final String ASSIGNED_USER_VALUE = "acd_system";
     private final String DISTRIBUTION_COMBOBOX_ID = "distribution_name";
     private final String DISTRIBUTION_NAME_VALUE_V2 = "Selenium_Distribution_Name_02";
     private final String BUTTON_SAVE_LABEL = "Save";
