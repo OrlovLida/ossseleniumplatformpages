@@ -51,6 +51,8 @@ public class DeviceWizardPage extends BasePage {
     private static final String NAMING_PREVIEW_LIST_ID = "ExtendedList-AttributesTable";
     private static final String DEVICE_NAME_IN_LIST_ID = "table-element.name.id";
     private static final String DEVICE_NAME_IN_LIST_POPUP_FIELD_ID = "table-element.name.id-TEXT_FIELD";
+    private static final String LOCATION_KEBAB_BUTTON_ID = "location_button-dropdown-wizard";
+    private static final String LOCATION_CREATE_OBJECTS_BUTTON_ID = "location_button_open-wizard";
 
     public DeviceWizardPage(WebDriver driver) {
         super(driver);
@@ -387,7 +389,26 @@ public class DeviceWizardPage extends BasePage {
                 .setValue(serialNumber, DEVICE_SERIAL_NUMBER_IN_LIST_ID, DEVICE_SERIAL_NUMBER_IN_LIST_POPUP_FIELD_ID);
     }
 
-    public void clickButtonById(String buttonId) {
-        getDeviceWizard().clickButtonById(buttonId);
+    @Step("Open Create Location Wizard from kebab button")
+    public void createObjectsForLocation() {
+        getDeviceWizard().clickButtonById(LOCATION_KEBAB_BUTTON_ID);
+        getDeviceWizard().clickButtonById(LOCATION_CREATE_OBJECTS_BUTTON_ID);
     }
+
+    public String getLocation() {
+        return getDeviceWizard().getComponent(DEVICE_LOCATION_DATA_ATTRIBUTE_NAME).getStringValue();
+    }
+
+    public String getPhysicalLocation() {
+        return getDeviceWizard().getComponent(DEVICE_PHYSICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME).getStringValue();
+    }
+
+    public String getPreciseLocation() {
+        return getDeviceWizard().getComponent(DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME).getStringValue();
+    }
+
+    public String getLogicalLocation() {
+        return getDeviceWizard().getComponent(DEVICE_LOGICAL_LOCATION_DATA_ATTRIBUTE_NAME).getStringValue();
+    }
+
 }
