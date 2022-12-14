@@ -5,6 +5,7 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -48,6 +49,10 @@ public class FilterManagerTest extends BaseTestCase {
     private static final String ATTRIBUTE_ID = "id";
     private static final String TEST_MOVIE = "TestMovie";
     private static final String UNCATEGORIZED = "Uncategorized";
+    private static final String TITLE_CSS = "[title='%s']";
+    private static final String FILTER_NAME_XPATH ="//span[text()='%s']";
+    private static final String EXPAND_ICON_XPATH = ".//i[contains(@class,'chevron-down')]";
+    private static final String ACTION_LABEL_CLASS= "action__label";
 
     @BeforeClass
     public void goToFilterManagerView() {
@@ -57,8 +62,9 @@ public class FilterManagerTest extends BaseTestCase {
 
     @Test(priority = 1)
     public void createNewFolder() {
+        DelayUtils.waitBy(this.webDriverWait, By.className(ACTION_LABEL_CLASS));
         filterManagerPage.createFolder(FOLDER_NAME);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DelayUtils.waitBy(this.webDriverWait, By.cssSelector(String.format(TITLE_CSS,FOLDER_NAME)));
         Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NAME));
 
     }
@@ -66,7 +72,7 @@ public class FilterManagerTest extends BaseTestCase {
     @Test(priority = 2)
     public void editFolder() {
         filterManagerPage.editFolder(FOLDER_NAME, FOLDER_NEW_NAME, FOLDER_DESCRITPION);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        DelayUtils.waitBy(this.webDriverWait, By.cssSelector(String.format(TITLE_CSS,FOLDER_NEW_NAME)));
         Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME));
     }
 
@@ -95,6 +101,7 @@ public class FilterManagerTest extends BaseTestCase {
         filterManagerPage.editFilter(FILTER3_NAME);
         editFilterPage = new EditFilterPage(driver);
         editFilterPage.changeName(NEW_FILTER_NAME).changeDescription(FILTER_DESCRIPTION).clickAccept();
+        DelayUtils.waitByXPath(this.webDriverWait, String.format(FILTER_NAME_XPATH,NEW_FILTER_NAME));
         Assert.assertTrue(filterManagerPage.isFilterVisible(NEW_FILTER_NAME));
     }
 
@@ -187,6 +194,7 @@ public class FilterManagerTest extends BaseTestCase {
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL)
                 .expandAllCategories()
                 .deleteFilter(FILTER_NAME);
+        DelayUtils.sleep(2000);
         Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER_NAME));
     }
 
@@ -204,7 +212,7 @@ public class FilterManagerTest extends BaseTestCase {
     @Test(priority = 15)
     public void removeFolder() {
         filterManagerPage.removeFolder(FOLDER_NEW_NAME);
-        filterManagerPage.expandAllCategories();
+        DelayUtils.sleep(2000);
         Assert.assertFalse(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME));
         //Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER2_NAME)); //disabled until fix OSSWEB-21137
     }
