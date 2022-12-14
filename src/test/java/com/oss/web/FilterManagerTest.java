@@ -5,7 +5,6 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
