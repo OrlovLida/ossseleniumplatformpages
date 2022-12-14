@@ -16,6 +16,7 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.pages.filtermanager.EditFilterPage;
 import com.oss.pages.filtermanager.FilterManagerPage;
 import com.oss.pages.platform.NewInventoryViewPage;
@@ -30,6 +31,7 @@ public class FilterManagerTest extends BaseTestCase {
     private AdvancedSearch advancedSearch;
     private FilterManagerPage filterManagerPage;
     private EditFilterPage editFilterPage;
+    private CommonList categoryList;
 
     private static final String FILTER_NAME = "Id_of_first_object";
     private static final String FILTER2_NAME = "Filter2";
@@ -42,29 +44,24 @@ public class FilterManagerTest extends BaseTestCase {
     private static final String FOLDER_NEW_NAME = "NewSeleniumFilterTest " + LocalDate.now();
     private static final String FOLDER_DESCRITPION = "DescriptionSeleniumFilterTest ";
     private static final String FOLDER_IS_NOT_VISIBLE = "Folder" + FOLDER_NEW_NAME + " is not visible on Filter Manager View";
-    private static final String FILTER_HAS_NOT_WRITE_PERMISSION ="Filter" + FILTER_NAME + "has not write permission";
-    private static final String FILTER_HAS_WRITE_PERMISSION ="Filter" + NEW_FILTER_NAME + "has write permisssion";
+    private static final String FILTER_HAS_NOT_WRITE_PERMISSION = "Filter" + FILTER_NAME + "has not write permission";
+    private static final String FILTER_HAS_WRITE_PERMISSION = "Filter" + NEW_FILTER_NAME + "has write permisssion";
     private static final String USER2_LOGIN = "webseleniumtests2";
     private static final String USER2_PASSWORD = "oss";
     private static final String ATTRIBUTE_ID = "id";
     private static final String TEST_MOVIE = "TestMovie";
     private static final String UNCATEGORIZED = "Uncategorized";
-    private static final String TITLE_CSS = "[title='%s']";
-    private static final String FILTER_NAME_XPATH ="//span[text()='%s']";
-    private static final String EXPAND_ICON_XPATH = ".//i[contains(@class,'chevron-down')]";
-    private static final String ACTION_LABEL_CLASS= "action__label";
 
     @BeforeClass
     public void goToFilterManagerView() {
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL);
-
     }
 
     @Test(priority = 1)
     public void createNewFolder() {
-        DelayUtils.waitBy(this.webDriverWait, By.className(ACTION_LABEL_CLASS));
         filterManagerPage.createFolder(FOLDER_NAME);
-        DelayUtils.waitBy(this.webDriverWait, By.cssSelector(String.format(TITLE_CSS,FOLDER_NAME)));
+        categoryList=filterManagerPage.getCommonList();
+        categoryList.waitForCategory(FOLDER_NAME);
         Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NAME));
 
     }
@@ -72,7 +69,8 @@ public class FilterManagerTest extends BaseTestCase {
     @Test(priority = 2)
     public void editFolder() {
         filterManagerPage.editFolder(FOLDER_NAME, FOLDER_NEW_NAME, FOLDER_DESCRITPION);
-        DelayUtils.waitBy(this.webDriverWait, By.cssSelector(String.format(TITLE_CSS,FOLDER_NEW_NAME)));
+        categoryList=filterManagerPage.getCommonList();
+        categoryList.waitForCategory(FOLDER_NEW_NAME);
         Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME));
     }
 
@@ -101,7 +99,7 @@ public class FilterManagerTest extends BaseTestCase {
         filterManagerPage.editFilter(FILTER3_NAME);
         editFilterPage = new EditFilterPage(driver);
         editFilterPage.changeName(NEW_FILTER_NAME).changeDescription(FILTER_DESCRIPTION).clickAccept();
-        DelayUtils.waitByXPath(this.webDriverWait, String.format(FILTER_NAME_XPATH,NEW_FILTER_NAME));
+        DelayUtils.sleep(2000);
         Assert.assertTrue(filterManagerPage.isFilterVisible(NEW_FILTER_NAME));
     }
 
@@ -216,7 +214,6 @@ public class FilterManagerTest extends BaseTestCase {
         Assert.assertFalse(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME));
         //Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER2_NAME)); //disabled until fix OSSWEB-21137
     }
-
 
     @Test(priority = 16)
     public void removeFilter() {
