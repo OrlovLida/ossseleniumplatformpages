@@ -229,32 +229,4 @@ public class HierarchyViewPage extends BasePage {
         return getMainTree().getVisibleNodes().size();
     }
 
-    public AdvancedSearch getAdvancedSearch() {
-        return getMainTable().getAdvancedSearch();
-    }
-    public AdvancedSearch getAdvancedSearchForSublocationsTab() {
-        return getSublocationsTable().getAdvancedSearch();
-    }
-
-    public TableWidget getMainTable() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return TableWidget.createById(driver, tableId, wait);
-    }
-
-    public TableWidget getSublocationsTable() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return TableWidget.createById(driver, sublocationsTableId, wait);
-    }
-
-    public void selectRow(String attributeId, String value) {
-        getMainTable().selectRowByAttributeValue(attributeId, value);
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
-    public void unselectObjectByRowId(int rowId) {
-        TableWidget mainTable = getMainTable();
-        mainTable.unselectRow(rowId);
-        DelayUtils.waitForPageToLoad(driver, wait);
-    }
-
 }
