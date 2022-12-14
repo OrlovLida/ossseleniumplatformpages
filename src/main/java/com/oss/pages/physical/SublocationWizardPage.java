@@ -22,7 +22,7 @@ public class SublocationWizardPage extends BasePage {
     private static final String DESCRIPTION = "description";
     private static final String REMARKS = "remarks";
     private static final String SUBMIT_BUTTON_ID = "wizard-submit-button-sublocation-wizard";
-    private static final String SUBLOCATION_MODEL_DATA_ATTRIBUTE_NAME = "input_model";
+    private static final String SUBLOCATION_MODEL_DATA_ATTRIBUTE_NAME = "model";
     private static final String CREATE_BUTTON_ID = "wizard-submit-button-sublocation-wizard";
     private static final String NAMING_PREVIEW_LIST_ID = "namingPreviewList";
     private static final String NAME_IN_LIST_POPUP_FIELD_ID = "name-TEXT_FIELD";
@@ -62,7 +62,7 @@ public class SublocationWizardPage extends BasePage {
 
     @Step("Set Sublocation Model")
     public void setSublocationModel(String sublocationModel) {
-        wizard.getComponent(SUBLOCATION_MODEL_DATA_ATTRIBUTE_NAME, ComponentType.SEARCH_FIELD)
+        wizard.getComponent(SUBLOCATION_MODEL_DATA_ATTRIBUTE_NAME)
                 .setValueContains(Data.createSingleData(sublocationModel));
     }
 
