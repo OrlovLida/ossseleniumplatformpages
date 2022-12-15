@@ -1,7 +1,5 @@
 package com.oss.web;
 
-import static com.oss.configuration.Configuration.CONFIGURATION;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -23,6 +21,8 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
+import static com.oss.configuration.Configuration.CONFIGURATION;
+
 @Listeners({TestListener.class})
 public class FilterManagerTest extends BaseTestCase {
 
@@ -42,9 +42,15 @@ public class FilterManagerTest extends BaseTestCase {
     private static final String FOLDER_NAME = "SeleniumFilterTest " + LocalDate.now();
     private static final String FOLDER_NEW_NAME = "NewSeleniumFilterTest " + LocalDate.now();
     private static final String FOLDER_DESCRITPION = "DescriptionSeleniumFilterTest ";
-    private static final String FOLDER_IS_NOT_VISIBLE = "Folder" + FOLDER_NEW_NAME + " is not visible on Filter Manager View";
-    private static final String FILTER_HAS_NOT_WRITE_PERMISSION = "Filter" + FILTER_NAME + "has not write permission";
-    private static final String FILTER_HAS_WRITE_PERMISSION = "Filter" + NEW_FILTER_NAME + "has write permisssion";
+    private static final String FOLDER_IS_NOT_VISIBLE = "Folder %s is not visible on Filter Manager View";
+    private static final String FILTER_IS_NOT_VISIBLE = "Filter %s is not visible on Filter Manager View";
+    private static final String FOLDER_IS_VISIBLE = "Removed folder %s is visible on Filter Manager View";
+    private static final String FILTER_IS_VISIBLE = "Removed filter %s is visible on Filter Manager View";
+    private static final String FILTER_HAS_NOT_WRITE_PERMISSION = "Filter %s has not write permission";
+    private static final String FILTER_HAS_WRITE_PERMISSION = "Filter %S has write permisssion";
+    private static final String CREATED_FILTER_ARE_NOT_VISIBLE = "Created filter are not visible in Filter Manager";
+    private static final String FILTER_HAS_NOT_FAVOURITE_STATUS = "Filter %s has not favourite status";
+    private static final String INCORRECT_VALUE_OF_FILTER = "Incorrect value of filter";
     private static final String USER2_LOGIN = "webseleniumtests2";
     private static final String USER2_PASSWORD = "oss";
     private static final String ATTRIBUTE_ID = "id";
@@ -61,7 +67,7 @@ public class FilterManagerTest extends BaseTestCase {
         filterManagerPage.createFolder(FOLDER_NAME);
         categoryList = filterManagerPage.getCommonList();
         categoryList.waitForCategory(FOLDER_NAME);
-        Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NAME));
+        Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NAME), String.format(FOLDER_IS_NOT_VISIBLE, FOLDER_NAME));
 
     }
 
@@ -70,7 +76,7 @@ public class FilterManagerTest extends BaseTestCase {
         filterManagerPage.editFolder(FOLDER_NAME, FOLDER_NEW_NAME, FOLDER_DESCRITPION);
         categoryList = filterManagerPage.getCommonList();
         categoryList.waitForCategory(FOLDER_NEW_NAME);
-        Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME));
+        Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME), String.format(FOLDER_IS_NOT_VISIBLE, FOLDER_NEW_NAME));
     }
 
     @Test(priority = 3)
@@ -90,7 +96,7 @@ public class FilterManagerTest extends BaseTestCase {
         goToFilterManagerView();
         filterManagerPage.expandFolder(UNCATEGORIZED);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertTrue(filterManagerPage.isFilterVisible(FILTER_NAME) && filterManagerPage.isFilterVisible(FILTER2_NAME) && filterManagerPage.isFilterVisible(FILTER3_NAME));
+        Assert.assertTrue(filterManagerPage.isFilterVisible(FILTER_NAME) && filterManagerPage.isFilterVisible(FILTER2_NAME) && filterManagerPage.isFilterVisible(FILTER3_NAME), CREATED_FILTER_ARE_NOT_VISIBLE);
     }
 
     @Test(priority = 4)
@@ -99,7 +105,7 @@ public class FilterManagerTest extends BaseTestCase {
         editFilterPage = new EditFilterPage(driver);
         editFilterPage.changeName(NEW_FILTER_NAME).changeDescription(FILTER_DESCRIPTION).clickAccept();
         DelayUtils.sleep(2000);
-        Assert.assertTrue(filterManagerPage.isFilterVisible(NEW_FILTER_NAME));
+        Assert.assertTrue(filterManagerPage.isFilterVisible(NEW_FILTER_NAME), String.format(FILTER_IS_NOT_VISIBLE, NEW_FILTER_NAME));
     }
 
     //disabled until fix OSSWEB-21137
@@ -111,14 +117,14 @@ public class FilterManagerTest extends BaseTestCase {
                 .clickAccept()
                 .collapseAllCategories()
                 .expandFolder(FOLDER_NAME);
-        Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NAME) && filterManagerPage.isFilterVisible(FILTER2_NAME));
+        Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NAME) && filterManagerPage.isFilterVisible(FILTER2_NAME), String.format(FILTER_IS_NOT_VISIBLE, FILTER2_NAME));
     }
 
     //disabled until fix OSSWEB-19547
     @Test(priority = 6, enabled = false)
     public void addFilterToFavourite() {
         filterManagerPage.markAsAFavorite(FILTER2_NAME);
-        Assert.assertTrue(filterManagerPage.isFavorite(FILTER2_NAME));
+        Assert.assertTrue(filterManagerPage.isFavorite(FILTER2_NAME), String.format(FILTER_HAS_NOT_FAVOURITE_STATUS, FILTER2_NAME));
     }
 
     @Test(priority = 7)
@@ -135,9 +141,9 @@ public class FilterManagerTest extends BaseTestCase {
         filterManagerPage.expandAllCategories();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertTrue(filterManagerPage.isFilterVisible(FILTER_NAME) && filterManagerPage.isFilterVisible(NEW_FILTER_NAME) /*&& filterManagerPage.isFilterVisible(FILTER2_NAME) //disabled until fix OSSWEB-21137*/);
-        Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME), FOLDER_IS_NOT_VISIBLE);
-        Assert.assertTrue(filterManagerPage.isEditActionVisible(FILTER_NAME), FILTER_HAS_NOT_WRITE_PERMISSION);
-        Assert.assertFalse(filterManagerPage.isEditActionVisible(NEW_FILTER_NAME), FILTER_HAS_WRITE_PERMISSION);
+        Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME), String.format(FOLDER_IS_NOT_VISIBLE, FOLDER_NEW_NAME));
+        Assert.assertTrue(filterManagerPage.isEditActionVisible(FILTER_NAME), String.format(FILTER_HAS_NOT_WRITE_PERMISSION, FILTER_NAME));
+        Assert.assertFalse(filterManagerPage.isEditActionVisible(NEW_FILTER_NAME), String.format(FILTER_HAS_WRITE_PERMISSION, NEW_FILTER_NAME));
     }
 
     //disabled until fix OSSWEB-19547
@@ -145,8 +151,8 @@ public class FilterManagerTest extends BaseTestCase {
     public void addSharedFilterToFavourite() {
         filterManagerPage.expandAllCategories()
                 .markAsAFavorite(NEW_FILTER_NAME);
-        Assert.assertFalse(filterManagerPage.isEditActionVisible(NEW_FILTER_NAME));
-        Assert.assertTrue(filterManagerPage.isFavorite(NEW_FILTER_NAME));
+        Assert.assertFalse(filterManagerPage.isEditActionVisible(NEW_FILTER_NAME), String.format(FILTER_HAS_WRITE_PERMISSION, NEW_FILTER_NAME));
+        Assert.assertTrue(filterManagerPage.isFavorite(NEW_FILTER_NAME), String.format(FILTER_HAS_NOT_FAVOURITE_STATUS, NEW_FILTER_NAME));
     }
 
     //disabled until fix OSSWEB-21137
@@ -155,9 +161,9 @@ public class FilterManagerTest extends BaseTestCase {
         filterManagerPage
                 .collapseAllCategories()
                 .expandFolder(FOLDER_NAME);
-        Assert.assertTrue(filterManagerPage.isFilterVisible(FILTER2_NAME));
-        Assert.assertFalse(filterManagerPage.isEditActionVisible(FILTER2_NAME));
-        Assert.assertFalse(filterManagerPage.isFavorite(FILTER2_NAME));
+        Assert.assertTrue(filterManagerPage.isFilterVisible(FILTER2_NAME), String.format(FILTER_IS_NOT_VISIBLE, FILTER2_NAME));
+        Assert.assertFalse(filterManagerPage.isEditActionVisible(FILTER2_NAME), String.format(FILTER_HAS_WRITE_PERMISSION, FILTER2_NAME));
+        Assert.assertFalse(filterManagerPage.isFavorite(FILTER2_NAME), String.format(FILTER_HAS_NOT_FAVOURITE_STATUS, FILTER2_NAME));
     }
 
     @Test(priority = 10)
@@ -166,7 +172,7 @@ public class FilterManagerTest extends BaseTestCase {
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, TEST_MOVIE);
         advancedSearch = inventoryViewPage.getAdvancedSearch();
         List<String> savedFilters = advancedSearch.getSavedFilters();
-        Assert.assertTrue(/*savedFilters.contains(FILTER2_NAME) //disabled until fix OSSWEB-21137 && */savedFilters.contains(FILTER_NAME) && savedFilters.contains(NEW_FILTER_NAME));
+        Assert.assertTrue(/*savedFilters.contains(FILTER2_NAME) //disabled until fix OSSWEB-21137 && */savedFilters.contains(FILTER_NAME) && savedFilters.contains(NEW_FILTER_NAME), CREATED_FILTER_ARE_NOT_VISIBLE);
     }
 
     //disabled until fix OSSWEB-19547
@@ -174,7 +180,7 @@ public class FilterManagerTest extends BaseTestCase {
     @Description("Checking that filters marked as a favorite is favorite in Inventory View for a second user")
     public void areFiltersFavoriteInIV() {
         List<String> favoriteFilters = advancedSearch.getFavoriteFilters();
-        Assert.assertTrue(favoriteFilters.contains(NEW_FILTER_NAME));
+        Assert.assertTrue(favoriteFilters.contains(NEW_FILTER_NAME), String.format(FILTER_HAS_NOT_FAVOURITE_STATUS, NEW_FILTER_NAME));
     }
 
     @Test(priority = 12)
@@ -182,7 +188,7 @@ public class FilterManagerTest extends BaseTestCase {
     public void isFilterHaveProperValue() {
         advancedSearch.selectSavedFilterByLabel(NEW_FILTER_NAME);
         String idValue = advancedSearch.getComponent(ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD).getStringValue();
-        Assert.assertEquals(idValue, VALUE_FOR_FILTER3);
+        Assert.assertEquals(idValue, VALUE_FOR_FILTER3, INCORRECT_VALUE_OF_FILTER);
     }
 
     @Test(priority = 13)
@@ -197,20 +203,20 @@ public class FilterManagerTest extends BaseTestCase {
 
     @Test(priority = 14)
     @Description("Checking that is deleted for a first user as well")
-    public void checkIfFilteIsRemovedForFirstUser() {
+    public void checkIfFilterIsRemovedForFirstUser() {
         filterManagerPage.changeUser(CONFIGURATION.getValue("user"), CONFIGURATION.getValue("password"));
         filterManagerPage = FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         filterManagerPage.expandAllCategories();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER_NAME));
+        Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER_NAME), String.format(FILTER_IS_VISIBLE, FILTER_NAME));
     }
 
     @Test(priority = 15)
     public void removeFolder() {
         filterManagerPage.removeFolder(FOLDER_NEW_NAME);
         DelayUtils.sleep(2000);
-        Assert.assertFalse(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME));
+        Assert.assertFalse(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME), String.format(FOLDER_IS_VISIBLE, FOLDER_NEW_NAME));
         //Assert.assertFalse(filterManagerPage.isFilterVisible(FILTER2_NAME)); //disabled until fix OSSWEB-21137
     }
 
@@ -218,7 +224,7 @@ public class FilterManagerTest extends BaseTestCase {
     public void removeFilter() {
         filterManagerPage.collapseAllCategories().expandFolder(UNCATEGORIZED).deleteFilter(NEW_FILTER_NAME);
         filterManagerPage.collapseAllCategories().expandFolder(UNCATEGORIZED).deleteFilter(FILTER2_NAME);
-        Assert.assertFalse(filterManagerPage.isFilterVisible(NEW_FILTER_NAME));
+        Assert.assertFalse(filterManagerPage.isFilterVisible(NEW_FILTER_NAME), String.format(FILTER_IS_VISIBLE, NEW_FILTER_NAME));
     }
 
     private void closeMessages() {
