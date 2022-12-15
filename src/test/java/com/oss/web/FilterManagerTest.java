@@ -59,7 +59,7 @@ public class FilterManagerTest extends BaseTestCase {
     @Test(priority = 1)
     public void createNewFolder() {
         filterManagerPage.createFolder(FOLDER_NAME);
-        categoryList=filterManagerPage.getCommonList();
+        categoryList = filterManagerPage.getCommonList();
         categoryList.waitForCategory(FOLDER_NAME);
         Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NAME));
 
@@ -68,7 +68,7 @@ public class FilterManagerTest extends BaseTestCase {
     @Test(priority = 2)
     public void editFolder() {
         filterManagerPage.editFolder(FOLDER_NAME, FOLDER_NEW_NAME, FOLDER_DESCRITPION);
-        categoryList=filterManagerPage.getCommonList();
+        categoryList = filterManagerPage.getCommonList();
         categoryList.waitForCategory(FOLDER_NEW_NAME);
         Assert.assertTrue(filterManagerPage.isFolderVisible(FOLDER_NEW_NAME));
     }
