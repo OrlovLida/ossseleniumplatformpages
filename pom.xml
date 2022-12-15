@@ -222,6 +222,11 @@
             <artifactId>lombok</artifactId>
             <version>1.18.24</version>
         </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.inventory.transport.ip</groupId>
+            <artifactId>ethernet-core</artifactId>
+            <version>5.1.1</version>
+        </dependency>
     </dependencies>
 
     <profiles>
