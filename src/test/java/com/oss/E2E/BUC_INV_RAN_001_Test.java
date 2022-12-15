@@ -392,10 +392,9 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(90)));
         Optional<Message> firstSystemMessage = systemMessage.getFirstMessage();
         softAssert.assertTrue(firstSystemMessage.isPresent(), systemMessageLog);
-        if (firstSystemMessage.isPresent()) {
-            softAssert.assertEquals((systemMessage.getFirstMessage()
-                    .orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), SystemMessageContainer.MessageType.SUCCESS, systemMessageLog);
-        }
+        firstSystemMessage.ifPresent(message -> {
+            softAssert.assertEquals(message.getMessageType(), SystemMessageContainer.MessageType.SUCCESS, systemMessageLog);
+        });
         return systemMessage;
     }
 

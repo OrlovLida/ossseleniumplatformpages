@@ -8,31 +8,46 @@ package com.oss.pages.transport.trail;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
-import com.oss.pages.BasePage;
 
 /**
  * @author Robert Nawrat
  */
-public class RoutingWizardPage extends BasePage {
+public class RoutingWizardPage extends ConnectionWizardPage {
 
-    private static final String ID = "trailWizardWidget";
-    private final Wizard wizard;
+    private static final String PROTECTION_TYPE = "routingFormProtectionTypeComponent";
+    private static final String LINE_TYPE = "routingFormLineTypeComponent";
+    private static final String SEQUENCE_NUMBER = "routingFormSequenceNumberComponent";
 
     public RoutingWizardPage(WebDriver driver) {
         super(driver);
-        wizard = Wizard.createByComponentId(driver, wait, ID);
     }
 
     public void proceed() {
-        wizard.clickProceed();
+        getwizard().clickProceed();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void accept() {
-        wizard.clickAccept();
+        getwizard().clickAccept();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
+    public void setProtectionType(String value) {
+        getwizard().setComponentValue(PROTECTION_TYPE, value);
+    }
+
+    public void setLineType(String value) {
+        getwizard().setComponentValue(LINE_TYPE, value);
+    }
+
+    public void setSequenceNumber(String value) {
+        getwizard().setComponentValue(SEQUENCE_NUMBER, value);
+    }
+
+    public void selectConnection(String labelPath) {
+        TreeComponent treeComponent = getwizard().getTreeComponent();
+        treeComponent.getNodeByLabelsPath(labelPath).toggleNode();
+    }
 }

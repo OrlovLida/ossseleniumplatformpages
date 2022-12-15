@@ -19,6 +19,8 @@ public class ConnectionWizardPage extends BasePage {
 
     private static final String WIZARD_ID = "trailWizardId_prompt-card";
     private static final String NAME_ID = "trailNameComponent";
+    private static final String DESCRIPTION_ID = "trailDescriptionComponent";
+    private static final String TERMINATE_NETWORK_ELEMENT = "terminationFormDeviceComponent";
     private static final String TERMINATE_CARD_ID = "terminationFormCardComponent";
     private static final String TERMINATE_PORT_ID = "terminationFormPortComponent";
     private static final String TERMINATE_TP_ID = "terminationFormPointComponent";
@@ -32,78 +34,90 @@ public class ConnectionWizardPage extends BasePage {
         super(driver);
     }
 
-    private Wizard wizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    public Wizard getwizard() {
+        return Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    }
 
     @Step("Set name = {name}")
     public void setName(String name) {
-        wizard.setComponentValue(NAME_ID, name, TEXT_FIELD);
+        getwizard().setComponentValue(NAME_ID, name);
+    }
+
+    @Step("Set description = {description}")
+    public void setDescription(String description) {
+        getwizard().setComponentValue(DESCRIPTION_ID, description);
     }
 
     @Step("Set capacity unit = {value}")
     public void setCapacityUnit(String value) {
-        wizard.setComponentValue(CAPACITY_UNIT_ID, value, COMBOBOX);
+        getwizard().setComponentValue(CAPACITY_UNIT_ID, value, COMBOBOX);
     }
 
     @Step("Set capacity value = {value}")
     public void setCapacityValue(String value) {
-        wizard.setComponentValue(CAPACITY_VALUE_ID, value, TEXT_FIELD);
+        getwizard().setComponentValue(CAPACITY_VALUE_ID, value, TEXT_FIELD);
     }
 
     @Step("Set ethernet link speed = {value}")
     public void setEthernetLinkSpeed(String value) {
-        wizard.setComponentValue(ETHERNET_LINK_SPEED_ID, value, COMBOBOX);
+        getwizard().setComponentValue(ETHERNET_LINK_SPEED_ID, value, COMBOBOX);
     }
 
     @Step("Click Next button")
     public void clickNext() {
-        wizard.clickNext();
+        getwizard().clickNext();
     }
 
     @Step("Click Accept button")
     public void clickAccept() {
-        wizard.clickAccept();
+        getwizard().clickAccept();
     }
 
     @Step("Select connection termination by dataPath = {dataPath}")
     public void selectConnectionTermination(String dataPath) {
-        TreeComponent treeComponent = wizard.getTreeComponent();
+        TreeComponent treeComponent = getwizard().getTreeComponent();
         treeComponent.toggleNodeByPath(dataPath);
     }
 
     @Step("Terminate Card/Component")
     public void terminateCardComponent(String value) {
-        wizard.setComponentValue(TERMINATE_CARD_ID, value, SEARCH_FIELD);
+        getwizard().setComponentValue(TERMINATE_CARD_ID, value, SEARCH_FIELD);
     }
 
     @Step("Set nonexistent card")
     public void setNonexistentCard() {
-        Input searchField = wizard.getComponent(TERMINATE_CARD_ID);
+        Input searchField = getwizard().getComponent(TERMINATE_CARD_ID);
         searchField.setSingleStringValueContains(NONEXISTENT_CARD_VALUE);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Terminate Port")
     public void terminatePort(String value) {
-        wizard.setComponentValue(TERMINATE_PORT_ID, value, SEARCH_FIELD);
+        getwizard().setComponentValue(TERMINATE_PORT_ID, value, SEARCH_FIELD);
+    }
+
+    @Step("Get Network Element Termination")
+    public String getNetworkElementTermination() {
+        return getwizard().getComponent(TERMINATE_NETWORK_ELEMENT).getStringValue();
     }
 
     @Step("Terminate Termination Port")
     public void terminateTerminationPort(String value) {
-        wizard.setComponentValue(TERMINATE_TP_ID, value, SEARCH_FIELD);
+        getwizard().setComponentValue(TERMINATE_TP_ID, value, SEARCH_FIELD);
     }
 
     @Step("Assign IP Host Address to the opposite interface = {value}")
     public void assignAddressToOpositeInteface(boolean value) {
-        wizard.setComponentValue(ADDRESS_TO_OPPOSITE_INTERFACE_ID, String.valueOf(value), CHECKBOX);
+        getwizard().setComponentValue(ADDRESS_TO_OPPOSITE_INTERFACE_ID, String.valueOf(value), CHECKBOX);
     }
 
     public void setCheckbox(String componentId, Boolean value) {
-        wizard.setComponentValue(componentId, value.toString());
+        getwizard().setComponentValue(componentId, value.toString());
     }
 
     @Step("Choose termination in tree - {terminationType}")
     public void chooseTerminationType(ConnectionWizardPage.TerminationType terminationType) {
-        TreeComponent treeComponent = wizard.getTreeComponent();
+        TreeComponent treeComponent = getwizard().getTreeComponent();
         treeComponent.toggleNodeByPath(terminationType.getLabel());
         DelayUtils.waitForPageToLoad(driver, wait);
     }
