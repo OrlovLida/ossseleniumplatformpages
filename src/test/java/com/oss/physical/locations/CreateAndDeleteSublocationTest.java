@@ -108,7 +108,7 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
                 DelayUtils.waitForPageToLoad(driver, webDriverWait);
                 sublocationWizardPage.setSublocationModel(RACK_MODEL);
                 DelayUtils.waitForPageToLoad(driver, webDriverWait);
-                checkAutoCompleteRackAttributes(sublocationWizardPage);
+                checkIfRackDimensionsFieldsAreNotEmpty(sublocationWizardPage);
             }
             sublocationWizardPage.setDescription(DESCRIPTION);
             sublocationWizardPage.setRemarks(REMARKS);
@@ -135,21 +135,21 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
         String[] sublocationTypes = {FLOOR_TYPE, ROOM_TYPE, RACK_TYPE};
         softAssert = new SoftAssert();
         for (String type : sublocationTypes) {
-            LOGGER.info("Verification of Sublocation" + " attributes on HV = " + type);
+            LOGGER.info("Verification of Sublocation attributes on HV = " + type);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             tableWidget.selectRowByAttributeValue(TYPE_COL_ID, type);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             int rowIndex = tableWidget.getRowNumber(type, TYPE_COL_ID);
-            String name = tableWidget.getCellValue(rowIndex, NAME_COL_ID);
-            softAssert.assertTrue(name.contains(dateAndTime), "Name was not calculated correctly: " + name);
-            name = tableWidget.getCellValue(rowIndex, TYPE_COL_ID);
-            softAssert.assertTrue(name.equals(type), "There is a different type of sublocation: " + name);
-            name = tableWidget.getCellValue(rowIndex, LOCATION_COL_ID);
-            softAssert.assertTrue(name.contains(LOCATION_NAME), "There is a different value of Precise Location " + name);
-            name = tableWidget.getCellValue(rowIndex, DESCRIPTION);
-            softAssert.assertEquals(name, DESCRIPTION, "There is a different value of description: " + name);
-            name = tableWidget.getCellValue(rowIndex, REMARKS);
-            softAssert.assertEquals(name, REMARKS, "There is a different value of remarks: " + name);
+            String componentValue = tableWidget.getCellValue(rowIndex, NAME_COL_ID);
+            softAssert.assertTrue(componentValue.contains(dateAndTime), "Name was not calculated correctly: " + componentValue);
+            componentValue = tableWidget.getCellValue(rowIndex, TYPE_COL_ID);
+            softAssert.assertTrue(componentValue.equals(type), "There is a different type of sublocation: " + componentValue);
+            componentValue = tableWidget.getCellValue(rowIndex, LOCATION_COL_ID);
+            softAssert.assertTrue(componentValue.contains(LOCATION_NAME), "There is a different componentValue of Precise Location " + componentValue);
+            componentValue = tableWidget.getCellValue(rowIndex, DESCRIPTION);
+            softAssert.assertEquals(componentValue, DESCRIPTION, "There is a different componentValue of description: " + componentValue);
+            componentValue = tableWidget.getCellValue(rowIndex, REMARKS);
+            softAssert.assertEquals(componentValue, REMARKS, "There is a different componentValue of remarks: " + componentValue);
             if (type.equals(RACK_TYPE)) {
                 searchRackAttributesInPropertiesTab();
                 DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -176,35 +176,29 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
     public void checkSublocationsAttributesOnInventoryView() {
         String[] sublocationTypes = {FLOOR_TYPE, ROOM_TYPE, RACK_TYPE};
         softAssert = new SoftAssert();
+        int i = 0;
         for (String type : sublocationTypes) {
-            LOGGER.info("Verification of Sublocation " + " attributes = " + type);
+            LOGGER.info("Verification of Sublocation attributes = " + type);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             newInventoryViewPage.selectRow(TYPE_COL_ID, type);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             searchNameByValueOnIV();
             searchDescriptionByValueOnIV();
             searchRemarksByValueOnIV();
-            if (type.equals(FLOOR_TYPE)) {
-                String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(TYPE_COL_ID);
-                softAssert.assertEquals(name, type, "There is a different type of location: " + name);
-                newInventoryViewPage.unselectObjectByRowId(0);
-            } else if (type.equals(ROOM_TYPE)) {
-                String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(TYPE_COL_ID);
-                softAssert.assertEquals(name, type, "There is a different type of location: " + name);
-                newInventoryViewPage.unselectObjectByRowId(1);
-            } else {
-                String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(TYPE_COL_ID);
-                softAssert.assertEquals(name, type, "There is a different type of location: " + name);
+            String componentValue = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(TYPE_COL_ID);
+            softAssert.assertEquals(componentValue, type, "There is a different type of location: " + componentValue);
+            if (type.equals(RACK_TYPE)) {
                 searchPreciseLocationByName();
                 searchRackManufacturerModelByModelName();
                 searchRackModelByModelName();
                 searchRackHeightByName();
                 searchRackWidthByName();
                 searchRackDepthByName();
-                newInventoryViewPage.unselectObjectByRowId(2);
             }
+            newInventoryViewPage.unselectObjectByRowId(i);
+            i++;
+            softAssert.assertAll();
         }
-        softAssert.assertAll();
     }
 
     @Test(priority = 8, dependsOnMethods = {"checkSublocationsAttributesOnInventoryView"})
@@ -230,38 +224,38 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
     }
 
     @Step("Check that attributes are autocompleted for selected Rack model and fields are not empty")
-    public void checkAutoCompleteRackAttributes(SublocationWizardPage sublocationWizardPage) {
+    private void checkIfRackDimensionsFieldsAreNotEmpty(SublocationWizardPage sublocationWizardPage) {
         softAssert = new SoftAssert();
-        String componentValue = sublocationWizardPage.getComponentValue(HEIGHT_FIELD);
-        softAssert.assertFalse(componentValue.isEmpty(), "There is empty field with height!" + componentValue);
-        componentValue = sublocationWizardPage.getComponentValue(WIDTH_FIELD);
-        softAssert.assertFalse(componentValue.isEmpty(), "There is empty field with width!" + componentValue);
-        componentValue = sublocationWizardPage.getComponentValue(DEPTH_FIELD);
-        softAssert.assertFalse(componentValue.isEmpty(), "There is empty field with depth!" + componentValue);
+        String heightValue = sublocationWizardPage.getHeight();
+        softAssert.assertFalse(heightValue.isEmpty(), "There is empty field with height!" + heightValue);
+        String widthValue = sublocationWizardPage.getWidth();
+        softAssert.assertFalse(widthValue.isEmpty(), "There is empty field with width!" + widthValue);
+        String depthValue = sublocationWizardPage.getDepth();
+        softAssert.assertFalse(depthValue.isEmpty(), "There is empty field with depth!" + depthValue);
         softAssert.assertAll();
     }
 
     @Step("Verification of Sublocation Name in Property Panel")
     public void searchNameByValueOnIV() {
         softAssert = new SoftAssert();
-        String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(NAME_COL_ID);
-        softAssert.assertTrue(name.contains(dateAndTime), "Name was not calculated correctly: " + name);
+        String nameValue = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(NAME_COL_ID);
+        softAssert.assertTrue(nameValue.contains(dateAndTime), "Name was not calculated correctly: " + nameValue);
         softAssert.assertAll();
     }
 
     @Step("Verification of Sublocation Description in Property Panel")
     public void searchDescriptionByValueOnIV() {
         softAssert = new SoftAssert();
-        String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(DESCRIPTION);
-        softAssert.assertEquals(name, DESCRIPTION, "There is a different value of description: " + name);
+        String descriptionValue = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(DESCRIPTION);
+        softAssert.assertEquals(descriptionValue, DESCRIPTION, "There is a different value of description: " + descriptionValue);
         softAssert.assertAll();
     }
 
     @Step("Verification of Sublocation Name in Property Panel")
     public void searchRemarksByValueOnIV() {
         softAssert = new SoftAssert();
-        String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(REMARKS);
-        softAssert.assertEquals(name, REMARKS, "There is a different value of remarks: " + name);
+        String remarksValue = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(REMARKS);
+        softAssert.assertEquals(remarksValue, REMARKS, "There is a different value of remarks: " + remarksValue);
         softAssert.assertAll();
     }
 
@@ -269,24 +263,24 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
     public void searchRackAttributesInPropertiesTab() {
         softAssert = new SoftAssert();
         PropertyPanel propertyPanel = PropertyPanel.createById(driver, webDriverWait, PROPERTY_PANEL_WIDGET_ID);
-        String bcname = propertyPanel.getPropertyValue(NAME_COL_ID);
-        hierarchyViewPage.selectNodeByLabelsPath(bcname + RACK_PATH + dateAndTime);
+        String locationValue = propertyPanel.getPropertyValue(NAME_COL_ID);
+        hierarchyViewPage.selectNodeByLabelsPath(locationValue + RACK_PATH + dateAndTime);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.unselectFirstObject();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         propertyPanel = PropertyPanel.createById(driver, webDriverWait, PROPERTY_PANEL_WIDGET_ID);
-        String name = propertyPanel.getPropertyValue(MODEL_MANUFACTURER_ID);
-        softAssert.assertEquals(name, "Generic", "There is a different value of Rack Manufacturer Model Name: " + name);
-        name = propertyPanel.getPropertyValue(MODEL_NAME_ID);
-        softAssert.assertTrue(name.contains("19"), "There is a different value of Rack Model Name: " + name);
-        name = propertyPanel.getPropertyValue(HEIGHT_FIELD);
-        softAssert.assertNotEquals(name, RACK_HEIGHT);
-        name = propertyPanel.getPropertyValue(WIDTH_FIELD);
-        softAssert.assertNotEquals(name, RACK_WIDTH);
-        name = propertyPanel.getPropertyValue(DEPTH_FIELD);
-        softAssert.assertNotEquals(name, RACK_DEPTH);
+        String componentValue = propertyPanel.getPropertyValue(MODEL_MANUFACTURER_ID);
+        softAssert.assertEquals(componentValue, "Generic", "There is a different componentValue of Rack Manufacturer Model Name: " + componentValue);
+        componentValue = propertyPanel.getPropertyValue(MODEL_NAME_ID);
+        softAssert.assertTrue(componentValue.contains("19"), "There is a different componentValue of Rack Model Name: " + componentValue);
+        componentValue = propertyPanel.getPropertyValue(HEIGHT_FIELD);
+        softAssert.assertNotEquals(componentValue, RACK_HEIGHT, "There is a different componentValue of height" + componentValue);
+        componentValue = propertyPanel.getPropertyValue(WIDTH_FIELD);
+        softAssert.assertNotEquals(componentValue, RACK_WIDTH, "There is a different componentValue of width" + componentValue);
+        componentValue = propertyPanel.getPropertyValue(DEPTH_FIELD);
+        softAssert.assertNotEquals(componentValue, RACK_DEPTH, "There is a different componentValue of depth" + componentValue);
         softAssert.assertAll();
-        hierarchyViewPage.unselectNodeByLabelsPath(bcname + RACK_PATH + dateAndTime);
+        hierarchyViewPage.unselectNodeByLabelsPath(locationValue + RACK_PATH + dateAndTime);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.selectFirstObject();
     }
@@ -294,48 +288,48 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
     @Step("Verification of Sublocation Precise Location in Property Panel")
     public void searchPreciseLocationByName() {
         softAssert = new SoftAssert();
-        String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(PRECISE_LOCATION_ID).toLowerCase();
-        softAssert.assertTrue(name.contains(LOCATION_NAME), "There is a different value of Precise Location: " + name);
+        String locationValue = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(PRECISE_LOCATION_ID).toLowerCase();
+        softAssert.assertTrue(locationValue.contains(LOCATION_NAME), "There is a different value of Precise Location: " + locationValue);
         softAssert.assertAll();
     }
 
     @Step("Verification of Rack Manufacturer Model Name in Property Panel")
     private void searchRackManufacturerModelByModelName() {
         softAssert = new SoftAssert();
-        String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(MODEL_MANUFACTURER_ID);
-        softAssert.assertEquals(name, "Generic", "There is a different value of Rack Manufacturer Model Name: " + name);
+        String manufacturerValue = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(MODEL_MANUFACTURER_ID);
+        softAssert.assertEquals(manufacturerValue, "Generic", "There is a different value of Rack Manufacturer Model Name: " + manufacturerValue);
         softAssert.assertAll();
     }
 
     @Step("Verification of Rack Model Name in Property Panel")
     private void searchRackModelByModelName() {
         softAssert = new SoftAssert();
-        String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(MODEL_NAME_ID);
-        softAssert.assertTrue(name.contains("19"), "There is a different value of Rack Model Name: " + name);
+        String modelValue = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(MODEL_NAME_ID);
+        softAssert.assertTrue(modelValue.contains("19"), "There is a different value of Rack Model Name: " + modelValue);
         softAssert.assertAll();
     }
 
     @Step("Verification of Rack Height in Property Panel")
     private void searchRackHeightByName() {
         softAssert = new SoftAssert();
-        String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(HEIGHT_FIELD);
-        softAssert.assertNotEquals(name, RACK_HEIGHT);
+        String heihgtValue = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(HEIGHT_FIELD);
+        softAssert.assertNotEquals(heihgtValue, RACK_HEIGHT);
         softAssert.assertAll();
     }
 
     @Step("Verification of Rack Width in Property Panel")
     private void searchRackWidthByName() {
         softAssert = new SoftAssert();
-        String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(WIDTH_FIELD);
-        softAssert.assertNotEquals(name, RACK_WIDTH);
+        String widthValue = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(WIDTH_FIELD);
+        softAssert.assertNotEquals(widthValue, RACK_WIDTH);
         softAssert.assertAll();
     }
 
     @Step("Verification of Rack Depth in Property Panel")
     private void searchRackDepthByName() {
         softAssert = new SoftAssert();
-        String name = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(DEPTH_FIELD);
-        softAssert.assertNotEquals(name, RACK_DEPTH);
+        String depthValue = newInventoryViewPage.getPropertyPanel(PROPERTY_PANEL_WIDGET_ID).getPropertyValue(DEPTH_FIELD);
+        softAssert.assertNotEquals(depthValue, RACK_DEPTH);
         softAssert.assertAll();
     }
 

@@ -15,6 +15,7 @@ public class SublocationWizardPage extends BasePage {
     private static final String SUBLOCATION_TYPE = "type";
     private static final String SUBLOCATION_NAME = "name";
     private static final String PRECISE_LOCATION = "preciseLocation";
+    private static final String HEIGHT = "height";
     private static final String WIDTH = "width";
     private static final String DEPTH = "depth";
     private static final String QUANTITY = "quantity";
@@ -106,8 +107,23 @@ public class SublocationWizardPage extends BasePage {
         wizard.clickButtonById(SUBMIT_BUTTON_ID);
     }
 
-    @Step("Check if attributes is autocompleted")
-    public String getComponentValue(String componentId) {
+    @Step("Get component value by its Id")
+    private String getComponentValue(String componentId) {
         return wizard.getComponent(componentId).getStringValue();
     }
+    @Step("Get Height")
+    public String getHeight() {
+        return getComponentValue(HEIGHT);
+    }
+
+    @Step("Get Width")
+    public String getWidth() {
+        return getComponentValue(WIDTH);
+    }
+
+    @Step("Get Depth")
+    public String getDepth() {
+        return getComponentValue(DEPTH);
+    }
+
 }
