@@ -51,9 +51,8 @@ public class AEITest extends BaseTestCase {
         AEIAttributes aeiAttributes = getAEIAttributesForCreate();
         AEIWizardPage aeiWizard = goToAEIWizardPage();
         fillAEIWizardToCreate(aeiAttributes, aeiWizard);
-        aeiWizard.clickAccept();
+        NewInventoryViewPage newInventoryViewPage = aeiWizard.clickAccept();
         SystemMessageContainer.create(driver, webDriverWait).clickMessageLink();
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.refreshMainTable();
         newInventoryViewPage.searchObject(aeiAttributes.deviceName).selectFirstRow();
 
@@ -66,9 +65,9 @@ public class AEITest extends BaseTestCase {
         AEIAttributes aeiAttributes = getAEIAttributesForUpdate();
         AEIWizardPage aeiWizard = goToWizardAtUpdate();
         fillAEIWizardToUpdate(aeiAttributes, aeiWizard);
-        aeiWizard.clickAccept();
-        NewInventoryViewPage inventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        NewInventoryViewPage inventoryViewPage = aeiWizard.clickAccept();
         inventoryViewPage.searchObject(aeiAttributes.deviceName).selectFirstRow();
+
         Assert.assertFalse(inventoryViewPage.checkIfTableIsEmpty());
     }
 
@@ -133,13 +132,13 @@ public class AEITest extends BaseTestCase {
 
     private void fillAEIWizardToCreate(AEIAttributes aeiAttributes, AEIWizardPage aeiWizard) {
         fulfillFirstStep(aeiWizard, aeiAttributes);
-        aeiWizard.clickNext();
+        aeiWizard.clickNextStep();
         fulfillSecondStep(aeiWizard, Arrays.asList(INTERFACE1_NAME, INTERFACE2_NAME));
     }
 
     private void fillAEIWizardToUpdate(AEIAttributes aeiAttributes, AEIWizardPage aeiWizard) {
         setAttributesOnFirstStep(aeiWizard, aeiAttributes);
-        aeiWizard.clickNext();
+        aeiWizard.clickNextStep();
         fulfillSecondStep(aeiWizard, Arrays.asList(INTERFACE1_NAME, INTERFACE2_NAME, INTERFACE3_NAME, INTERFACE4_NAME));
     }
 

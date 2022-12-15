@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.prompts.Popup;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.platform.bookmarksanddashboards.BaseBookmarkAndDashboardPage;
 import com.oss.pages.platform.bookmarksanddashboards.CategoryWizardPage;
@@ -33,7 +32,6 @@ public class NewBookmarksPage extends BaseBookmarkAndDashboardPage {
 
     public static NewBookmarksPage goToBookmarksPage(WebDriver driver, WebDriverWait wait, String basicUrl) {
         driver.get(String.format("%s/#/", basicUrl));
-        DelayUtils.waitForPageToLoad(driver, wait);
         TabsWidget tabs = TabsWidget.createById(driver, wait, MANAGEMENT_VIEW_CONTAINER_TABSCARD);
         tabs.selectTabById(TAB_BOOKMARKS_ID);
         return new NewBookmarksPage(driver, wait);

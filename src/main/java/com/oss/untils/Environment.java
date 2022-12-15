@@ -13,6 +13,7 @@ import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.google.common.collect.Lists;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.authentication.OAuthSignature;
 import com.jayway.restassured.http.ContentType;
@@ -39,7 +40,6 @@ public class Environment {
     private static final String LOGICAL_FUNCTION_CORE = "logical-function-core";
     private static final String LOGICAL_INVENTORY_VIEW = "logical-inventory-view";
     private static final String TP_SERVICE = "tp-service";
-    private static final String ETHERNET_CORE = "ethernet-core";
     private static final String CONNECTIVITY_CORE = "physical-connectivity-core";
     private static final String NFV_CORE = "nfv-core";
     private static final String NETWORK_SERVICE_CORE = "network-service-core";
@@ -116,10 +116,6 @@ public class Environment {
 
     public RequestSpecification getPhysicalInventoryCoreRequestSpecification() {
         return getRequestSpecificationByName(PHYSICAL_INVENTORY_CORE);
-    }
-
-    public RequestSpecification getEthernetCoreRequestSpecification() {
-        return getRequestSpecificationByName(ETHERNET_CORE);
     }
 
     public RequestSpecification getAddressCoreRequestSpecification() {
