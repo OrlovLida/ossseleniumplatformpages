@@ -9,6 +9,7 @@ public class Constants {
     public static final String ID = "id";
     public static final String IDS = "ids";
     public static final String CELL_ID = "cell_id";
+    public static final String PROJECT_ID = "project_id";
     public static final String PERSPECTIVE = "perspective";
     public static final String LIVE = "LIVE";
     public static final String PLAN = "PLAN";
@@ -81,6 +82,7 @@ public class Constants {
     //common attributes like name, identifier, description etc. Specific type's attributes should be added in the types section.
     public static final String COMMON_NAME_ATTRIBUTE = "name";
     public static final String COMMON_IDENTIFIER_ATTRIBUTE = "identifier";
+
     private Constants() {
     }
 

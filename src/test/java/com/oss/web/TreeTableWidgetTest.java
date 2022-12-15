@@ -1,20 +1,18 @@
 package com.oss.web;
 
-import java.util.List;
-
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.bpm.processinstances.PlannersViewPage;
 import com.oss.pages.platform.NewInventoryViewPage;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
+import java.util.List;
 
 /**
  * @author Faustyna Szczepanik
@@ -28,11 +26,10 @@ public class TreeTableWidgetTest extends BaseTestCase {
     private static final String HEADER_TITLE_CLASS = "header-title__title";
     private static final int PAGE_SIZE_OPTION_100 = 100;
     private static final int PAGE_SIZE_OPTION_50 = 50;
+    private static final String NAME_COL_ID = "name";
+    private final static String CODE_ID = "code";
     private PlannersViewPage plannersViewPage;
     private TreeTableWidget treeTableWidget;
-    private static final String NAME_COL_ID = "name";
-    private final static String PROPERTY_PANEL_ID = "PropertyPanelWidget";
-    private final static String CODE_ID = "code";
 
     @BeforeClass
     public void goToPlannersView() {
@@ -207,9 +204,7 @@ public class TreeTableWidgetTest extends BaseTestCase {
 
     @Test(priority = 17)
     public void checkDataInTreeTable() {
-        PropertyPanel propertyPanel = plannersViewPage.getPropertyPanel(0, PROPERTY_PANEL_ID);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        String codeFromPropertiesTab = propertyPanel.getPropertyValue(CODE_ID);
+        String codeFromPropertiesTab = plannersViewPage.selectObjectByRowId(0).getPropertyValue(CODE_ID);
         String codeFromTreeTable = plannersViewPage.getAttributeValue(CODE_ID, 0);
         Assert.assertEquals(codeFromPropertiesTab, codeFromTreeTable);
         plannersViewPage.unselectObjectByRowId(0);

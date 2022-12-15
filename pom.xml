@@ -18,20 +18,33 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.version>3.1</maven.compiler.version>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.surefire.version>3.0.0-M5</maven.surefire.version>
         <aspectj.version>1.8.10</aspectj.version>
         <suite>3ukhd</suite>
+
+        <selenium.version>4.6.0</selenium.version>
+        <wedrivermanager.version>5.3.1</wedrivermanager.version>
+        <testng.version>6.14.3</testng.version>
+        <assertj.version>3.14.0</assertj.version>
+        <allure.version>2.0-BETA19</allure.version>
+        <slf4j.version>1.7.12</slf4j.version>
+        <jaxb.version>2.3.1</jaxb.version>
 
         <restassured.version>2.9.0</restassured.version>
         <rs.version>2.1.1</rs.version>
         <locationinventory.version>1.34.14.Final</locationinventory.version>
+        <logicalinventory.version>4.1.1.Final</logicalinventory.version>
         <physicalinventory.version>2.1.55.Final</physicalinventory.version>
         <resource-hierarchy-api.version>0.1.0</resource-hierarchy-api.version>
         <addressinventory.version>1.17.32.Final</addressinventory.version>
         <radio.version>4.6.4.Final</radio.version>
         <resourcecatalog.version>2.7.1.Final</resourcecatalog.version>
-        <planning.version>6.9.2.Final</planning.version>
+        <planning.version>7.4.0</planning.version>
+        <planningmanager.version>9.1.2</planningmanager.version>
+        <validationresults.version>7.3.1</validationresults.version>
         <seleniumframework.version>2.2.0-SNAPSHOT</seleniumframework.version>
         <fixedaccess.version>4.9.6</fixedaccess.version>
         <trail-api.version>3.20.0.Final</trail-api.version>
@@ -39,39 +52,42 @@
         <template.filler.version>2.21.12</template.filler.version>
         <log4j2.version>2.8.2</log4j2.version>
         <javafaker.version>0.17.2</javafaker.version>
+        <transport.version>3.10.0.Final</transport.version>
+        <physical-connectivity.version>3.0.2.Final</physical-connectivity.version>
+        <lombok.version>1.18.24</lombok.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.6.0</version>
+            <version>${selenium.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
-            <version>5.3.1</version>
+            <version>${wedrivermanager.version}</version>
         </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.14.3</version>
+            <version>${testng.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
-            <version>3.14.0</version>
+            <version>${assertj.version}</version>
         </dependency>
         <dependency>
             <groupId>io.qameta.allure</groupId>
             <artifactId>allure-testng</artifactId>
-            <version>2.0-BETA19</version>
+            <version>${allure.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>1.7.12</version>
+            <version>${slf4j.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -91,7 +107,7 @@
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
-            <version>2.3.1</version>
+            <version>${jaxb.version}</version>
         </dependency>
         <dependency>
             <groupId>com.jayway.restassured</groupId>
@@ -179,12 +195,34 @@
         <dependency>
             <groupId>com.comarch.oss.logical.inventory</groupId>
             <artifactId>logical-inventory-api</artifactId>
-            <version>4.1.1.Final</version>
+            <version>${logicalinventory.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.planning</groupId>
+            <artifactId>validation-results-api</artifactId>
+            <version>${validationresults.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.planning</groupId>
+            <artifactId>planning-manager-api</artifactId>
+            <version>${planningmanager.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>com.comarch.oss.planning</groupId>
             <artifactId>planning-api</artifactId>
-            <version>6.9.9.Final</version>
+            <version>${planning.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.guava</groupId>
@@ -205,12 +243,12 @@
         <dependency>
             <groupId>com.comarch.oss.transport.tp</groupId>
             <artifactId>tp-service-api</artifactId>
-            <version>3.10.0.Final</version>
+            <version>${transport.version}</version>
         </dependency>
         <dependency>
             <groupId>com.comarch.oss.physicalconnectivity</groupId>
             <artifactId>physical-connectivity-api</artifactId>
-            <version>3.0.2.Final</version>
+            <version>${physical-connectivity.version}</version>
         </dependency>
         <dependency>
             <groupId>com.github.javafaker</groupId>
@@ -220,7 +258,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
+            <version>${lombok.version}</version>
         </dependency>
     </dependencies>
 
@@ -233,14 +271,14 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-compiler-plugin</artifactId>
                         <configuration>
-                            <source>1.8</source>
-                            <target>1.8</target>
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.target}</target>
                         </configuration>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <version>3.0.0-M5</version>
+                        <version>${maven.surefire.version}</version>
                         <configuration>
                             <argLine>
                                 -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
@@ -263,16 +301,16 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <version>${maven.compiler.version}</version>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M5</version>
+                <version>${maven.surefire.version}</version>
                 <configuration>
                     <suiteXmlFiles>
                         <suiteXmlFile>src/test/resources/stable_tests_${suite}.xml</suiteXmlFile>

@@ -1,22 +1,24 @@
 package com.oss.pages.bpm.tasks;
 
-import java.util.List;
-
+import com.oss.framework.components.attributechooser.AttributesChooser;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.TableInterface;
+import com.oss.framework.widgets.table.TableWidget;
+import com.oss.framework.wizard.Wizard;
+import com.oss.pages.BasePage;
+import com.oss.pages.bpm.planning.ProcessDetailsPage;
+import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
+import com.oss.pages.bpm.tasks.taskforms.IPDTaskFormPage;
+import com.oss.pages.bpm.tasks.taskforms.KDTaskFormPage;
+import com.oss.pages.platform.HomePage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.oss.framework.components.attributechooser.AttributesChooser;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.TableInterface;
-import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.BasePage;
-import com.oss.pages.bpm.tasks.taskforms.IPDTaskFormPage;
-import com.oss.pages.bpm.tasks.taskforms.KDTaskFormPage;
-import com.oss.pages.platform.HomePage;
-
-import io.qameta.allure.Step;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Paweł Rother
@@ -24,6 +26,7 @@ import io.qameta.allure.Step;
 
 public class TasksPageV2 extends BasePage {
 
+    public static final String PLANNING_TASK = "Planning";
     public static final String READY_FOR_INTEGRATION_TASK = "Ready for Integration";
     public static final String IMPLEMENTATION_TASK = "Implementation";
     public static final String SCOPE_DEFINITION_TASK = "Scope definition";
@@ -52,6 +55,9 @@ public class TasksPageV2 extends BasePage {
     private static final String BPM_AND_PLANNING = "BPM and Planning";
     private static final String TASKS = "Tasks";
     private static final String PROCESS_OPERATIONS = "Process Operations";
+    private static final String WRONG_TASK_NAME_EXCEPTION =
+            "Illegal Task Name provided. Create Design Request Process wizard can be opened only for tasks: " +
+                    HIGH_LEVEL_PLANNING_TASK + ", " + LOW_LEVEL_PLANNING_TASK;
 
     public TasksPageV2(WebDriver driver) {
         super(driver);
@@ -126,10 +132,9 @@ public class TasksPageV2 extends BasePage {
         getIPDTaskForm().completeTask();
     }
 
-    public IntegrationProcessWizardPage setupIntegration(String processCode) {
+    public SetupIntegrationWizardPage openSetupIntegrationWizard(String processCode) {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
-        getIPDTaskForm().setupIntegration();
-        return new IntegrationProcessWizardPage(driver);
+        return getIPDTaskForm().openSetupIntegrationWizard();
     }
 
     public String startTaskByUsernameAndTaskName(String username, String taskName) {
@@ -169,6 +174,19 @@ public class TasksPageV2 extends BasePage {
         return this;
     }
 
+    public String createDRPProcess(String nrpProcessCode, String nrpTaskName, String drpProcessName) {
+        if (nrpTaskName.equals(HIGH_LEVEL_PLANNING_TASK) || nrpTaskName.equals(LOW_LEVEL_PLANNING_TASK)) {
+            findTask(nrpProcessCode, nrpTaskName);
+            ProcessWizardPage processWizardPage = getIPDTaskForm().openDesignRequestProcessCreationWizard();
+            Wizard wizard = processWizardPage.getSecondStepWizard();
+            wizard.setComponentValue(ProcessWizardPage.PROCESS_NAME_ATTRIBUTE_ID, drpProcessName);
+            processWizardPage.clickAcceptButton();
+            return processWizardPage.extractProcessCode();
+        } else {
+            throw new IllegalArgumentException(WRONG_TASK_NAME_EXCEPTION);
+        }
+    }
+
     public String getIPCodeByProcessName(String processIPName) {
         TableInterface ipTable = getIPDTaskForm().getIPTable();
         int rowNumber = ipTable.getRowNumber(processIPName, NAME);
@@ -184,16 +202,30 @@ public class TasksPageV2 extends BasePage {
         startAndCompleteTask(processCode, VERIFICATION_TASK);
     }
 
+    public List<String> setupIntegration(String nrpCode, String nrpName,
+                                         List<SetupIntegrationProperties> setupIntegrationPropertiesList) {
+        SetupIntegrationWizardPage setupIntegrationWizardPage = openSetupIntegrationWizard(nrpCode);
+        setupIntegrationWizardPage.setupIntegration(nrpCode, nrpName, setupIntegrationPropertiesList);
+        DelayUtils.sleep(3000);
+        return setupIntegrationPropertiesList.stream().map(property ->
+                getIPCodeByProcessName(property.getIntegrationProcessName())).collect(Collectors.toList());
+    }
+
     public String proceedNRPToImplementationTask(String processCode) {
+        proceedNRPToReadyForIntegrationTask(processCode);
+        return proceedNRPFromReadyForIntegration(processCode);
+    }
+
+    public void proceedNRPToReadyForIntegrationTask(String processCode) {
         completeTask(processCode, HIGH_LEVEL_PLANNING_TASK);
         DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(processCode, LOW_LEVEL_PLANNING_TASK);
-        return proceedNRPFromReadyForIntegration(processCode);
+        startTask(processCode, READY_FOR_INTEGRATION_TASK);
     }
 
     public String proceedNRPFromReadyForIntegration(String processCode) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        startAndCompleteTask(processCode, READY_FOR_INTEGRATION_TASK);
+        completeTask(processCode, READY_FOR_INTEGRATION_TASK);
         String ipCode = getIPCodeFromCompletedNRP(processCode);
         startAndCompleteTask(ipCode, SCOPE_DEFINITION_TASK);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -244,8 +276,9 @@ public class TasksPageV2 extends BasePage {
         getIPDTaskForm().clickPerformConfigurationButton();
     }
 
-    public void clickPlanViewButton() {
+    public ProcessDetailsPage clickPlanViewButton() {
         getIPDTaskForm().clickPlanViewButton();
+        return new ProcessDetailsPage(driver);
     }
 
     public IPDTaskFormPage getIPDTaskForm() {

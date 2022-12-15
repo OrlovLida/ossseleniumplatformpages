@@ -1,19 +1,9 @@
 package com.oss.untils;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.google.common.collect.Lists;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.authentication.OAuthSignature;
 import com.jayway.restassured.http.ContentType;
@@ -21,6 +11,14 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 import com.oss.configuration.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class Environment {
 
@@ -37,6 +35,7 @@ public class Environment {
     private static final String ANTENNA_ARRAY_CORE = "antenna-array-core";
     private static final String RESOURCE_CATALOG_CORE = "resource-catalog-core";
     private static final String PLANNING_CORE = "planning-core";
+    private static final String VALIDATION_RESULTS = "validation-results-core";
     private static final String LOGICAL_FUNCTION_CORE = "logical-function-core";
     private static final String LOGICAL_INVENTORY_VIEW = "logical-inventory-view";
     private static final String TP_SERVICE = "tp-service";
@@ -154,12 +153,18 @@ public class Environment {
         return getRequestSpecificationByName(PLANNING_CORE);
     }
 
+    public RequestSpecification getValidationResultsCoreSpecification() {
+        return getRequestSpecificationByName(VALIDATION_RESULTS);
+    }
+
     public RequestSpecification getLogicalFunctionCoreSpecification() {
         return getRequestSpecificationByName(LOGICAL_FUNCTION_CORE);
     }
+
     public RequestSpecification getLogicalInventoryViewSpecification() {
         return getRequestSpecificationByName(LOGICAL_INVENTORY_VIEW);
     }
+
     public RequestSpecification getTPServiceSpecification() {
         return getRequestSpecificationByName(TP_SERVICE);
     }

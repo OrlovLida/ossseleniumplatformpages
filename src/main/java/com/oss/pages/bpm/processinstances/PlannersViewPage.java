@@ -1,5 +1,6 @@
 package com.oss.pages.bpm.processinstances;
 
+import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.attributechooser.AttributesChooser;
 import com.oss.framework.components.inputs.Input;
@@ -12,8 +13,11 @@ import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.tree.TreeWidgetV2;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.bpm.planning.PartialIntegrationWizardPage;
+import com.oss.pages.bpm.processinstances.creation.ProcessCreationWizardProperties;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
 import com.oss.pages.bpm.processinstances.creation.TerminateProcessWizardPage;
+import com.oss.pages.platform.HomePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,26 +30,32 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.BPM_AND_PLANNING;
+import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NETWORK_PLANNING;
+
 public class PlannersViewPage extends BasePage {
-
+    public static final String INTEGRATE_PLANNED_CHANGES_CONTEXT_ACTION_ID = "ipd_inventory_view_action_partial_activation";
+    public static final String PLANNERS_VIEW = "Planners View";
+    public static final String CREATE_GROUP_ACTION_ID = "CREATE";
+    public static final String EDIT_GROUP_ID = "EDIT";
+    public static final String START_PROCESS_ACTION_ID = "bpm_inventory_view_action_create_process";
+    public static final String START_PROGRAM_ACTION_ID = "bpm_inventory_view_action_create_program";
+    private static final String PROJECT_ID_PROPERTY_ID = "bpmPlanningAttributes.projectId";
+    private static final String PROJECT_ID_LABEL = "Project ID";
+    private static final String PLANNING_ATTRIBUTES_LABEL = "Planning Attributes";
+    private static final String PROPERTY_PANEL_ID = "PropertyPanelWidget";
     private static final String TREE_TABLE_ID = "process_instance_hierarchy_table";
-
     private static final String TABS_CONTAINER_ID = "process_instance_bottom_tabs";
-    private static final String CREATE_GROUP_ACTION_ID = "CREATE";
-    private static final String START_PROCESS_ACTION_ID = "bpm_inventory_view_action_create_process";
-    private static final String START_PROGRAM_ACTION_ID = "bpm_inventory_view_action_create_program";
     private static final String PROCESS_INSTANCE_TOP_TABS_ID = "process_instance_top_tabs";
     private static final String FRAMEWORK_CUSTOM_BUTTONS_GROUP_ID = "frameworkCustomButtonsGroup";
     private static final String REFRESH_BUTTON_ID = "refreshButton";
     private static final String ONLY_SINGLE_SELECTION_IS_SUPPORTED_EXCEPTION = "Only single selection is supported";
-
     private static final Map<String, String> TAB_LABELS_AND_THEIR_TREEWIGET_ID = Stream.of(
                     new AbstractMap.SimpleEntry<>("Locations", "process_instance_top_tabs_locations_widget"),
                     new AbstractMap.SimpleEntry<>("Devices", "process_instance_top_tabs_devices_widget"),
                     new AbstractMap.SimpleEntry<>("Connections", "process_instance_top_tabs_connections_widget"))
             .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     private static final String CANCEL_PROCESS_BUTTON_ID = "bpm_inventory_view_action_terminate_process";
-    private static final String EDIT_GROUP_ID = "EDIT";
     private static final String CANCELABLE_PROCESS_STATE = "In Progress";
     private static final String CODE_ATTRIBUTE_ID = "code";
     private static final String STATE_COLUMN_ID = "state";
@@ -61,6 +71,14 @@ public class PlannersViewPage extends BasePage {
         return new PlannersViewPage(driver, wait);
     }
 
+    public static PlannersViewPage goToPlannersViewPage(WebDriver driver, WebDriverWait wait) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        HomePage homePage = new HomePage(driver);
+        homePage.chooseFromLeftSideMenu(PLANNERS_VIEW, BPM_AND_PLANNING, NETWORK_PLANNING);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new PlannersViewPage(driver, wait);
+    }
+
     public TreeTableWidget getTreeTable() {
         return TreeTableWidget.createById(driver, wait, TREE_TABLE_ID);
     }
@@ -69,33 +87,45 @@ public class PlannersViewPage extends BasePage {
         return TreeWidgetV2.create(driver, wait, dataTestID);
     }
 
-    public void selectObjectByRowId(int rowId) {
+    public PlannersViewPage selectObjectByRowId(int row) {
         TreeTableWidget treeTable = getTreeTable();
-        treeTable.selectRow(rowId);
+        treeTable.selectRow(row);
+        return this;
     }
 
-    public void selectObjectsByRowId(int... indexes) {
+    public PlannersViewPage selectObjectsByRowId(int... indexes) {
         List<Integer> rows = Arrays.stream(indexes).boxed().collect(Collectors.toList());
         rows.forEach(this::selectObjectByRowId);
+        return this;
     }
 
-    public void unselectObjectByRowId(int rowId) {
+    public PlannersViewPage unselectObjectByRowId(int rowId) {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.unselectRow(rowId);
+        return this;
     }
 
-    public void unselectObjectByProcessCode(String processCode) {
+    public PlannersViewPage unselectAllRows() {
+        TreeTableWidget processesTreeTable = getTreeTable();
+        processesTreeTable.unselectAllRows();
+        return this;
+    }
+
+    public PlannersViewPage unselectObjectByProcessCode(String processCode) {
         unselectObjectByAttributeValue(CODE_ATTRIBUTE_ID, processCode);
+        return this;
     }
 
-    public void unselectObjectByAttributeValue(String attributeId, String value) {
+    public PlannersViewPage unselectObjectByAttributeValue(String attributeId, String value) {
         getTreeTable().unselectRowByAttributeValue(attributeId, value);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
+        return this;
     }
 
-    public void selectObjectByAttributeValue(String attributeId, String value) {
+    public PlannersViewPage selectObjectByAttributeValue(String attributeId, String value) {
         getTreeTable().selectRowByAttributeValue(attributeId, value);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
+        return this;
     }
 
     public List<TableRow> getSelectedRows() {
@@ -110,14 +140,9 @@ public class PlannersViewPage extends BasePage {
         return getTreeTable().getAllRows().get(0);
     }
 
-    public PropertyPanel getPropertyPanel(int rowId, String propertyPanelId) {
-        selectObjectByRowId(rowId);
-        return getPropertyPanel(propertyPanelId);
-    }
-
-    public PropertyPanel getPropertyPanel(String propertyPanelId) {
+    private PropertyPanel getPropertyPanel() {
         Widget.waitForWidget(wait, PropertyPanel.PROPERTY_PANEL_CLASS);
-        return (PropertyPanel) getTabsWidget().getWidget(propertyPanelId, Widget.WidgetType.PROPERTY_PANEL);
+        return (PropertyPanel) getTabsWidget().getWidget(PROPERTY_PANEL_ID, Widget.WidgetType.PROPERTY_PANEL);
     }
 
     @Step("Getting process instances Tob Tab Widget")
@@ -141,16 +166,19 @@ public class PlannersViewPage extends BasePage {
         return treeTable.getCellValue(rowId, columnId);
     }
 
-    public void expandNode(String label, String columnId) {
+    public PlannersViewPage expandNode(String label, String columnId) {
         getTreeTable().expandRow(label, columnId);
+        return this;
     }
 
-    public void expandNode(int index) {
+    public PlannersViewPage expandNode(int index) {
         getTreeTable().expandRow(index);
+        return this;
     }
 
-    public void collapseNode(int index) {
+    public PlannersViewPage collapseNode(int index) {
         getTreeTable().collapseRow(index);
+        return this;
     }
 
     public boolean isNodeExpanded(int index) {
@@ -162,21 +190,24 @@ public class PlannersViewPage extends BasePage {
         return treeTable.getActiveColumnHeaders();
     }
 
-    public void changeColumnsOrderInTreeTable(String columnLabel, int position) {
+    public PlannersViewPage changeColumnsOrderInTreeTable(String columnLabel, int position) {
         getTreeTable().changeColumnsOrder(columnLabel, position);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
+        return this;
     }
 
-    public void enableColumn(String columnLabel, String... path) {
+    public PlannersViewPage enableColumn(String columnLabel, String... path) {
         AttributesChooser attributesChooser = getTreeTable().getAttributesChooser();
         attributesChooser.enableAttributeByLabel(columnLabel, path);
         attributesChooser.clickApply();
+        return this;
     }
 
-    public void disableColumnAndApply(String columnLabel) {
+    public PlannersViewPage disableColumnAndApply(String columnLabel) {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.disableColumnByLabel(columnLabel);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
+        return this;
     }
 
     public int getColumnSize(String columnId) {
@@ -184,13 +215,15 @@ public class PlannersViewPage extends BasePage {
         return getTreeTable().getColumnSize(columnIndex);
     }
 
-    public void setPagination(int paginationValue) {
+    public PlannersViewPage setPagination(int paginationValue) {
         PaginationComponent pagination = getTreeTable().getPagination();
         pagination.changeRowsCount(paginationValue);
+        return this;
     }
 
-    public void setDefaultSettings() {
+    public PlannersViewPage setDefaultSettings() {
         getTreeTable().getAttributesChooser().clickDefaultSettings();
+        return this;
     }
 
     @Step("Checking if process is not cancellable")
@@ -202,7 +235,7 @@ public class PlannersViewPage extends BasePage {
         TabsWidget upperTabsWidget = getProcessInstancesTopTabsWidget();
         for (Map.Entry<String, String> tab : TAB_LABELS_AND_THEIR_TREEWIGET_ID.entrySet()) {
             upperTabsWidget.selectTabByLabel(tab.getKey());
-            DelayUtils.waitForPageToLoad(driver, wait);
+            waitForPageToLoad();
             TreeWidgetV2 treeWidgetV2 = getTreeWidget(tab.getValue());
             if (!treeWidgetV2.isEmpty()) {
                 return false;
@@ -218,7 +251,7 @@ public class PlannersViewPage extends BasePage {
         return treeTable.getCellValue(rowNumber, STATE_COLUMN_ID);
     }
 
-    @Step("Canceling process")
+    @Step("Terminate process")
     public void terminateProcess(String reason) {
         getTreeTable().callAction(EDIT_GROUP_ID, CANCEL_PROCESS_BUTTON_ID);
         TerminateProcessWizardPage terminateProcessWizardPage = new TerminateProcessWizardPage(driver);
@@ -231,81 +264,167 @@ public class PlannersViewPage extends BasePage {
         getTreeTable().callAction(FRAMEWORK_CUSTOM_BUTTONS_GROUP_ID, REFRESH_BUTTON_ID);
     }
 
-    public void searchObject(String text) {
+    public PlannersViewPage searchObject(String text) {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.fullTextSearch(text);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
+        return this;
+    }
+
+    public String getPropertyValue(String propertyId) {
+        return getPropertyPanel().getPropertyValue(propertyId);
+    }
+
+    public Long getProjectId(String processCode) {
+        String projectId;
+        try {
+            projectId = selectProcess(processCode).getPropertyValue(PROJECT_ID_PROPERTY_ID);
+        } catch (IllegalArgumentException e) {
+            projectId = enablePropertyByLabel(PROJECT_ID_LABEL, PLANNING_ATTRIBUTES_LABEL)
+                    .getPropertyValue(PROJECT_ID_PROPERTY_ID);
+        }
+        return Long.valueOf(projectId);
+    }
+
+    public PlannersViewPage enablePropertyByLabel(String propertyLabel, String... path) {
+        getPropertyPanel().enableAttributeByLabel(propertyLabel, path);
+        return this;
+    }
+
+    public PlannersViewPage selectProcess(String processCode) {
+        final Multimap<String, String> filterValue = ImmutableMultimap.<String, String>builder()
+                .put(CODE_ATTRIBUTE_ID, processCode)
+                .build();
+        return selectProcess(filterValue);
+    }
+
+    public PlannersViewPage selectProcess(Multimap<String, String> filterValues) {
+        TreeTableWidget processesTreeTable = getTreeTable();
+        unselectAllRows();
+        waitForPageToLoad();
+        processesTreeTable.clearAllFilters();
+        waitForPageToLoad();
+        searchByAttributesValue(filterValues);
+        processesTreeTable.selectFirstRow();
+        return this;
     }
 
     public Multimap<String, String> searchByAttributeValue(String attributeId, String attributeValue, Input.ComponentType componentType) {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.searchByAttribute(attributeId, componentType, attributeValue);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         Multimap<String, String> filterValues = treeTable.getAppliedFilters();
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         return filterValues;
     }
 
-    public void clearFilters() {
+    public Multimap<String, String> searchByAttributeValue(String attributeId, String attributeValue) {
+        TreeTableWidget treeTable = getTreeTable();
+        treeTable.searchByAttribute(attributeId, attributeValue);
+        waitForPageToLoad();
+        Multimap<String, String> filterValues = treeTable.getAppliedFilters();
+        waitForPageToLoad();
+        return filterValues;
+    }
+
+    public PlannersViewPage clearFilters() {
         TreeTableWidget treeTable = getTreeTable();
         treeTable.clearAllFilters();
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
+        return this;
     }
 
     public void callAction(String actionId) {
         TreeTableWidget treeTable = getTreeTable();
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         treeTable.callAction(actionId);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
     }
 
     public void callAction(String groupId, String actionId) {
         TreeTableWidget treeTable = getTreeTable();
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         treeTable.callAction(groupId, actionId);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
+    }
+
+    public boolean isActionVisible(String groupId, String actionId) {
+        return getTreeTable().isActionVisible(groupId, actionId);
+    }
+
+    public boolean isActionVisible(String actionId) {
+        return getTreeTable().isActionVisible(actionId);
+    }
+
+    public boolean isIntegratePlannedChangesActionVisible() {
+        return isActionVisible(EDIT_GROUP_ID, INTEGRATE_PLANNED_CHANGES_CONTEXT_ACTION_ID);
     }
 
     public ProcessWizardPage openProcessCreationWizard() {
         callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         return new ProcessWizardPage(driver);
     }
 
     public ProcessWizardPage openProgramCreationWizard() {
         callAction(CREATE_GROUP_ACTION_ID, START_PROGRAM_ACTION_ID);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         return new ProcessWizardPage(driver);
     }
 
+    public PartialIntegrationWizardPage openIntegratePlannedChangesWizard() {
+        callAction(EDIT_GROUP_ID, INTEGRATE_PLANNED_CHANGES_CONTEXT_ACTION_ID);
+        waitForPageToLoad();
+        return new PartialIntegrationWizardPage(driver);
+    }
+
+    public void createInstance(ProcessCreationWizardProperties properties) {
+        unselectAllRows();
+        if (properties.isProcessCreation())
+            openProcessCreationWizard().createInstance(properties);
+        else if (properties.isProgramCreation())
+            openProgramCreationWizard().createInstance(properties);
+    }
+
     public Map<String, String> createProgramWithProcess(String programName, Long plusDays, String programType, String processName, Long plusDaysProcess, String processType) {
+        unselectAllRows();
         return openProgramCreationWizard().createProgramWithProcess(programName, plusDays, programType, processName, plusDaysProcess, processType);
     }
 
     public String createSimpleNRP() {
+        unselectAllRows();
         return openProcessCreationWizard().createSimpleNRPV2();
     }
 
     public String createSimpleDCP() {
+        unselectAllRows();
         return openProcessCreationWizard().createSimpleDCPV2();
     }
 
-    public void searchByAttributesValue(Multimap<String, String> idAndValues) {
+    public PlannersViewPage searchByAttributesValue(Multimap<String, String> idAndValues) {
         TreeTableWidget treeTable = getTreeTable();
         idAndValues.asMap().forEach((id, valueCollection) -> valueCollection.forEach(value -> treeTable.searchByAttribute(id, value)));
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
+        return this;
     }
 
     public String createDCPWithPlusDays(Long plusDays) {
+        unselectAllRows();
         return openProcessCreationWizard().createDCPWithPlusDays(plusDays);
     }
 
     public String createNRPWithPlusDays(Long plusDays) {
+        unselectAllRows();
         return openProcessCreationWizard().createNRPWithPlusDays(plusDays);
     }
 
     public String createProcessIPD(String processName, Long plusDays, String processType) {
+        unselectAllRows();
         return openProcessCreationWizard().createProcessIPD(processName, plusDays, processType);
+    }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
 }

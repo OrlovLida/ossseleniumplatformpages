@@ -1,14 +1,5 @@
 package com.oss.E2E;
 
-import java.time.Duration;
-import java.util.Optional;
-
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
-
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
@@ -28,8 +19,15 @@ import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.Radio4gRepository;
 import com.oss.services.RadioClient;
 import com.oss.untils.Environment;
-
 import io.qameta.allure.Description;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
+import java.time.Duration;
+import java.util.Optional;
 
 public class BUC_INV_RAN_001_Test extends BaseTestCase {
 
@@ -77,7 +75,6 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     private static final String MCC = "999";
     private static final String MNC = "1";
     private static final String BAND_TYPE_NAME = "L800-B20";
-    private static final String VALIDATION_RESULT_NOT_PRESENT_EXCEPTION = "Validation result is not present.";
     private static final int DL_FREQUENCY_END = 821;
     private static final int DL_FREQUENCY_START = 791;
     private static final int UL_FREQUENCY_END = 862;
@@ -87,6 +84,7 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
     private static final int UPLINK_CHANNEL = 24175;
     private static final int DL_CENTRE_FREQUENCY = 793;
     private static final int UL_CENTRE_FREQUENCY = 834;
+    private static final String VALIDATION_RESULT_NOT_PRESENT_EXCEPTION = "Validation result is not present.";
     private final Environment env = Environment.getInstance();
 
     private SoftAssert softAssert;
@@ -285,6 +283,7 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processNRPCode, TasksPageV2.LOW_LEVEL_PLANNING_TASK);
         checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Finish low level planning task", "complete low level planning task"));
+        tasksPage.startTask(processNRPCode, TasksPageV2.READY_FOR_INTEGRATION_TASK);
         processIPCode = tasksPage.proceedNRPFromReadyForIntegration(processNRPCode);
     }
 
