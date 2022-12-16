@@ -45,8 +45,8 @@ public class EthernetCoreClient {
                 .as(BulkEthernetLinkResultDTO.class)
                 .getCreatedTrails()
                 .stream()
-                .findFirst().orElseThrow(() -> new NoSuchElementException("No Ethernet Interface created."))
-                .getId().orElseThrow(() -> new NoSuchElementException("Cannot get ID from Ethernet Interface."));
+                .findFirst().orElseThrow(() -> new NoSuchElementException("No Ethernet Link created."))
+                .getId().orElseThrow(() -> new NoSuchElementException("Cannot get ID from Ethernet Link."));
     }
 
     public void deleteEthernetLink(Long ethernetLinkId) {
