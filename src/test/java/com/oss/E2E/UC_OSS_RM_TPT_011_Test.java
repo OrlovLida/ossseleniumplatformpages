@@ -90,6 +90,13 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
     private static final String CONFIRM_DELETE_AEI_BUTTON_ID = "ConfirmationBox_deleteAppId_action_button";
     private static final String DELETE_AEL_ASSERTION_ERROR = "Problem with system message after Aggregated Ethernet Link removal.";
     private static final String ATTRIBUTE_VALIDATION_PATTERN = "Wrong value of attribute: %s.";
+    private static final String CONNECTION_TYPE_WIZARD_NAME = "Select Connection Type";
+    private static final String CONNECTION_WIZARD_NAME = "Connection Wizard";
+    private static final String ATTRIBUTES_STEP_NAME = "1. Attributes";
+    private static final String TERMINATIONS_STEP_NAME = "2. Terminations";
+    private static final String AE_INTERFACES_STEP_NAME = "3. AE Interfaces";
+    private static final String WIZARD_NAME_VALIDATION = "Wrong name of wizard.";
+    private static final String WIZARD_STEP_NAME_VALIDATION = "Wrong name of step in wizard.";
     private static final String AEI_URL = String.format("%s/#/views/management/views/inventory-view/AggregatedEthernetInterface_TP?perspective=LIVE", BASIC_URL);
     private static Long FIRST_ETHERNET_LINK_ID;
     private static Long SECOND_ETHERNET_LINK_ID;
@@ -130,17 +137,17 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
         networkViewPage.selectObjectInViewContent(NAME_COLUMN, DEVICE_1_NAME);
         waitForPageToLoad();
         networkViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_CONNECTION_ID);
-        waitForPageToLoad();
+        Assert.assertEquals(networkViewPage.getConnectionTypeWizardName(), CONNECTION_TYPE_WIZARD_NAME, WIZARD_NAME_VALIDATION);
         networkViewPage.selectTrailType(AGGREGATED_ETHERNET_LINK);
-        waitForPageToLoad();
         networkViewPage.acceptTrailType();
-        waitForPageToLoad();
     }
 
     @Test(priority = 2, description = "Fill in the Aggregated Ethernet Link attributes.", dependsOnMethods = {"openAEIwizard"})
     @Description("Fill in the Aggregated Ethernet Link attributes.")
     public void fillAttributes() {
         AEIWizardPage wizard = new AEIWizardPage(driver);
+        Assert.assertEquals(wizard.getWizard().getWizardName(), CONNECTION_WIZARD_NAME, WIZARD_NAME_VALIDATION);
+        Assert.assertEquals(wizard.getWizard().getCurrentStepTitle(), ATTRIBUTES_STEP_NAME, WIZARD_STEP_NAME_VALIDATION);
         wizard.setName(AGGREGATED_ETHERNET_LINK_NAME);
         waitForPageToLoad();
         wizard.setDescription(AGGREGATED_ETHERNET_LINK_DESCRIPTION);
@@ -151,6 +158,8 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
         waitForPageToLoad();
         wizard.setEffectiveCapacity(AGGREGATED_ETHERNET_LINK_CAPACITY);
         wizard.clickNext();
+        waitForPageToLoad();
+        Assert.assertEquals(wizard.getWizard().getCurrentStepTitle(), TERMINATIONS_STEP_NAME, WIZARD_STEP_NAME_VALIDATION);
     }
 
     @Test(priority = 3, description = "Determine the Aggregated Ethernet Link terminations (Start / End) at the level of Device.", dependsOnMethods = {"fillAttributes"})
@@ -166,6 +175,8 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
         softAssert.assertEquals(wizard.getNetworkElementTermination(), DEVICE_2_NAME, String.format(WRONG_TERMINATION_PATTERN, "End"));
         wizard.clickNext();
         softAssert.assertAll();
+        waitForPageToLoad();
+        Assert.assertEquals(wizard.getWizard().getCurrentStepTitle(), AE_INTERFACES_STEP_NAME, WIZARD_STEP_NAME_VALIDATION);
     }
 
     @Test(priority = 4, description = "Create Aggregated Ethernet Interfaces at both endpoints and set their related attributes.", dependsOnMethods = {"fillTerminations"})
@@ -221,29 +232,23 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 5, description = "Add created Ethernet Links to the Aggregated Ethernet Links routing.", dependsOnMethods = {"fillAggregatedEthernetInterfaces"})
-    @Description("Add created Ethernet Links to the Aggregated Ethernet Links routing.")
-    public void addEthernetLinksToAELRouting() {
+    @Test(priority = 5, description = "Select created Ethernet Links and open wizard to add them to the Aggregated Ethernet Links routing.", dependsOnMethods = {"fillAggregatedEthernetInterfaces"})
+    @Description("Select created Ethernet Links and open wizard to add them to the Aggregated Ethernet Links routing.")
+    public void openRoutingWizard() {
         networkViewPage = new NetworkViewPage(driver);
         networkViewPage.startEditingSelectedTrail();
-        waitForPageToLoad();
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.CONNECTION_ACTION);
-        waitForPageToLoad();
         networkViewPage.queryElementAndAddItToView(ID, FIRST_ETHERNET_LINK_ID.toString());
-        waitForPageToLoad();
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.CONNECTION_ACTION);
-        waitForPageToLoad();
         networkViewPage.queryElementAndAddItToView(ID, SECOND_ETHERNET_LINK_ID.toString());
-        waitForPageToLoad();
         networkViewPage.expandViewContentPanel();
-        waitForPageToLoad();
         networkViewPage.selectObjectInViewContentContains(NAME_COLUMN, FIRST_ETHERNET_LINK_NAME);
         waitForPageToLoad();
-        networkViewPage.addSelectedObjectsToRouting();
-        waitForPageToLoad();
+        RoutingWizardPage wizard = networkViewPage.addSelectedObjectsToRouting();
+        Assert.assertEquals(wizard.getWizard().getWizardName(), CONNECTION_WIZARD_NAME, WIZARD_NAME_VALIDATION);
     }
 
-    @Test(priority = 6, description = "Set routing attributes.", dependsOnMethods = {"addEthernetLinksToAELRouting"})
+    @Test(priority = 6, description = "Set routing attributes.", dependsOnMethods = {"openRoutingWizard"})
     @Description("Set routing attributes.")
     public void fillRoutingWizard() {
         RoutingWizardPage wizard = new RoutingWizardPage(driver);
@@ -256,6 +261,7 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
         wizard.setSequenceNumber(SEQUENCE_NUMBER);
         waitForPageToLoad();
         wizard.accept();
+        checkPopupMessageType();
         waitForPageToLoad();
     }
 
@@ -264,11 +270,8 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
     public void validateAELAttributes() {
         networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandViewContentPanel();
-        waitForPageToLoad();
         networkViewPage.selectObjectInViewContentContains(NAME_COLUMN, AGGREGATED_ETHERNET_LINK_NAME);
-        waitForPageToLoad();
         networkViewPage.expandAttributesPanel();
-        waitForPageToLoad();
         List<String> attributes = Arrays.asList(NAME, "label", "type", "layer", "AggregationProtocol", "SpeedMbps", "EffectiveCapacityMbps",
                 "routingStatus", "terminationStatus", "adaptation.adaptationType", "topology", "lifecycleState", "startTermination.location.name", "startTermination.physicalDevice.name",
                 "startTermination.terminationPoint.name", "endTermination.location.name", "endTermination.physicalDevice.name", "endTermination.terminationPoint.name");
@@ -289,10 +292,8 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
     public void deleteAEL() {
         networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID);
-        waitForPageToLoad();
         Popup.create(driver, webDriverWait).clickButtonById(DELETE_AEL_BUTTON_ID);
         checkPopupMessageType();
-        waitForPageToLoad();
     }
 
     @Test(priority = 9, description = "Remove Aggregated Ethernet Interfaces.", dependsOnMethods = {"fillAggregatedEthernetInterfaces"})

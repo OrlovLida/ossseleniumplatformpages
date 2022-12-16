@@ -58,53 +58,53 @@ public class AEIWizardPage extends ConnectionWizardPage {
 
     @Step("Set number to {number}")
     public void setNumber(String number) {
-        getwizard().setComponentValue(NUMBER_FIELD_ID, number);
+        getWizard().setComponentValue(NUMBER_FIELD_ID, number);
     }
 
     @Step("Set minimum active links to {minimumActiveLinks}")
     public void setMinimumActiveLinks(String minimumActiveLinks) {
-        getwizard().setComponentValue(MINIMUM_ACTIVE_LINKS_FIELD_ID, minimumActiveLinks);
+        getWizard().setComponentValue(MINIMUM_ACTIVE_LINKS_FIELD_ID, minimumActiveLinks);
     }
 
     @Step("Set Minimum bandwidtn to {minimumBandwidth}")
     public void setMinimumBandwidth(String minimumBandwidth) {
-        getwizard().setComponentValue(MINIMUM_BANDWIDTH_FIELD_ID, minimumBandwidth);
+        getWizard().setComponentValue(MINIMUM_BANDWIDTH_FIELD_ID, minimumBandwidth);
     }
 
     @Step("Set MTU to {mtu}")
     public void setMTU(String mtu) {
-        getwizard().setComponentValue(MTU_FIELD_ID, mtu);
+        getWizard().setComponentValue(MTU_FIELD_ID, mtu);
     }
 
     @Step("Set mac address to {macAddress}")
     public void setMACAddress(String macAddress) {
-        getwizard().setComponentValue(MAC_ADDRESS_FIELD_ID, macAddress);
+        getWizard().setComponentValue(MAC_ADDRESS_FIELD_ID, macAddress);
     }
 
     @Step("Set administrative state to {administrativeState}")
     public void setAdministrativeState(String administrativeState) {
-        getwizard().setComponentValue(ADMINISTRATIVE_STATE_FIELD_ID, administrativeState);
+        getWizard().setComponentValue(ADMINISTRATIVE_STATE_FIELD_ID, administrativeState);
     }
 
     @Step("Set encapsulation to {encapsulation}")
     public void setEncapsulation(String encapsulation) {
-        getwizard().setComponentValue(ENCAPSULATION_FIELD_ID, encapsulation);
+        getWizard().setComponentValue(ENCAPSULATION_FIELD_ID, encapsulation);
     }
 
     @Step("Set aggregation protocol to {aggregationProtocol}")
     public void setAggregationProtocol(String aggregationProtocol) {
-        getwizard().setComponentValue(AGGREGATION_PROTOCOL_FIELD_ID, aggregationProtocol);
+        getWizard().setComponentValue(AGGREGATION_PROTOCOL_FIELD_ID, aggregationProtocol);
     }
 
     @Step("Set LACP mode to {lacpMode}")
     public void setLACPMode(String lacpMode) {
-        getwizard().setComponentValue(LACP_MODE_FIELD_ID, lacpMode);
+        getWizard().setComponentValue(LACP_MODE_FIELD_ID, lacpMode);
     }
 
     @Step("Set LACP short period to {value}")
     public void setLACPShortPeriod(String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        getwizard().setComponentValue(LACP_SHORT_PERIOD_PATH, value);
+        getWizard().setComponentValue(LACP_SHORT_PERIOD_PATH, value);
     }
 
     @Step("Navigate through Common Hierarchy App widget selecting {location} -> {device} and interface names")
@@ -116,121 +116,121 @@ public class AEIWizardPage extends ConnectionWizardPage {
 
     @Step("Set Aggregated Ethernet Link Speed = {speed}")
     public void setSpeed(String speed) {
-        getwizard().setComponentValue(SPEED_ID, speed);
+        getWizard().setComponentValue(SPEED_ID, speed);
     }
 
     @Step("Set Effective Capacity = {capacity}")
     public void setEffectiveCapacity(String capacity) {
-        getwizard().setComponentValue(CAPACITY_ID, capacity);
+        getWizard().setComponentValue(CAPACITY_ID, capacity);
     }
 
     @Step("Set Create Start Aggregated Ethernet Interface chechbox to true")
     public void setCreateStartAggregatedEthernetInterface() {
-        getwizard().setComponentValue(CREATE_START_AEI_CHECKBOX_ID, TRUE);
+        getWizard().setComponentValue(CREATE_START_AEI_CHECKBOX_ID, TRUE);
     }
 
     @Step("Set Create End Aggregated Ethernet Interface chechbox to true")
     public void setCreateEndAggregatedEthernetInterface() {
-        getwizard().setComponentValue(CREATE_END_AEI_CHECKBOX_ID, TRUE);
+        getWizard().setComponentValue(CREATE_END_AEI_CHECKBOX_ID, TRUE);
     }
 
     @Step("Set Start Aggregated Ethernet Interface Name = {value}")
     public void setStartAeiName(String value) {
-        getwizard().setComponentValue(START_AEI_NAME_ID, value);
+        getWizard().setComponentValue(START_AEI_NAME_ID, value);
     }
 
     @Step("Set Start Aggregated Ethernet Interface Number = {value}")
     public void setStartAeiNumber(String value) {
-        getwizard().setComponentValue(START_AEI_NUMBER_ID, value);
+        getWizard().setComponentValue(START_AEI_NUMBER_ID, value);
     }
 
     @Step("Set Start Aggregated Ethernet Interface Aggregation Protocol = {value}")
     public void setStartAeiAggregationProtocol(String value) {
-        getwizard().setComponentValue(START_AEI_AGGREGATION_PROTOCOL_ID, value);
+        getWizard().setComponentValue(START_AEI_AGGREGATION_PROTOCOL_ID, value);
     }
 
     @Step("Set Start Aggregated Ethernet Interface Encapsulation = {value}")
     public void setStartAeiEncapsulation(String value) {
-        getwizard().setComponentValue(START_AEI_ENCAPSULATION_ID, value);
+        getWizard().setComponentValue(START_AEI_ENCAPSULATION_ID, value);
     }
 
     @Step("Set Start Aggregated Ethernet Interface LACP Mode = {value}")
     public void setStartAeiLacpMode(String value) {
-        getwizard().setComponentValue(START_AEI_LACP_MODE_ID, value);
+        getWizard().setComponentValue(START_AEI_LACP_MODE_ID, value);
     }
 
     @Step("Set Start Aggregated Ethernet Interface LACP Short Period to true")
     public void setStartAeiLacpShortPeriod() {
-        getwizard().setComponentValue(START_AEI_LACP_SHORT_PERIOD_CHECKBOX_ID, TRUE);
+        getWizard().setComponentValue(START_AEI_LACP_SHORT_PERIOD_CHECKBOX_ID, TRUE);
     }
 
     @Step("Set Start Aggregated Ethernet Interface MTU = {value}")
     public void setStartAeiMtu(String value) {
-        getwizard().setComponentValue(START_AEI_MTU_ID, value);
+        getWizard().setComponentValue(START_AEI_MTU_ID, value);
     }
 
     @Step("Set Start Aggregated Ethernet Interface MAC Address = {value}")
     public void setStartAeiMacAddress(String value) {
-        getwizard().setComponentValue(START_AEI_MAC_ADDRESS_ID, value);
+        getWizard().setComponentValue(START_AEI_MAC_ADDRESS_ID, value);
     }
 
     @Step("Set Start Aggregated Ethernet Interface Minimum Active Links = {value}")
     public void setStartAeiMinimumActiveLinks(String value) {
-        getwizard().setComponentValue(START_AEI_MINIMUM_ACTIVE_LINKS_ID, value);
+        getWizard().setComponentValue(START_AEI_MINIMUM_ACTIVE_LINKS_ID, value);
     }
 
     @Step("Set Start Aggregated Ethernet Interface Minimum Bandwidth = {value}")
     public void setStartAeiMinimumBandwidth(String value) {
-        getwizard().setComponentValue(START_AEI_MINIMUM_BANDWIDTH_ID, value);
+        getWizard().setComponentValue(START_AEI_MINIMUM_BANDWIDTH_ID, value);
     }
 
     @Step("Set End Aggregated Ethernet Interface Name = {value}")
     public void setEndAeiName(String value) {
-        getwizard().setComponentValue(END_AEI_NAME_ID, value);
+        getWizard().setComponentValue(END_AEI_NAME_ID, value);
     }
 
     @Step("Set End Aggregated Ethernet Interface Number = {value}")
     public void setEndAeiNumber(String value) {
-        getwizard().setComponentValue(END_AEI_NUMBER_ID, value);
+        getWizard().setComponentValue(END_AEI_NUMBER_ID, value);
     }
 
     @Step("Set End Aggregated Ethernet Interface Aggregation Protocol = {value}")
     public void setEndAeiAggregationProtocol(String value) {
-        getwizard().setComponentValue(END_AEI_AGGREGATION_PROTOCOL_ID, value);
+        getWizard().setComponentValue(END_AEI_AGGREGATION_PROTOCOL_ID, value);
     }
 
     @Step("Set End Aggregated Ethernet Interface Encapsulation = {value}")
     public void setEndAeiEncapsulation(String value) {
-        getwizard().setComponentValue(END_AEI_ENCAPSULATION_ID, value);
+        getWizard().setComponentValue(END_AEI_ENCAPSULATION_ID, value);
     }
 
     @Step("Set End Aggregated Ethernet Interface LACP Mode = {value}")
     public void setEndAeiLacpMode(String value) {
-        getwizard().setComponentValue(END_AEI_LACP_MODE_ID, value);
+        getWizard().setComponentValue(END_AEI_LACP_MODE_ID, value);
     }
 
     @Step("Set End Aggregated Ethernet Interface LACP Short Period to true")
     public void setEndAeiLacpShortPeriod() {
-        getwizard().setComponentValue(END_AEI_LACP_SHORT_PERIOD_CHECKBOX_ID, TRUE);
+        getWizard().setComponentValue(END_AEI_LACP_SHORT_PERIOD_CHECKBOX_ID, TRUE);
     }
 
     @Step("Set End Aggregated Ethernet Interface MTU = {value}")
     public void setEndAeiMtu(String value) {
-        getwizard().setComponentValue(END_AEI_MTU_ID, value);
+        getWizard().setComponentValue(END_AEI_MTU_ID, value);
     }
 
     @Step("Set End Aggregated Ethernet Interface MAC Address = {value}")
     public void setEndAeiMacAddress(String value) {
-        getwizard().setComponentValue(END_AEI_MAC_ADDRESS_ID, value);
+        getWizard().setComponentValue(END_AEI_MAC_ADDRESS_ID, value);
     }
 
     @Step("Set End Aggregated Ethernet Interface Minimum Active Links = {value}")
     public void setEndAeiMinimumActiveLinks(String value) {
-        getwizard().setComponentValue(END_AEI_MINIMUM_ACTIVE_LINKS_ID, value);
+        getWizard().setComponentValue(END_AEI_MINIMUM_ACTIVE_LINKS_ID, value);
     }
 
     @Step("Set End Aggregated Ethernet Interface Minimum Bandwidth = {value}")
     public void setEndAeiMinimumBandwidth(String value) {
-        getwizard().setComponentValue(END_AEI_MINIMUM_BANDWIDTH_ID, value);
+        getWizard().setComponentValue(END_AEI_MINIMUM_BANDWIDTH_ID, value);
     }
 }

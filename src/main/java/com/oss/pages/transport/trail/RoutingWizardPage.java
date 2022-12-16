@@ -25,29 +25,29 @@ public class RoutingWizardPage extends ConnectionWizardPage {
     }
 
     public void proceed() {
-        getwizard().clickProceed();
+        getWizard().clickProceed();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void accept() {
-        getwizard().clickAccept();
+        getWizard().clickAccept();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     public void setProtectionType(String value) {
-        getwizard().setComponentValue(PROTECTION_TYPE, value);
+        getWizard().setComponentValue(PROTECTION_TYPE, value);
     }
 
     public void setLineType(String value) {
-        getwizard().setComponentValue(LINE_TYPE, value);
+        getWizard().setComponentValue(LINE_TYPE, value);
     }
 
     public void setSequenceNumber(String value) {
-        getwizard().setComponentValue(SEQUENCE_NUMBER, value);
+        getWizard().setComponentValue(SEQUENCE_NUMBER, value);
     }
 
     public void selectConnection(String labelPath) {
-        TreeComponent treeComponent = getwizard().getTreeComponent();
+        TreeComponent treeComponent = getWizard().getTreeComponent();
         treeComponent.getNodeByLabelsPath(labelPath).toggleNode();
     }
 }
