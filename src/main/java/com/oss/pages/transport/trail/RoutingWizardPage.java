@@ -49,5 +49,6 @@ public class RoutingWizardPage extends ConnectionWizardPage {
     public void selectConnection(String labelPath) {
         TreeComponent treeComponent = getWizard().getTreeComponent();
         treeComponent.getNodeByLabelsPath(labelPath).toggleNode();
+        getWizard().waitForWizardToLoad();
     }
 }

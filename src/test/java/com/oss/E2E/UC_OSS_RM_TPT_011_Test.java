@@ -23,10 +23,12 @@ import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
+import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.transport.NetworkViewPage;
-import com.oss.pages.transport.aei.AEIWizardPage;
+import com.oss.pages.transport.trail.AELWizardPage;
+import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.EthernetCoreRepository;
@@ -92,6 +94,7 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
     private static final String ATTRIBUTE_VALIDATION_PATTERN = "Wrong value of attribute: %s.";
     private static final String CONNECTION_TYPE_WIZARD_NAME = "Select Connection Type";
     private static final String CONNECTION_WIZARD_NAME = "Connection Wizard";
+    private static final String CONNECTION_WIZARD_OPEN_VALIDATION = "Connection Wizard not opened.";
     private static final String ATTRIBUTES_STEP_NAME = "1. Attributes";
     private static final String TERMINATIONS_STEP_NAME = "2. Terminations";
     private static final String AE_INTERFACES_STEP_NAME = "3. AE Interfaces";
@@ -140,25 +143,23 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
         Assert.assertEquals(networkViewPage.getConnectionTypeWizardName(), CONNECTION_TYPE_WIZARD_NAME, WIZARD_NAME_VALIDATION);
         networkViewPage.selectTrailType(AGGREGATED_ETHERNET_LINK);
         networkViewPage.acceptTrailType();
+        waitForPageToLoad();
+        Assert.assertTrue(CSSUtils.isElementPresent(driver, ConnectionWizardPage.WIZARD_ID), CONNECTION_WIZARD_OPEN_VALIDATION);
     }
 
     @Test(priority = 2, description = "Fill in the Aggregated Ethernet Link attributes.", dependsOnMethods = {"openAEIwizard"})
     @Description("Fill in the Aggregated Ethernet Link attributes.")
     public void fillAttributes() {
-        AEIWizardPage wizard = new AEIWizardPage(driver);
+        AELWizardPage wizard = new AELWizardPage(driver);
         Assert.assertEquals(wizard.getWizard().getWizardName(), CONNECTION_WIZARD_NAME, WIZARD_NAME_VALIDATION);
         Assert.assertEquals(wizard.getWizard().getCurrentStepTitle(), ATTRIBUTES_STEP_NAME, WIZARD_STEP_NAME_VALIDATION);
         wizard.setName(AGGREGATED_ETHERNET_LINK_NAME);
-        waitForPageToLoad();
         wizard.setDescription(AGGREGATED_ETHERNET_LINK_DESCRIPTION);
-        waitForPageToLoad();
         wizard.setSpeed(AGGREGATED_ETHERNET_LINK_SPEED);
-        waitForPageToLoad();
         wizard.setAggregationProtocol(PROTOCOL);
-        waitForPageToLoad();
         wizard.setEffectiveCapacity(AGGREGATED_ETHERNET_LINK_CAPACITY);
         wizard.clickNext();
-        waitForPageToLoad();
+        wizard.getWizard().waitForWizardToLoad();
         Assert.assertEquals(wizard.getWizard().getCurrentStepTitle(), TERMINATIONS_STEP_NAME, WIZARD_STEP_NAME_VALIDATION);
     }
 
@@ -166,67 +167,43 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
     @Description("Determine the Aggregated Ethernet Link terminations (Start / End) at the level of Device.")
     public void fillTerminations() {
         SoftAssert softAssert = new SoftAssert();
-        AEIWizardPage wizard = new AEIWizardPage(driver);
+        AELWizardPage wizard = new AELWizardPage(driver);
         wizard.selectConnectionTermination(START_CONNECTION_DATA_PATH);
-        waitForPageToLoad();
         softAssert.assertEquals(wizard.getNetworkElementTermination(), DEVICE_1_NAME, String.format(WRONG_TERMINATION_PATTERN, "Start"));
         wizard.selectConnectionTermination(END_CONNECTION_DATA_PATH);
-        waitForPageToLoad();
         softAssert.assertEquals(wizard.getNetworkElementTermination(), DEVICE_2_NAME, String.format(WRONG_TERMINATION_PATTERN, "End"));
         wizard.clickNext();
         softAssert.assertAll();
-        waitForPageToLoad();
+        wizard.getWizard().waitForWizardToLoad();
         Assert.assertEquals(wizard.getWizard().getCurrentStepTitle(), AE_INTERFACES_STEP_NAME, WIZARD_STEP_NAME_VALIDATION);
     }
 
     @Test(priority = 4, description = "Create Aggregated Ethernet Interfaces at both endpoints and set their related attributes.", dependsOnMethods = {"fillTerminations"})
     @Description("Create Aggregated Ethernet Interfaces at both endpoints and set their related attributes.")
     public void fillAggregatedEthernetInterfaces() {
-        AEIWizardPage wizard = new AEIWizardPage(driver);
+        AELWizardPage wizard = new AELWizardPage(driver);
         wizard.setCreateStartAggregatedEthernetInterface();
-        waitForPageToLoad();
         wizard.setStartAeiName(AEI_NAME_1);
-        waitForPageToLoad();
         wizard.setStartAeiNumber(AEI_NUMBER);
-        waitForPageToLoad();
         wizard.setStartAeiAggregationProtocol(PROTOCOL);
-        waitForPageToLoad();
         wizard.setStartAeiEncapsulation(AEI_ENCAPSULATION);
-        waitForPageToLoad();
         wizard.setStartAeiLacpMode(AEI_LACP_MODE);
-        waitForPageToLoad();
         wizard.setStartAeiLacpShortPeriod();
-        waitForPageToLoad();
         wizard.setStartAeiMtu(AEI_MTU);
-        waitForPageToLoad();
         wizard.setStartAeiMacAddress(AEI_MAC_ADDRESS);
-        waitForPageToLoad();
         wizard.setStartAeiMinimumActiveLinks(AEI_MINIMUM_ACTIVE_LINKS);
-        waitForPageToLoad();
         wizard.setStartAeiMinimumBandwidth(AEI_MINIMUM_BANDWIDTH);
-        waitForPageToLoad();
         wizard.setCreateEndAggregatedEthernetInterface();
-        waitForPageToLoad();
         wizard.setEndAeiName(AEI_NAME_2);
-        waitForPageToLoad();
         wizard.setEndAeiNumber(AEI_NUMBER);
-        waitForPageToLoad();
         wizard.setEndAeiAggregationProtocol(PROTOCOL);
-        waitForPageToLoad();
         wizard.setEndAeiEncapsulation(AEI_ENCAPSULATION);
-        waitForPageToLoad();
         wizard.setEndAeiLacpMode(AEI_LACP_MODE);
-        waitForPageToLoad();
         wizard.setEndAeiLacpShortPeriod();
-        waitForPageToLoad();
         wizard.setEndAeiMtu(AEI_MTU);
-        waitForPageToLoad();
         wizard.setEndAeiMacAddress(AEI_MAC_ADDRESS);
-        waitForPageToLoad();
         wizard.setEndAeiMinimumActiveLinks(AEI_MINIMUM_ACTIVE_LINKS);
-        waitForPageToLoad();
         wizard.setEndAeiMinimumBandwidth(AEI_MINIMUM_BANDWIDTH);
-        waitForPageToLoad();
         wizard.clickAccept();
         checkPopupMessageType();
         waitForPageToLoad();
@@ -253,13 +230,9 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
     public void fillRoutingWizard() {
         RoutingWizardPage wizard = new RoutingWizardPage(driver);
         wizard.selectConnection(AGGREGATED_ETHERNET_LINK_NAME + "." + FIRST_ETHERNET_LINK_NAME);
-        waitForPageToLoad();
         wizard.setProtectionType(PROTECTION_TYPE);
-        waitForPageToLoad();
         wizard.setLineType(LINE_TYPE);
-        waitForPageToLoad();
         wizard.setSequenceNumber(SEQUENCE_NUMBER);
-        waitForPageToLoad();
         wizard.accept();
         checkPopupMessageType();
         waitForPageToLoad();
