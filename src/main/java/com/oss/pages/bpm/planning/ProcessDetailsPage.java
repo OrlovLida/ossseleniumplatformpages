@@ -1,9 +1,11 @@
 package com.oss.pages.bpm.planning;
 
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
@@ -17,12 +19,19 @@ import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NETWORK_PLA
 
 public class ProcessDetailsPage extends BasePage {
     public static final String PROCESS_DETAILS = "Process Details";
+    public static final String OBJECT_NAME_ATTRIBUTE_NAME = "Object name";
+    public static final String OBJECT_TYPE_ATTRIBUTE_NAME = "Object type";
+    public static final String ACTIVATED_STATUS = "Activated";
     private static final String VALIDATION_TABLE_DATA_ATTRIBUTE_NAME = "plaPlanView_validationTable";
     private static final String OBJECT_TABLE_DATA_ATTRIBUTE_NAME = "plaPlanView_objectsApp";
     private static final String PROCEED_WITH_CANCELLATION_ID = "ConfirmationBox_plaCancelObjectsWizard_confirmBox_action_button";
     private static final String CANCEL_ID = "objectsRemoveAction";
     private static final String TAB_ID = "plaPlanView_leftSideWindow";
     private static final String CLOSE_BUTTON_TITLE = "Close";
+    private static final String REFRESH_TABLE_ID = "tableRefreshButton";
+    private static final String OBJECT_STATUS_ATTRIBUTE_NAME = "Object status";
+    private static final String OBJECT_OPERATION_TYPE_ATTRIBUTE_NAME = "Operation type";
+
 
     public ProcessDetailsPage(WebDriver driver) {
         super(driver);
@@ -42,17 +51,17 @@ public class ProcessDetailsPage extends BasePage {
         return new ProcessDetailsPage(driver);
     }
 
-    public void selectTab(String label) {
+    public ProcessDetailsPage selectTab(String label) {
         DelayUtils.waitForPageToLoad(driver, wait);
         TabsInterface tab = TabsWidget.createById(driver, wait, TAB_ID);
         tab.selectTabByLabel(label);
         DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
     }
 
     public boolean isValidationResultPresent() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable oldTable = OldTable.createById(driver, wait, VALIDATION_TABLE_DATA_ATTRIBUTE_NAME);
-        return !oldTable.hasNoData();
+        return !getValidationResultsTable().hasNoData();
     }
 
     public void closeProcessDetailsPromt() {
@@ -62,12 +71,53 @@ public class ProcessDetailsPage extends BasePage {
     @Step("Removing all planned object")
     public void removeAllObjects() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable oldTable = OldTable.createById(driver, wait, OBJECT_TABLE_DATA_ATTRIBUTE_NAME);
+        OldTable oldTable = getObjectsTable();
         final int totalCount = oldTable.getTotalCount();
         for (int i = 0; i < totalCount; i++) {
             oldTable.selectRow(0);
             oldTable.callAction(CANCEL_ID);
             ConfirmationBox.create(driver, wait).clickButtonById(PROCEED_WITH_CANCELLATION_ID);
         }
+    }
+
+    private OldTable getObjectsTable() {
+        return OldTable.createById(driver, wait, OBJECT_TABLE_DATA_ATTRIBUTE_NAME);
+    }
+
+    private OldTable getValidationResultsTable() {
+        return OldTable.createById(driver, wait, VALIDATION_TABLE_DATA_ATTRIBUTE_NAME);
+    }
+
+    public ProcessDetailsPage selectObject(String attributeName, String value) {
+        TableInterface table = getObjectsTable();
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, value);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
+        table.selectRowByAttributeValueWithLabel(attributeName, value);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return this;
+    }
+
+    public int getObjectsAmount() {
+        return getObjectsTable().getTotalCount();
+    }
+
+    public ProcessDetailsPage clearAllColumnFilters() {
+        getObjectsTable().clearAllColumnValues();
+        return this;
+    }
+
+    private String getObjectAttribute(String attributeName) {
+        return getObjectsTable().getCellValue(0, attributeName);
+    }
+
+
+    public String getObjectStatus() {
+        return getObjectAttribute(OBJECT_STATUS_ATTRIBUTE_NAME);
+    }
+
+    public String getObjectOperationType() {
+        return getObjectAttribute(OBJECT_OPERATION_TYPE_ATTRIBUTE_NAME);
     }
 }

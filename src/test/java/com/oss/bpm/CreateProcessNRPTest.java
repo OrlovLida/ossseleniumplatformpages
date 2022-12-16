@@ -12,8 +12,8 @@ import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.tasks.IntegrationProcessWizardPage;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
+import com.oss.pages.bpm.tasks.SetupIntegrationWizardPage;
 import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.utils.TestListener;
@@ -29,19 +29,20 @@ import org.testng.annotations.Test;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.regex.Pattern;
+
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 
 /**
  * @author Gabriela Kasza
  */
 @Listeners({TestListener.class})
 public class CreateProcessNRPTest extends BaseTestCase {
-    private static final String BPM_USER_LOGIN = "bpm_webselenium";
-    private static final String BPM_USER_PASSWORD = "Webtests123!";
-    private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
     private static final String EMPTY_LIST_EXCEPTION = "The list is empty";
     private static final String TASK_PROPERLY_ASSIGNED_MESSAGE = "The task properly assigned.";
     private static final String CONNECTION_PANEL = "Connection Panel";
@@ -57,13 +58,14 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private static final String COMPLETED_STATUS = "Completed";
     private static final String LIVE_PERSPECTIVE = "live";
     private static final String NRP = "Network Resource Process";
+    private static final Random RANDOM = new Random();
 
     private final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
-    private final String processIPName1 = "S.1-" + (int) (Math.random() * 100001);
-    private final String processIPName2 = "S.2-" + (int) (Math.random() * 100001);
-    private final String processNRPName = "Selenium Test-" + (int) (Math.random() * 100001);
-    private final String deviceName1 = "Device-Selenium-" + (int) (Math.random() * 100001);
-    private final String deviceName2 = "Device-Selenium-" + (int) (Math.random() * 100001);
+    private final String processIPName1 = "IP.1-" + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String processIPName2 = "IP.2-" + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String processNRPName = "Selenium Test-" + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String deviceName1 = "Device-Selenium-" + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String deviceName2 = "Device-Selenium-" + RANDOM.nextInt(Integer.MAX_VALUE);
     private String processNRPCode;
     private String processIPCode1;
     private String processIPCode2;
@@ -85,7 +87,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Description("Create Network Resource Process")
     public void createProcessNRP() {
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        processNRPCode = processOverviewPage.createProcessIPD(processNRPName, 0L, NRP);
+        processNRPCode = processOverviewPage.createProcessIPD(processNRPName, 5L, NRP);
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
 
@@ -285,9 +287,9 @@ public class CreateProcessNRPTest extends BaseTestCase {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL).clearFilters();
 
         // when
-        IntegrationProcessWizardPage integrationWizard = tasksPage.setupIntegration(processNRPCode);
-        integrationWizard.defineIntegrationProcess(processIPName1, "2020-07-01", 0);
-        integrationWizard.defineIntegrationProcess(processIPName2, "2020-07-02", 1);
+        SetupIntegrationWizardPage integrationWizard = tasksPage.openSetupIntegrationWizard(processNRPCode);
+        integrationWizard.defineIntegrationProcess(processIPName1, LocalDate.now().plusDays(2L));
+        integrationWizard.defineIntegrationProcess(processIPName2, LocalDate.now().plusDays(3L));
         DelayUtils.sleep();
         integrationWizard.clickNext();
         DelayUtils.sleep(1500);

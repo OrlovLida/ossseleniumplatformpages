@@ -1,9 +1,5 @@
 package com.oss.services;
 
-import java.util.List;
-
-import javax.ws.rs.core.Response;
-
 import com.comarch.oss.locationinventory.api.dto.PhysicalLocationDTO;
 import com.comarch.oss.locationinventory.api.dto.ResourceDTO;
 import com.comarch.oss.locationinventory.api.dto.SearchResultDTO;
@@ -11,6 +7,9 @@ import com.comarch.oss.locationinventory.api.dto.SublocationDTO;
 import com.jayway.restassured.http.ContentType;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
+
+import javax.ws.rs.core.Response;
+import java.util.List;
 
 import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
 
@@ -167,6 +166,23 @@ public class LocationInventoryClient {
 
     public com.jayway.restassured.response.Response removeLocation(Long locationId, String locationType) {
         return env.getLocationInventoryCoreRequestSpecification()
+                .when()
+                .delete(PHYSICAL_LOCATIONS_API_PATH + "/" + locationType + "/" + locationId)
+                .then()
+                .log()
+                .status()
+                .log()
+                .body()
+                .statusCode(HTTP_NO_CONTENT)
+                .extract()
+                .response();
+    }
+
+    public com.jayway.restassured.response.Response removeLocation(Long locationId, String locationType, long projectId) {
+        return env.getLocationInventoryCoreRequestSpecification()
+                .given()
+                .queryParam(Constants.PERSPECTIVE, Constants.PLAN)
+                .queryParam(PROJECT_ID, projectId)
                 .when()
                 .delete(PHYSICAL_LOCATIONS_API_PATH + "/" + locationType + "/" + locationId)
                 .then()

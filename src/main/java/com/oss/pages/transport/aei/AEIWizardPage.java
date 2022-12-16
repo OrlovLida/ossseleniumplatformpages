@@ -128,3 +128,4 @@ public class AEIWizardPage extends BasePage {
         wizard.setComponentValue(componentId, value);
     }
 }
+

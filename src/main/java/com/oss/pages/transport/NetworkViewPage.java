@@ -185,14 +185,21 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
-        Wizard popup = Wizard.createByComponentId(driver, wait, TRAIL_TYPE_WIZARD_ID);
-        popup.setComponentValue(TRAIL_TYPE_COMBOBOX_ID, trailType, COMBOBOX);
+        getConnectionTypeWizard().setComponentValue(TRAIL_TYPE_COMBOBOX_ID, trailType, COMBOBOX);
     }
 
     @Step("Accept trail type")
     public void acceptTrailType() {
-        Wizard wizard = Wizard.createByComponentId(driver, wait, TRAIL_TYPE_WIZARD_ID);
-        wizard.clickButtonById(TRAIL_TYPE_ACCEPT_BUTTON_ID);
+        getConnectionTypeWizard().clickButtonById(TRAIL_TYPE_ACCEPT_BUTTON_ID);
+    }
+
+    @Step("Get connection type wizard name")
+    public String getConnectionTypeWizardName() {
+        return getConnectionTypeWizard().getWizardName();
+    }
+
+    private Wizard getConnectionTypeWizard() {
+        return Wizard.createByComponentId(driver, wait, TRAIL_TYPE_WIZARD_ID);
     }
 
     @Step("Open modify termination wizard")

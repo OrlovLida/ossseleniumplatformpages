@@ -4,6 +4,7 @@ import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
+import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
@@ -52,6 +53,8 @@ public class ProcessOverviewPage extends BasePage {
     private static final String START_PROGRAM_ACTION_ID = "start-program";
     private static final String RELATED_PROCESSES_TAB_ID = "bpm_processes_view_relations-tab";
     private static final String RELATED_PROCESSES_LIST = "bpm_processes_view_related-processes-list";
+    private static final String PROPERTY_PANEL_ID = "bpm_processes_view_process-details";
+    private static final String PROJECT_ID_PROPERTY_NAME = "Project ID";
 
 
     public ProcessOverviewPage(WebDriver driver) {
@@ -86,6 +89,18 @@ public class ProcessOverviewPage extends BasePage {
     private String getProcessAttribute(String columnLabel) {
         OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
         return processTable.getCellValue(0, columnLabel);
+    }
+
+    private OldPropertyPanel getOldPropertyPanel() {
+        return OldPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID);
+    }
+
+    public String getPropertyValue(String propertyName) {
+        return getOldPropertyPanel().getPropertyValue(propertyName);
+    }
+
+    public Long getProjectId(String processCode) {
+        return Long.valueOf(selectProcess(processCode).getPropertyValue(PROJECT_ID_PROPERTY_NAME));
     }
 
     public String getProcessStatus() {

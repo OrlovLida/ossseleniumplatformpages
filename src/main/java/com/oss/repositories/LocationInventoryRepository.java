@@ -1,8 +1,5 @@
 package com.oss.repositories;
 
-import java.util.List;
-import java.util.Optional;
-
 import com.comarch.oss.locationinventory.api.dto.AttributeDTO;
 import com.comarch.oss.locationinventory.api.dto.PhysicalLocationDTO;
 import com.comarch.oss.locationinventory.api.dto.ResourceDTO;
@@ -11,6 +8,9 @@ import com.comarch.oss.locationinventory.api.dto.SublocationDTO;
 import com.oss.services.LocationInventoryClient;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
+
+import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Milena Miętkiewicz
@@ -84,6 +84,10 @@ public class LocationInventoryRepository {
 
     public void deleteLocation(Long locationId, String locationType) {
         client.removeLocation(locationId, locationType);
+    }
+
+    public void deleteLocation(Long locationId, String locationType, long projectId) {
+        client.removeLocation(locationId, locationType, projectId);
     }
 
     public Optional<String> getLocationId(String locationName) {

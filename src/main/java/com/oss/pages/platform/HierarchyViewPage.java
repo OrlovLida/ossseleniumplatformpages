@@ -228,4 +228,5 @@ public class HierarchyViewPage extends BasePage {
     public int getMainTreeSize() {
         return getMainTree().getVisibleNodes().size();
     }
+
 }

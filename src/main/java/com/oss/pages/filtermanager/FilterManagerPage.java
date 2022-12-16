@@ -182,7 +182,7 @@ public class FilterManagerPage extends BasePage {
         return getCommonList().getRow("name", name).isFavorite();
     }
 
-    private CommonList getCommonList() {
+    public CommonList getCommonList() {
         return CommonList.create(driver, wait, COMMON_LIST_APP_ID);
     }
 }

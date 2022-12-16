@@ -1,5 +1,13 @@
 package com.oss.transport.infrastructure.planning;
 
+import com.comarch.oss.planning.api.dto.PlannedObjectIdDTO;
+import com.comarch.oss.planning.api.dto.PlannedObjectIdDTO.PerspectiveEnum;
+import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
+
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.UriBuilder;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,15 +18,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
-
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
-
-import com.comarch.oss.planning.api.dto.PlannedObjectIdDTO;
-import com.comarch.oss.planning.api.dto.PlannedObjectIdDTO.PerspectiveEnum;
-import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 
 public final class PlanningContext implements Serializable {
 
@@ -38,6 +37,16 @@ public final class PlanningContext implements Serializable {
 
     private Long projectId;
     private Perspective perspective;
+
+    public PlanningContext(Long pProjectId) {
+        projectIdValue = Optional.of(pProjectId);
+        projectId = pProjectId;
+    }
+
+    public PlanningContext(Perspective pPerspective) {
+        perspectiveValue = Optional.of(pPerspective);
+        perspective = pPerspective;
+    }
 
     public static PlanningContext projectContext(Long projectId) {
         return new PlanningContext(projectId);
@@ -62,16 +71,6 @@ public final class PlanningContext implements Serializable {
                     plannedObject.getProject().orElseThrow(() -> new IllegalStateException("Project id not set in planned object."));
             return PlanningContext.projectContext(projectId);
         }
-    }
-
-    public PlanningContext(Long pProjectId) {
-        projectIdValue = Optional.of(pProjectId);
-        projectId = pProjectId;
-    }
-
-    public PlanningContext(Perspective pPerspective) {
-        perspectiveValue = Optional.of(pPerspective);
-        perspective = pPerspective;
     }
 
     public boolean isProjectContext() {
@@ -108,10 +107,6 @@ public final class PlanningContext implements Serializable {
         return projectIdValue.orElseThrow(() -> new IllegalStateException(PROJECT_ID_NOT_DEFINED_FOR_PLANNING_CONTEXT));
     }
 
-    public Optional<Long> getProjectIdAsOptional() {
-        return projectIdValue;
-    }
-
     @QueryParam(PROJECT_PARAM)
     public void setProjectId(Long pProjectId) {
         if (!perspectiveValue.isPresent()) {
@@ -120,12 +115,12 @@ public final class PlanningContext implements Serializable {
         }
     }
 
-    public Perspective getPerspective() {
-        return perspectiveValue.orElseThrow(() -> new IllegalStateException(PERSPECTIVE_NOT_DEFINED_FOR_PLANNING_CONTEXT));
+    public Optional<Long> getProjectIdAsOptional() {
+        return projectIdValue;
     }
 
-    public Optional<Perspective> getPerspectiveAsOptional() {
-        return perspectiveValue;
+    public Perspective getPerspective() {
+        return perspectiveValue.orElseThrow(() -> new IllegalStateException(PERSPECTIVE_NOT_DEFINED_FOR_PLANNING_CONTEXT));
     }
 
     @QueryParam(PERSPECTIVE_PARAM)
@@ -138,6 +133,10 @@ public final class PlanningContext implements Serializable {
             projectIdValue = Optional.empty();
             projectId = null;
         }
+    }
+
+    public Optional<Perspective> getPerspectiveAsOptional() {
+        return perspectiveValue;
     }
 
     private Collection<String> getAllowedPerspectiveValues() {
@@ -210,6 +209,27 @@ public final class PlanningContext implements Serializable {
                 && Objects.equals(withRemoved, that.withRemoved);
     }
 
+    @Override
+    public String toString() {
+        StringJoiner stringJoiner = new StringJoiner(", ", "{", "}");
+        perspectiveValue.ifPresent(value -> stringJoiner.add(PERSPECTIVE_PARAM + "='" + value.name() + "'"));
+        projectIdValue.ifPresent(value -> stringJoiner.add(PROJECT_PARAM + "=" + value.toString()));
+
+        return stringJoiner
+                .add(WITH_REMOVED_PARAM + "=" + withRemoved)
+                .toString();
+    }
+
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        perspectiveValue = Optional.ofNullable(perspective);
+        projectIdValue = Optional.ofNullable(projectId);
+    }
+
     public enum Perspective {
         LIVE("C", 0L),
         NETWORK("CD", 1L);
@@ -242,26 +262,5 @@ public final class PlanningContext implements Serializable {
         public Long getVersion() {
             return version;
         }
-    }
-
-    @Override
-    public String toString() {
-        StringJoiner stringJoiner = new StringJoiner(", ", "{", "}");
-        perspectiveValue.ifPresent(value -> stringJoiner.add(PERSPECTIVE_PARAM + "='" + value.name() + "'"));
-        projectIdValue.ifPresent(value -> stringJoiner.add(PROJECT_PARAM + "=" + value.toString()));
-
-        return stringJoiner
-                .add(WITH_REMOVED_PARAM + "=" + withRemoved)
-                .toString();
-    }
-
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-    }
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        perspectiveValue = Optional.ofNullable(perspective);
-        projectIdValue = Optional.ofNullable(projectId);
     }
 }
