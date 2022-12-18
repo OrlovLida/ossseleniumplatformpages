@@ -73,6 +73,11 @@ public class ConnectionWizardPage extends BasePage {
         getWizard().clickAccept();
     }
 
+    @Step("Click Cancel button")
+    public void clickCancel() {
+        getWizard().clickCancel();
+    }
+
     @Step("Select connection termination by dataPath = {dataPath}")
     public void selectConnectionTermination(String dataPath) {
         TreeComponent treeComponent = getWizard().getTreeComponent();
