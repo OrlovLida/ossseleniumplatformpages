@@ -256,7 +256,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Unselect object in view content")
     public void unselectObjectInViewContentContains(String attributeLabel, String value) {
-        getOldTable(CONTENT_VIEW_TABLE_APP_ID).unselectRow(attributeLabel, value);
+        getOldTable(CONTENT_VIEW_TABLE_APP_ID).unselectRowContains(attributeLabel, value);
     }
 
     @Step("Click on object in View content by partial name: {partialName} and index {index}")
