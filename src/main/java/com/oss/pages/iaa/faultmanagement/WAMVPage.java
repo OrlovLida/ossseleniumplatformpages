@@ -105,6 +105,7 @@ public class WAMVPage extends BasePage {
 
     @Step("Open alarm details from AREA2")
     public void openAlarmDetails() {
+        DelayUtils.waitForPageToLoad(driver, wait);
         createButton(BUTTON_ALARM_DETAILS_ID).click();
         log.info("Open alarm details from AREA2");
     }
@@ -125,7 +126,7 @@ public class WAMVPage extends BasePage {
 
     @Step("I return a cell text from notification identifier column")
     public String getTextFromNotificationIdentifierCell(int row) {
-        DelayUtils.sleep(1000);
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Returning cell text from notification identifier column in row: {}", row);
         return fmsmTable.getCellValue(row, NOTIFICATION_IDENTIFIER_COLUMN_ID);
     }

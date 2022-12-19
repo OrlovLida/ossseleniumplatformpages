@@ -101,7 +101,7 @@ public class WAMVArea2Test extends BaseTestCase {
     @Test(priority = 4, testName = "Check Alarm details from context actions in AREA2", description = "Check Alarm details from context actions  in AREA2")
     @Description("I verify if alarm details from context actions works in AREA2")
     public void CheckAlarmDetailsInArea2(
-            @Optional("2") int alarmListRowAlarmDetails
+            @Optional("0") int alarmListRowAlarmDetails
     ) {
         try {
             String notificationId = wamvPage.getTextFromNotificationIdentifierCell(alarmListRowAlarmDetails);
