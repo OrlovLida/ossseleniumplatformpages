@@ -13,6 +13,7 @@ public class NewBookmarksPage extends BaseBookmarkAndDashboardPage {
 
     public static final String ACTION_CATEGORY = "action_createCategoryBookmark";
     public static final String ACTION_SHARE_CATEGORY = "ShareFolderAction";
+    public static final String ACTION_ASSIGN = "ASSIGN";
     public static final String MANAGEMENT_VIEW_CONTAINER_TABSCARD = "management-view__container__tabscard";
 
     public static final String ACTION_EDIT_BOOKMARK_FOLDER = "action_editBookmarkFolder";
@@ -83,6 +84,11 @@ public class NewBookmarksPage extends BaseBookmarkAndDashboardPage {
     public void openBookmark(String nameBookmark) {
         clickLinkToView(nameBookmark);
 
+    }
+
+    public void shareCategory(String categoryName) {
+        selectObject(categoryName);
+        callAction(ACTION_ASSIGN, ACTION_SHARE_CATEGORY);
     }
 
     @Override

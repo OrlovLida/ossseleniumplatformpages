@@ -105,6 +105,14 @@ public class DeviceWizardPage extends BasePage {
         getDeviceWizard().getComponent(DEVICE_MODEL_DATA_ATTRIBUTE_NAME).setSingleStringValueContains(model);
     }
 
+    @Step("Set Model choosing first")
+    public void setFirstModel(String model) {
+        getDeviceWizard().getComponent(DEVICE_MODEL_DATA_ATTRIBUTE_NAME);
+        ObjectSearchField input = (ObjectSearchField) getDeviceWizard().getComponent(DEVICE_MODEL_DATA_ATTRIBUTE_NAME, Input.ComponentType.OBJECT_SEARCH_FIELD);
+        input.setFirstResult(model);
+    }
+
+
     @Step("Set Name")
     public void setName(String name) {
         getDeviceWizard().setComponentValue(DEVICE_NAME_DATA_ATTRIBUTE_NAME, name);

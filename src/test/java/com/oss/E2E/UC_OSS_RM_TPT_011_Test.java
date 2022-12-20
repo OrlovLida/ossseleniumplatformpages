@@ -22,6 +22,7 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.Popup;
+import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
@@ -100,6 +101,7 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
     private static final String AE_INTERFACES_STEP_NAME = "3. AE Interfaces";
     private static final String WIZARD_NAME_VALIDATION = "Wrong name of wizard.";
     private static final String WIZARD_STEP_NAME_VALIDATION = "Wrong name of step in wizard.";
+    private static final String WIZARD_LABEL_NOT_PRESENT = "Cannot find appropriate label in routing wizard.";
     private static final String AEI_URL = String.format("%s/#/views/management/views/inventory-view/AggregatedEthernetInterface_TP?perspective=LIVE", BASIC_URL);
     private static Long FIRST_ETHERNET_LINK_ID;
     private static Long SECOND_ETHERNET_LINK_ID;
@@ -229,7 +231,15 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
     @Description("Set routing attributes.")
     public void fillRoutingWizard() {
         RoutingWizardPage wizard = new RoutingWizardPage(driver);
-        wizard.selectConnection(AGGREGATED_ETHERNET_LINK_NAME + "." + FIRST_ETHERNET_LINK_NAME);
+        String connectionPath = AGGREGATED_ETHERNET_LINK_NAME + "." + FIRST_ETHERNET_LINK_NAME;
+        if (!isNodePresent(wizard, connectionPath)) {
+            wizard.clickCancel();
+            networkViewPage = new NetworkViewPage(driver);
+            networkViewPage.unselectObjectInViewContentContains(NAME_COLUMN, FIRST_ETHERNET_LINK_NAME);
+            networkViewPage.unselectObjectInViewContentContains(NAME_COLUMN, SECOND_ETHERNET_LINK_NAME);
+            Assert.fail(WIZARD_LABEL_NOT_PRESENT);
+        }
+        wizard.selectConnection(connectionPath);
         wizard.setProtectionType(PROTECTION_TYPE);
         wizard.setLineType(LINE_TYPE);
         wizard.setSequenceNumber(SEQUENCE_NUMBER);
@@ -363,5 +373,9 @@ public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
         });
         systemMessage.close();
         softAssert.assertAll();
+    }
+
+    private boolean isNodePresent(RoutingWizardPage wizard, String connectionPath) {
+        return wizard.getWizard().getTreeComponent().getVisibleNodes().stream().map(TreeComponent.Node::getLabel).collect(Collectors.toList()).contains(connectionPath);
     }
 }

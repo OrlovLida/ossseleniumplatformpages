@@ -14,6 +14,7 @@ public class AlarmGeneratorWizardPage extends BasePage {
     private static final String MO_IDENTIFIER_ID = "moIdentifier";
     private static final String NOTIFICATION_IDENTIFIER_ID = "notificationIdentifier";
     private static final String CREATE_BUTTON_ID = "wizard-submit-button-alarm-generator-create-edit-wizard";
+    private static final String ADAPTER_NAME_COLUMN_ID = "adapterName";
 
     private final Popup alarmGeneratorPopup;
 
@@ -30,6 +31,11 @@ public class AlarmGeneratorWizardPage extends BasePage {
     @Step("Set Notification Identifier in Alarm Generator Wizard")
     public void setNotificationIdentifier(String notificationIdentifier) {
         alarmGeneratorPopup.setComponentValue(NOTIFICATION_IDENTIFIER_ID, notificationIdentifier);
+    }
+
+    @Step("Set Adapter Name in Alarm Generator Wizard")
+    public void setAdapterName(String adapterName) {
+        alarmGeneratorPopup.setComponentValue(ADAPTER_NAME_COLUMN_ID, adapterName);
     }
 
     @Step("Click Create")

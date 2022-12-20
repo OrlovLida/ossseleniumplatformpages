@@ -26,6 +26,7 @@ public class CreateNewAlarmTest extends BaseTestCase {
     private static final String EDITED_SUFFIX = "_edited_";
     private static final String ACKNOWLEDGE_COLUMN_ID = "acknowledge";
     private static final String ACKNOWLEDGE_COLUMN_HEADER = "Acknowledge State";
+    private static final String ADAPTER_NAME_COLUMN_ID = "adapterName";
 
     @BeforeClass
     public void goToAlarmGeneratorPage() {
@@ -71,7 +72,21 @@ public class CreateNewAlarmTest extends BaseTestCase {
         Assert.assertEquals(alarmGeneratorPage.getFirstCellValueInColumn(NOTIFICATION_COLUMN_ID), editedUniqueNotificationIdentifier);
     }
 
-    @Test(priority = 4, testName = "Generate created alarm", description = "Generate created alarm")
+    @Parameters({"adapterName"})
+    @Test(priority = 4, testName = "Add Adapter Name", description = "Add adapter name column and set it's value")
+    @Description("Add adapter name column and set it's value")
+    public void addAdapterName(
+            @Optional("SeleniumAdapter") String adapterName
+    ) {
+        alarmGeneratorPage.enableColumnInTheTable(ADAPTER_NAME_COLUMN_ID);
+        alarmGeneratorPage.selectFirstRowInTable();
+        alarmGeneratorWizard = alarmGeneratorPage.clickEditButton();
+        alarmGeneratorWizard.setAdapterName(adapterName);
+        alarmGeneratorWizard.clickCreateButton();
+        Assert.assertEquals(alarmGeneratorPage.getFirstCellValueInColumn(ADAPTER_NAME_COLUMN_ID), adapterName);
+    }
+
+    @Test(priority = 5, testName = "Generate created alarm", description = "Generate created alarm")
     @Description("Generate created alarm")
     public void generateCreatedAlarm(
     ) {
@@ -79,7 +94,7 @@ public class CreateNewAlarmTest extends BaseTestCase {
         Assert.assertEquals(alarmGeneratorPage.getMessageTypeFromPrompt().toLowerCase(), EXPECTED_MESSAGE_TYPE);
     }
 
-    @Test(priority = 5, testName = "Terminate created alarm", description = "Terminate created alarm")
+    @Test(priority = 6, testName = "Terminate created alarm", description = "Terminate created alarm")
     @Description("Terminate created alarm")
     public void terminateCreatedAlarm(
     ) {
@@ -87,7 +102,7 @@ public class CreateNewAlarmTest extends BaseTestCase {
         Assert.assertEquals(alarmGeneratorPage.getMessageTypeFromPrompt().toLowerCase(), EXPECTED_MESSAGE_TYPE);
     }
 
-    @Test(priority = 6, testName = "Remove created alarm", description = "Remove created alarm")
+    @Test(priority = 7, testName = "Remove created alarm", description = "Remove created alarm")
     @Description("Remove created alarm")
     public void removeCreatedAlarm(
     ) {
