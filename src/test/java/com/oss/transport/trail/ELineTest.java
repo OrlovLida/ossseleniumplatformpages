@@ -89,8 +89,8 @@ public class ELineTest extends BaseTestCase {
         setPreciseTerminations();
         networkViewPage.selectObjectInViewContentContains(NAME_COLUMN_LABEL, ELINE_NAME_UPDATE);
         networkViewPage.openTerminationsTab();
-        //assertPresenceOfObjectInTab(0, TERMINATION_POINT_NAME_COLUMN, TERMINATIONS_TAB_ID, START_TERMINATION_POINT);
-        //assertPresenceOfObjectInTab(1, TERMINATION_POINT_NAME_COLUMN, TERMINATIONS_TAB_ID, END_TERMINATION_POINT);
+        // assertPresenceOfObjectInTab(0, TERMINATION_POINT_NAME_COLUMN, TERMINATIONS_TAB_ID, START_TERMINATION_POINT);
+        // assertPresenceOfObjectInTab(1, TERMINATION_POINT_NAME_COLUMN, TERMINATIONS_TAB_ID, END_TERMINATION_POINT);
     }
 
     @Test(priority = 4, description = "Add trail to routing", dependsOnMethods = {"createEline"})
@@ -101,7 +101,7 @@ public class ELineTest extends BaseTestCase {
         networkViewPage.addSelectedObjectsToRouting().accept();
         networkViewPage.selectObjectInViewContentContains(NAME_COLUMN_LABEL, ELINE_NAME_UPDATE);
         networkViewPage.openRouting1stLevelTab();
-        assertPresenceOfObjectInTab(0, CONNECTION_NAME_COLUMN, ROUTING_1ST_LEVEL_TAB_ID, ETHERNET_LINK_NAME);
+        assertPresenceOfObjectInTab();
     }
 
     @Test(priority = 5, description = "Add device to element routing", dependsOnMethods = {"terminateEline"})
@@ -211,10 +211,10 @@ public class ELineTest extends BaseTestCase {
         connectionWizardPage.clickAccept();
     }
 
-    private void assertPresenceOfObjectInTab(Integer index, String columnId, String tabId, String objectName) {
+    private void assertPresenceOfObjectInTab() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        String objectValue = networkViewPage.getObjectValueFromTab(index, columnId, tabId);
-        Assert.assertEquals(objectValue, objectName, String.format("%s value is not correct", objectName));
+        String objectValue = networkViewPage.getObjectValueFromTab(0, CONNECTION_NAME_COLUMN, ROUTING_1ST_LEVEL_TAB_ID);
+        Assert.assertEquals(objectValue, ETHERNET_LINK_NAME, String.format("%s value is not correct", ETHERNET_LINK_NAME));
     }
 
     private void addConnectionToNetworkView() {
