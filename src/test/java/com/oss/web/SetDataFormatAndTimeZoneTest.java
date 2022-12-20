@@ -65,17 +65,16 @@ public class SetDataFormatAndTimeZoneTest extends BaseTestCase {
         inventoryViewPage.changeUser(USER2, PASSWORD_2);
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, LOCATION_TYPE);
         String dateCreatedValue = getCreatedObjectDataTime();
-        Assert.assertTrue(checkDateFormat(PRESENT_FORMAT, dateCreatedValue), DATA_TIME_FORMAT_EXCEPTION + PRESENT_FORMAT);
+        Assert.assertTrue(checkDateFormat(PRESENT_FORMAT, dateCreatedValue), DATA_TIME_FORMAT_EXCEPTION + DEFAULT_DATE_FORMAT);
 
         inventoryViewPage.changeUser(USER1, PASSWORD_1);
         inventoryViewPage = NewInventoryViewPage.goToInventoryViewPage(driver, BASIC_URL, LOCATION_TYPE);
         String dateCreatedValueU1 = getCreatedObjectDataTime();
-        Assert.assertTrue(checkDateFormat(DFT1, dateCreatedValueU1), DATA_TIME_FORMAT_EXCEPTION + DFT1);
+        Assert.assertTrue(checkDateFormat(DFT1, dateCreatedValueU1), DATA_TIME_FORMAT_EXCEPTION + DATE_FORMAT1);
     }
 
     @Test(priority = 3)
     public void changeTimeZone() {
-        homePage.chooseDataFormat(PRESENT_FORMAT, DFT1);
         String dateCreatedValueInDefaultTimeZone = getCreatedObjectDataTime();
         LocalDateTime dateCreatedValue = LocalDateTime.parse(dateCreatedValueInDefaultTimeZone, DFT1);
         LocalDateTime shiftedDateTimeAsiaTokio = getAustraliaDataTime(dateCreatedValue);
