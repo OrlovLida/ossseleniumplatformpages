@@ -38,9 +38,9 @@ import io.qameta.allure.Description;
 
 import static java.lang.String.format;
 
-public class ISPConfigurationTest extends BaseTestCase {
+public class BucOssPhy005Test extends BaseTestCase {
 
-    private static final Logger log = LoggerFactory.getLogger(ISPConfigurationTest.class);
+    private static final Logger log = LoggerFactory.getLogger(BucOssPhy005Test.class);
     private static final String LOCATION_NAME = "BuildingA_" + UUID.randomUUID().toString();
     private static final String LOCATION_TYPE = "Building";
     private static final String SUBLOCATION_NAME = "RoomA_" + UUID.randomUUID().toString();
@@ -804,7 +804,7 @@ public class ISPConfigurationTest extends BaseTestCase {
 
     private OldTable getOldTableWidget() {
         openTab(TABLE_POWER_MANAGEMENT);
-        return OldTable.createById(driver, webDriverWait, ISPConfigurationTest.TABLE_POWER_MANAGEMENT);
+        return OldTable.createById(driver, webDriverWait, BucOssPhy005Test.TABLE_POWER_MANAGEMENT);
     }
 
     private void openTab(String tableId) {
@@ -819,7 +819,7 @@ public class ISPConfigurationTest extends BaseTestCase {
     }
 
     private void clickConfirmationBoxByLabel() {
-        ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(ISPConfigurationTest.DELETE_BUTTON_LABEL);
+        ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(BucOssPhy005Test.DELETE_BUTTON_LABEL);
     }
 
     private void unselectAllAndSelectRow(TableWidget tableWidget, String value) {

@@ -24,8 +24,8 @@ import static com.oss.pages.platform.bookmarksanddashboards.bookmarks.NewBookmar
 import static com.oss.web.NewBookmarksTest.BOOKMARK_PROPERTIES;
 import static com.oss.web.NewBookmarksTest.BUTTON_SAVE_BOOKMARK;
 
-public class Bookmarks_Smoke_Test extends BaseTestCase {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Bookmarks_Smoke_Test.class);
+public class BookmarksSmokeTest extends BaseTestCase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(BookmarksSmokeTest.class);
     NewBookmarksPage bookmarksPage;
     private static final String ADVANCED_SEARCH_WIDGET_ID = "advancedSearch";
     private static final int INDEX_OF_FIRST_ELEMENT_IN_TABLE = 0;

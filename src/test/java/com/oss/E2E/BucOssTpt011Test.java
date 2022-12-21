@@ -42,9 +42,9 @@ import com.oss.untils.Environment;
 
 import io.qameta.allure.Description;
 
-public class UC_OSS_RM_TPT_011_Test extends BaseTestCase {
+public class BucOssTpt011Test extends BaseTestCase {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UC_OSS_RM_TPT_011_Test.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BucOssTpt011Test.class);
     private static final String SITE = "Site";
     private static final String COUNTRY_NAME = "Poland";
     private static final String REGION_NAME = "Silesia";

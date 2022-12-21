@@ -11,49 +11,45 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
-import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.HomePage;
+import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
 
 import io.qameta.allure.Description;
 
-public class HV_Smoke_Test extends BaseTestCase {
+public class InventoryViewSmokeTest extends BaseTestCase {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HV_Smoke_Test.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(InventoryViewSmokeTest.class);
 
-    @Test(priority = 1, description = "Open Hierarchy View Search Object Page")
-    @Description("Open Hierarchy View Search Object Page")
-    public void openHierarchyViewSearchPage() {
+    @Test(priority = 1, description = "Open Inventory View Search Object Page")
+    @Description("Open Inventory View Search Object Page")
+    public void openInventoryViewSearchPage() {
         waitForPageToLoad();
         checkErrorPage();
         checkGlobalNotificationContainer();
         PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
         waitForPageToLoad();
         HomePage homePage = new HomePage(driver);
-        homePage.chooseFromLeftSideMenu("Hierarchy View", "Resource Inventory");
+        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
         waitForPageToLoad();
     }
 
-    @Test(priority = 2, description = "Open Hierarchy View", dependsOnMethods = {"openHierarchyViewSearchPage"})
-    @Description("Open Hierarchy View for Site")
-    public void loadHierarchyView() {
+    @Test(priority = 2, description = "Open Inventory View", dependsOnMethods = {"openInventoryViewSearchPage"})
+    @Description("Open Inventory View for Site")
+    public void loadInventoryView() {
         checkErrorPage();
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
-        searchObjectTypePage.searchType("Physical Device");
+        searchObjectTypePage.searchType("Site");
         waitForPageToLoad();
-        AdvancedSearchWidget advancedSearchWidget = AdvancedSearchWidget.createById(driver, webDriverWait, "advancedSearch");
-        advancedSearchWidget.getTableComponent().selectRow(0);
-        advancedSearchWidget.clickAdd();
     }
 
-    @Test(priority = 3, description = "Check context actions labels", dependsOnMethods = {"loadHierarchyView"})
-    @Description("Check context actions labels")
+    @Test(priority = 3, description = "Check context actions labels", dependsOnMethods = {"loadInventoryView"})
+    @Description("Check context actions label")
     public void checkContextActionsLabels() {
         checkErrorPage();
         checkGlobalNotificationContainer();
-        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
-        Assert.assertEquals(hierarchyViewPage.getGroupActionLabel(ActionsContainer.CREATE_GROUP_ID), "Create");
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        Assert.assertEquals(newInventoryViewPage.getGroupActionLabel(ActionsContainer.CREATE_GROUP_ID), "Create");
         waitForPageToLoad();
     }
 

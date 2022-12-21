@@ -23,9 +23,9 @@ import com.oss.pages.platform.HomePage;
 
 import io.qameta.allure.Description;
 
-public class Tasks_Smoke_Test extends BaseTestCase {
+public class TasksSmokeTest extends BaseTestCase {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Tasks_Smoke_Test.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TasksSmokeTest.class);
     private static final String UNCOMPLETED_TASKS = "Uncompleted Tasks";
     private static final String PROCESS_NAME = "Name (Process)";
     private static final String STATUS = "Status";
