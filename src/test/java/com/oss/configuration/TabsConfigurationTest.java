@@ -1,9 +1,5 @@
 package com.oss.configuration;
 
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.TYPE;
-
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,6 +18,10 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.configuration.SaveConfigurationWizard;
 import com.oss.utils.TestListener;
+
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
+import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.TYPE;
 
 @Listeners({TestListener.class})
 public class TabsConfigurationTest extends BaseTestCase {
@@ -69,7 +69,7 @@ public class TabsConfigurationTest extends BaseTestCase {
     }
 
     private void deleteConfigurations(List<String> tabsConfigurationsName2) {
-        List<String> tabsConfigurationsName = tabsConfigurationsName2.stream().filter(name -> name.equals(TABS_WIDGET)).collect(Collectors.toList());
+        List<String> tabsConfigurationsName = tabsConfigurationsName2.stream().filter(name -> name.contains(TABS_WIDGET)).collect(Collectors.toList());
         newInventoryViewPage.deleteConfigurations(tabsConfigurationsName);
     }
 
