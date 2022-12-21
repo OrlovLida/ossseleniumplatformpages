@@ -1,11 +1,5 @@
 package com.oss.pages.bpm.tasks.taskforms;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import com.oss.framework.bpm.bpmpropertypanel.BpmPropertyPanel;
 import com.oss.framework.bpm.bpmrolloutpanel.BpmRolloutPanel;
 import com.oss.framework.components.inputs.Button;
@@ -20,9 +14,15 @@ import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.treetable.OldTreeTableWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
+import com.oss.pages.bpm.tasks.SetupIntegrationWizardPage;
 import com.oss.pages.dms.AttachFileWizardPage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Paweł Rother
@@ -44,6 +44,7 @@ public class IPDTaskFormPage extends BasePage {
     private static final String COMPLETE_TASK_ICON_ID = "form.toolbar.closeTask";
     private static final String SETUP_INTEGRATION_ICON_ID = "form.toolbar.setupIntegrationButton";
     private static final String PROPERTY_PANEL_ID = "bpm_task_view_attributes-app";
+    private static final String DRP_CREATION_ICON_ID = "form.toolbar.createChildProcess";
 
     private final String tabsId;
     private final TabsInterface tabWidget;
@@ -54,12 +55,12 @@ public class IPDTaskFormPage extends BasePage {
         this.tabWidget = getTabWidget(tabsTasksViewId);
     }
 
-    private TabsInterface getTabWidget(String tabWidgetId) {
-        return TabsWidget.createById(driver, wait, tabWidgetId);
-    }
-
     public static IPDTaskFormPage create(WebDriver driver, WebDriverWait wait, String tabsTasksViewId) {
         return new IPDTaskFormPage(driver, wait, tabsTasksViewId);
+    }
+
+    private TabsInterface getTabWidget(String tabWidgetId) {
+        return TabsWidget.createById(driver, wait, tabWidgetId);
     }
 
     public void selectTabById(String tabId) {
@@ -98,9 +99,17 @@ public class IPDTaskFormPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    public void setupIntegration() {
+    public SetupIntegrationWizardPage openSetupIntegrationWizard() {
         selectTabByLabel(FORM_TAB_LABEL);
         callAction(SETUP_INTEGRATION_ICON_ID);
+        return new SetupIntegrationWizardPage(driver);
+    }
+
+    public ProcessWizardPage openDesignRequestProcessCreationWizard() {
+        selectTabByLabel(FORM_TAB_LABEL);
+        callAction(DRP_CREATION_ICON_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new ProcessWizardPage(driver);
     }
 
     public void startTask() {

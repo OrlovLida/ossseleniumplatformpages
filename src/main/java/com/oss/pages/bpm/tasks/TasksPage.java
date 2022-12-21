@@ -113,7 +113,7 @@ public class TasksPage extends BasePage {
 
     public void setupIntegration(String processCode) {
         findTask(processCode, READY_FOR_INTEGRATION_TASK);
-        getIPDTaskForm().setupIntegration();
+        getIPDTaskForm().openSetupIntegrationWizard();
     }
 
     public void addFile(String processCode, String taskName, String filePath) {

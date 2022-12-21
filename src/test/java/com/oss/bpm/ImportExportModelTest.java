@@ -18,17 +18,15 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Objects;
 
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
+
 /**
  * @author Paweł Rother
  */
 
 @Listeners({TestListener.class})
 public class ImportExportModelTest extends BaseTestCase {
-    private static final String BPM_USER_LOGIN = "bpm_webselenium";
-    private static final String BPM_USER_PASSWORD = "Webtests123!";
-    private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
-
     private static final String SUCCESS_FILE_UPLOAD_MESSAGE = "Upload success";
     private static final String CANNOT_LOAD_FILE_EXCEPTION = "Cannot load file";
     private static final String FILE_NOT_DELETED_EXCEPTION = "File is not properly deleted";

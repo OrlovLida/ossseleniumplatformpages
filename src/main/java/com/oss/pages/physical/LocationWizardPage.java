@@ -238,7 +238,7 @@ public class LocationWizardPage extends BasePage {
         return Input.MouseCursor.NOT_ALLOWED.equals(cursor);
     }
 
-    public String getParenLocation() {
+    public String getParentLocation() {
         return getWizard().getComponent(LOCATION_PARENT_LOCATION_DATA_ATTRIBUTE_NAME).getStringValue();
     }
 

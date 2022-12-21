@@ -4,6 +4,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.prompts.Popup;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.platform.bookmarksanddashboards.BaseBookmarkAndDashboardPage;
 import com.oss.pages.platform.bookmarksanddashboards.CategoryWizardPage;
@@ -12,6 +13,7 @@ public class NewBookmarksPage extends BaseBookmarkAndDashboardPage {
 
     public static final String ACTION_CATEGORY = "action_createCategoryBookmark";
     public static final String ACTION_SHARE_CATEGORY = "ShareFolderAction";
+    public static final String ACTION_ASSIGN = "ASSIGN";
     public static final String MANAGEMENT_VIEW_CONTAINER_TABSCARD = "management-view__container__tabscard";
 
     public static final String ACTION_EDIT_BOOKMARK_FOLDER = "action_editBookmarkFolder";
@@ -32,6 +34,7 @@ public class NewBookmarksPage extends BaseBookmarkAndDashboardPage {
 
     public static NewBookmarksPage goToBookmarksPage(WebDriver driver, WebDriverWait wait, String basicUrl) {
         driver.get(String.format("%s/#/", basicUrl));
+        DelayUtils.waitForPageToLoad(driver, wait);
         TabsWidget tabs = TabsWidget.createById(driver, wait, MANAGEMENT_VIEW_CONTAINER_TABSCARD);
         tabs.selectTabById(TAB_BOOKMARKS_ID);
         return new NewBookmarksPage(driver, wait);
@@ -81,6 +84,11 @@ public class NewBookmarksPage extends BaseBookmarkAndDashboardPage {
     public void openBookmark(String nameBookmark) {
         clickLinkToView(nameBookmark);
 
+    }
+
+    public void shareCategory(String categoryName) {
+        selectObject(categoryName);
+        callAction(ACTION_ASSIGN, ACTION_SHARE_CATEGORY);
     }
 
     @Override

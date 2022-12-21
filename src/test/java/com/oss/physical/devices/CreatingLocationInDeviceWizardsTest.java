@@ -283,7 +283,7 @@ public class CreatingLocationInDeviceWizardsTest extends BaseTestCase {
         SoftAssert softAssert = new SoftAssert();
 
         softAssert.assertTrue(modalLocationWizard.isParentLocationGreyedOut(), PARENT_LOCATION_NOT_GREYED_OUT_VALIDATION);
-        softAssert.assertEquals(modalLocationWizard.getParenLocation(), "", String.format(NOT_EMPTY_FIELD_VALIDATION, "Parent Location"));
+        softAssert.assertEquals(modalLocationWizard.getParentLocation(), "", String.format(NOT_EMPTY_FIELD_VALIDATION, "Parent Location"));
 
         softAssert.assertAll();
     }
@@ -356,7 +356,7 @@ public class CreatingLocationInDeviceWizardsTest extends BaseTestCase {
 
     private void checkIfParentLocationFieldIsEmptyAndGreyedOutInModalWizard(SoftAssert softAssert) {
         softAssert.assertTrue(modalLocationWizard.isParentLocationGreyedOut(), PARENT_LOCATION_NOT_GREYED_OUT_VALIDATION);
-        softAssert.assertEquals(modalLocationWizard.getParenLocation(), "", String.format(NOT_EMPTY_FIELD_VALIDATION, "Parent Location"));
+        softAssert.assertEquals(modalLocationWizard.getParentLocation(), "", String.format(NOT_EMPTY_FIELD_VALIDATION, "Parent Location"));
     }
 
     private void fillInMandatoryAttributesInModalWizard(String locationName) {

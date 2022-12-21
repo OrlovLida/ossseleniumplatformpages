@@ -5,11 +5,11 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.EditMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneViewPage;
+import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.processinstances.creation.MilestonesStepWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -20,6 +20,8 @@ import org.testng.annotations.Test;
 
 import java.time.LocalDate;
 
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 import static com.oss.bpm.milestones.EditMilestoneTest.EDIT_MILESTONE_BUTTON;
 
 /**
@@ -28,11 +30,6 @@ import static com.oss.bpm.milestones.EditMilestoneTest.EDIT_MILESTONE_BUTTON;
 
 @Listeners({TestListener.class})
 public class ChangeMilestoneStateTest extends BaseTestCase {
-    private static final String BPM_USER_LOGIN = "bpm_webselenium";
-    private static final String BPM_USER_PASSWORD = "Webtests123!";
-    private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
-
     private static final String PROCESS_NAME = "Selenium Test.Milestone-";
     private static final String MODIFY_DATE_ID = "modifyDate";
     private static final String DUE_DATE_ID = "dueDate";

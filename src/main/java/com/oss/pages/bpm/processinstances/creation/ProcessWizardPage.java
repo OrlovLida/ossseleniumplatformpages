@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * @author Gabriela Kasza
@@ -35,10 +36,12 @@ import java.util.Map;
 public class ProcessWizardPage extends BasePage {
     public static final String NRP = "Network Resource Process";
     public static final String DCP = "Data Correction Process";
+    public static final String PROCESS_NAME_ATTRIBUTE_ID = "processNameTextFieldId";
     protected static final String NEXT_BUTTON = "wizard-next-button-bpm_processes_view_start-process-details-prompt_processCreateFormId";
     protected static final String MILESTONE_ENABLED_CHECKBOX_ID = "milestonesEnabledCheckboxId";
     protected static final String PROCESS_WIZARD_STEP_2 = "bpm_processes_view_start-process-details-prompt_prompt-card";
-    protected static final String PROCESS_NAME = "Selenium Test " + Math.random();
+    private static final Random RANDOM = new Random();
+    protected static final String PROCESS_NAME = "Selenium Test " + RANDOM.nextInt(Integer.MAX_VALUE);
     private static final Logger LOGGER = LoggerFactory.getLogger(ProcessWizardPage.class);
     private static final String CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION = "Cannot extract Process Code from message: ";
     private static final String CANNOT_EXTRACT_PROGRAM_CODE_EXCEPTION = "Cannot extract Program Code from message: ";
@@ -46,7 +49,6 @@ public class ProcessWizardPage extends BasePage {
     private static final String DOMAIN_ATTRIBUTE_ID = "domain-combobox";
     private static final String DEFINITION_ATTRIBUTE_ID = "definition-combobox";
     private static final String RELEASE_ATTRIBUTE_ID = "release-combobox";
-    private static final String PROCESS_NAME_ATTRIBUTE_ID = "processNameTextFieldId";
     private static final String FINISH_DUE_DATE_ID = "FINISHED_DUE_DATE";
     private static final String DUE_DATE_ID = "programDueDateId";
     private static final String ACCEPT_BUTTON = "wizard-submit-button-start-process-wizard";
@@ -60,7 +62,6 @@ public class ProcessWizardPage extends BasePage {
     private static final String CREATE_MULTIPLE_CHECKBOX_ID = "createMultipleCheckboxId";
     private static final String NUMBER_OF_PROCESSES_ID = "createMultipleNumberComponentId";
     private static final String PROGRAMS_SEARCH_ID = "programsSearchBoxId";
-
     private static final String PROCESSES_OUT_OF_RANGE_EXCEPTION = "Number of Processes must be between 1 and 300";
     private static final String CHECKBOX_NOT_PRESENT_EXCEPTION = "Checkbox %s is not present in the wizard.";
     private static final String PROCESS_ROLES_ASSIGNMENT_STEP = "Role assignment";
@@ -96,20 +97,20 @@ public class ProcessWizardPage extends BasePage {
 
     public String createProcessIPD(String processName, Long plusDays, String processType) {
         definedBasicProcess(processName, processType, plusDays).clickButtonById(CREATE_BUTTON);
-        return extractProcessCode(getProcessCreationMessage());
+        return extractProcessCode();
     }
 
     public String createProgram(String programName, Long plusDays, String programType) {
         definedBasicProgram(programName, programType, plusDays).clickButtonById(CREATE_BUTTON);
-        return extractProgramCode(getProcessCreationMessage());
+        return extractProgramCode();
     }
 
     public String createSimpleNRPV2() {
-        return createProcessIPD(PROCESS_NAME, (long) 0, NRP);
+        return createProcessIPD(PROCESS_NAME, 0L, NRP);
     }
 
     public String createSimpleDCPV2() {
-        return createProcessIPD(PROCESS_NAME, (long) 0, DCP);
+        return createProcessIPD(PROCESS_NAME, 0L, DCP);
     }
 
     public String createDCPWithPlusDays(Long plusDays) {
@@ -125,7 +126,7 @@ public class ProcessWizardPage extends BasePage {
         Wizard processWizard = definedBasicProcess(processName, processType, plusDays);
         setProgramsToLink(programNamesList);
         processWizard.clickButtonById(CREATE_BUTTON);
-        return extractProcessCode(getProcessCreationMessage());
+        return extractProcessCode();
     }
 
     public String createProcessLinkedToProgram(String processName, Long plusDays, String processType,
@@ -166,12 +167,7 @@ public class ProcessWizardPage extends BasePage {
         selectCheckbox(programWizard, CREATE_PROCESS_CHECKBOX_ID);
         programWizard.clickButtonById(CREATE_BUTTON);
         definedBasicProcess(processName, processType, plusDaysProcess).clickButtonById(CREATE_BUTTON);
-        String processCode = extractProcessCode(getProcessCreationMessage());
-        String programCode = extractProgramCode(getProcessCreationMessage());
-        return ImmutableMap.<String, String>builder()
-                .put("processCode", processCode)
-                .put("programCode", programCode)
-                .build();
+        return extractProcessAndProgramCode();
     }
 
     private Wizard selectProcessDefinition(String processType) {
@@ -229,7 +225,7 @@ public class ProcessWizardPage extends BasePage {
 
     @Step("Defining simple DCP with process roles and waiting for information's about roles")
     public ProcessRolesStepWizardPage defineSimpleDCPAndGoToProcessRolesStep() {
-        return defineProcessAndGoToProcessRolesStep(PROCESS_NAME, (long) 0, DCP);
+        return defineProcessAndGoToProcessRolesStep(PROCESS_NAME, 0L, DCP);
     }
 
     public ProcessRolesStepWizardPage defineProcessAndGoToProcessRolesStep(String processName, Long plusDays, String processType) {
@@ -249,7 +245,7 @@ public class ProcessWizardPage extends BasePage {
         getSecondStepWizard().clickButtonById(CANCEL_BUTTON);
     }
 
-    private Wizard getSecondStepWizard() {
+    public Wizard getSecondStepWizard() {
         return Wizard.createByComponentId(driver, wait, PROCESS_WIZARD_STEP_2);
     }
 
@@ -272,7 +268,8 @@ public class ProcessWizardPage extends BasePage {
         return getProcessWizardSteps().stream().anyMatch(s -> s.contains(stepName));
     }
 
-    private String extractProcessCode(String message) {
+    public String extractProcessCode() {
+        String message = getProcessCreationMessage();
         Iterable<String> messageParts = Splitter.on(CharMatcher.anyOf("() ")).split(message);
         for (String part : messageParts) {
             if (part.startsWith("NRP-") || part.startsWith("DCP-")
@@ -286,7 +283,8 @@ public class ProcessWizardPage extends BasePage {
         throw new NoSuchElementException(CANNOT_EXTRACT_PROCESS_CODE_EXCEPTION + message);
     }
 
-    private String extractProgramCode(String message) {
+    public String extractProgramCode() {
+        String message = getProcessCreationMessage();
         Iterable<String> messageParts = Splitter.on(CharMatcher.anyOf("() ")).split(message);
         for (String part : messageParts) {
             if (part.startsWith("program_roles-") || part.startsWith("audit_program-")) {
@@ -294,6 +292,15 @@ public class ProcessWizardPage extends BasePage {
             }
         }
         throw new NoSuchElementException(CANNOT_EXTRACT_PROGRAM_CODE_EXCEPTION + message);
+    }
+
+    public Map<String, String> extractProcessAndProgramCode() {
+        String processCode = extractProcessCode();
+        String programCode = extractProgramCode();
+        return ImmutableMap.<java.lang.String, java.lang.String>builder()
+                .put("processCode", processCode)
+                .put("programCode", programCode)
+                .build();
     }
 
     public void createInstance(ProcessCreationWizardProperties properties) {
