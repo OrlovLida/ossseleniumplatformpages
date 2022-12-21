@@ -163,6 +163,10 @@ public class HierarchyViewPage extends BasePage {
         getMainTree().expandNodeWithLabel(label);
     }
 
+    public void expandToNodeByPath(String path) {
+        getMainTree().getNodeByPath(path);
+    }
+
     public void collapseNodeByPath(String path) {
         getMainTree().getNodeByPath(path).collapseNode();
     }
@@ -224,8 +228,11 @@ public class HierarchyViewPage extends BasePage {
     public boolean isNodePresent(String pathLabel) {
         return getMainTree().findNodeByLabelsPath(pathLabel).isPresent();
     }
-
+    public boolean isNodePresentByPath(String path) {
+        return getMainTree().findNodeByPath(path).isPresent();
+    }
     public int getMainTreeSize() {
         return getMainTree().getVisibleNodes().size();
     }
+
 }

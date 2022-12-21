@@ -6,11 +6,11 @@ import com.oss.framework.wizard.Wizard;
 
 import io.qameta.allure.Step;
 
-import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
 
 public class CreateFolderWizard extends FilterManagerPage {
 
     private static final String NAME_TEXT_FIELD_ID = "filterManager_wizard_def_name";
+    private static final String DESCRIPTION_TEXT_FIELD_ID = "filterManager_wizard_def_desc";
     private static final String WIZARD_ID = "filterManager_wizard_folder_widget";
     private static final String ACCEPT_BUTTON_ID = "wizard-submit-button-filterManager_wizard_folder_widget";
     private Wizard folderWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
@@ -21,7 +21,14 @@ public class CreateFolderWizard extends FilterManagerPage {
 
     @Step("Type Name of the folder")
     public CreateFolderWizard typeNameOfTheFolder(String name) {
-        folderWizard.getComponent(NAME_TEXT_FIELD_ID, TEXT_FIELD).setSingleStringValue(name);
+        folderWizard.getComponent(NAME_TEXT_FIELD_ID).setSingleStringValue(name);
+        return this;
+    }
+
+
+    @Step("Type Description of the folder")
+    public CreateFolderWizard typeDescriptionOfTheFolder(String description) {
+        folderWizard.getComponent(DESCRIPTION_TEXT_FIELD_ID).setSingleStringValue(description);
         return this;
     }
 

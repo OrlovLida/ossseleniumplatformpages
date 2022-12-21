@@ -80,4 +80,9 @@
             <class name="com.oss.web.TabsWidgetTest"/>
         </classes>
     </test>
+    <test name="FilterManagerTest">
+        <classes>
+            <class name="com.oss.web.FilterManagerTest"/>
+        </classes>
+    </test>
 </suite>

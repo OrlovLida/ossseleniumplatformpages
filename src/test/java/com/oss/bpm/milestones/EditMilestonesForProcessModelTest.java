@@ -24,16 +24,14 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
 
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
+
 /**
  * @author Paweł Rother
  */
 @Listeners({TestListener.class})
 public class EditMilestonesForProcessModelTest extends BaseTestCase {
-    private static final String BPM_USER_LOGIN = "bpm_webselenium";
-    private static final String BPM_USER_PASSWORD = "Webtests123!";
-    private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
-
     private static final String MILESTONE_NAME_1 = "Milestone 1.";
     private static final String MILESTONE_NAME_2 = "Milestone 2.";
     private static final String RELATED_TASK_LABEL = "Related task";

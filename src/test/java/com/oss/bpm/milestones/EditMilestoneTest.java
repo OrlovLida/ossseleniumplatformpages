@@ -10,10 +10,10 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.EditMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneViewPage;
+import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.processinstances.creation.MilestonesStepWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -24,16 +24,17 @@ import org.testng.annotations.Test;
 
 import java.time.LocalDate;
 
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_ADMIN_USER_LOGIN;
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_ADMIN_USER_PASSWORD;
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
+
 /**
  * @author Gabriela Kasza
  */
 @Listeners({TestListener.class})
 public class EditMilestoneTest extends BaseTestCase {
     protected static final String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
-    private static final String BPM_USER_LOGIN = "bpm_webselenium";
-    private static final String BPM_USER_PASSWORD = "Webtests123!";
-    private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
     private static final String CORRECT_DATA_TASK_NAME = "Correct data";
     private static final String DCP = "Data Correction Process";
     private static final String BPM_CONFIGURATION_NAME = "bpm_selenium";

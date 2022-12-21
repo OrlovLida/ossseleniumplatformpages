@@ -5,24 +5,31 @@
  */
 package com.oss.services;
 
-import java.text.MessageFormat;
-import java.util.Collections;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
-import javax.ws.rs.core.Response;
-
 import com.comarch.oss.planning.api.dto.ObjectIdDTO;
 import com.comarch.oss.planning.api.dto.ObjectsDescriptionDTO;
 import com.comarch.oss.planning.api.dto.PlanningPerspectiveDTO;
 import com.comarch.oss.planning.api.dto.v2.ProjectDTO;
+import com.comarch.oss.planningmanager.api.dto.internal.ConnectionDTO;
 import com.jayway.restassured.http.ContentType;
-import com.oss.untils.Constants;
+import com.oss.planning.PlanningContext;
 import com.oss.untils.Environment;
 
+import javax.ws.rs.core.Response;
+import java.text.MessageFormat;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+
+import static com.oss.untils.Constants.LIVE;
+import static com.oss.untils.Constants.PERSPECTIVE;
+import static com.oss.untils.Constants.PLAN;
+import static com.oss.untils.Constants.PROJECT_ID;
+import static java.net.HttpURLConnection.HTTP_NO_CONTENT;
+
 public class PlanningClient {
-    
+
     private static final String CANNOT_FIND_OBJECT = "Cannot find object with type \"{0}\" and name \"{1}\"";
     private static final String QUERY_QUERY_PARAM = "query";
     private static final String RSQL_QUERY_NAME_PARAM = "Name==\"{0}\"";
@@ -30,27 +37,30 @@ public class PlanningClient {
     private static final String QUERY_OBJECTS_V2_WITH_LIMIT_AND_START_POSITION_PATH = "/objects/v2/%s?objectLimit=%s&startPosition=%s";
     private static final String PROJECT_API_PATH = "/projects";
     private static final String PLANNING_API_PATH = "/planning/projects";
-    
+    private static final String ROOTS_API_PATH = "/roots";
+    private static final String ROOTS_CONNECTION_API_PATH = ROOTS_API_PATH + "/connection";
+
+
     private static PlanningClient instance;
-    
-    private final Environment ENV;
-    
+
+    private final Environment env;
+
+    public PlanningClient(Environment env) {
+        this.env = env;
+    }
+
     public static PlanningClient getInstance(Environment environment) {
         if (instance == null) {
             instance = new PlanningClient(environment);
         }
         return instance;
     }
-    
-    public PlanningClient(Environment env) {
-        ENV = env;
-    }
-    
+
     public Long findExistingObjectIdByNameAndType(String objectName, String objectType) {
         Optional<Long> foundObject = findObjectIdByNameAndType(objectName, objectType);
         return foundObject.orElseThrow(() -> new IllegalStateException(MessageFormat.format(CANNOT_FIND_OBJECT, objectType, objectName)));
     }
-    
+
     public Optional<Long> findObjectIdByNameAndType(String objectName, String objectType) {
         String rsqlQuery = MessageFormat.format(RSQL_QUERY_NAME_PARAM, objectName);
         ObjectsDescriptionDTO foundObjects = queryObjectsByRsqlQuery(rsqlQuery, objectType);
@@ -58,9 +68,9 @@ public class PlanningClient {
                 .findAny()
                 .map(ObjectIdDTO::getId);
     }
-    
+
     public void moveProject(Long projectId, PlanningPerspectiveDTO perspectiveDTO) {
-        ENV.getPlanningCoreSpecification()
+        env.getPlanningCoreSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(perspectiveDTO)
@@ -70,8 +80,8 @@ public class PlanningClient {
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
     }
 
-    public Long createProject(ProjectDTO projectDTO){
-        String location = ENV.getPlanningCoreSpecification()
+    public Long createProject(ProjectDTO projectDTO) {
+        String location = env.getPlanningCoreSpecification()
                 .given()
                 .contentType(ContentType.JSON)
                 .body(projectDTO)
@@ -81,11 +91,19 @@ public class PlanningClient {
                 .statusCode(Response.Status.CREATED.getStatusCode()).assertThat()
                 .extract()
                 .headers().get("Location").getValue();
-       return get(ProjectDTO.class, location).getProjectId().orElseThrow(()->new NoSuchElementException("Cannot Create Project"));
+        return get(ProjectDTO.class, location).getProjectId().orElseThrow(() -> new NoSuchElementException("Cannot Create Project"));
     }
-    
+
+    public void cancelProject(Long projectId) {
+        env.getPlanningCoreSpecification()
+                .when()
+                .delete(PLANNING_API_PATH + "/" + projectId)
+                .then()
+                .statusCode(HTTP_NO_CONTENT).assertThat();
+    }
+
     private ObjectsDescriptionDTO queryObjectsByRsqlQuery(String rsqlQuery, String objectType) {
-        return ENV.getPlanningCoreSpecification()
+        return env.getPlanningCoreSpecification()
                 .given().contentType(ContentType.JSON).queryParam(QUERY_QUERY_PARAM, rsqlQuery)
                 .log().path()
                 .when().get(MessageFormat.format(QUERY_OBJECTS_V2_PATH, objectType))
@@ -96,9 +114,9 @@ public class PlanningClient {
 
     public ObjectsDescriptionDTO getObjectByType(String objectType, String objectLimit, String startPosition) {
         String firstObjectByTypePath = String.format(QUERY_OBJECTS_V2_WITH_LIMIT_AND_START_POSITION_PATH, objectType, objectLimit, startPosition);
-        return ENV.getPlanningCoreSpecification()
+        return env.getPlanningCoreSpecification()
                 .given()
-                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .queryParam(PERSPECTIVE, LIVE)
                 .when()
                 .get(firstObjectByTypePath)
                 .then()
@@ -107,12 +125,38 @@ public class PlanningClient {
                 .as(ObjectsDescriptionDTO.class);
     }
 
+    public void connectRoots(List<ConnectionDTO> connectionDTOs, PlanningContext planningContext) {
+        if (planningContext.isPlanContext()) {
+            env.getPlanningCoreSpecification()
+                    .given()
+                    .queryParam(PERSPECTIVE, PLAN)
+                    .queryParam(PROJECT_ID, planningContext.getProjectId())
+                    .contentType(ContentType.JSON)
+                    .body(connectionDTOs)
+                    .when()
+                    .post(ROOTS_CONNECTION_API_PATH)
+                    .then()
+                    .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
+        } else {
+            env.getPlanningCoreSpecification()
+                    .given()
+                    .queryParam(PERSPECTIVE, planningContext.getPerspective())
+                    .contentType(ContentType.JSON)
+                    .body(connectionDTOs)
+                    .when()
+                    .post(ROOTS_CONNECTION_API_PATH)
+                    .then()
+                    .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
+        }
+
+    }
+
     public <T> T get(Class<T> asClass, String absoluteUri, String... pathParams) {
         return get(asClass, absoluteUri, 200, Collections.emptyMap(), pathParams);
     }
 
     public <T> T get(Class<T> asClass, String absoluteUri, int statusCode, Map<String, String> parametersMap, String... pathParams) {
-        return ENV.getPlanningCoreSpecification()
+        return env.getPlanningCoreSpecification()
                 .when()
                 .queryParameters(parametersMap)
                 .get(absoluteUri, pathParams)

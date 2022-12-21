@@ -9,9 +9,9 @@ import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.forecasts.Forecast;
 import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessCreationWizardProperties;
 import com.oss.pages.bpm.processinstances.creation.ScheduleProperties;
 import com.oss.utils.TestListener;
@@ -29,15 +29,13 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NAME_LABEL;
 
 
 @Listeners({TestListener.class})
 public class ComboProcessProgramTest extends BaseTestCase {
-    private static final String BPM_USER_LOGIN = "bpm_webselenium";
-    private static final String BPM_USER_PASSWORD = "Webtests123!";
-    private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
     private static final String PROCESS_DEFINITION_NAME_ROLES = "audit_roles";
     private static final String PROGRAM_DEFINITION_NAME_ROLES = "program_roles";
     private static final String PROGRAM_DEFINITION_NAME = "audit_program";

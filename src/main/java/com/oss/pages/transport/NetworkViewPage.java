@@ -192,14 +192,21 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Select trail type")
     public void selectTrailType(String trailType) {
-        Wizard popup = Wizard.createByComponentId(driver, wait, TRAIL_TYPE_WIZARD_ID);
-        popup.setComponentValue(TRAIL_TYPE_COMBOBOX_ID, trailType, COMBOBOX);
+        getConnectionTypeWizard().setComponentValue(TRAIL_TYPE_COMBOBOX_ID, trailType, COMBOBOX);
     }
 
     @Step("Accept trail type")
     public void acceptTrailType() {
-        Wizard wizard = Wizard.createByComponentId(driver, wait, TRAIL_TYPE_WIZARD_ID);
-        wizard.clickButtonById(TRAIL_TYPE_ACCEPT_BUTTON_ID);
+        getConnectionTypeWizard().clickButtonById(TRAIL_TYPE_ACCEPT_BUTTON_ID);
+    }
+
+    @Step("Get connection type wizard name")
+    public String getConnectionTypeWizardName() {
+        return getConnectionTypeWizard().getWizardName();
+    }
+
+    private Wizard getConnectionTypeWizard() {
+        return Wizard.createByComponentId(driver, wait, TRAIL_TYPE_WIZARD_ID);
     }
 
     @Step("Open modify termination wizard")
@@ -251,8 +258,12 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Unselect object in view content")
     public void unselectObjectInViewContent(String attributeLabel, String value) {
-        waitForPageToLoad();
         getOldTable(CONTENT_VIEW_TABLE_APP_ID).unselectRow(attributeLabel, value);
+    }
+
+    @Step("Unselect object in view content")
+    public void unselectObjectInViewContentContains(String attributeLabel, String value) {
+        getOldTable(CONTENT_VIEW_TABLE_APP_ID).unselectRowContains(attributeLabel, value);
     }
 
     @Step("Click on object in View content by partial name: {partialName} and index {index}")

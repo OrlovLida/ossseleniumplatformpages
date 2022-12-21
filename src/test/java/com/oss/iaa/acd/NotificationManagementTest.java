@@ -31,7 +31,7 @@ public class NotificationManagementTest extends BaseTestCase {
     private static final String TITLE_VALUE = "This is SELENIUM title";
     private static final String RECIPIENT_VALUE = "weronika.pawlowicz@comarch.com";
     private static final String BODY_VALUE = "This is SELENIUM notification body";
-    private static final String SCENARIO_VALUE = "APD";
+    private static final String SCENARIO_VALUE = "ASD";
     private static final String EVENT_TYPE_VALUE = "Issue Detected";
     private static final String SEARCHING_CLASS_VALUE = "Root Classification";
     private static final String QUERY_STRING_VALUE = "Test_String";
@@ -52,7 +52,6 @@ public class NotificationManagementTest extends BaseTestCase {
         notificationWizardPage.clickSaveButton();
         notificationManagementPage.searchByName(notificationRuleName);
         Assert.assertTrue(notificationManagementPage.getFirstRuleName().contains(notificationRuleName));
-
     }
 
     @Test(priority = 2, testName = "Edit Notification Rule", description = "Edit Notification Rule")

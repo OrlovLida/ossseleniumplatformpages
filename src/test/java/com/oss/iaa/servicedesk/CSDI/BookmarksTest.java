@@ -15,6 +15,7 @@ import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketSearchPage;
 import com.oss.pages.platform.bookmarksanddashboards.bookmarks.BookmarkWizardPage;
 import com.oss.pages.platform.bookmarksanddashboards.bookmarks.NewBookmarksPage;
+import com.oss.pages.platform.bookmarksanddashboards.bookmarks.ShareBookmarkWizardPage;
 
 import io.qameta.allure.Description;
 
@@ -36,6 +37,9 @@ public class BookmarksTest extends BaseTestCase {
     private static final String SEVERITY_TYPE = "Minor";
     private static final String BUTTON_SAVE_BOOKMARK = "ButtonSaveBookmark";
     private static final String MANAGEMENT_VIEW_CONTAINER_TABSCARD = "management-view__container__tabscard";
+    private static final String RECIPIENT_TYPE = "Users";
+    private static final String SHARE_TO_USER = "sd_seleniumtest2";
+    private static final String PASSWORD = "oss";
 
     NewBookmarksPage bookmarksPage;
 
@@ -118,7 +122,25 @@ public class BookmarksTest extends BaseTestCase {
         checkErrorPage(BOOKMARKS_PAGE);
     }
 
-    @Test(priority = 6, testName = "Delete Category on Bookmarks View", description = "Delete Category on Bookmarks View")
+    @Test(priority = 6, testName = "Share Category to other user", description = "Share Category to other user")
+    @Description("Share Category to other user")
+    public void shareCategory() {
+        bookmarksPage.shareCategory(CATEGORY_NAME);
+
+        ShareBookmarkWizardPage shareBookmarkWizardPage = new ShareBookmarkWizardPage(driver, webDriverWait);
+        shareBookmarkWizardPage.setRecipientType(RECIPIENT_TYPE);
+        shareBookmarkWizardPage.setName(SHARE_TO_USER);
+        shareBookmarkWizardPage.clickAddViewer();
+        shareBookmarkWizardPage.clickAccept();
+
+        bookmarksPage.openLoginPanel().changeUser(SHARE_TO_USER, PASSWORD);
+
+        bookmarksPage = NewBookmarksPage.goToBookmarksPage(driver, webDriverWait, BASIC_URL);
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        Assert.assertTrue(bookmarksPage.isObjectPresent(CATEGORY_NAME));
+    }
+
+    @Test(priority = 7, testName = "Delete Category on Bookmarks View", description = "Delete Category on Bookmarks View")
     @Description("Delete Category on Bookmarks View")
     public void deleteCategoryOnBookmarksView() {
         bookmarksPage.deleteCategory(CATEGORY_NAME);

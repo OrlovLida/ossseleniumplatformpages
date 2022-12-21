@@ -1,12 +1,12 @@
 package com.oss.pages.physical;
 
-import com.oss.framework.components.inputs.ObjectSearchField;
 import org.openqa.selenium.WebDriver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.ObjectSearchField;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
@@ -39,12 +39,15 @@ public class LocationWizardPage extends BasePage {
     private static final String NAMING_PREVIEW_LIST_ID = "namingPreviewList";
     private static final String NAME_IN_LIST_POPUP_FIELD_ID = "name-TEXT_FIELD";
     private static final String RECALCULATE_NAMING_BUTTON_ID = "recalculateNaming";
-    private final Wizard locationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
     private static final String CANCEL_BUTTON_ID = "wizard-cancel-button-physical-location-wizard";
     private static final String SUBMIT_BUTTON_ID = "wizard-submit-button-physical-location-wizard";
 
     public LocationWizardPage(WebDriver driver) {
         super(driver);
+    }
+
+    public Wizard getWizard() {
+        return Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 
     @Step("Create location with mandatory fields (location type, name, geographical address) filled in")
@@ -62,7 +65,7 @@ public class LocationWizardPage extends BasePage {
 
     @Step("Clicking on recalculate naming button using ID")
     public void clickRecalculateNaming() {
-        locationWizard.clickButtonById(RECALCULATE_NAMING_BUTTON_ID);
+        getWizard().clickButtonById(RECALCULATE_NAMING_BUTTON_ID);
     }
 
     @Step("Create Location in Step Wizard with mandatory fields - Location Type: {locationType} and Name: {locationName}.")
@@ -84,7 +87,7 @@ public class LocationWizardPage extends BasePage {
 
     @Step("Create Location with mandatory fields - Location Type: {locationType} and Name: {locationName} in any wizard")
     public void createLocationInAnyWizard(String locationType, String locationName) {
-        if (locationWizard.countNumberOfSteps() > 1) {
+        if (getWizard().countNumberOfSteps() > 1) {
             createLocationStepWizard(locationType, locationName);
         } else {
             createLocation(locationType, locationName);
@@ -95,135 +98,148 @@ public class LocationWizardPage extends BasePage {
     public void createPoP(String directPhysicalLocation) {
         setDirectPhysicalLocation(directPhysicalLocation);
         DelayUtils.waitForPageToLoad(driver, wait);
-        locationWizard.clickNext();
+        getWizard().clickNext();
         DelayUtils.waitForPageToLoad(driver, wait);
-        locationWizard.clickAccept();
+        getWizard().clickAccept();
     }
 
     @Step("Set description")
     public LocationWizardPage setDescription(String description) {
-        locationWizard.setComponentValue(LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME, description);
+        getWizard().setComponentValue(LOCATION_DESCRIPTION_DATA_ATTRIBUTE_NAME, description);
         return this;
     }
 
     @Step("Set location type")
     public void setLocationType(String locationType) {
-        locationWizard.setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType);
+        getWizard().setComponentValue(LOCATION_TYPE_DATA_ATTRIBUTE_NAME, locationType);
     }
 
     @Step("Set location name")
     public void setLocationName(String locationName) {
-        locationWizard.setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName);
+        getWizard().setComponentValue(LOCATION_NAME_DATA_ATTRIBUTE_NAME, locationName);
     }
 
     @Step("Set location abbreviation")
     public void setLocationAbbreviation(String locationAbbreviation) {
-        locationWizard.setComponentValue(LOCATION_ABBREVIATION_DATA_ATTRIBUTE_NAME, locationAbbreviation);
+        getWizard().setComponentValue(LOCATION_ABBREVIATION_DATA_ATTRIBUTE_NAME, locationAbbreviation);
     }
 
     @Step("Set location latitude")
     public void setLocationLatitude(String locationLatitude) {
-        locationWizard.setComponentValue(LOCATION_LATITUDE_DATA_ATTRIBUTE_NAME, locationLatitude);
+        getWizard().setComponentValue(LOCATION_LATITUDE_DATA_ATTRIBUTE_NAME, locationLatitude);
     }
 
     @Step("Set location longitude")
     public void setLocationLongitude(String locationLongitude) {
-        locationWizard.setComponentValue(LOCATION_LONGITUDE_DATA_ATTRIBUTE_NAME, locationLongitude);
+        getWizard().setComponentValue(LOCATION_LONGITUDE_DATA_ATTRIBUTE_NAME, locationLongitude);
     }
 
     @Step("Set location remarks")
     public void setLocationRemarks(String locationRemarks) {
-        locationWizard.setComponentValue(LOCATION_REMARKS_DATA_ATTRIBUTE_NAME, locationRemarks);
+        getWizard().setComponentValue(LOCATION_REMARKS_DATA_ATTRIBUTE_NAME, locationRemarks);
     }
 
 
     @Step("Set geographical address")
     public void setGeographicalAddress(String geographicalAddress) {
-        locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
+        getWizard().getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD)
                 .setValueContains(Data.createSingleData(geographicalAddress));
     }
 
 
     public void setFirstGeographicalAddress(String geographicalAddress) {
-        ObjectSearchField input = (ObjectSearchField) locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME);
+        ObjectSearchField input = (ObjectSearchField) getWizard().getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME);
         input.setFirstResult(geographicalAddress);
     }
 
     @Step("Set first Address in the drop-down list")
     public void setFirstAddress() {
-        if (locationWizard.getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME,
+        if (getWizard().getComponent(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME,
                 Input.ComponentType.SEARCH_FIELD).getStringValue().isEmpty()) {
-            locationWizard.setComponentValue(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, " ",
+            getWizard().setComponentValue(GEOGRAPHICAL_ADDRESS_SEARCH_DATA_ATTRIBUTE_NAME, " ",
                     Input.ComponentType.SEARCH_FIELD);
         }
     }
 
     @Step("Set Direct Physical Location")
     public void setDirectPhysicalLocation(String directPhysicalLocation) {
-        locationWizard.getComponent(LOCATION_DIRECT_PHYSICAL_LOCATION_DATA_ATTRIBUTE_NAME,
+        getWizard().getComponent(LOCATION_DIRECT_PHYSICAL_LOCATION_DATA_ATTRIBUTE_NAME,
                 Input.ComponentType.SEARCH_FIELD).setValueContains(Data.createSingleData(directPhysicalLocation));
     }
 
     @Step("Set number of locations to create")
     public void setNumberOfLocations(String count) {
-        locationWizard.setComponentValue(NUMBER_OF_LOCATIONS_DATA_ATTRIBUTE_NAME, count, Input.ComponentType.TEXT_FIELD);
+        getWizard().setComponentValue(NUMBER_OF_LOCATIONS_DATA_ATTRIBUTE_NAME, count, Input.ComponentType.TEXT_FIELD);
     }
 
     @Step("Set model")
     public void setModel(String model) {
-        locationWizard.getComponent(MODEL_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).
+        getWizard().getComponent(MODEL_DATA_ATTRIBUTE_NAME, Input.ComponentType.SEARCH_FIELD).
                 setValueContains(Data.createSingleData(model));
     }
 
     @Step("Set street")
     public void setStreet(String street) {
         LOGGER.info("Setting street to {}", street);
-        locationWizard.setComponentValue(STREET_DATA_ATTRIBUTE_NAME, street);
+        getWizard().setComponentValue(STREET_DATA_ATTRIBUTE_NAME, street);
     }
 
     @Step("Set street number")
     public void setStreetNumber(String number) {
         LOGGER.info("Setting number to {}", number);
-        locationWizard.setComponentValue(STREET_NUMBER_DATA_ATTRIBUTE_NAME, number);
+        getWizard().setComponentValue(STREET_NUMBER_DATA_ATTRIBUTE_NAME, number);
     }
 
     @Step("Set unilateral flag")
     public void setUnilateralFlag(String checkbox) {
-        locationWizard.setComponentValue(LOCATION_UNILATERAL_FLAG_DATA_ATTRIBUTE_NAME, checkbox, Input.ComponentType.CHECKBOX);
+        getWizard().setComponentValue(LOCATION_UNILATERAL_FLAG_DATA_ATTRIBUTE_NAME, checkbox, Input.ComponentType.CHECKBOX);
     }
 
     @Step("Set Location Type if empty")
     public void setTypeIfEmpty(String type) {
-        if (locationWizard.getComponent(LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).getValue() == null) {
-            locationWizard.setComponentValue(LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, type, Input.ComponentType.COMBOBOX);
+        if (getWizard().getComponent(LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, Input.ComponentType.COMBOBOX).getValue() == null) {
+            getWizard().setComponentValue(LOGICAL_LOCATION_TYPE_DATA_ATTRIBUTE_NAME, type, Input.ComponentType.COMBOBOX);
         }
     }
 
     @Step("Set first City if empty")
     public void setCityIfEmpty() {
-        if (locationWizard.getComponent(CITY_ATTRIBUTE_NAME).getValue() == null) {
-            locationWizard.setComponentValue(CITY_ATTRIBUTE_NAME, "");
+        if (getWizard().getComponent(CITY_ATTRIBUTE_NAME).getValue() == null) {
+            getWizard().setComponentValue(CITY_ATTRIBUTE_NAME, "");
         }
     }
 
     @Step("Click Next Step button")
     public void clickNext() {
-        locationWizard.clickNext();
+        getWizard().clickNext();
     }
 
     @Step("Click Cancel button")
     public void clickCancel() {
-        locationWizard.clickButtonById(CANCEL_BUTTON_ID);
+        getWizard().clickButtonById(CANCEL_BUTTON_ID);
     }
 
     @Step("Click Accept button")
     public void accept() {
-        locationWizard.clickAccept();
+        getWizard().clickAccept();
     }
 
     @Step("Click Create button")
     public void create() {
-        locationWizard.clickButtonById(SUBMIT_BUTTON_ID);
+        getWizard().clickButtonById(SUBMIT_BUTTON_ID);
+    }
+
+    public String getCurrentStepTitle() {
+        return getWizard().getCurrentStepTitle();
+    }
+
+    public boolean isParentLocationGreyedOut() {
+        Input.MouseCursor cursor = getWizard().getComponent(LOCATION_PARENT_LOCATION_DATA_ATTRIBUTE_NAME).cursor();
+        return Input.MouseCursor.NOT_ALLOWED.equals(cursor);
+    }
+
+    public String getParenLocation() {
+        return getWizard().getComponent(LOCATION_PARENT_LOCATION_DATA_ATTRIBUTE_NAME).getStringValue();
     }
 
 }

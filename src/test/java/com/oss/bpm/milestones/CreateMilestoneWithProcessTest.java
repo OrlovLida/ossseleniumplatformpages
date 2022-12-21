@@ -9,8 +9,8 @@ package com.oss.bpm.milestones;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.milestones.Milestone;
+import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.processinstances.creation.MilestonesStepWizardPage;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -23,16 +23,14 @@ import org.testng.collections.Lists;
 import java.time.LocalDate;
 import java.util.List;
 
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
+import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
+
 /**
  * @author Gabriela Kasza
  */
 @Listeners({TestListener.class})
 public class CreateMilestoneWithProcessTest extends BaseTestCase {
-    private static final String BPM_USER_LOGIN = "bpm_webselenium";
-    private static final String BPM_USER_PASSWORD = "Webtests123!";
-    private static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
-    private static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
-
     private static final String MILESTONE_DESCRIPTION = "Selenium Test " + LocalDate.now();
     private static final String PROCESS_NAME = "Selenium Test.Milestone-";
     private static final String GK_MILESTONES = "GK Milestones";

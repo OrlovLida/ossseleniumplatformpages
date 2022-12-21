@@ -1,5 +1,6 @@
 package com.oss.web;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
@@ -31,8 +32,8 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
     private final static String COMBO_ATTRIBUTE_LABEL = "Lifecycle State";
     private final static String OSF_ATTRIBUTE_LABEL = "director";
     private final static int DEFAULT_ROW_INDEX = 0;
-    private final static String FILTER_NAME = "WEB_TEST_FILTER";
-    private final static String FILTER_NAME_PERSON = "WEB_TEST_FILTER_PERSON";
+    private final static String FILTER_NAME = "WEB_TEST_FILTER" + LocalDate.now();
+    private final static String FILTER_NAME_PERSON = "WEB_TEST_FILTER_PERSON" + LocalDate.now();
     private static final String LAST_NAME_ID = "lastName";
     private static final String NATIONALITY_COLUMN_ID = "nationality";
     private static final String NATIONALITY_LABEL = "Nationality";
@@ -45,6 +46,7 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
     private static final String TEST_PERSON = "TestPerson";
     private static final String TEST_MOVIE = "TestMovie";
     private static final String QUICK_FILTERS_ID = "quick_filters";
+    private static final String UNCATEGORIZED = "Uncategorized";
 
     private NewInventoryViewPage inventoryViewPage;
     private TableWidget tableWidget;
@@ -57,7 +59,7 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
 
     @AfterClass
     public void clear() {
-        FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL).expandAllCategories().deleteAllFilters();
+        FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL).expandFolder(UNCATEGORIZED).deleteFilter(FILTER_NAME);
     }
 
     private Predicate<String> containsValue(String val) {
@@ -272,6 +274,8 @@ public class AdvancedSearchCompactTest extends BaseTestCase {
 
         int totalCountAfterClearFilters = inventoryViewPage.getMainTable().getPagination().getTotalCount();
         Assert.assertEquals(totalCountAfterClearFilters, totalCount);
+
+        FilterManagerPage.goToFilterManagerPage(driver, BASIC_URL).expandFolder(UNCATEGORIZED).deleteFilter(FILTER_NAME_PERSON);
     }
 
     @Test(priority = 13)

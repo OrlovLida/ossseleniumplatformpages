@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.assertj.core.api.Assertions;
-import org.openqa.selenium.By;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -89,21 +88,13 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String DEVICE_ROOT_SLOT_PATH = DEVICE_ROOT_SLOTS_RELATION_PATH + ".0";
     private static final String DEVICE_ROOT_PORT_04 = DEVICE_ROOT_SLOT_PATH + ".Card.A9K-8T-B.Ports.04";
     private static final String DEVICE_ROOT_PORT_05 = DEVICE_ROOT_SLOT_PATH + ".Card.A9K-8T-B.Ports.05";
-    private static final String BADGE_1_21 = "1/21";
-    private static final String BADGE_1_1 = "1/1";
-    private static final String BADGE_1_38 = "1/38";
+
     private static final String CHECK_BUDGE_FOR_ROUTER = "Check budge for Router";
     private static final String IS_BUDGET_PRESENT_FOR_DEVICE = "Is Budget present For Device";
-    private static final String BADGE_1_36 = "1/36";
-    private static final String BADGE_2_38 = "2/38";
-    private static final String BADGE_1_18 = "1/18";
-    private static final String BADGE_1_2 = "1/2";
-    private static final String BADGE_2_18 = "2/18";
-    private static final String BADGE_2_36 = "2/36";
-    private static final String BADGE_3_38 = "3/38";
-    private static final String BADGE_3_36 = "3/36";
-    private static final String BADGE_4_38 = "4/38";
-    private static final String BADGE_3_18 = "3/18";
+    private static final String BADGE_1 = "1";
+    private static final String BADGE_2 = "2";
+    private static final String BADGE_3 = "3";
+    private static final String BADGE_4 = "4";
     private static final String CHECKING_BADGES_FOR_SLOTS_RELATION = "Checking bages for Slots Relation";
     private static final String CHECK_BADGE_FOR_PORT_05 = "Check badge for port 05";
 
@@ -330,43 +321,43 @@ public class TreeWidgetTest extends BaseTestCase {
         Assertions.assertThat(router.isBadgePresent()).as(IS_BUDGET_PRESENT_FOR_DEVICE).isFalse();
 
         router.toggleNode();
-        Assertions.assertThat(router.getBadge()).as(CHECK_BUDGE_FOR_ROUTER).isEqualTo(BADGE_1_1);
+        Assertions.assertThat(router.getBadge()).as(CHECK_BUDGE_FOR_ROUTER).isEqualTo(BADGE_1);
 
         router.expandNextLevel();
-        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_1_21);
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_1);
 
         Node slot = viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH);
         slot.expandNextLevel();
-        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_1_38);
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_1);
 
         viewPage.selectNodeByLabel(CARD_MODEL);
-        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_NAME_2).getBadge()).isEqualTo(BADGE_2_38);
-        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH).getBadge()).isEqualTo(BADGE_1_18);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_NAME_2).getBadge()).isEqualTo(BADGE_2);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH).getBadge()).isEqualTo(BADGE_1);
 
         Node slotsRelation = viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOTS_RELATION_PATH);
-        Assertions.assertThat(slotsRelation.getBadge()).isEqualTo(BADGE_1_36);
+        Assertions.assertThat(slotsRelation.getBadge()).isEqualTo(BADGE_1);
 
         Node port04 = viewPage.getNodeByLabelPath(DEVICE_ROOT_PORT_04);
         port04.toggleNode();
-        Assertions.assertThat(port04.getBadge()).isEqualTo(BADGE_1_2);
-        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH).getBadge()).isEqualTo(BADGE_2_18);
-        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOTS_RELATION_PATH).getBadge()).isEqualTo(BADGE_2_36);
-        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_NAME_2).getBadge()).isEqualTo(BADGE_3_38);
+        Assertions.assertThat(port04.getBadge()).isEqualTo(BADGE_1);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOT_PATH).getBadge()).isEqualTo(BADGE_2);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_ROOT_SLOTS_RELATION_PATH).getBadge()).isEqualTo(BADGE_2);
+        Assertions.assertThat(viewPage.getNodeByLabelPath(DEVICE_NAME_2).getBadge()).isEqualTo(BADGE_3);
 
         Node port05 = viewPage.getNodeByLabelPath(DEVICE_ROOT_PORT_05);
         port05.toggleNode();
-        Assertions.assertThat(port05.getBadge()).as(CHECK_BADGE_FOR_PORT_05).isEqualTo(BADGE_1_2);
-        Assertions.assertThat(slot.getBadge()).isEqualTo(BADGE_3_18);
-        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BADGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_3_36);
-        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_4_38);
+        Assertions.assertThat(port05.getBadge()).as(CHECK_BADGE_FOR_PORT_05).isEqualTo(BADGE_1);
+        Assertions.assertThat(slot.getBadge()).isEqualTo(BADGE_3);
+        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BADGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_3);
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_4);
 
         port04.toggleNode();
         Assertions.assertThat(port04.isBadgePresent()).isFalse();
-        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BADGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_2_36);
-        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_3_38);
+        Assertions.assertThat(slotsRelation.getBadge()).as(CHECKING_BADGES_FOR_SLOTS_RELATION).isEqualTo(BADGE_2);
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_3);
 
         viewPage.unselectFirstObject();
-        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_2_38);
+        Assertions.assertThat(router.getBadge()).isEqualTo(BADGE_2);
 
     }
 
