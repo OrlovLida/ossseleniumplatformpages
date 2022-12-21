@@ -44,7 +44,7 @@ import com.oss.pages.transport.trail.ConnectionWizardPage;
 
 import io.qameta.allure.Description;
 
-public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
+public class BucOssPla002Test extends BaseTestCase {
     private static final String DEVICE_MODEL = "CISCO1941/K9";
     private static final String LOCATION_NAME = "Poznan-BU1";
     private static final String CM_DOMAIN_NAME = "SeleniumE2ETest";

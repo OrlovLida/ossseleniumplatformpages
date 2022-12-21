@@ -29,7 +29,7 @@ import com.oss.pages.reconciliation.SamplesManagementPage;
 
 import io.qameta.allure.Description;
 
-public class UC_NAR_001_Test extends BaseTestCase {
+public class BucOssNar001Test extends BaseTestCase {
 
     private static final String OBJECT_NAME = "UCNAR001Router";
     private static final String CM_DOMAIN_NAME = "UC_NAR_001";

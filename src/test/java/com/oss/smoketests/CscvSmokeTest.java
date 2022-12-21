@@ -34,7 +34,7 @@ import com.oss.untils.Environment;
 
 import io.qameta.allure.Description;
 
-public class CSCV_Smoke_Test extends BaseTestCase {
+public class CscvSmokeTest extends BaseTestCase {
 
     private static final String PATH_NAME = "gismap";
     private static final String FILE_NAME = "smoketestCSCV.png";
@@ -62,7 +62,7 @@ public class CSCV_Smoke_Test extends BaseTestCase {
     private static final String POSTAL_CODE = "Postal Code";
     private static final String PROPERTY_PANEL_ID = "propertiesTabbApp";
     private static String FILE_PATH;
-    private static final Logger LOGGER = LoggerFactory.getLogger(CSCV_Smoke_Test.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(CscvSmokeTest.class);
     private Environment env = Environment.getInstance();
 
     @Test(priority = 1, description = "Open Cell Site Configuration View")

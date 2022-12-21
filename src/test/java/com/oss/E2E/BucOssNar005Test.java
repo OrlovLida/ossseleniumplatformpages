@@ -31,7 +31,7 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
 @Listeners({TestListener.class})
-public class UC_NAR_005_Test extends BaseTestCase {
+public class BucOssNar005Test extends BaseTestCase {
 
     private static final String CM_DOMAIN_NAME = "UC-NAR-005";
     private static final String CM_INTERFACE_NAME = "CISCO IOS 12/15/XE without mediation";

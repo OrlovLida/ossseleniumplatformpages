@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.icons.interactiveicons.Star;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabs.TabsWidget;
@@ -21,6 +22,7 @@ public abstract class BaseBookmarkAndDashboardPage extends BasePage {
     private static final String NAME_COLUMN_ID = "name";
     private static final String TABS_CONTAINER_ID = "management-view__container__tabscard";
     private static final String REFRESH_BUTTON_ID = "refreshButton";
+    private static final String FAVOURITE_COLUMN_ID = "favourite";
 
     protected BaseBookmarkAndDashboardPage(WebDriver driver, WebDriverWait wait) {
         super(driver, wait);
@@ -126,7 +128,27 @@ public abstract class BaseBookmarkAndDashboardPage extends BasePage {
         return getTreeTable().isValuePresent(name, NAME_COLUMN_ID);
     }
 
-    protected TreeTableWidget getTreeTable() {
+    public void setFavourite(String objectName) {
+        Star favourite = getFavouriteIcon(objectName);
+        favourite.setValue(Star.StarStatus.MARK);
+
+    }
+
+    public void unmarkFavourite(String objectName) {
+        Star favourite = getFavouriteIcon(objectName);
+        favourite.setValue(Star.StarStatus.UNMARK);
+    }
+
+    public Star.StarStatus getFavouriteStatus(String objectName) {
+        Star favourite = getFavouriteIcon(objectName);
+        return favourite.getValue();
+    }
+
+    private Star getFavouriteIcon(String objectName) {
+        return (Star) getTreeTable().getCell(getRowByName(objectName), FAVOURITE_COLUMN_ID).getInteractiveIcon();
+    }
+
+    public TreeTableWidget getTreeTable() {
         return TreeTableWidget.createById(driver, wait, getTreeTableId());
     }
 
