@@ -3,6 +3,7 @@ package com.oss.pages.iaa.faultmanagement;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -10,7 +11,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.inputs.Button;
+import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.prompts.Modal;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.iaa.widgets.table.FMSMTable;
@@ -30,6 +33,9 @@ public class WAMVPage extends BasePage {
     private static final String BUTTON_DEACK_TEST_ID = "Deacknowledge";
     private static final String BUTTON_NOTE_TEST_ID = "Edit Note";
     private static final String BUTTON_ALARM_DETAILS_ID = "Details";
+    private static final String BUTTON_ALL_ACTIONS_ID = "COMMON_TOOLBAR_MORE_BUTTON";
+    private static final String CREATE_TT_ACTION_ID = "Create TT in Service Desk";
+    private static final String SEARCH_FIELD_ALL_ACTIONS_ID = "extendedSearchComponent_extended-search-component-test-id";
     private static final String ACKNOWLEDGE_COLUMN_ID = "cell-row-col-acknowledge";
     private static final String NOTIFICATION_IDENTIFIER_COLUMN_ID = "cell-row-col-notificationIdentifier";
     private static final String NOTE_COLUMN_ID = "cell-row-col-note";
@@ -110,6 +116,15 @@ public class WAMVPage extends BasePage {
         log.info("Open alarm details from AREA2");
     }
 
+    @Step("Create Trouble Ticket from context action in AREA2")
+    public void createTroubleTicket() {
+        DelayUtils.sleep(5000);
+        createButton(BUTTON_ALL_ACTIONS_ID).click();
+        searchInDropdown(CREATE_TT_ACTION_ID);
+        createButton(CREATE_TT_ACTION_ID).click();
+        log.info("Create Trouble Ticket from context action in AREA2");
+    }
+
     @Step("I get notification identifier from Alarms Details Modal View")
     public String getNotificationIdentifierFromAlarmDetailsModal() {
         log.info("Checking notification identifier value from Alarm Details Modal View");
@@ -164,11 +179,28 @@ public class WAMVPage extends BasePage {
         return false;
     }
 
+    @Step("Check page title in opened new tab")
+    public boolean checkPageTitleInNewTab(String pageTitle) {
+        DelayUtils.sleep(5000);
+        Set<String> allWindowHandles = driver.getWindowHandles();
+        String[] iterator = allWindowHandles.toArray(new String[0]);
+        driver.switchTo().window(iterator[1]);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        log.info("Check if page title contains {}", pageTitle);
+        return getViewTitle().contains(pageTitle);
+    }
+
     @Step("Search in view for specific attribute")
     public void searchInView(String searchedAttribute, String widgetId) {
         DelayUtils.waitForPageToLoad(driver, wait);
         AdvancedSearch.createByWidgetId(driver, wait, widgetId).fullTextSearch(searchedAttribute);
         log.info("Searching in {} for text {}", widgetId, searchedAttribute);
+    }
+
+    @Step("Search in dropdown for specific action")
+    public void searchInDropdown(String action) {
+        ComponentFactory.create(SEARCH_FIELD_ALL_ACTIONS_ID, driver, wait).setSingleStringValue(action);
+        log.info("Searching in dropdown for action {}", action);
     }
 
     @Step("Sorting column {columnHeader} Ascending")
@@ -200,6 +232,23 @@ public class WAMVPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         return LocalDateTime.parse(date2, DATE_TIME_FORMATTER)
                 .isAfter(LocalDateTime.parse(date1, DATE_TIME_FORMATTER));
+    }
+
+    public String getMessageFromPrompt() {
+        return SystemMessageContainer.create(driver, wait)
+                .getFirstMessage()
+                .map(SystemMessageContainer.Message::getText)
+                .orElse(null);
+    }
+
+    public String getIdFromMessage() {
+        if (!getMessageFromPrompt().isEmpty()) {
+            String[] splitMessage = getMessageFromPrompt().split(" ");
+            int lastWordIndex = splitMessage.length -1;
+            log.info("id is: {}", splitMessage[lastWordIndex]);
+            return splitMessage[lastWordIndex];
+        }
+        return "No message is shown";
     }
 
     private OldPropertyPanel getPropertyPanel() {
