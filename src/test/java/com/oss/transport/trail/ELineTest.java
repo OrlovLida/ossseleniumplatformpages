@@ -9,7 +9,6 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.platform.NewInventoryViewPage;
 import com.oss.pages.platform.SearchObjectTypePage;
@@ -28,7 +27,7 @@ public class ELineTest extends BaseTestCase {
     private static final String ELINE_NAME_CREATE = "Eline_Selenium_Test" + (int) (Math.random() * 1001);
     private static final String ELINE_CAPACITY_UNIT = "bps";
     private static final String ELINE_CAPACITY_VALUE_CREATE = "128000000";
-    private static final String ELINE_NAME_ATTRIBUTE = "name";
+    private static final String NAME_ATTRIBUTE = "name";
     private static final String CAPACITY_VALUE_NAME = "capacityValue";
     private static final String CAPACITY_UNIT_NAME = "capacityUnit";
     private static final String ASSERT_MESSAGE_PATTERN = "%s assertion failed";
@@ -45,16 +44,15 @@ public class ELineTest extends BaseTestCase {
     private static final String END_PORT_TERMINATION = "MGT LAN 1";
     private static final String END_TERMINATION_POINT = "MGT LAN 1";
     private static final String TERMINATION_POINT_NAME_COLUMN = "terminationPoint.name";
-    private static final String TERMINATIONS_TAB_ID = "TerminationIndexedWidget";
     private static final String ETHERNET_LINK_NAME = "SeleniumElineTest";
     private static final String CONNECTION_NAME_COLUMN = "trail.name";
-    private static final String ROUTING_1ST_LEVEL_TAB_ID = "RoutingSegmentIndexedWidget";
-    private static final String ADD_TO_ROUTING_BUTTON = "EDIT_Add to Routing-null";
-    private static final String ELEMENT_ROUTING_WIZARD_ID = "routingElementWizardWidget";
     private static final String MESSAGE_NOT_REMOVED = "The object has not been removed";
     private static final String DELETE_CONFIRMATION_BOX = "wizard-submit-button-deleteWidgetId";
     private static final String DELETE_ELINE = "DeleteTrailWizardActionId";
     private static final String DELETE_ELINE_WIZARD_ID = "deleteWidgetId";
+    private static final String TYPE_COLUMN = "terminationType";
+    private static final String START_TYPE = "Start";
+    private static final String END_TYPE = "End";
 
     @Test(priority = 1, description = "Create E-Line")
     @Description("Create E-Line")
@@ -89,6 +87,7 @@ public class ELineTest extends BaseTestCase {
         setPreciseTerminations();
         networkViewPage.selectObjectInViewContentContains(NAME_COLUMN_LABEL, ELINE_NAME_UPDATE);
         networkViewPage.openTerminationsTab();
+        // TERMINATIONS_TAB_ID - należy wykorzystać metodę z NetworkViewPage - isObjectInTerminations
         // assertPresenceOfObjectInTab(0, TERMINATION_POINT_NAME_COLUMN, TERMINATIONS_TAB_ID, START_TERMINATION_POINT);
         // assertPresenceOfObjectInTab(1, TERMINATION_POINT_NAME_COLUMN, TERMINATIONS_TAB_ID, END_TERMINATION_POINT);
     }
@@ -110,8 +109,7 @@ public class ELineTest extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.unselectObjectInViewContent(NAME_COLUMN_LABEL, ELINE_NAME_UPDATE_FULL);
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_NAME_1);
-        networkViewPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, ADD_TO_ROUTING_BUTTON);
-        Wizard.createByComponentId(driver, webDriverWait, ELEMENT_ROUTING_WIZARD_ID).clickAccept();
+        networkViewPage.addSelectedObjectsToElementRouting();
         networkViewPage.unselectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_NAME_1);
         networkViewPage.selectObjectInViewContentContains(NAME_COLUMN_LABEL, ELINE_NAME_UPDATE);
         networkViewPage.openRoutingElementsTab();
@@ -124,9 +122,9 @@ public class ELineTest extends BaseTestCase {
     public void removeTerminations() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.openTerminationsTab();
-        selectAndRemoveTermination();
-        selectAndRemoveTermination();
-        assertIfTableIsEmpty(TERMINATIONS_TAB_ID);
+        selectAndRemoveTermination(START_TYPE);
+        selectAndRemoveTermination(END_TYPE);
+        assertIfTerminationTableIsEmpty();
     }
 
     @Test(priority = 7, description = "Remove trail from routing", dependsOnMethods = {"addTrailToRouting"})
@@ -135,7 +133,7 @@ public class ELineTest extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.openRouting1stLevelTab();
         selectAndRemoveConnectionFromRouting();
-        assertIfTableIsEmpty(ROUTING_1ST_LEVEL_TAB_ID);
+        assertIfRoutingTableIsEmpty();
     }
 
     @Test(priority = 8, description = "Remove E-Line", dependsOnMethods = "createEline")
@@ -181,7 +179,7 @@ public class ELineTest extends BaseTestCase {
     private void assertElineAttributesValue(String elineName, String elineCapacityValue) {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(networkViewPage.getAttributeValue(ELINE_NAME_ATTRIBUTE), elineName, String.format(ASSERT_MESSAGE_PATTERN, ELINE_NAME_ATTRIBUTE));
+        softAssert.assertEquals(networkViewPage.getAttributeValue(NAME_ATTRIBUTE), elineName, String.format(ASSERT_MESSAGE_PATTERN, NAME_ATTRIBUTE));
         softAssert.assertEquals(networkViewPage.getAttributeValue(CAPACITY_VALUE_NAME), elineCapacityValue, String.format(ASSERT_MESSAGE_PATTERN, CAPACITY_VALUE_NAME));
         softAssert.assertEquals(networkViewPage.getAttributeValue(CAPACITY_UNIT_NAME), ELINE_CAPACITY_UNIT, String.format(ASSERT_MESSAGE_PATTERN, CAPACITY_UNIT_NAME));
         softAssert.assertAll();
@@ -190,7 +188,7 @@ public class ELineTest extends BaseTestCase {
     private void addDeviceToNetworkView(String deviceName) {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
-        networkViewPage.queryElementAndAddItToView("name", deviceName);
+        networkViewPage.queryElementAndAddItToView(NAME_ATTRIBUTE, deviceName);
     }
 
     private void setPreciseTerminations() {
@@ -213,14 +211,13 @@ public class ELineTest extends BaseTestCase {
 
     private void assertPresenceOfObjectInTab() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        String objectValue = networkViewPage.getObjectValueFromTab(0, CONNECTION_NAME_COLUMN, ROUTING_1ST_LEVEL_TAB_ID);
-        Assert.assertEquals(objectValue, ETHERNET_LINK_NAME, String.format("%s value is not correct", ETHERNET_LINK_NAME));
+        Assert.assertTrue(networkViewPage.isObjectInRouting1stLevel(ETHERNET_LINK_NAME, CONNECTION_NAME_COLUMN), "Routing Table is empty");
     }
 
     private void addConnectionToNetworkView() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.CONNECTION_ACTION);
-        networkViewPage.queryElementAndAddItToView("name", ETHERNET_LINK_NAME);
+        networkViewPage.queryElementAndAddItToView(NAME_ATTRIBUTE, ETHERNET_LINK_NAME);
     }
 
     private void assertPresenceOfObjectInOldTab() {
@@ -228,20 +225,26 @@ public class ELineTest extends BaseTestCase {
         Assert.assertTrue(networkViewPage.isObjectInRoutingElements(NAME_COLUMN_LABEL, DEVICE_NAME_1), "Element Routing Table is empty");
     }
 
-    private void selectAndRemoveTermination() {
+    private void selectAndRemoveTermination(String typeName) {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        TableWidget.createById(driver, TERMINATIONS_TAB_ID, webDriverWait).selectFirstRow();
+        networkViewPage.selectTermination(TYPE_COLUMN, typeName);
         networkViewPage.removeSelectedTerminations();
         networkViewPage.refreshTerminationsTab();
     }
 
-    private void assertIfTableIsEmpty(String tabID) {
-        Assert.assertTrue(TableWidget.createById(driver, tabID, webDriverWait).hasNoData(), MESSAGE_NOT_REMOVED);
+    private void assertIfTerminationTableIsEmpty() {
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        Assert.assertFalse(networkViewPage.isObjectInTerminations(START_TERMINATION_POINT, TERMINATION_POINT_NAME_COLUMN), MESSAGE_NOT_REMOVED);
+    }
+
+    private void assertIfRoutingTableIsEmpty() {
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        Assert.assertFalse(networkViewPage.isObjectInRouting1stLevel(ETHERNET_LINK_NAME, CONNECTION_NAME_COLUMN), MESSAGE_NOT_REMOVED);
     }
 
     private void selectAndRemoveConnectionFromRouting() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        TableWidget.createById(driver, ROUTING_1ST_LEVEL_TAB_ID, webDriverWait).selectFirstRow();
+        networkViewPage.selectConnectionInRouting(CONNECTION_NAME_COLUMN, ETHERNET_LINK_NAME);
         networkViewPage.deleteSelectedConnectionsFromRouting();
         networkViewPage.refreshFirstLevelRoutingTab();
     }
