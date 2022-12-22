@@ -2,37 +2,37 @@
 <suite name="Smoke_tests" thread-count="1" parallel="tests" verbose="1">
     <test name="InventoryView">
         <classes>
-            <class name="com.oss.smoketests.IV_Smoke_Test"/>
+            <class name="com.oss.smoketests.InventoryViewSmokeTest"/>
         </classes>
     </test>
     <test name="HierarchyView">
         <classes>
-            <class name="com.oss.smoketests.HV_Smoke_Test"/>
+            <class name="com.oss.smoketests.HierarchyViewSmokeTest"/>
         </classes>
     </test>
     <test name="TasksView">
         <classes>
-            <class name="com.oss.smoketests.Tasks_Smoke_Test"/>
+            <class name="com.oss.smoketests.TasksSmokeTest"/>
         </classes>
     </test>
     <test name="GisView">
         <classes>
-            <class name="com.oss.smoketests.GIS_Map_Smoke_Test"/>
+            <class name="com.oss.smoketests.GisMapSmokeTest"/>
         </classes>
     </test>
     <test name="NetworkView">
         <classes>
-            <class name="com.oss.smoketests.Network_View_Smoke_Test"/>
+            <class name="com.oss.smoketests.NetworkViewSmokeTest"/>
         </classes>
     </test>
     <test name="CSCView">
         <classes>
-            <class name="com.oss.smoketests.CSCV_Smoke_Test"/>
+            <class name="com.oss.smoketests.CscvSmokeTest"/>
         </classes>
     </test>
     <test name="Bookmarks">
         <classes>
-            <class name="com.oss.smoketests.Bookmarks_Smoke_Test"/>
+            <class name="com.oss.smoketests.BookmarksSmokeTest"/>
         </classes>
     </test>
 </suite>

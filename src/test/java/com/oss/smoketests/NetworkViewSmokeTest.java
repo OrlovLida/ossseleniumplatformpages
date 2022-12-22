@@ -15,7 +15,7 @@ import com.oss.pages.transport.NetworkViewPage;
 
 import io.qameta.allure.Description;
 
-public class Network_View_Smoke_Test extends BaseTestCase {
+public class NetworkViewSmokeTest extends BaseTestCase {
 
     private static final String CATEGORY_NAME = "Network Domains";
     private static final String VIEW_NAME = "Network View";

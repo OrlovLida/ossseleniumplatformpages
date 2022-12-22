@@ -1,5 +1,14 @@
 package com.oss.E2E;
 
+import java.time.Duration;
+import java.util.Optional;
+
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
@@ -19,17 +28,10 @@ import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.Radio4gRepository;
 import com.oss.services.RadioClient;
 import com.oss.untils.Environment;
+
 import io.qameta.allure.Description;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
-import java.time.Duration;
-import java.util.Optional;
-
-public class BUC_INV_RAN_001_Test extends BaseTestCase {
+public class BucOssRan001Test extends BaseTestCase {
 
     private static final String LOCATION_NAME = "Denver1";
     private static final String ENODEB_NAME = "Denver41";
@@ -359,7 +361,7 @@ public class BUC_INV_RAN_001_Test extends BaseTestCase {
 
     private void checkMessageContainsText(String systemMessageLog) {
         String message = getFirstMessage().getText();
-        softAssert.assertTrue(message.contains(BUC_INV_RAN_001_Test.TASK_COMPLETED), systemMessageLog + ". " + message);
+        softAssert.assertTrue(message.contains(BucOssRan001Test.TASK_COMPLETED), systemMessageLog + ". " + message);
     }
 
     private void checkMessageText(String message, String systemMessageLog) {

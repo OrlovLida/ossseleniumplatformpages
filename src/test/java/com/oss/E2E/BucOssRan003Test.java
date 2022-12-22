@@ -21,7 +21,7 @@ import com.oss.pages.radio.EditCell4GBulkWizardPage;
 
 import io.qameta.allure.Description;
 
-public class TP_OSS_RM_RAN_003_Test extends BaseTestCase {
+public class BucOssRan003Test extends BaseTestCase {
 
     private static final String LOCATION_NAME = "XYZ";
     private static final String E_NODE_B_NAME = "TP_OSS_RM_RAN_003_ENODEB";

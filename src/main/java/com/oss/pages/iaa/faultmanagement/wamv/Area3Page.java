@@ -10,6 +10,7 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.HtmlEditor;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.iaa.widgets.list.ListApp;
+import com.oss.framework.iaa.widgets.table.FMSMTable;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
@@ -36,6 +37,8 @@ public class Area3Page extends WAMVPage {
     private static final String ROOT_CAUSE_ALARMS_TAB_ID = "root-cause-alarms";
 
     private static final String AREA_3_ID = "AREA3";
+    private static final String AREA_3_TABLE_WIDGET_ID = "area3-trouble-tickets";
+    private static final String TICKET_ID_COLUMN_ID = "cell-row-col-id";
     private static final String ADAPTER_NAME_VALUE = "Adapter Name";
     private static final String NOTIFICATION_IDENTIFIER_VALUE = "Notification Identifier";
     private static final String PERCEIVED_SEVERITY_VALUE = "Perceived Severity";
@@ -45,6 +48,7 @@ public class Area3Page extends WAMVPage {
     private static final String ACTIVE_TAB_CLASS = "active";
     private static final String EDIT_BUTTON_KNOW_HOW_TAB_ID = "btn|know-how-mo-configurator|edit";
     private static final String ADDITIONAL_TEXT_FIELD_ID = "TEXT_FIELD_COMPONENT-text|area3|additional-text";
+    private static final String BUTTON_OPEN_TT_DETAILS_ID = "TT Details";
 
     public Area3Page(WebDriver driver) {
         super(driver);
@@ -176,6 +180,26 @@ public class Area3Page extends WAMVPage {
         }
     }
 
+    @Step("Get first Trouble Ticket ID from TT tab")
+    public String getFirstTroubleTicketIdFromTTTab() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return getFMSMTable(AREA_3_TABLE_WIDGET_ID).getCellValue(0, TICKET_ID_COLUMN_ID);
+    }
+
+    @Step("Get first Trouble Ticket ID from TT tab")
+    public void selectSpecificRowFromTTTabTable(int row) {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getFMSMTable(AREA_3_TABLE_WIDGET_ID).selectRow(row);
+        log.info("Selecting row {} in the table in TT Tab", row);
+    }
+
+    @Step("I click on open TT Details button")
+    public void clickOpenTTDetailsButton() {
+        DelayUtils.sleep(1000);
+        createButton(BUTTON_OPEN_TT_DETAILS_ID).click();
+        log.info("Clicking on open TT Details button");
+    }
+
     @Step("I check if additional text is displayed")
     public boolean isAdditionalTextDisplayed(String expectedText, String windowId) {
         String text = ListApp.createFromParent(driver, wait, windowId).getValueFromField(ADDITIONAL_TEXT_FIELD_ID);
@@ -227,6 +251,10 @@ public class Area3Page extends WAMVPage {
         DelayUtils.waitForPageToLoad(driver, wait);
         HtmlEditor htmlEditor = HtmlEditor.create(driver, wait, componentId);
         return htmlEditor.getStringValue();
+    }
+
+    private FMSMTable getFMSMTable(String fmSmTableId) {
+        return FMSMTable.createById(driver, wait, fmSmTableId);
     }
 
     private OldPropertyPanel getArea3PropertyPanel() {
