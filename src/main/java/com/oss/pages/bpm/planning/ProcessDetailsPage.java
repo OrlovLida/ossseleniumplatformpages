@@ -37,7 +37,7 @@ public class ProcessDetailsPage extends BasePage {
         super(driver);
     }
 
-    public static ProcessDetailsPage goToProcessDetailsView(WebDriver driver, String basicURL, int projectId) {
+    public static ProcessDetailsPage goToProcessDetailsView(WebDriver driver, String basicURL, Long projectId) {
         driver.get(String.format("%s/#/view/planning/projects" +
                 "?project_id=%d" + "&perspective=PLAN", basicURL, projectId));
         return new ProcessDetailsPage(driver);
