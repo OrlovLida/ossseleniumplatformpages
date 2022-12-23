@@ -18,6 +18,7 @@ import com.oss.pages.bpm.tasks.SetupIntegrationProperties;
 import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.planning.PlanningContext;
 import com.oss.untils.FakeGenerator;
+import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -26,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -61,6 +63,8 @@ import static com.oss.pages.bpm.tasks.TasksPageV2.VERIFICATION_TASK;
  * @author Gabriela Kasza
  * @author Paweł Rother
  */
+
+@Listeners({TestListener.class})
 public class CreateProcessNRPTest extends BaseTestCase {
     private static final String EMPTY_LIST_EXCEPTION = "The list is empty";
     private static final String DEVICE_MODEL = "7705 SAR-8";
@@ -101,23 +105,6 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private String chassis1Id;
     private String device2Id;
     private String chassis2Id;
-
-
-    private void waitForPageToLoad() {
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-    }
-
-    private void assertSystemMessage(String messageContent, SystemMessageContainer.MessageType messageType, String systemMessageLog) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(30)));
-        Optional<SystemMessageContainer.Message> messageOptional = systemMessage.getFirstMessage();
-        softAssert.assertTrue(messageOptional.isPresent(), systemMessageLog);
-        messageOptional.ifPresent(message -> {
-            softAssert.assertEquals(message.getText(), messageContent, systemMessageLog);
-            softAssert.assertEquals(message.getMessageType(), messageType, systemMessageLog);
-        });
-        systemMessage.close();
-        waitForPageToLoad();
-    }
 
     @BeforeClass
     public void openProcessInstancesPage() {
@@ -309,7 +296,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         log.info("IP2 Code: " + processIPCode2);
     }
 
-    @Test(priority = 12, description = "Complete 'Ready for Integration' Task", dependsOnMethods = {"setupIntegration"})
+    @Test(priority = 11, description = "Complete 'Ready for Integration' Task", dependsOnMethods = {"setupIntegration"})
     @Description("Complete 'Ready for Integration' Task")
     public void completeRFITask() {
         // given
@@ -323,7 +310,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_COMPLETE_MESSAGE_PATTERN, READY_FOR_INTEGRATION_TASK));
     }
 
-    @Test(priority = 13, description = "Start 'Scope Definition' Task in First Integration Process", dependsOnMethods = {"completeRFITask"})
+    @Test(priority = 12, description = "Start 'Scope Definition' Task in First Integration Process", dependsOnMethods = {"completeRFITask"})
     @Description("Start 'Scope Definition' Task in First Integration Process")
     public void startSDTaskIP1() {
         // given
@@ -337,7 +324,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_START_MESSAGE_PATTERN, SCOPE_DEFINITION_TASK));
     }
 
-    @Test(priority = 14, description = "Complete 'Scope Definition' Task in First Integration Process", dependsOnMethods = {"startSDTaskIP1"})
+    @Test(priority = 13, description = "Complete 'Scope Definition' Task in First Integration Process", dependsOnMethods = {"startSDTaskIP1"})
     @Description("Complete 'Scope Definition' Task in First Integration Process")
     public void completeSDTaskIP1() {
         // given
@@ -351,7 +338,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_COMPLETE_MESSAGE_PATTERN, SCOPE_DEFINITION_TASK));
     }
 
-    @Test(priority = 15, description = "Start 'Implementation' Task in First Integration Process", dependsOnMethods = {"completeSDTaskIP1"})
+    @Test(priority = 14, description = "Start 'Implementation' Task in First Integration Process", dependsOnMethods = {"completeSDTaskIP1"})
     @Description("Start 'Implementation' Task in First Integration Process")
     public void startImplementationTaskIP1() {
         // given
@@ -365,7 +352,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_START_MESSAGE_PATTERN, IMPLEMENTATION_TASK));
     }
 
-    @Test(priority = 16, description = "Complete 'Implementation' Task in First Integration Process", dependsOnMethods = {"startImplementationTaskIP1"})
+    @Test(priority = 15, description = "Complete 'Implementation' Task in First Integration Process", dependsOnMethods = {"startImplementationTaskIP1"})
     @Description("Complete 'Implementation' Task in First Integration Process")
     public void completeImplementationTaskIP1() {
         // given
@@ -379,7 +366,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_COMPLETE_MESSAGE_PATTERN, IMPLEMENTATION_TASK));
     }
 
-    @Test(priority = 17, description = "Start 'Acceptance' Task in First Integration Process", dependsOnMethods = {"completeImplementationTaskIP1"})
+    @Test(priority = 16, description = "Start 'Acceptance' Task in First Integration Process", dependsOnMethods = {"completeImplementationTaskIP1"})
     @Description("Start 'Acceptance' Task in First Integration Process")
     public void startAcceptanceTaskIP1() {
         // given
@@ -393,7 +380,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_START_MESSAGE_PATTERN, ACCEPTANCE_TASK));
     }
 
-    @Test(priority = 18, description = "Complete 'Acceptance' Task in First Integration Process", dependsOnMethods = {"startAcceptanceTaskIP1"})
+    @Test(priority = 17, description = "Complete 'Acceptance' Task in First Integration Process", dependsOnMethods = {"startAcceptanceTaskIP1"})
     @Description("Complete 'Acceptance' Task in First Integration Process")
     public void completeAcceptanceTaskIP1() {
         // given
@@ -407,7 +394,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_COMPLETE_MESSAGE_PATTERN, ACCEPTANCE_TASK));
     }
 
-    @Test(priority = 19, description = "Start 'Scope Definition' Task in Second Integration Process", dependsOnMethods = {"completeAcceptanceTaskIP1"})
+    @Test(priority = 18, description = "Start 'Scope Definition' Task in Second Integration Process", dependsOnMethods = {"completeAcceptanceTaskIP1"})
     @Description("Start 'Scope Definition' Task in Second Integration Process")
     public void startSDTaskIP2() {
         // given
@@ -421,7 +408,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_START_MESSAGE_PATTERN, SCOPE_DEFINITION_TASK));
     }
 
-    @Test(priority = 20, description = "Complete 'Scope Definition' Task in Second Integration Process", dependsOnMethods = {"startSDTaskIP2"})
+    @Test(priority = 19, description = "Complete 'Scope Definition' Task in Second Integration Process", dependsOnMethods = {"startSDTaskIP2"})
     @Description("Complete 'Scope Definition' Task in Second Integration Process")
     public void completeSDTaskIP2() {
         // given
@@ -435,7 +422,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_COMPLETE_MESSAGE_PATTERN, SCOPE_DEFINITION_TASK));
     }
 
-    @Test(priority = 21, description = "Start 'Implementation' Task in Second Integration Process", dependsOnMethods = {"completeSDTaskIP2"})
+    @Test(priority = 20, description = "Start 'Implementation' Task in Second Integration Process", dependsOnMethods = {"completeSDTaskIP2"})
     @Description("Start 'Implementation' Task in Second Integration Process")
     public void startImplementationTaskIP2() {
         // given
@@ -449,7 +436,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_START_MESSAGE_PATTERN, IMPLEMENTATION_TASK));
     }
 
-    @Test(priority = 22, description = "Complete 'Implementation' Task in Second Integration Process", dependsOnMethods = {"startImplementationTaskIP2"})
+    @Test(priority = 21, description = "Complete 'Implementation' Task in Second Integration Process", dependsOnMethods = {"startImplementationTaskIP2"})
     @Description("Complete 'Implementation' Task in Second Integration Process")
     public void completeImplementationTaskIP2() {
         // given
@@ -463,7 +450,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_COMPLETE_MESSAGE_PATTERN, IMPLEMENTATION_TASK));
     }
 
-    @Test(priority = 23, description = "Start 'Acceptance' Task in Second Integration Process", dependsOnMethods = {"completeImplementationTaskIP2"})
+    @Test(priority = 22, description = "Start 'Acceptance' Task in Second Integration Process", dependsOnMethods = {"completeImplementationTaskIP2"})
     @Description("Start 'Acceptance' Task in Second Integration Process")
     public void startAcceptanceTaskIP2() {
         // given
@@ -477,7 +464,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_START_MESSAGE_PATTERN, ACCEPTANCE_TASK));
     }
 
-    @Test(priority = 24, description = "Complete 'Acceptance' Task in Second Integration Process", dependsOnMethods = {"startAcceptanceTaskIP2"})
+    @Test(priority = 23, description = "Complete 'Acceptance' Task in Second Integration Process", dependsOnMethods = {"startAcceptanceTaskIP2"})
     @Description("Complete 'Acceptance' Task in Second Integration Process")
     public void completeAcceptanceTaskIP2() {
         // given
@@ -491,7 +478,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_COMPLETE_MESSAGE_PATTERN, ACCEPTANCE_TASK));
     }
 
-    @Test(priority = 25, description = "Start 'Verification' Task in NRP", dependsOnMethods = {"completeAcceptanceTaskIP2"})
+    @Test(priority = 24, description = "Start 'Verification' Task in NRP", dependsOnMethods = {"completeAcceptanceTaskIP2"})
     @Description("Start 'Verification' Task in NRP")
     public void startVerificationTask() {
         // given
@@ -505,7 +492,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_START_MESSAGE_PATTERN, VERIFICATION_TASK));
     }
 
-    @Test(priority = 26, description = "Complete 'Verification' Task", dependsOnMethods = {"startVerificationTask"})
+    @Test(priority = 25, description = "Complete 'Verification' Task", dependsOnMethods = {"startVerificationTask"})
     @Description("Complete 'Verification' Task")
     public void completeVerificationTask() {
         // given
@@ -519,7 +506,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
                 String.format(INVALID_TASK_COMPLETE_MESSAGE_PATTERN, VERIFICATION_TASK));
     }
 
-    @Test(priority = 27, description = "Check Process status", dependsOnMethods = {"completeVerificationTask"})
+    @Test(priority = 26, description = "Check Process status", dependsOnMethods = {"completeVerificationTask"})
     @Description("Check Process status")
     public void checkProcessStatus() {
         // given
@@ -544,6 +531,22 @@ public class CreateProcessNRPTest extends BaseTestCase {
         deleteIPDevice(device1Id, LIVE);
         deleteIPDevice(device2Id, LIVE);
         deleteBuilding(buildingId, LIVE);
+    }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    private void assertSystemMessage(String messageContent, SystemMessageContainer.MessageType messageType, String systemMessageLog) {
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(30)));
+        Optional<SystemMessageContainer.Message> messageOptional = systemMessage.getFirstMessage();
+        softAssert.assertTrue(messageOptional.isPresent(), systemMessageLog);
+        messageOptional.ifPresent(message -> {
+            softAssert.assertEquals(message.getText(), messageContent, systemMessageLog);
+            softAssert.assertEquals(message.getMessageType(), messageType, systemMessageLog);
+        });
+        systemMessage.close();
+        waitForPageToLoad();
     }
 
 }
