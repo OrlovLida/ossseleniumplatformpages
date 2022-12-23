@@ -522,6 +522,12 @@ public class CreateProcessNRPTest extends BaseTestCase {
         Assertions.assertThat(processStatus).isEqualTo(COMPLETED_STATUS);
     }
 
+    @Test(priority = 27, description = "Checking system message summary")
+    @Description("Checking system message summary")
+    public void systemMessageSummary() {
+        softAssert.assertAll();
+    }
+
     @AfterClass()
     public void switchToLivePerspectiveAndClean() {
         PerspectiveChooser perspectiveChooser = PerspectiveChooser.create(driver, webDriverWait);
