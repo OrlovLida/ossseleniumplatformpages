@@ -696,6 +696,12 @@ public class PartialIntegrationTest extends BaseTestCase {
                 COMPLETED_STATUS, String.format(INVALID_PROCESS_STATUS_LOG_PATTERN, NRP_TC_MAIN_NAME));
     }
 
+    @Test(priority = 8, description = "Checking asserts")
+    @Description("Checking asserts")
+    public void checkSoftAsserts() {
+        softAssert.assertAll();
+    }
+
     @AfterClass
     public void clean() {
         PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
