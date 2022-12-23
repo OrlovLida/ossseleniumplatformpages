@@ -52,15 +52,15 @@ public class ProcessDetailsPage extends BasePage {
     }
 
     public ProcessDetailsPage selectTab(String label) {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         TabsInterface tab = TabsWidget.createById(driver, wait, TAB_ID);
         tab.selectTabByLabel(label);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         return this;
     }
 
     public boolean isValidationResultPresent() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         return !getValidationResultsTable().hasNoData();
     }
 
@@ -70,7 +70,7 @@ public class ProcessDetailsPage extends BasePage {
 
     @Step("Removing all planned object")
     public void removeAllObjects() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         OldTable oldTable = getObjectsTable();
         final int totalCount = oldTable.getTotalCount();
         for (int i = 0; i < totalCount; i++) {
@@ -89,26 +89,29 @@ public class ProcessDetailsPage extends BasePage {
     }
 
     public ProcessDetailsPage selectObject(String attributeName, String value) {
+        waitForPageToLoad();
         TableInterface table = getObjectsTable();
-        DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, value);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
         table.selectRowByAttributeValueWithLabel(attributeName, value);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        waitForPageToLoad();
         return this;
     }
 
     public int getObjectsAmount() {
+        waitForPageToLoad();
         return getObjectsTable().getTotalCount();
     }
 
     public ProcessDetailsPage clearAllColumnFilters() {
+        waitForPageToLoad();
         getObjectsTable().clearAllColumnValues();
         return this;
     }
 
     private String getObjectAttribute(String attributeName) {
+        waitForPageToLoad();
         return getObjectsTable().getCellValue(0, attributeName);
     }
 
@@ -120,4 +123,9 @@ public class ProcessDetailsPage extends BasePage {
     public String getObjectOperationType() {
         return getObjectAttribute(OBJECT_OPERATION_TYPE_ATTRIBUTE_NAME);
     }
+
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
 }
