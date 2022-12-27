@@ -1,16 +1,6 @@
 package com.oss.E2E;
 
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
-import java.util.List;
-
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
-
 import com.oss.BaseTestCase;
-import com.oss.bpm.CreateProcessNRPTest;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
@@ -41,10 +31,17 @@ import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import com.oss.pages.transport.trail.ConnectionWizardPage;
-
 import io.qameta.allure.Description;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
-public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.util.List;
+
+public class BucOssPla002Test extends BaseTestCase {
     private static final String DEVICE_MODEL = "CISCO1941/K9";
     private static final String LOCATION_NAME = "Poznan-BU1";
     private static final String CM_DOMAIN_NAME = "SeleniumE2ETest";
@@ -71,11 +68,10 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     private static final String VALIDATION_RESULT_TYPE = "INCOMPLETE_ROUTING_STATUS";
     private static final String SUPPRESSION_REASON = "Unnecessary in this scenario";
     private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
-
+    private final String serialNumber = "SN-" + (int) (Math.random() * 1001);
     private String URL = "";
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SoftAssert softAssert;
-    private String serialNumber = "SN-" + (int) (Math.random() * 1001);
     private String processIPCode;
     private String processNRPCode;
 
@@ -337,7 +333,7 @@ public class UC_OSS_RM_PLA_002_Test extends BaseTestCase {
     public void assignFile() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         try {
-            java.net.URL resource = CreateProcessNRPTest.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
+            java.net.URL resource = BucOssPla002Test.class.getClassLoader().getResource("bpm/SeleniumTest.txt");
             assert resource != null;
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
             tasksPage.addFile(processIPCode, TasksPageV2.IMPLEMENTATION_TASK, absolutePatch);

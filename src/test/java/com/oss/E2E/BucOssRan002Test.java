@@ -32,7 +32,7 @@ import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 
 @Listeners({TestListener.class})
-public class BUC_INV_RAN_002_Test extends BaseTestCase {
+public class BucOssRan002Test extends BaseTestCase {
 
     private static final String LOCATION_NAME = "Denver1";
     private static final String PROCESS_NAME = "Denver1 - Extension - 5G";

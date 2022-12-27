@@ -28,7 +28,7 @@ import com.oss.pages.reconciliation.audit.ValidationRulesManagerPage;
 
 import io.qameta.allure.Description;
 
-public class UC_NAR_002_Test extends BaseTestCase {
+public class BucOssNar002Test extends BaseTestCase {
 
     private static final String NETWORK_DISCOVERY_AND_RECONCILIATION = "Network Discovery and Reconciliation";
     private static final String PARAMETERS_AUDIT = "Parameters Audit";
@@ -566,7 +566,7 @@ public class UC_NAR_002_Test extends BaseTestCase {
             SystemMessageContainer.Message message = systemMessage.getFirstMessage()
                     .orElseThrow(() -> new RuntimeException("The list is empty"));
             softAssert.assertEquals(message.getMessageType(), SystemMessageContainer.MessageType.SUCCESS, systemMessageLog);
-            softAssert.assertEquals(message.getText(), UC_NAR_002_Test.RULE_SAVED_MESSAGE, systemMessageLog);
+            softAssert.assertEquals(message.getText(), BucOssNar002Test.RULE_SAVED_MESSAGE, systemMessageLog);
             systemMessage.close();
         }
         waitForPageToLoad();
