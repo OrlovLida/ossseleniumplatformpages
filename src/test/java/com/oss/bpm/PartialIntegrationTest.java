@@ -43,7 +43,7 @@ import static com.oss.bpm.BpmPhysicalDataCreator.createTechnicalIPDeviceInPlan;
 import static com.oss.bpm.BpmPhysicalDataCreator.createValidationResultForRouter;
 import static com.oss.bpm.BpmPhysicalDataCreator.deleteBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.deleteIPDevice;
-import static com.oss.bpm.BpmPhysicalDataCreator.getRouterChassisId;
+import static com.oss.bpm.BpmPhysicalDataCreator.getDeviceChassisId;
 import static com.oss.bpm.BpmPhysicalDataCreator.isDeviceVisibleInLIVE;
 import static com.oss.bpm.BpmPhysicalDataCreator.suppressValidationResult;
 import static com.oss.bpm.BpmPhysicalDataCreator.updateBuildingInPlan;
@@ -208,33 +208,33 @@ public class PartialIntegrationTest extends BaseTestCase {
 
         //FOR TC2
         deviceId_TC2_1 = createIPDevice(ROUTER_TC2_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
-        chassisId_TC2_1 = getRouterChassisId(deviceId_TC2_1, nrp_TC_MAIN_plan);
+        chassisId_TC2_1 = getDeviceChassisId(deviceId_TC2_1, nrp_TC_MAIN_plan);
         cardId_TC2_1 = createCardForDevice(deviceId_TC2_1, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
         deviceId_TC2_2 = createIPDevice(ROUTER_TC2_2_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
         updateIPDeviceSerialNumberInPlan(ROUTER_TC2_2_NAME, deviceId_TC2_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
         cardId_TC2_2 = createCardForDevice(deviceId_TC2_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
         deviceId_TC2_3 = createIPDevice(ROUTER_TC2_3_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
-        chassisId_TC2_3 = getRouterChassisId(deviceId_TC2_3, LIVE);
+        chassisId_TC2_3 = getDeviceChassisId(deviceId_TC2_3, LIVE);
         deleteIPDevice(deviceId_TC2_3, nrp_TC_MAIN_plan);
 
         //FOR TC3
         deviceId_TC3_1 = createIPDevice(ROUTER_TC3_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
-        chassisId_TC3_1 = getRouterChassisId(deviceId_TC3_1, nrp_TC_MAIN_plan);
+        chassisId_TC3_1 = getDeviceChassisId(deviceId_TC3_1, nrp_TC_MAIN_plan);
         deviceId_TC3_2 = createIPDevice(ROUTER_TC3_2_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
         updateIPDeviceSerialNumberInPlan(ROUTER_TC3_2_NAME, deviceId_TC3_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
         cardId_TC3_2 = createCardForDevice(deviceId_TC3_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
         deviceId_TC3_3 = createIPDevice(ROUTER_TC3_3_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
-        chassisId_TC3_3 = getRouterChassisId(deviceId_TC3_3, LIVE);
+        chassisId_TC3_3 = getDeviceChassisId(deviceId_TC3_3, LIVE);
         deleteIPDevice(deviceId_TC3_3, nrp_TC_MAIN_plan);
 
         //FOR TC4
         deviceId_TC4_1 = createIPDevice(ROUTER_TC4_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
-        chassisId_TC4_1 = getRouterChassisId(deviceId_TC4_1, nrp_TC_MAIN_plan);
+        chassisId_TC4_1 = getDeviceChassisId(deviceId_TC4_1, nrp_TC_MAIN_plan);
         deviceId_TC4_T1 = createTechnicalIPDeviceInPlan(ROUTER_TC4_T1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, deviceId_TC4_1, nrp_TC_MAIN_plan);
 
         //FOR TC6
         deviceId_TC6_1 = createIPDevice(ROUTER_TC6_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
-        chassisId_TC6_1 = getRouterChassisId(deviceId_TC6_1, nrp_TC_MAIN_plan);
+        chassisId_TC6_1 = getDeviceChassisId(deviceId_TC6_1, nrp_TC_MAIN_plan);
         deviceId_TC6_2 = createIPDevice(ROUTER_TC6_2_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
         updateIPDeviceSerialNumberInPlan(ROUTER_TC6_2_NAME, deviceId_TC6_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
         cardId_TC6_2 = createCardForDevice(deviceId_TC6_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);

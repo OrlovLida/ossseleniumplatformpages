@@ -50,7 +50,7 @@ import static com.oss.bpm.BpmPhysicalDataCreator.createBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.createIPDevice;
 import static com.oss.bpm.BpmPhysicalDataCreator.deleteBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.deleteIPDevice;
-import static com.oss.bpm.BpmPhysicalDataCreator.getRouterChassisId;
+import static com.oss.bpm.BpmPhysicalDataCreator.getDeviceChassisId;
 import static com.oss.pages.bpm.tasks.TasksPageV2.ACCEPTANCE_TASK;
 import static com.oss.pages.bpm.tasks.TasksPageV2.HIGH_LEVEL_PLANNING_TASK;
 import static com.oss.pages.bpm.tasks.TasksPageV2.IMPLEMENTATION_TASK;
@@ -156,7 +156,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Description("Create First Physical Device")
     public void createFirstPhysicalDevice() {
         device1Id = createIPDevice(ROUTER_1_NAME, DEVICE_MODEL, buildingId, processNRPContext);
-        chassis1Id = getRouterChassisId(device1Id, processNRPContext);
+        chassis1Id = getDeviceChassisId(device1Id, processNRPContext);
 
         log.info(String.format("Device 1 ID: %1$s \nChassis 1 ID: %2$s", device1Id, chassis1Id));
 
@@ -225,7 +225,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Description("Create Second Physical Device")
     public void createSecondPhysicalDevice() {
         device2Id = createIPDevice(ROUTER_2_NAME, DEVICE_MODEL, buildingId, processNRPContext);
-        chassis2Id = getRouterChassisId(device2Id, processNRPContext);
+        chassis2Id = getDeviceChassisId(device2Id, processNRPContext);
 
         log.info(String.format("Device 2 ID: %1$s \nChassis 2 ID: %2$s", device2Id, chassis2Id));
 
