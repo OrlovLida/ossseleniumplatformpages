@@ -15,6 +15,8 @@ import com.oss.planning.validationresults.ValidationResult;
 import com.oss.untils.FakeGenerator;
 import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -122,6 +124,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     private static final String INVALID_PROCESS_STATUS_LOG_PATTERN = "Invalid Process Status for %s.";
     private static final String DEVICE_MODEL = "7705 SAR-8";
     private static final String DEVICE_SLOT_NAME = "MDA 1";
+    private final Logger log = LoggerFactory.getLogger(PartialIntegrationTest.class);
     private SoftAssert softAssert;
     private String nrp_Code_TC_MAIN;
     private String buildingId_TC_MAIN;
@@ -187,57 +190,76 @@ public class PartialIntegrationTest extends BaseTestCase {
 
         //create NRP,DCP processes
         nrp_Code_TC_MAIN = plannersViewPage.createProcessIPD(NRP_TC_MAIN_NAME, 5L, NRP);
+        log.info("Main NRP Code: " + nrp_Code_TC_MAIN);
         nrp_Code_TC5_1 = plannersViewPage.createProcessIPD(NRP_TC5_NAME, 5L, NRP);
+        log.info("TC5_1 NRP Code: " + nrp_Code_TC5_1);
         dcp_Code_TC5_2 = plannersViewPage.createProcessIPD(DCP_TC5_NAME, 5L, DCP);
+        log.info("TC5_2 DCP Code: " + dcp_Code_TC5_2);
 
         PlanningContext nrp_TC_MAIN_plan = PlanningContext.plan(plannersViewPage.getProjectId(nrp_Code_TC_MAIN));
+        log.info("Main NRP project ID: " + nrp_TC_MAIN_plan.getProjectId());
         nrp_TC5_1_plan = PlanningContext.plan(plannersViewPage.getProjectId(nrp_Code_TC5_1));
+        log.info("TC5_1 NRP project ID: " + nrp_TC5_1_plan.getProjectId());
         dcp_TC5_2_plan = PlanningContext.plan(plannersViewPage.getProjectId(dcp_Code_TC5_2));
+        log.info("TC5_2 DCP project ID: " + dcp_TC5_2_plan.getProjectId());
 
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL).clearFilters();
         buildingId_TC_MAIN = createBuilding(BUILDING_NAME_TC_MAIN, LIVE);
+        log.info("Main Building id: " + buildingId_TC_MAIN);
         tasksPage.startTask(nrp_Code_TC_MAIN, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
 
         //FOR TC1
         waitForPageToLoad();
         buildingId_TC1_1 = createBuilding(BUILDING_NAME_TC1_1, nrp_TC_MAIN_plan);
+        log.info("TC1_1 Building id: " + buildingId_TC1_1);
         buildingId_TC1_2 = createBuilding(BUILDING_NAME_TC1_2, LIVE);
+        log.info("TC1_2 Building id: " + buildingId_TC1_2);
         updateBuildingInPlan(BUILDING_NAME_TC1_2, buildingId_TC1_2, UPDATE_DESCRIPTION, nrp_TC_MAIN_plan);
         buildingId_TC1_3 = createBuilding(BUILDING_NAME_TC1_3, LIVE);
+        log.info("TC1_3 Building id: " + buildingId_TC1_3);
         deleteBuilding(buildingId_TC1_3, nrp_TC_MAIN_plan);
 
         //FOR TC2
         deviceId_TC2_1 = createIPDevice(ROUTER_TC2_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
         chassisId_TC2_1 = getDeviceChassisId(deviceId_TC2_1, nrp_TC_MAIN_plan);
         cardId_TC2_1 = createCardForDevice(deviceId_TC2_1, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
+        log.info(String.format("TC2_1 Device ID: %1$s, Chassis ID: %2$s, Card ID: %3$s", deviceId_TC2_1, chassisId_TC2_1, cardId_TC2_1));
         deviceId_TC2_2 = createIPDevice(ROUTER_TC2_2_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
         updateIPDeviceSerialNumberInPlan(ROUTER_TC2_2_NAME, deviceId_TC2_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
         cardId_TC2_2 = createCardForDevice(deviceId_TC2_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
+        log.info(String.format("TC2_2 Device ID: %1$s, Card ID: %2$s", deviceId_TC2_2, cardId_TC2_2));
         deviceId_TC2_3 = createIPDevice(ROUTER_TC2_3_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
         chassisId_TC2_3 = getDeviceChassisId(deviceId_TC2_3, LIVE);
+        log.info(String.format("TC2_3 Device ID: %1$s, Chassis ID: %2$s", deviceId_TC2_3, chassisId_TC2_3));
         deleteIPDevice(deviceId_TC2_3, nrp_TC_MAIN_plan);
 
         //FOR TC3
         deviceId_TC3_1 = createIPDevice(ROUTER_TC3_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
         chassisId_TC3_1 = getDeviceChassisId(deviceId_TC3_1, nrp_TC_MAIN_plan);
+        log.info(String.format("TC3_1 Device ID: %1$s, Chassis ID: %2$s", deviceId_TC3_1, chassisId_TC3_1));
         deviceId_TC3_2 = createIPDevice(ROUTER_TC3_2_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
         updateIPDeviceSerialNumberInPlan(ROUTER_TC3_2_NAME, deviceId_TC3_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
         cardId_TC3_2 = createCardForDevice(deviceId_TC3_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
+        log.info(String.format("TC3_2 Device ID: %1$s, Card ID: %2$s", deviceId_TC3_2, cardId_TC3_2));
         deviceId_TC3_3 = createIPDevice(ROUTER_TC3_3_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
         chassisId_TC3_3 = getDeviceChassisId(deviceId_TC3_3, LIVE);
+        log.info(String.format("TC3_3 Device ID: %1$s, Chassis ID: %2$s", deviceId_TC3_3, chassisId_TC3_3));
         deleteIPDevice(deviceId_TC3_3, nrp_TC_MAIN_plan);
 
         //FOR TC4
         deviceId_TC4_1 = createIPDevice(ROUTER_TC4_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
         chassisId_TC4_1 = getDeviceChassisId(deviceId_TC4_1, nrp_TC_MAIN_plan);
         deviceId_TC4_T1 = createTechnicalIPDeviceInPlan(ROUTER_TC4_T1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, deviceId_TC4_1, nrp_TC_MAIN_plan);
+        log.info(String.format("TC4_1 Device ID: %1$s, Chassis ID: %2$s, Technical Device ID: %3$s", deviceId_TC4_1, chassisId_TC4_1, deviceId_TC4_T1));
 
         //FOR TC6
         deviceId_TC6_1 = createIPDevice(ROUTER_TC6_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
         chassisId_TC6_1 = getDeviceChassisId(deviceId_TC6_1, nrp_TC_MAIN_plan);
+        log.info(String.format("TC6_1 Device ID: %1$s, Chassis ID: %2$s", deviceId_TC6_1, chassisId_TC6_1));
         deviceId_TC6_2 = createIPDevice(ROUTER_TC6_2_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
         updateIPDeviceSerialNumberInPlan(ROUTER_TC6_2_NAME, deviceId_TC6_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
         cardId_TC6_2 = createCardForDevice(deviceId_TC6_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
+        log.info(String.format("TC6_2 Device ID: %1$s, Card ID: %2$s", deviceId_TC6_2, cardId_TC6_2));
 
         tasksPage.proceedNRPToReadyForIntegrationTask(nrp_Code_TC_MAIN);
 
@@ -302,6 +324,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                         setupIntegrationProperties_IP_TC3_2,
                         setupIntegrationProperties_IP_TC4,
                         setupIntegrationProperties_IP_TC6));
+        ipCodes.forEach(ipCode -> log.info(String.format("IP Code: %s \n", ipCode)));
         ip_Code_TC1 = ipCodes.get(0);
         ip_Code_TC2 = ipCodes.get(1);
         ip_Code_TC3_1 = ipCodes.get(2);
@@ -320,6 +343,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         //D1 plan create in nrp
         createIPDevice(ROUTER_TC5_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC5_1_plan);
         drp_Code_TC5_3 = tasksPage.createDRPProcess(nrp_Code_TC5_1, TasksPageV2.HIGH_LEVEL_PLANNING_TASK, DRP_TC5_NAME);
+        log.info(String.format("TC5_3 DRP Code: %s", drp_Code_TC5_3));
         tasksPage.startTask(drp_Code_TC5_3, TasksPageV2.PLANNING_TASK);
         waitForPageToLoad();
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
@@ -342,7 +366,9 @@ public class PartialIntegrationTest extends BaseTestCase {
                 .severity(ValidationResult.Severity.LOW)
                 .build();
         vrId_TC6_1 = createValidationResultForRouter(deviceId_TC6_1, vr_TC6_1, ip_TC6_plan);
-        createValidationResultForRouter(deviceId_TC6_2, vr_TC6_2, ip_TC6_plan);
+        log.info("TC6_1 VR uuid: " + vrId_TC6_1);
+        UUID vrId_TC6_2 = createValidationResultForRouter(deviceId_TC6_2, vr_TC6_2, ip_TC6_plan);
+        log.info("TC6_2 VR uuid: " + vrId_TC6_2);
     }
 
     @Test(priority = 1, description = "Integrate Object without prerequisites")

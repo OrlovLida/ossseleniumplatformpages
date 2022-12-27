@@ -187,7 +187,6 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
         // when
         tasksPage.startTask(processNRPCode, LOW_LEVEL_PLANNING_TASK);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         // then
         assertSystemMessage(TASK_ASSIGNED_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
