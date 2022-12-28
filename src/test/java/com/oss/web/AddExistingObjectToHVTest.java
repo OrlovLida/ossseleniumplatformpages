@@ -45,7 +45,7 @@ public class AddExistingObjectToHVTest extends BaseTestCase {
     private static final String BUILDING_NAME_3 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String BUILDING_NAME_4 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String BUILDING_NAME_5 = "Z_" + FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
-    private static final String BUILDING_NAME_6 = "Z_" + FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
+    private static final String BUILDING_NAME_6 = "0_" + FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String BUILDING_NAME_7 = "Z1_" + FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String BUILDING_NAME_8 = "Z2_" + FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private static final String BUILDING_NAME_9 = "Z3_" + FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
