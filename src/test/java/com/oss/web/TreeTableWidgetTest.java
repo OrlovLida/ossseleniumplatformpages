@@ -1,5 +1,11 @@
 package com.oss.web;
 
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.pagination.PaginationComponent;
@@ -8,11 +14,6 @@ import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.treetable.TreeTableWidget;
 import com.oss.pages.bpm.processinstances.PlannersViewPage;
 import com.oss.pages.platform.NewInventoryViewPage;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-
-import java.util.List;
 
 /**
  * @author Faustyna Szczepanik
@@ -204,7 +205,8 @@ public class TreeTableWidgetTest extends BaseTestCase {
 
     @Test(priority = 17)
     public void checkDataInTreeTable() {
-        String codeFromPropertiesTab = plannersViewPage.selectObjectByRowId(0).getPropertyValue(CODE_ID);
+        treeTableWidget.clickRow(0);
+        String codeFromPropertiesTab = plannersViewPage.getPropertyValue(CODE_ID);
         String codeFromTreeTable = plannersViewPage.getAttributeValue(CODE_ID, 0);
         Assert.assertEquals(codeFromPropertiesTab, codeFromTreeTable);
         plannersViewPage.unselectObjectByRowId(0);
