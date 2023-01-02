@@ -14,6 +14,8 @@ import java.util.Optional;
 
 import javax.ws.rs.core.Response;
 
+import org.assertj.core.api.Assertions;
+
 import com.comarch.oss.planning.api.dto.ObjectIdDTO;
 import com.comarch.oss.planning.api.dto.ObjectsDescriptionDTO;
 import com.comarch.oss.planning.api.dto.PlanningPerspectiveDTO;
@@ -23,8 +25,6 @@ import com.jayway.restassured.http.ContentType;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.planning.PlanningContext;
 import com.oss.untils.Environment;
-
-import dev.failsafe.internal.util.Assert;
 
 import static com.oss.untils.Constants.LIVE;
 import static com.oss.untils.Constants.PERSPECTIVE;
@@ -74,10 +74,10 @@ public class PlanningClient {
     }
 
     public void moveProject(Long projectId, PlanningPerspectiveDTO perspectiveDTO) {
-        long currentTime = System.currentTimeMillis();
-        long stopTime = currentTime + 30000L;
+        long stopTime = System.currentTimeMillis() + 30000L;
+        int noContentStatus = Response.Status.NO_CONTENT.getStatusCode();
         int status = 0;
-        while (status != Response.Status.NO_CONTENT.getStatusCode() && stopTime > System.currentTimeMillis()) {
+        while (status != noContentStatus && stopTime > System.currentTimeMillis()) {
             status = env.getPlanningCoreSpecification()
                     .given()
                     .contentType(ContentType.JSON)
@@ -87,7 +87,7 @@ public class PlanningClient {
                     .getStatusCode();
             DelayUtils.sleep();
         }
-        Assert.isTrue(status == Response.Status.NO_CONTENT.getStatusCode(), RESPONSE_STATUS_MESSAGE + status);
+        Assertions.assertThat(status).as(RESPONSE_STATUS_MESSAGE + status).isEqualTo(noContentStatus);
     }
 
     public Long createProject(ProjectDTO projectDTO) {
