@@ -20,6 +20,7 @@ import com.comarch.oss.planning.api.dto.PlanningPerspectiveDTO;
 import com.comarch.oss.planning.api.dto.v2.ProjectDTO;
 import com.comarch.oss.planningmanager.api.dto.internal.ConnectionDTO;
 import com.jayway.restassured.http.ContentType;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.planning.PlanningContext;
 import com.oss.untils.Environment;
 
@@ -74,12 +75,8 @@ public class PlanningClient {
         long stopTime = currentTime + 30000L;
         int status = 0;
         while (status != Response.Status.NO_CONTENT.getStatusCode() && stopTime > System.currentTimeMillis()) {
-            status = env.getPlanningCoreSpecification()
-                    .given()
-                    .contentType(ContentType.JSON)
-                    .body(perspectiveDTO)
-                    .when()
-                    .put(PLANNING_API_PATH + "/" + projectId + "/perspective").getStatusCode();
+            status = env.getPlanningCoreSpecification().given().contentType(ContentType.JSON).body(perspectiveDTO).when().put(PLANNING_API_PATH + "/" + projectId + "/perspective").getStatusCode();
+            DelayUtils.sleep();
         }
 
     }
