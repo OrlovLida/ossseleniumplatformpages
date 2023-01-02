@@ -35,9 +35,7 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
     private static final String CREATE_PORT_WIZARD_ACTION_ID = "CreatePortInDeviceAction";
     private static final String CREATE_PLUGGABLE_MODULE_ACTION_ID = "CreatePluggableModuleOnDeviceApp";
     private static final String CREATE_CARD_ACTION_ID = "CreateCardOnDeviceAction";
-    private static final String DELETE_DEVICE_WIZARD_ACTION_ID = "DeleteDeviceWizardAction";
     private static final String CREATE_ACTION_ID = "Create";
-    private static final String EDIT_ACTION_ID = "Edit";
     private static final String CREATE_DEVICE_ACTION_ID = "Create Physical Device";
     private static final String INFRASTRUCTURE_MANAGEMENT_ACTION_ID = "Infrastructure Management";
     private static final String CREATE_INFRASTRUCTURE_ACTION_ID = "Create Infrastructure";
@@ -48,7 +46,7 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
     private static final String GENERIC_MODEL = "Generic";
     private static final String GENERIC_CHASSIS_MODEL = "Generic Chassis";
     private static final String GENERIC_SLOT_MODEL = "Generic Slot";
-    private static final String GENERIC_PLUGGABLE_MODULE_MODEL = "Generic Pluggable";
+    private static final String GENERIC_PORT_WITH_PORT_HOLDER_MODEL = "Generic Pluggable";
     private static final String CHASSIS_NAME = "Chassis";
     private static final String FIRST_ELEMENT_NAME = "1";
     private static final String PHYSICAL_DEVICE = "PhysicalDevice";
@@ -67,7 +65,6 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
     private static final String CREATE_PORT_SUCCESS_MESSAGE = "Port has been created successfully";
     private static final String CREATE_CARD_SUCCESS_MESSAGE = "Card has been created successfully.";
     private static final String CREATE_PLUGGABLE_MODULE_SUCCESS_MESSAGE = "Pluggable Module has been created successfully.";
-    private static final String DELETE_DEVICE_SUCCESS_MESSAGE = "Element deleted successfully.";
     private String testLocationId;
     private PlanningRepository planningRepository;
     private String deviceId;
@@ -114,7 +111,7 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
         deviceId = getCreatedDeviceIdFromURL();
     }
 
-    @Test(description = "Create chassis within a device", priority = 2, dependsOnMethods = {"createDevice"})
+    @Test(description = "Create chassis within a device", priority = 2, dependsOnMethods = "createDevice")
     public void createChassis() {
         selectFirstNode();
         hierarchyViewPage.callAction(CREATE_ACTION_ID, CREATE_CHASSIS_WIZARD_ACTION_ID);
@@ -127,7 +124,7 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
         closeSystemMessage();
     }
 
-    @Test(description = "Check device hierarchy for chassis", priority = 3, dependsOnMethods = {"createChassis"})
+    @Test(description = "Check device hierarchy for chassis", priority = 3, dependsOnMethods = "createChassis")
     public void checkHierarchyForChassis() {
         String chassisId = getFirstComponentUnderRootObject(deviceId, PHYSICAL_DEVICE, CHASSIS_COMPONENT);
         String chassisPath = deviceId + ".chassis." + chassisId;
@@ -135,7 +132,7 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(description = "Create slot within a device", priority = 4, dependsOnMethods = {"createDevice"})
+    @Test(description = "Create slot within a device", priority = 4, dependsOnMethods = "createDevice")
     public void createSlot() {
         selectFirstNode();
         hierarchyViewPage.callAction(CREATE_ACTION_ID, CREATE_SLOT_WIZARD_ACTION_ID);
@@ -147,7 +144,7 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
         closeSystemMessage();
     }
 
-    @Test(description = "Check device hierarchy for slot", priority = 5, dependsOnMethods = {"createSlot"})
+    @Test(description = "Check device hierarchy for slot", priority = 5, dependsOnMethods = "createSlot")
     public void checkHierarchyForSlot() {
         slotId = getFirstComponentUnderRootObject(deviceId, PHYSICAL_DEVICE, SLOT_COMPONENT);
         String slotPath = deviceId + ".slots." + slotId;
@@ -155,20 +152,20 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(description = "Create port within a device", priority = 6, dependsOnMethods = {"createDevice"})
+    @Test(description = "Create port within a device", priority = 6, dependsOnMethods = "createDevice")
     public void createPort() {
         selectFirstNode();
         hierarchyViewPage.callAction(CREATE_ACTION_ID, CREATE_PORT_WIZARD_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
-        portWizard.setModel(GENERIC_PLUGGABLE_MODULE_MODEL);
+        portWizard.setModel(GENERIC_PORT_WITH_PORT_HOLDER_MODEL);
         portWizard.clickNext();
         portWizard.clickAccept();
         checkSystemMessage(CREATE_PORT_SUCCESS_MESSAGE);
         closeSystemMessage();
     }
 
-    @Test(description = "Check device hierarchy for port", priority = 7, dependsOnMethods = {"createPort"})
+    @Test(description = "Check device hierarchy for port", priority = 7, dependsOnMethods = "createPort")
     public void checkHierarchyForPort() {
         portId = getFirstComponentUnderRootObject(deviceId, PHYSICAL_DEVICE, PORT_COMPONENT);
         String portPath = deviceId + ".ports." + portId;
@@ -176,11 +173,9 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(description = "Create card within a slot", priority = 8, dependsOnMethods = {"createSlot"})
+    @Test(description = "Create card within a slot", priority = 8, dependsOnMethods = "createSlot")
     public void createCard() {
-        if (!hierarchyViewPage.getMainTree().getNode(0).isToggled()) {
-            hierarchyViewPage.selectFirstObject();
-        }
+        selectFirstNode();
         hierarchyViewPage.callAction(CREATE_ACTION_ID, CREATE_CARD_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
@@ -191,7 +186,7 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
         closeSystemMessage();
     }
 
-    @Test(description = "Check device hierarchy for card", priority = 9, dependsOnMethods = {"createCard"})
+    @Test(description = "Check device hierarchy for card", priority = 9, dependsOnMethods = "createCard")
     public void checkHierarchyForCard() {
         String cardId = getFirstComponentUnderRootObject(deviceId, slotId, CARD_COMPONENT);
         String cardPath = deviceId + ".slots." + slotId + ".card." + cardId;
@@ -199,11 +194,9 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(description = "Create pluggable module within a port", priority = 10, dependsOnMethods = {"createPort"})
+    @Test(description = "Create pluggable module within a port", priority = 10, dependsOnMethods = "createPort")
     public void createPluggableModule() {
-        if (!hierarchyViewPage.getMainTree().getNode(0).isToggled()) {
-            hierarchyViewPage.selectFirstObject();
-        }
+        selectFirstNode();
         hierarchyViewPage.callAction(CREATE_ACTION_ID, CREATE_PLUGGABLE_MODULE_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
@@ -214,27 +207,24 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
         closeSystemMessage();
     }
 
-    @Test(description = "Check device hierarchy for pluggable module", priority = 11, dependsOnMethods = {"createPluggableModule"})
+    @Test(description = "Check device hierarchy for pluggable module", priority = 11, dependsOnMethods = "createPluggableModule")
     public void checkHierarchyForPluggableModule() {
         String portHolderId = getFirstComponentUnderRootObject(deviceId, PLUGGABLE_MODULE_PORT_COMPONENT, PLUGGABLE_MODULE_PORT_HOLDER_COMPONENT);
         String pluggableModuleId = getFirstComponentUnderRootObject(deviceId, PLUGGABLE_MODULE_PORT_HOLDER_COMPONENT, PLUGGABLE_MODULE_COMPONENT);
         String pluggableModulePath = deviceId + ".ports." + portId + ".pluggable module slot." + portHolderId + ".pluggable module." + pluggableModuleId;
-        checkHierarchyForComponent(pluggableModulePath,NAME_ATTRIBUTE_TO_CHECK);
+        checkHierarchyForComponent(pluggableModulePath, NAME_ATTRIBUTE_TO_CHECK);
         softAssert.assertAll();
     }
 
-
     @AfterClass
-    private void deleteCreatedDevice() {
-        if (!hierarchyViewPage.getMainTree().getNode(0).isToggled()) {
-            hierarchyViewPage.selectFirstObject();
-        }
-        deleteDevice();
-        checkSystemMessage(DELETE_DEVICE_SUCCESS_MESSAGE);
+    private void deleteCreatedObjects() {
+        physicalInventoryRepository.deleteDevice(deviceId);
+        Long locationToDelete = Long.parseLong(testLocationId);
+        locationInventoryRepository.deleteLocation(locationToDelete, TEST_LOCATION_TYPE);
     }
 
     @AfterMethod
-    private void unselectNode(){
+    private void unselectNode() {
         if (!hierarchyViewPage.getMainTree().getSelectedObjectCount().equals("0 selected")) {
             hierarchyViewPage.getMainTree().unselectAllNodes();
         }
@@ -289,7 +279,6 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
         }
     }
 
-
     @Step("Click system message link")
     private void clickSystemMessageLink() {
         SystemMessageContainer.create(driver, webDriverWait).clickMessageLink();
@@ -314,12 +303,6 @@ public class AddComponentsToBlackboxDeviceTest extends BaseTestCase {
                 .stream()
                 .filter(m -> m.getText().contains(message))
                 .findFirst();
-    }
-
-    @Step("Delete created device")
-    private void deleteDevice() {
-        hierarchyViewPage.callAction(EDIT_ACTION_ID, DELETE_DEVICE_WIZARD_ACTION_ID);
-        hierarchyViewPage.clickButtonInConfirmationBox("Yes");
     }
 
     private static Set<Long> getIdFromString(String string) {

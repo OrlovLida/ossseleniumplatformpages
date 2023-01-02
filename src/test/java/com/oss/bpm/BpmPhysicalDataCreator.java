@@ -130,7 +130,7 @@ public class BpmPhysicalDataCreator {
         Long deviceModelId = getObjectModelId(deviceModel);
         String routerId = String.valueOf(physicalInventoryRepository.createDevice(LOCATION_TYPE_BUILDING,
                 Long.parseLong(buildingId), deviceModelId, deviceName, DEVICE_MODEL_TYPE, planningContext.getProjectId()));
-        String chassisId = getRouterChassisId(routerId, planningContext);
+        String chassisId = getDeviceChassisId(routerId, planningContext);
         ObjectIdentifier parentRouter = ObjectIdentifier.ipDevice(Long.valueOf(parentDeviceId));
         ObjectIdentifier childRouter = ObjectIdentifier.ipDevice(Long.valueOf(routerId));
         ObjectIdentifier childChassis = ObjectIdentifier.chassis(Long.valueOf(chassisId));
@@ -172,13 +172,13 @@ public class BpmPhysicalDataCreator {
         }
     }
 
-    public static String getRouterChassisId(String routerId, PlanningContext planningContext) {
+    public static String getDeviceChassisId(String deviceId, PlanningContext planningContext) {
         if (planningContext.isPlanContext()) {
             return String.valueOf(physicalInventoryClient.getDeviceChassisId(
-                    Long.parseLong(routerId), CHASSIS_NAME, planningContext.getProjectId()));
+                    Long.parseLong(deviceId), CHASSIS_NAME, planningContext.getProjectId()));
         } else {
             return String.valueOf(physicalInventoryClient.getDeviceChassisId(
-                    Long.parseLong(routerId), CHASSIS_NAME));
+                    Long.parseLong(deviceId), CHASSIS_NAME));
         }
     }
 

@@ -89,6 +89,7 @@ public class SaveConfigurationWizard {
     private void clickOnSaveAsNew() {
         DelayUtils.waitForPageToLoad(driver, wait);
         getWizard().clickButtonById(SAVE_AS_NEW_ID);
+        getWizard().waitToClose();
     }
 
     private void clickOnSave() {
