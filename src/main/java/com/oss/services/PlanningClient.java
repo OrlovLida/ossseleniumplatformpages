@@ -78,7 +78,13 @@ public class PlanningClient {
         long stopTime = currentTime + 30000L;
         int status = 0;
         while (status != Response.Status.NO_CONTENT.getStatusCode() && stopTime > System.currentTimeMillis()) {
-            status = env.getPlanningCoreSpecification().given().contentType(ContentType.JSON).body(perspectiveDTO).when().put(PLANNING_API_PATH + "/" + projectId + "/perspective").getStatusCode();
+            status = env.getPlanningCoreSpecification()
+                    .given()
+                    .contentType(ContentType.JSON)
+                    .body(perspectiveDTO)
+                    .when()
+                    .put(PLANNING_API_PATH + "/" + projectId + "/perspective")
+                    .getStatusCode();
             DelayUtils.sleep();
         }
         Assert.isTrue(status == Response.Status.NO_CONTENT.getStatusCode(), RESPONSE_STATUS_MESSAGE + status);
