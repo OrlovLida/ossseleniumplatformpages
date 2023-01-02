@@ -14,8 +14,6 @@ import java.util.Optional;
 
 import javax.ws.rs.core.Response;
 
-import org.assertj.core.api.Assertions;
-
 import com.comarch.oss.planning.api.dto.ObjectIdDTO;
 import com.comarch.oss.planning.api.dto.ObjectsDescriptionDTO;
 import com.comarch.oss.planning.api.dto.PlanningPerspectiveDTO;
@@ -87,7 +85,9 @@ public class PlanningClient {
                     .getStatusCode();
             DelayUtils.sleep();
         }
-        Assertions.assertThat(status).as(RESPONSE_STATUS_MESSAGE + status).isEqualTo(noContentStatus);
+        if (status != noContentStatus) {
+            throw new IllegalStateException(RESPONSE_STATUS_MESSAGE + status);
+        }
     }
 
     public Long createProject(ProjectDTO projectDTO) {
