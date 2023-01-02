@@ -24,6 +24,8 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.planning.PlanningContext;
 import com.oss.untils.Environment;
 
+import dev.failsafe.internal.util.Assert;
+
 import static com.oss.untils.Constants.LIVE;
 import static com.oss.untils.Constants.PERSPECTIVE;
 import static com.oss.untils.Constants.PLAN;
@@ -41,6 +43,7 @@ public class PlanningClient {
     private static final String PLANNING_API_PATH = "/planning/projects";
     private static final String ROOTS_API_PATH = "/roots";
     private static final String ROOTS_CONNECTION_API_PATH = ROOTS_API_PATH + "/connection";
+    private static final String RESPONSE_STATUS_MESSAGE = "Response status is ";
 
     private static PlanningClient instance;
 
@@ -78,7 +81,7 @@ public class PlanningClient {
             status = env.getPlanningCoreSpecification().given().contentType(ContentType.JSON).body(perspectiveDTO).when().put(PLANNING_API_PATH + "/" + projectId + "/perspective").getStatusCode();
             DelayUtils.sleep();
         }
-
+        Assert.isTrue(status == Response.Status.NO_CONTENT.getStatusCode(), RESPONSE_STATUS_MESSAGE + status);
     }
 
     public Long createProject(ProjectDTO projectDTO) {
