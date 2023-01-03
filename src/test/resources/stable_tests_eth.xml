@@ -50,4 +50,9 @@
       <class name="com.oss.transport.VLANPoolTest"/>
     </classes>
   </test>
+  <test name="ELineTest">
+    <classes>
+      <class name="com.oss.transport.trail.ELineTest"/>
+    </classes>
+  </test>
 </suite>

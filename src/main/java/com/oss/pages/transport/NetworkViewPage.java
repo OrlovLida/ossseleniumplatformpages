@@ -88,6 +88,7 @@ public class NetworkViewPage extends BasePage {
     private static final String DOCKED_PANEL_RIGHT_POSITION = "right";
     private static final String DOCKED_PANEL_BOTTOM_POSITION = "bottom";
     private static final String TRAIL_WIZARD_ERROR_MESSAGE = "Cannot get Trail wizard page: ";
+    private static final String ELEMENT_ROUTING_WIZARD_ID = "routingElementWizardWidget";
 
     public NetworkViewPage(WebDriver driver) {
         super(driver);
@@ -122,6 +123,12 @@ public class NetworkViewPage extends BasePage {
     public RoutingWizardPage addSelectedObjectsToRouting() {
         useContextAction(EDIT_GROUP_ID, ROUTING_ACTION_ID);
         return new RoutingWizardPage(driver);
+    }
+
+    @Step("Add selected objects to Element Routing")
+    public void addSelectedObjectsToElementRouting() {
+        useContextAction(EDIT_GROUP_ID, ROUTING_ACTION_ID);
+        Wizard.createByComponentId(driver, wait, ELEMENT_ROUTING_WIZARD_ID).clickAccept();
     }
 
     @Step("Add selected objects to Termination V2")
