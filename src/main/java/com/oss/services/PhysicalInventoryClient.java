@@ -1,9 +1,20 @@
 package com.oss.services;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+
+import javax.ws.rs.core.Response;
+
+import org.assertj.core.util.Lists;
+
 import com.comarch.oss.physicalinventory.api.dto.CardDTO;
 import com.comarch.oss.physicalinventory.api.dto.ChassisDTO;
+import com.comarch.oss.physicalinventory.api.dto.DeviceSlotDTO;
 import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.PluggableModuleDTO;
+import com.comarch.oss.physicalinventory.api.dto.PortBrowseDTO;
 import com.comarch.oss.physicalinventory.api.dto.PortDTO;
 import com.comarch.oss.physicalinventory.api.dto.ResourceDTO;
 import com.comarch.oss.physicalinventory.api.dto.SearchResultDTO;
@@ -13,11 +24,6 @@ import com.jayway.restassured.specification.RequestSpecification;
 import com.oss.transport.infrastructure.planning.PlanningContext;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
-import org.assertj.core.util.Lists;
-
-import javax.ws.rs.core.Response;
-import java.util.Collection;
-import java.util.Optional;
 
 public class PhysicalInventoryClient {
 
@@ -37,6 +43,10 @@ public class PhysicalInventoryClient {
     private static final String CARDS_CREATE_API_PATH = "/cards/sync?checkCompatibility=true";
     private static final String RESOURCE_HIERARCHY_API_PATH = "/physical-resource/hierarchy/%s/%s?hierarchyMode=%s";
     private static final String DEVICE_GET_API_PATH = "/devices/%s";
+    private static final String DEVICE_SLOTS_API_PATH = "/slots/deviceSlots/{id}";
+    private static final String PORTS_V2_API_PATH = "/ports/v2/{id}";
+    private static final String ID_PARAM = "id";
+
     private static PhysicalInventoryClient instance;
     private final Environment env;
 
@@ -389,4 +399,46 @@ public class PhysicalInventoryClient {
                 .extract()
                 .as(ResourceHierarchyDTO.class);
     }
+
+    public List<DeviceSlotDTO> getDeviceSlots(String deviceId,
+                                              PlanningContext context) {
+        RequestSpecification requestSpecification = env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .pathParam(ID_PARAM, deviceId);
+        if (context.isProjectContext()) {
+            requestSpecification.queryParam(PlanningContext.PROJECT_PARAM, context.getProjectId());
+        } else {
+            requestSpecification.queryParam(PlanningContext.PERSPECTIVE_PARAM, context.getPerspective());
+        }
+        DeviceSlotDTO[] slots = requestSpecification
+                .when()
+                .get(DEVICE_SLOTS_API_PATH)
+                .then()
+                .log().body()
+                .assertThat().statusCode(Response.Status.OK.getStatusCode())
+                .extract().as(DeviceSlotDTO[].class);
+        return Arrays.asList(slots);
+    }
+
+    public List<PortBrowseDTO> getPorts(Collection<String> portsIds,
+                                 PlanningContext context) {
+        String portsPath = String.join(",", portsIds);
+        RequestSpecification requestSpecification = env.getPhysicalInventoryCoreRequestSpecification()
+                .given()
+                .pathParam(ID_PARAM, portsPath);
+        if (context.isProjectContext()) {
+            requestSpecification.queryParam(PlanningContext.PROJECT_PARAM, context.getProjectId());
+        } else {
+            requestSpecification.queryParam(PlanningContext.PERSPECTIVE_PARAM, context.getPerspective());
+        }
+        PortBrowseDTO[] ports = requestSpecification
+                .when()
+                .get(PORTS_V2_API_PATH)
+                .then()
+                .log().body()
+                .assertThat().statusCode(Response.Status.OK.getStatusCode())
+                .extract().as(PortBrowseDTO[].class);
+        return Arrays.asList(ports);
+    }
+
 }

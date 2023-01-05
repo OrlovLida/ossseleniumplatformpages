@@ -2,6 +2,7 @@ package com.oss.pages.platform;
 
 import java.time.Duration;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -33,6 +34,8 @@ public class HierarchyViewPage extends BasePage {
     private static final String PROPERTY_PANEL_WIDGET_ID = "PropertyPanelWidget";
     private static final String CHOOSE_PROPERTY_CONFIG_ID = "chooseConfiguration";
     private static final String SETTINGS_ID = "frameworkCustomButtonsSecondaryGroup";
+
+    private static final String CANNOT_FIND_NODE = "Cannot find node with path: %s";
 
     private HierarchyViewPage(WebDriver driver) {
         super(driver);
@@ -228,9 +231,19 @@ public class HierarchyViewPage extends BasePage {
     public boolean isNodePresent(String pathLabel) {
         return getMainTree().findNodeByLabelsPath(pathLabel).isPresent();
     }
+
     public boolean isNodePresentByPath(String path) {
         return getMainTree().findNodeByPath(path).isPresent();
     }
+
+    public void setFilterForNodeByPath(String path,
+                                       String attributeId,
+                                       String value) {
+        Node node = getMainTree().findNodeByPath(path)
+                .orElseThrow(() -> new NoSuchElementException(String.format(CANNOT_FIND_NODE, path)));
+        node.searchByAttribute(attributeId, value);
+    }
+
     public int getMainTreeSize() {
         return getMainTree().getVisibleNodes().size();
     }
