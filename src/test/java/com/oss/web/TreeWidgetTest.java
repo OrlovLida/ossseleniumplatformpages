@@ -203,8 +203,7 @@ public class TreeWidgetTest extends BaseTestCase {
         sublocation.create();
         hierarchyViewPage.unselectFirstObject();
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
-        List<String> nodes = hierarchyViewPage.getVisibleNodesLabel();
-        Assertions.assertThat(nodes).contains(ROOM_3_CREATE);
+        Assertions.assertThat(hierarchyViewPage.isNodePresent(PATH_ROOM_3)).isTrue();
 
     }
 
@@ -228,8 +227,7 @@ public class TreeWidgetTest extends BaseTestCase {
         ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(CONFIRM_DELETE_BUTTON);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
-        List<String> nodes = hierarchyViewPage.getVisibleNodesLabel();
-        Assertions.assertThat(nodes).doesNotContain(PATH_ROOM_3).isNotEmpty();
+        Assertions.assertThat(hierarchyViewPage.isNodePresent(PATH_ROOM_3)).isFalse();
     }
 
     @Test(priority = 11)

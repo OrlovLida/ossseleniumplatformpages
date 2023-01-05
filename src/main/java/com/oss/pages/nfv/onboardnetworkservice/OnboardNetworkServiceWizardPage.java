@@ -10,7 +10,7 @@ public class OnboardNetworkServiceWizardPage extends OnboardWizardPage {
 
     private static final String WIZARD_ID = "nsOnboardWizardId";
     private static final String ONBOARD_RADIO_BUTTONS_COMPONENT_ID = "onboardTypeRadioButtonsId";
-    private static final String ONBOARD_NFVO_SEARCH_FIELD_ID = "onboardNFVOSearchFieldId_OSF";
+    private static final String ONBOARD_NFVO_SEARCH_FIELD_ID = "onboardNFVOSearchFieldId";
     private static final String ONBOARD_DEFAULT_REMOTE_FOLDER_TEXT_FIELD_ID = "onboardDefaultRemoteFolderTextFieldId";
 
     private OnboardNetworkServiceWizardPage(WebDriver driver, WebDriverWait wait) {

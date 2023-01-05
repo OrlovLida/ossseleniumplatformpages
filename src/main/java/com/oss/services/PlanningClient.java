@@ -5,22 +5,24 @@
  */
 package com.oss.services;
 
-import com.comarch.oss.planning.api.dto.ObjectIdDTO;
-import com.comarch.oss.planning.api.dto.ObjectsDescriptionDTO;
-import com.comarch.oss.planning.api.dto.PlanningPerspectiveDTO;
-import com.comarch.oss.planning.api.dto.v2.ProjectDTO;
-import com.comarch.oss.planningmanager.api.dto.internal.ConnectionDTO;
-import com.jayway.restassured.http.ContentType;
-import com.oss.planning.PlanningContext;
-import com.oss.untils.Environment;
-
-import javax.ws.rs.core.Response;
 import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+
+import javax.ws.rs.core.Response;
+
+import com.comarch.oss.planning.api.dto.ObjectIdDTO;
+import com.comarch.oss.planning.api.dto.ObjectsDescriptionDTO;
+import com.comarch.oss.planning.api.dto.PlanningPerspectiveDTO;
+import com.comarch.oss.planning.api.dto.v2.ProjectDTO;
+import com.comarch.oss.planningmanager.api.dto.internal.ConnectionDTO;
+import com.jayway.restassured.http.ContentType;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.planning.PlanningContext;
+import com.oss.untils.Environment;
 
 import static com.oss.untils.Constants.LIVE;
 import static com.oss.untils.Constants.PERSPECTIVE;
@@ -39,7 +41,7 @@ public class PlanningClient {
     private static final String PLANNING_API_PATH = "/planning/projects";
     private static final String ROOTS_API_PATH = "/roots";
     private static final String ROOTS_CONNECTION_API_PATH = ROOTS_API_PATH + "/connection";
-
+    private static final String RESPONSE_STATUS_MESSAGE = "Response status is ";
 
     private static PlanningClient instance;
 
@@ -70,14 +72,22 @@ public class PlanningClient {
     }
 
     public void moveProject(Long projectId, PlanningPerspectiveDTO perspectiveDTO) {
-        env.getPlanningCoreSpecification()
-                .given()
-                .contentType(ContentType.JSON)
-                .body(perspectiveDTO)
-                .when()
-                .put(PLANNING_API_PATH + "/" + projectId + "/perspective")
-                .then()
-                .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
+        long stopTime = System.currentTimeMillis() + 30000L;
+        int noContentStatus = Response.Status.NO_CONTENT.getStatusCode();
+        int status = 0;
+        while (status != noContentStatus && stopTime > System.currentTimeMillis()) {
+            status = env.getPlanningCoreSpecification()
+                    .given()
+                    .contentType(ContentType.JSON)
+                    .body(perspectiveDTO)
+                    .when()
+                    .put(PLANNING_API_PATH + "/" + projectId + "/perspective")
+                    .getStatusCode();
+            DelayUtils.sleep();
+        }
+        if (status != noContentStatus) {
+            throw new IllegalStateException(RESPONSE_STATUS_MESSAGE + status);
+        }
     }
 
     public Long createProject(ProjectDTO projectDTO) {
