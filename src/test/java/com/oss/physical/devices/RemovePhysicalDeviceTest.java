@@ -8,6 +8,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -212,6 +213,11 @@ public class RemovePhysicalDeviceTest extends BaseTestCase {
     public void secondDeviceIsNotVisibleOnHierarchyView() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(hierarchyViewPage.getMainTreeSize(), 0, String.format(DEVICE_WAS_NOT_REMOVED_FROM_VIEW_VALIDATION, secondDeviceId));
+    }
+
+    @AfterClass
+    public void deleteCreatedLocation() {
+        locationInventoryRepository.deleteLocation(Long.parseLong(locationId), LOCATION_TYPE);
     }
 
     @Step("Set perspective to LIVE")
