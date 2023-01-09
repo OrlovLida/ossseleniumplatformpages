@@ -11,8 +11,8 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
+import com.comarch.oss.web.pages.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.transport.loopbackInterface.LoopbackInterfaceWizardPage;
 
 import io.qameta.allure.Step;

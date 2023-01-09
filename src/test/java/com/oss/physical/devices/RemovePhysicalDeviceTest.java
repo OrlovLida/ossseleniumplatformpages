@@ -22,7 +22,7 @@ import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.framework.wizard.Wizard;
-import com.oss.pages.platform.HierarchyViewPage;
+import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.PhysicalInventoryRepository;
 import com.oss.repositories.PlanningRepository;

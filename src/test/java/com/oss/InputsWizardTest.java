@@ -6,9 +6,9 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.InputsWizardPage;
 import com.oss.framework.components.data.Data;
 import com.oss.framework.components.inputs.Checkbox;
 import com.oss.framework.components.inputs.Combobox;
@@ -27,7 +27,6 @@ import com.oss.framework.components.inputs.TextArea;
 import com.oss.framework.components.inputs.TextField;
 import com.oss.framework.components.inputs.Time;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.InputsWizardPage;
 
 public class InputsWizardTest extends BaseTestCase {
     private static final String INPUTS_WIZARD_URL = String.format("%s%s/wizards/inputs-wizard?perspective=LIVE", BASIC_URL, MOCK_PATH);

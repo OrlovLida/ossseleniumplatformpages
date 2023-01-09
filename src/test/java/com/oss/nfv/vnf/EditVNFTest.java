@@ -21,7 +21,7 @@ import com.oss.pages.nfv.vnf.VNFWizardPage;
 import com.oss.pages.nfv.vnf.VNFWizardSecondStep;
 import com.oss.pages.nfv.vnf.VNFWizardStep;
 import com.oss.pages.nfv.vnf.VNFWizardThirdStep;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.services.nfv.vnf.VNFApiClient;
 import com.oss.utils.TestListener;
 

@@ -1,5 +1,6 @@
 package com.oss.physical.locations;
 
+import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
@@ -11,9 +12,9 @@ import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.physical.SublocationWizardPage;
-import com.oss.pages.platform.HierarchyViewPage;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.SearchObjectTypePage;
+import com.comarch.oss.web.pages.HierarchyViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
+
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import org.slf4j.Logger;

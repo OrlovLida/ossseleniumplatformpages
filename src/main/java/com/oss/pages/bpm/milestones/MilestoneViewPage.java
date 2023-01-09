@@ -6,7 +6,7 @@
  */
 package com.oss.pages.bpm.milestones;
 
-import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
+import com.comarch.oss.web.pages.configuration.ChooseConfigurationWizard;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;

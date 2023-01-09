@@ -3,13 +3,13 @@ package com.oss.transport;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.SearchObjectTypePage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.transport.TrafficPolicyWizardPage;
 
 import io.qameta.allure.Step;

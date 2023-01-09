@@ -9,6 +9,7 @@ import com.oss.pages.BasePage;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
+@Deprecated
 public class LoginPage extends BasePage {
 
     private final String url;

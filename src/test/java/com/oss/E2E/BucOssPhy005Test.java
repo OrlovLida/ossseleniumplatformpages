@@ -32,7 +32,7 @@ import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.physical.MountingEditorWizardPage;
 import com.oss.pages.physical.SublocationWizardPage;
-import com.oss.pages.platform.HierarchyViewPage;
+import com.comarch.oss.web.pages.HierarchyViewPage;
 
 import io.qameta.allure.Description;
 

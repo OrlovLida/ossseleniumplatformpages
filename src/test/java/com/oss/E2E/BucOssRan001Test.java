@@ -9,6 +9,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
@@ -20,8 +21,7 @@ import com.oss.pages.bpm.planning.ProcessDetailsPage;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.SearchObjectTypePage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;

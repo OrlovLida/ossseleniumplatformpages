@@ -5,7 +5,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 
 public class InventoryViewTest extends BaseTestCase {
     private NewInventoryViewPage inventoryViewPage;

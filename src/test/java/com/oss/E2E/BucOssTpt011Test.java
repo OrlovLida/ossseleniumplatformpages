@@ -26,7 +26,7 @@ import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.AELWizardPage;
 import com.oss.pages.transport.trail.ConnectionWizardPage;

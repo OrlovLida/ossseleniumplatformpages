@@ -3,7 +3,7 @@ package com.oss.pages.transport.traffic.classs;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.wizard.Wizard;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 
 import io.qameta.allure.Step;
 

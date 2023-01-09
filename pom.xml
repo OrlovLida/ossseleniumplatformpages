@@ -265,6 +265,11 @@
             <artifactId>ethernet-api</artifactId>
             <version>5.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.web.tests</groupId>
+            <artifactId>web-pages</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <profiles>

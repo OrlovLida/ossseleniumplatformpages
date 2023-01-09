@@ -12,7 +12,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 
 /**
  * @author Faustyna Szczepanik

@@ -14,7 +14,7 @@ import com.oss.pages.floorplan.FloorPlanPage;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.SublocationWizardPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.comarch.oss.web.pages.OldInventoryView.OldInventoryViewPage;
 
 import io.qameta.allure.Description;
 

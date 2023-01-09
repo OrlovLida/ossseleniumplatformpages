@@ -6,6 +6,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.BookmarkWizardPage;
+import com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.NewBookmarksPage;
+import com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.ShareBookmarkWizardPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.components.mainheader.ButtonPanel;
@@ -13,9 +16,6 @@ import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketSearchPage;
-import com.oss.pages.platform.bookmarksanddashboards.bookmarks.BookmarkWizardPage;
-import com.oss.pages.platform.bookmarksanddashboards.bookmarks.NewBookmarksPage;
-import com.oss.pages.platform.bookmarksanddashboards.bookmarks.ShareBookmarkWizardPage;
 
 import io.qameta.allure.Description;
 

@@ -15,7 +15,7 @@ import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.tasks.TasksPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.IPPathWizardPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;

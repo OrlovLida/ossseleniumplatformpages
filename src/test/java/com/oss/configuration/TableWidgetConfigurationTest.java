@@ -1,8 +1,8 @@
 package com.oss.configuration;
 
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.TYPE;
+import static com.comarch.oss.web.pages.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
+import static com.comarch.oss.web.pages.configuration.SaveConfigurationWizard.Property.GROUPS;
+import static com.comarch.oss.web.pages.configuration.SaveConfigurationWizard.Property.TYPE;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -19,8 +19,8 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.configuration.SaveConfigurationWizard;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
+import com.comarch.oss.web.pages.configuration.SaveConfigurationWizard;
 import com.oss.utils.TestListener;
 
 @Listeners({TestListener.class})

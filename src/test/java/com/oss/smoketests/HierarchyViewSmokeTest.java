@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.GlobalNotificationContainer;
 import com.oss.framework.components.contextactions.ActionsContainer;
@@ -12,9 +13,8 @@ import com.oss.framework.components.layout.ErrorCard;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
-import com.oss.pages.platform.HierarchyViewPage;
+import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.SearchObjectTypePage;
 
 import io.qameta.allure.Description;
 
