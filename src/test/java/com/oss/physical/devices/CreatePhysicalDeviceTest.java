@@ -22,6 +22,8 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.comarch.oss.resourcehierarchy.api.dto.ResourceHierarchyDTO;
+import com.comarch.oss.web.pages.HierarchyViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.contextactions.ActionsContainer;
@@ -29,8 +31,6 @@ import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.comarch.oss.web.pages.HierarchyViewPage;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.PhysicalInventoryRepository;
 import com.oss.repositories.PlanningRepository;
@@ -53,6 +53,7 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
     private static final String PROPERTY_PANEL_WIDGET_ID = "PropertyPanelWidget";
     private static final Pattern ID_PATTERN = Pattern.compile("id=[\\d]+");
 
+    private static final String NO_SUCCESSFUL_MESSAGE_VALIDATION = "No message about successful device creation";
     private static final String WRONG_STEP_TITLE = "Wrong title of %s wizard step for equipment type: %s";
     private static final String WRONG_ATTRIBUTE_VALUE_VALIDATION = "Wrong value of %s attribute for type: %s";
     private static final String ATTRIBUTE_DOES_NOT_EXIST_ON_PROPERTY_PANEL_VALIDATION = "Attribute %s does not exist on Property Panel for type: %s";
@@ -194,7 +195,7 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 10)
+    @Test(priority = 10, dependsOnMethods = "openHierarchyViewFromActiveLink")
     public void checkIfDeviceIsVisibleOnHierarchyView() {
         Assert.assertEquals(getMainTreeSize(), 1, String.format(NO_DEVICE_ON_HIERARCHY_VIEW_VALIDATION, equipmentType));
     }
@@ -284,7 +285,7 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
 
     @Step("Check system message")
     private void checkSystemMessage() {
-        Assert.assertTrue(getMessageWithText().isPresent());
+        Assert.assertTrue(getMessageWithText().isPresent(), NO_SUCCESSFUL_MESSAGE_VALIDATION);
     }
 
     @Step("Click system message link")
