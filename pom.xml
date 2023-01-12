@@ -4,7 +4,7 @@
 
     <groupId>com.comarch.oss.web.tests.platform</groupId>
     <artifactId>OSSSeleniumPlatformPages</artifactId>
-    <version>3.0.0.Final</version>
+    <version>3.0.1-SNAPSHOT</version>
 
     <scm>
         <connection>scm:git:ssh://git@gitlab.czk.comarch:2222/toss/pfm/seleniumtests/ossseleniumplatformpages.git
@@ -12,7 +12,7 @@
         <developerConnection>
             scm:git:ssh://git@gitlab.czk.comarch:2222/toss/pfm/seleniumtests/ossseleniumplatformpages.git
         </developerConnection>
-        <tag>3.0.0.Final</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <properties>
