@@ -45,7 +45,7 @@
         <planning.version>7.4.0</planning.version>
         <planningmanager.version>9.1.2</planningmanager.version>
         <validationresults.version>7.3.1</validationresults.version>
-        <seleniumframework.version>2.2.0-SNAPSHOT</seleniumframework.version>
+        <seleniumframework.version>3.0.0.Final</seleniumframework.version>
         <fixedaccess.version>4.9.6</fixedaccess.version>
         <trail-api.version>3.20.0.Final</trail-api.version>
         <tmf.catalog.version>7.5.10</tmf.catalog.version>
@@ -268,7 +268,7 @@
         <dependency>
             <groupId>com.comarch.oss.web.tests</groupId>
             <artifactId>web-pages</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <version>0.0.1</version>
         </dependency>
     </dependencies>
 
