@@ -15,6 +15,8 @@ import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.toolsmanager.ApplicationWizard;
+import com.comarch.oss.web.pages.toolsmanager.CategoryWizard;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
@@ -25,10 +27,8 @@ import com.oss.framework.navigation.toolsmanager.Subcategory;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.toolsmanager.ApplicationWizard;
-import com.oss.pages.platform.toolsmanager.CategoryWizard;
-import com.oss.pages.platform.toolsmanager.ToolsManagerPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
+import com.comarch.oss.web.pages.toolsmanager.ToolsManagerPage;
 import com.oss.untils.FakeGenerator;
 
 import io.qameta.allure.Description;

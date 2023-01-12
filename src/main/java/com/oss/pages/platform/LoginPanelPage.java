@@ -9,6 +9,7 @@ import org.openqa.selenium.WebDriver;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.SWITCHER;
 
+@Deprecated
 public class LoginPanelPage extends BasePage {
 
     public LoginPanelPage(WebDriver driver) {

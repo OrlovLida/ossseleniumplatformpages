@@ -4,9 +4,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.NotificationWrapperPage;
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.servicedesk.issue.problem.ProblemDashboardPage;
-import com.oss.pages.platform.NotificationWrapperPage;
 
 import io.qameta.allure.Description;
 

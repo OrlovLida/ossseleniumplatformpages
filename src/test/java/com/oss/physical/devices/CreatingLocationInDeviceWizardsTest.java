@@ -16,7 +16,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.ChangeLocationWizardPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.ModalLocationWizardPage;
-import com.oss.pages.platform.HierarchyViewPage;
+import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.PhysicalInventoryRepository;
 import com.oss.repositories.PlanningRepository;

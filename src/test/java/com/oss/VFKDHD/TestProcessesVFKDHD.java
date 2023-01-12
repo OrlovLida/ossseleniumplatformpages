@@ -7,6 +7,7 @@ import java.util.Random;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.oss.BaseTestCase;
@@ -25,8 +26,7 @@ import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.physical.SublocationWizardPage;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.SearchObjectTypePage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 
 import io.qameta.allure.Description;
 

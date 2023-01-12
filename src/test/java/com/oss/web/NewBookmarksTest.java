@@ -7,13 +7,13 @@ import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.BookmarkWizardPage;
+import com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.NewBookmarksPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.bookmarksanddashboards.bookmarks.BookmarkWizardPage;
-import com.oss.pages.platform.bookmarksanddashboards.bookmarks.NewBookmarksPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.untils.FakeGenerator;
 
 import io.qameta.allure.Description;

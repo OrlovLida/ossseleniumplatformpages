@@ -1,5 +1,7 @@
 package com.oss.pages.physical;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.inputs.Input;
@@ -38,6 +40,16 @@ public class CreatePluggableModuleWizardPage extends BasePage {
     @Step("Click Accept button")
     public void accept() {
         getPluggableModuleWizard().clickButtonById(PLUGGABLE_MODULE_ACCEPT_BUTTON_DATA_NAME);
+    }
+
+    @Step("Get wizard name")
+    public String getWizardName() {
+        return getPluggableModuleWizard().getWizardName();
+    }
+
+    @Step("Get port")
+    public List<String> getPorts() {
+        return getPluggableModuleWizard().getComponent(PORT_COMBOBOX_DATA_ATTRIBUTE_NAME).getStringValues();
     }
 
     private Wizard getPluggableModuleWizard() {

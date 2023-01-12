@@ -8,12 +8,16 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.comarch.oss.web.pages.FormAppPage;
+import com.comarch.oss.web.pages.HierarchyViewPage;
+import com.comarch.oss.web.pages.InputsWizardPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
+import com.comarch.oss.web.pages.languageservice.LanguageServicePage;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
-import com.oss.pages.languageservice.LanguageServicePage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;

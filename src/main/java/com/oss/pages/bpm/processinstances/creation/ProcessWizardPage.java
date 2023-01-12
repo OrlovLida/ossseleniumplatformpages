@@ -10,7 +10,6 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Splitter;
 import com.google.common.collect.ImmutableMap;
 import com.oss.framework.components.alerts.SystemMessageContainer;
-import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
@@ -34,6 +33,7 @@ import java.util.Random;
  * @author Paweł Rother
  */
 public class ProcessWizardPage extends BasePage {
+    private static final String NO_SYSTEM_MESSAGE_EXCEPTION = "There is no any System Message";
     public static final String NRP = "Network Resource Process";
     public static final String DCP = "Data Correction Process";
     public static final String PROCESS_NAME_ATTRIBUTE_ID = "processNameTextFieldId";
@@ -255,9 +255,8 @@ public class ProcessWizardPage extends BasePage {
     }
 
     private String getProcessCreationMessage() {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, wait);
-        List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        return messages.get(0).getText();
+        return SystemMessageContainer.create(driver, wait).getFirstMessage().orElseThrow(()
+                -> new java.util.NoSuchElementException(NO_SYSTEM_MESSAGE_EXCEPTION)).getText();
     }
 
     private List<String> getProcessWizardSteps() {

@@ -15,7 +15,7 @@ import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardFirstStep;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardPage;
 import com.oss.pages.nfv.networkslicesubnet.NetworkSliceSubnetWizardSecondStep;
 import com.oss.pages.nfv.vnf.VNFWizardPage;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.services.nfv.networkslice.NetworkSliceApiClient;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;

@@ -7,6 +7,7 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.NotificationWrapperPage;
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.servicedesk.changemanagement.ChangeDashboardPage;
 import com.oss.pages.iaa.servicedesk.changemanagement.MyChangesPage;
@@ -14,7 +15,6 @@ import com.oss.pages.iaa.servicedesk.changemanagement.MyGroupChangesPage;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.iaa.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
-import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;

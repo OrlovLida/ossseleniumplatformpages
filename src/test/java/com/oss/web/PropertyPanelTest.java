@@ -2,7 +2,7 @@ package com.oss.web;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import org.assertj.core.api.Assertions;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;

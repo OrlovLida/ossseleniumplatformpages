@@ -5,13 +5,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.comarch.oss.web.pages.NotificationWrapperPage;
+import com.comarch.oss.web.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
-import com.oss.pages.platform.NotificationWrapperPage;
 
 import io.qameta.allure.Step;
 

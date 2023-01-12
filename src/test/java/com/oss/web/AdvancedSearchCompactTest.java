@@ -11,6 +11,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.filtermanager.FilterManagerPage;
 import com.google.common.collect.Multimap;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.inputs.ComponentFactory;
@@ -20,8 +21,7 @@ import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.filtermanager.FilterManagerPage;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 
 public class AdvancedSearchCompactTest extends BaseTestCase {
     private final static String SIMPLE_ATTRIBUTE = "title";

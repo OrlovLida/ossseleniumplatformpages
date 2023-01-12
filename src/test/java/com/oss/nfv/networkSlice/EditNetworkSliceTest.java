@@ -17,7 +17,7 @@ import com.oss.pages.nfv.networkslice.NetworkSliceWizardFirstStep;
 import com.oss.pages.nfv.networkslice.NetworkSliceWizardPage;
 import com.oss.pages.nfv.networkslice.NetworkSliceWizardSecondStep;
 import com.oss.pages.nfv.vnf.VNFWizardPage;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.services.LogicalFunctionCoreClient;
 import com.oss.services.nfv.networkslice.NetworkSliceApiClient;
 import com.oss.untils.Environment;

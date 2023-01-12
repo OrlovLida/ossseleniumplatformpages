@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.NotificationWrapperPage;
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.ClosedTicketsPage;
@@ -13,7 +14,6 @@ import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketSearchPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.IssueCSDIWizardPage;
-import com.oss.pages.platform.NotificationWrapperPage;
 
 import io.qameta.allure.Description;
 

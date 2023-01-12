@@ -14,6 +14,7 @@ import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessCreationWizardProperties;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
+import com.oss.pages.bpm.processinstances.creation.TerminateProcessWizardPage;
 import com.oss.pages.platform.HomePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -76,19 +77,21 @@ public class ProcessOverviewPage extends BasePage {
         return new ProcessOverviewPage(driver);
     }
 
-    public void clearAllColumnFilters() {
-        OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
-        processTable.clearAllColumnValues();
+    private OldTable getProcessesTable() {
+        return OldTable.createById(driver, wait, PROCESS_VIEW);
+    }
+
+    public ProcessOverviewPage clearAllColumnFilters() {
+        getProcessesTable().clearAllColumnValues();
+        return this;
     }
 
     public void selectPredefinedFilter(String filterName) {
-        OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
-        processTable.selectPredefinedFilter(filterName);
+        getProcessesTable().selectPredefinedFilter(filterName);
     }
 
     private String getProcessAttribute(String columnLabel) {
-        OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
-        return processTable.getCellValue(0, columnLabel);
+        return getProcessesTable().getCellValue(0, columnLabel);
     }
 
     private OldPropertyPanel getOldPropertyPanel() {
@@ -113,7 +116,7 @@ public class ProcessOverviewPage extends BasePage {
 
     public String getProcessCode(String processName) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable processTable = OldTable.createById(driver, wait, PROCESS_VIEW);
+        OldTable processTable = getProcessesTable();
         processTable.searchByAttributeWithLabel(NAME_LABEL, Input.ComponentType.TEXT_FIELD, processName);
         processTable.doRefreshWhileNoData(1000, REFRESH_TABLE_ID);
         int index = processTable.getRowNumber(processName, NAME_LABEL);
@@ -125,7 +128,7 @@ public class ProcessOverviewPage extends BasePage {
     }
 
     public ProcessOverviewPage selectProcess(String attributeName, String value) {
-        TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
+        TableInterface table = getProcessesTable();
         DelayUtils.waitForPageToLoad(driver, wait);
         table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, value);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -250,9 +253,23 @@ public class ProcessOverviewPage extends BasePage {
     }
 
     public ProcessOverviewPage reloadTable() {
-        TableInterface table = OldTable.createById(driver, wait, PROCESS_VIEW);
+        TableInterface table = getProcessesTable();
         DelayUtils.waitForPageToLoad(driver, wait);
         table.callAction(OldActionsContainer.KEBAB_GROUP_ID, RELOAD_TABLE_ACTION_ID);
         return this;
+    }
+
+    public void terminateProcess(String reason, boolean childProcessesTerminate) {
+        getProcessesTable().callAction(TERMINATE_PROCESS_ACTION_ID);
+        TerminateProcessWizardPage terminateProcessWizardPage = new TerminateProcessWizardPage(driver).setTerminationReason(reason);
+        if (childProcessesTerminate) {
+            terminateProcessWizardPage.enableChildProcessesTerminate();
+        }
+        terminateProcessWizardPage.clickAccept();
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    public void terminateProcess(String reason) {
+        terminateProcess(reason, false);
     }
 }

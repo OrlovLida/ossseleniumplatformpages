@@ -8,9 +8,9 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.NotificationWrapperPage;
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.faultmanagement.KEDBLibraryPage;
-import com.oss.pages.platform.NotificationWrapperPage;
 
 import io.qameta.allure.Description;
 

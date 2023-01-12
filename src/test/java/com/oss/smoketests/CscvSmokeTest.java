@@ -38,7 +38,7 @@ public class CscvSmokeTest extends BaseTestCase {
 
     private static final String PATH_NAME = "gismap";
     private static final String FILE_NAME = "smoketestCSCV.png";
-    private static final String OPEN_STREET_MAP = "Open Street Map";
+    private static final String MAP_NAME = "Here Terrain Map";
     private static final String RED_COLOR_LOG_PATTERN = "Red color value is %s.";
     private static final String GREEN_COLOR_LOG_PATTERN = "Green color value is %s.";
     private static final String BLUE_COLOR_LOG_PATTERN = "Blue color value is %s.";
@@ -63,7 +63,7 @@ public class CscvSmokeTest extends BaseTestCase {
     private static final String PROPERTY_PANEL_ID = "propertiesTabbApp";
     private static String FILE_PATH;
     private static final Logger LOGGER = LoggerFactory.getLogger(CscvSmokeTest.class);
-    private Environment env = Environment.getInstance();
+    private final Environment env = Environment.getInstance();
 
     @Test(priority = 1, description = "Open Cell Site Configuration View")
     @Description("Open Cell Site Configuration View")
@@ -100,7 +100,7 @@ public class CscvSmokeTest extends BaseTestCase {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         checkErrorPage();
         checkGlobalNotificationContainer();
-        cellSiteConfigurationPage.setMap(OPEN_STREET_MAP);
+        cellSiteConfigurationPage.setMap(MAP_NAME);
         waitForPageToLoad();
         Assert.assertTrue(cellSiteConfigurationPage.isCanvasPresent());
     }
@@ -109,7 +109,7 @@ public class CscvSmokeTest extends BaseTestCase {
     @Description("Check Canvas object bytes size")
     public void checkCanvasObjectSize() {
         String canvasObject = new CellSiteConfigurationPage(driver).getCanvasObject();
-        Assert.assertTrue(canvasObject.length() > 40000);
+        Assert.assertTrue(canvasObject.length() > 150000);
         Assert.assertTrue(generateImage(canvasObject));
     }
 

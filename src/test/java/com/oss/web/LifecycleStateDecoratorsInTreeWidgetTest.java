@@ -20,7 +20,7 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.platform.HierarchyViewPage;
+import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.PhysicalInventoryRepository;

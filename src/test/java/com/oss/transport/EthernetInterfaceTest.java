@@ -4,6 +4,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+
+import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.contextactions.ActionsContainer;
@@ -12,8 +14,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.SearchObjectTypePage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.transport.ethernetInterface.EIWizardPage;
 
 import io.qameta.allure.Description;

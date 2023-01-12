@@ -6,13 +6,13 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.NotificationWrapperPage;
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.ClosedTicketsPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
-import com.oss.pages.platform.NotificationWrapperPage;
 
 import io.qameta.allure.Description;
 

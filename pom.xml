@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.comarch.oss.web.tests.platform</groupId>
     <artifactId>OSSSeleniumPlatformPages</artifactId>
-    <version>2.2.0-SNAPSHOT</version>
+    <version>3.0.1-SNAPSHOT</version>
 
     <scm>
         <connection>scm:git:ssh://git@gitlab.czk.comarch:2222/toss/pfm/seleniumtests/ossseleniumplatformpages.git
@@ -45,7 +44,7 @@
         <planning.version>7.4.0</planning.version>
         <planningmanager.version>9.1.2</planningmanager.version>
         <validationresults.version>7.3.1</validationresults.version>
-        <seleniumframework.version>2.2.0-SNAPSHOT</seleniumframework.version>
+        <seleniumframework.version>3.0.1-SNAPSHOT</seleniumframework.version>
         <fixedaccess.version>4.9.6</fixedaccess.version>
         <trail-api.version>3.20.0.Final</trail-api.version>
         <tmf.catalog.version>7.5.10</tmf.catalog.version>
@@ -264,6 +263,11 @@
             <groupId>com.comarch.oss.inventory.transport.ip</groupId>
             <artifactId>ethernet-api</artifactId>
             <version>5.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.comarch.oss.web.tests</groupId>
+            <artifactId>web-pages</artifactId>
+            <version>0.0.1</version>
         </dependency>
     </dependencies>
 

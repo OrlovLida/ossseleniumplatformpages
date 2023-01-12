@@ -18,7 +18,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
+import com.comarch.oss.web.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.untils.FileDownload;
 
 import io.qameta.allure.Step;

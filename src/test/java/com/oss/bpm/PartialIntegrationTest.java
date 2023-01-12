@@ -799,8 +799,8 @@ public class PartialIntegrationTest extends BaseTestCase {
         messageOptional.ifPresent(message -> {
             softAssert.assertEquals(message.getText(), messageContent, systemMessageLog);
             softAssert.assertEquals(message.getMessageType(), messageType, systemMessageLog);
+            systemMessage.close();
         });
-        systemMessage.close();
         waitForPageToLoad();
     }
 }

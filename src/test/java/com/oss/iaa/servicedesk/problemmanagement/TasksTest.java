@@ -9,12 +9,12 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.NotificationWrapperPage;
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.iaa.servicedesk.issue.tabs.OverviewTab;
 import com.oss.pages.iaa.servicedesk.issue.task.MyTasksPage;
 import com.oss.pages.iaa.servicedesk.issue.task.TaskDashboardPage;
-import com.oss.pages.platform.NotificationWrapperPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;

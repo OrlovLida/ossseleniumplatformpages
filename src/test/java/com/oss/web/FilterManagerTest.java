@@ -8,15 +8,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.filtermanager.EditFilterPage;
+import com.comarch.oss.web.pages.filtermanager.FilterManagerPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
-import com.oss.pages.filtermanager.EditFilterPage;
-import com.oss.pages.filtermanager.FilterManagerPage;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;

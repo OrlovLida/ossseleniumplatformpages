@@ -9,7 +9,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.toolsmanager.ToolsManagerPage;
+import com.comarch.oss.web.pages.toolsmanager.ToolsManagerPage;
 import com.oss.pages.softwaremanagement.repository.FileActionPromptPage;
 import com.oss.pages.softwaremanagement.repository.PropertiesPage;
 import com.oss.pages.softwaremanagement.repository.SoftwareRepositoryPage;
