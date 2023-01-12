@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.comarch.oss.web.tests.platform</groupId>
     <artifactId>OSSSeleniumPlatformPages</artifactId>
-    <version>2.2.0-SNAPSHOT</version>
+    <version>3.0.0.Final</version>
 
     <scm>
         <connection>scm:git:ssh://git@gitlab.czk.comarch:2222/toss/pfm/seleniumtests/ossseleniumplatformpages.git
@@ -13,7 +12,7 @@
         <developerConnection>
             scm:git:ssh://git@gitlab.czk.comarch:2222/toss/pfm/seleniumtests/ossseleniumplatformpages.git
         </developerConnection>
-        <tag>HEAD</tag>
+        <tag>3.0.0.Final</tag>
     </scm>
 
     <properties>
