@@ -377,7 +377,6 @@ public class TreeWidgetTest extends BaseTestCase {
         deleteDevice(deviceId);
         deleteDevice(deviceId2);
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
-        locationInventoryRepository.deleteSubLocation(roomId_2.toString());
         locationInventoryRepository.deleteSubLocation(roomId_4.toString());
     }
 
