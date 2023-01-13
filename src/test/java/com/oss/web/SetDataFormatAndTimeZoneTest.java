@@ -21,7 +21,6 @@ public class SetDataFormatAndTimeZoneTest extends BaseTestCase {
 
     private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String DATE_FORMAT1 = "MM/dd/yyyy hh:mm:ss a";
-    private static final String TIME_ZONE_1 = " Australia/Sydney";
     private static final String LOCATION_TYPE = "Location";
     private final static String PROPERTY_PANEL_ID = "PropertyPanelWidget";
     private final static int ROW_ID = 0;
@@ -79,7 +78,7 @@ public class SetDataFormatAndTimeZoneTest extends BaseTestCase {
         LocalDateTime dateCreatedValue = LocalDateTime.parse(dateCreatedValueInDefaultTimeZone, DFT1);
         LocalDateTime shiftedDateTimeAsiaTokio = getAustraliaDataTime(dateCreatedValue);
         homePage.disableAutoTimeZone();
-        homePage.chooseTimeZone(TIME_ZONE_1);
+        homePage.chooseTimeZone(AUSTRALIA_SYDNEY_ZONE);
         String dateCreatedAfterChangeZone = getCreatedObjectDataTime();
         LocalDateTime dateCreatedValueAfterChangeZone = LocalDateTime.parse(dateCreatedAfterChangeZone, DFT1);
         Assert.assertEquals(dateCreatedValueAfterChangeZone, shiftedDateTimeAsiaTokio, TIME_ZONE_EXCEPTION + shiftedDateTimeAsiaTokio);
