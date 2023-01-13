@@ -155,7 +155,6 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
         getNode(PORT_01_RELATION).callAction(REFRESH_ACTION_ID);
         Assertions.assertThat(getNode(PORT_01_PATH).countDecorators()).isZero();
         Assertions.assertThat(getNode(NODE_1_PLUGGABLE_SLOT).countDecorators()).isZero();
-
     }
     
     @Test(priority = 7)
