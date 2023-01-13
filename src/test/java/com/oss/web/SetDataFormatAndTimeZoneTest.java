@@ -9,10 +9,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 
 /**
  * @author Faustyna Szczepanik
@@ -21,7 +21,7 @@ public class SetDataFormatAndTimeZoneTest extends BaseTestCase {
 
     private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     private static final String DATE_FORMAT1 = "MM/dd/yyyy hh:mm:ss a";
-    private static final String TIME_ZONE_1 = "(UTC+10:00) Australia/Brisbane";
+    private static final String TIME_ZONE_1 = " Australia/Sydney";
     private static final String LOCATION_TYPE = "Location";
     private final static String PROPERTY_PANEL_ID = "PropertyPanelWidget";
     private final static int ROW_ID = 0;
