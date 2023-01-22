@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.google.common.collect.ImmutableList;
 import com.oss.BaseTestCase;
@@ -125,9 +126,11 @@ public class CscvSmokeTest extends BaseTestCase {
                 int red = c.getRed();
                 int green = c.getGreen();
                 int blue = c.getBlue();
-                Assert.assertNotEquals(red, 0, String.format(RED_COLOR_LOG_PATTERN, red));
-                Assert.assertNotEquals(green, 0, String.format(GREEN_COLOR_LOG_PATTERN, green));
-                Assert.assertNotEquals(blue, 0, String.format(BLUE_COLOR_LOG_PATTERN, blue));
+                SoftAssert softAssert = new SoftAssert();
+                softAssert.assertNotEquals(red, 0, String.format(RED_COLOR_LOG_PATTERN, red));
+                softAssert.assertNotEquals(green, 0, String.format(GREEN_COLOR_LOG_PATTERN, green));
+                softAssert.assertNotEquals(blue, 0, String.format(BLUE_COLOR_LOG_PATTERN, blue));
+                softAssert.assertAll();
             }
         }
     }
