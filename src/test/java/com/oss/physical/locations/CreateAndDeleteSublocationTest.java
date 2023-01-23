@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -37,10 +38,13 @@ import static com.oss.framework.components.alerts.SystemMessageContainer.create;
 public class CreateAndDeleteSublocationTest extends BaseTestCase {
     private static final String LIVE_PERSPECTIVE_TEXT = "Live";
 
+    private static final String dateAndTime = new SimpleDateFormat("dd-MM-yyyy_HH:mm").format(Calendar.getInstance().getTime());
+    private final String time = dateAndTime.substring(11);
+
     private static final String COUNTRY_NAME = "country_kk";
     private static final String POSTAL_CODE_NAME = "23-456";
     private static final String REGION_NAME = "region_kk";
-    private static final String CITY_NAME = "city_kk";
+    private static final String CITY_NAME = "city_kk" + dateAndTime;
     private static final String DISTRICT_NAME = "district_kk";
     private static final String LOCATION_NAME = "selenium test bu_kk";
     private static final String RACK_MODEL_MANUFACTURER_MODEL_NAME = "Generic";
@@ -111,46 +115,36 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
     private HierarchyViewPage hierarchyViewPage;
     private TableWidget tableWidget;
 
-    private final String dateAndTime = new SimpleDateFormat("dd-MM-yyyy_HH:mm").format(Calendar.getInstance().getTime());
-    private final String time = dateAndTime.substring(11);
-
     private final Environment env = Environment.getInstance();
     private static final Logger LOGGER = LoggerFactory.getLogger(CreateAndDeleteSublocationTest.class);
 
     @BeforeClass
     public void init() {
         setLivePerspective();
-        addressRepository = new AddressRepository(env);
-        locationInventoryRepository = new LocationInventoryRepository(env);
-        hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
-        newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-    }
-
-    @Test(priority = 1)
-    @Description("Create prerequisites needed to update sublocations")
-    public void preparePrerequisites() {
+        initRepositories();
+        initPages();
         createGeographicalAddress();
         createLocation();
     }
 
-    @Test(priority = 2, dependsOnMethods = {"preparePrerequisites"})
+    @Test(priority = 1)
     @Description("Open Inventory View and Search Object by Type")
     public void openInventoryViewFromLeftSideMenu() {
         openSearchObjectOfInventoryViewFromLeftSideMenu();
     }
 
-    @Test(priority = 3, dependsOnMethods = {"openInventoryViewFromLeftSideMenu"})
+    @Test(priority = 2, dependsOnMethods = {"openInventoryViewFromLeftSideMenu"})
     @Description("Search for Building Complex, display them in IV and find location by name")
     public void searchLocationAndOpenNewInventoryView() {
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         searchObjectTypePage.searchType(LOCATION_TYPE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        newInventoryViewPage.searchObject(LOCATION_NAME);
+        newInventoryViewPage.searchObject(String.valueOf(locationId));
         newInventoryViewPage.selectFirstRow();
     }
 
-    @Test(priority = 4, dependsOnMethods = {"searchLocationAndOpenNewInventoryView"})
+    @Test(priority = 3, dependsOnMethods = {"searchLocationAndOpenNewInventoryView"})
     @Description("Open wizard to create Sublocations (Floor,Rack, Room) With Full Attributes and check confirmation system message")
     public void createSublocations() {
         String[] sublocationTypes = {FLOOR_TYPE, ROOM_TYPE, RACK_TYPE};
@@ -180,14 +174,14 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 5, dependsOnMethods = {"createSublocations"})
+    @Test(priority = 4, dependsOnMethods = {"createSublocations"})
     @Description("Open Hierarchy View for Physical Location of created Sublocations")
     public void moveToHierarchyView() {
         newInventoryViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, HIERARCHY_VIEW_ACTION_ID);
         hierarchyViewPage.selectFirstObject();
     }
 
-    @Test(priority = 6, dependsOnMethods = {"moveToHierarchyView"})
+    @Test(priority = 5, dependsOnMethods = {"moveToHierarchyView"})
     @Description("Check Attributes of Sublocations in Sublocations tab on HV")
     public void checkSublocationsAttributesOnHierarchyView() {
         tableWidget = getTableWidget();
@@ -227,7 +221,7 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(priority = 7, dependsOnMethods = {"checkSublocationsAttributesOnHierarchyView"})
+    @Test(priority = 6, dependsOnMethods = {"checkSublocationsAttributesOnHierarchyView"})
     @Description("Open Inventory View for selected Sublocations")
     public void moveToInventoryView() {
         hierarchyViewPage.selectFirstObject();
@@ -238,7 +232,7 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
         tableWidget.callAction(ActionsContainer.SHOW_ON_GROUP_ID, INVENTORY_VIEW_ACTION_ID);
     }
 
-    @Test(priority = 8, dependsOnMethods = {"moveToInventoryView"})
+    @Test(priority = 7, dependsOnMethods = {"moveToInventoryView"})
     @Description("Check Attributes of Sublocations on IV")
     public void checkSublocationsAttributesOnInventoryView() {
         String[] sublocationTypes = {FLOOR_TYPE, ROOM_TYPE, RACK_TYPE};
@@ -268,7 +262,7 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(priority = 9, dependsOnMethods = {"checkSublocationsAttributesOnInventoryView"})
+    @Test(priority = 8, dependsOnMethods = {"checkSublocationsAttributesOnInventoryView"})
     @Description("Delete all created Sublocations and check confirmation system messages")
     public void deleteSublocations() {
         String[] sublocationTypes = {FLOOR_TYPE, ROOM_TYPE, RACK_TYPE,};
@@ -283,9 +277,8 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 10, dependsOnMethods = {"deleteSublocations"})
-    @Description("Delete prerequisites")
-    public void deletePrerequisites() {
+    @AfterClass
+    public void deleteObjects() {
         deleteLocation();
         deleteGeographicalAddress();
     }
@@ -427,6 +420,18 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
         if (!perspectiveChooser.getCurrentPerspective().equals(LIVE_PERSPECTIVE_TEXT)) {
             perspectiveChooser.setLivePerspective();
         }
+    }
+
+    @Step("Initialize repositories")
+    private void initRepositories() {
+        addressRepository = new AddressRepository(env);
+        locationInventoryRepository = new LocationInventoryRepository(env);
+    }
+
+    @Step("Initialize pages")
+    private void initPages() {
+        hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
+        newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
     }
 
     @Step("Open Inventory View with Search Object Field from Left Side Menu")
