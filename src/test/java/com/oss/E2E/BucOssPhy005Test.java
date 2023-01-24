@@ -12,6 +12,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
@@ -32,7 +33,6 @@ import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.physical.MountingEditorWizardPage;
 import com.oss.pages.physical.SublocationWizardPage;
-import com.oss.pages.platform.HierarchyViewPage;
 
 import io.qameta.allure.Description;
 
@@ -41,9 +41,9 @@ import static java.lang.String.format;
 public class BucOssPhy005Test extends BaseTestCase {
 
     private static final Logger log = LoggerFactory.getLogger(BucOssPhy005Test.class);
-    private static final String LOCATION_NAME = "BuildingA_" + UUID.randomUUID().toString();
+    private static final String LOCATION_NAME = "BuildingA_" + UUID.randomUUID();
     private static final String LOCATION_TYPE = "Building";
-    private static final String SUBLOCATION_NAME = "RoomA_" + UUID.randomUUID().toString();
+    private static final String SUBLOCATION_NAME = "RoomA_" + UUID.randomUUID();
     private static final String SUBLOCATION_TYPE = "Room";
     private static final String PHYSICAL_DEVICE_MODEL = "7360 ISAM FX-8";
     private static final String PHYSICAL_DEVICE_NAME = "MSAN_Device";
@@ -103,7 +103,6 @@ public class BucOssPhy005Test extends BaseTestCase {
     private static final String DELETE_DEVICE_CONFIRMATION_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
     private static final String DELETE_COOLING_ZONE_ACTION_ID = "DeleteCoolingZoneWizardAction";
     private static final String CREATE_COOLING_ZONE_ACTION_ID = "CreateCoolingZoneWizardAction";
-    private static final String CREATE_DEVICE_FROM_TAB_ACTION_ID = "CreateDeviceWithoutSelectionWizardAction";
     private static final String ASSERT_NOT_EQUALS = "The checked value is %s and it shouldn't be equal to the defined %s value";
     private static final String LOCATION_POWER_CAPACITY = "0.00";
     private static final String DELETE_BUTTON_LABEL = "Delete";
@@ -334,8 +333,8 @@ public class BucOssPhy005Test extends BaseTestCase {
     @Test(priority = 17, description = "Create cooling unit", dependsOnMethods = {"createCoolingZone"})
     @Description("Create cooling unit from Devices tab and check confirmation system message")
     public void createCoolingUnit() {
-        TableWidget tableWidget = getTableWidget(TABLE_DEVICES);
-        tableWidget.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_DEVICE_FROM_TAB_ACTION_ID);
+        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
+        hierarchyViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_PHYSICAL_DEVICE_ACTION_ID);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setModel(COOLING_UNIT_MODEL);
         waitForPageToLoad();
@@ -368,11 +367,8 @@ public class BucOssPhy005Test extends BaseTestCase {
     @Test(priority = 19, description = "Create second device", dependsOnMethods = {"showHierarchyViewFromPopup"})
     @Description("Create second device and check confirmation system message")
     public void createSecondDevice() {
-        TableWidget tableWidget = getTableWidget(TABLE_DEVICES);
-        tableWidget.unselectAllRows();
-        waitForPageToLoad();
-        tableWidget.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_DEVICE_FROM_TAB_ACTION_ID);
-        waitForPageToLoad();
+        HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
+        hierarchyViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_PHYSICAL_DEVICE_ACTION_ID);
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         waitForPageToLoad();
         deviceWizardPage.setModel(PHYSICAL_DEVICE_MODEL2);
@@ -436,7 +432,6 @@ public class BucOssPhy005Test extends BaseTestCase {
     public void createThirdDevice() {
         HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         hierarchyViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_PHYSICAL_DEVICE_ACTION_ID);
-        waitForPageToLoad();
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         waitForPageToLoad();
         deviceWizardPage.setModel(PHYSICAL_DEVICE_MODEL3);

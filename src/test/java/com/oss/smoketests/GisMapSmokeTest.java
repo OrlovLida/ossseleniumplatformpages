@@ -33,7 +33,7 @@ public class GisMapSmokeTest extends BaseTestCase {
     private static final Logger LOGGER = LoggerFactory.getLogger(GisMapSmokeTest.class);
     private static final String PATH_NAME = "gismap";
     private static final String FILE_NAME = "smoketest.png";
-    private static final String OPEN_STREET_MAP = "Open Street Map";
+    private static final String MAP_NAME = "Here Terrain Map";
     private static final String RED_COLOR_LOG_PATTERN = "Red color value is %s.";
     private static final String GREEN_COLOR_LOG_PATTERN = "Green color value is %s.";
     private static final String BLUE_COLOR_LOG_PATTERN = "Blue color value is %s.";
@@ -56,7 +56,7 @@ public class GisMapSmokeTest extends BaseTestCase {
         GisViewPage gisViewPage = GisViewPage.getGisViewPage(driver, webDriverWait);
         checkErrorPage();
         checkGlobalNotificationContainer();
-        gisViewPage.setMap(OPEN_STREET_MAP);
+        gisViewPage.setMap(MAP_NAME);
         waitForPageToLoad();
         Assert.assertTrue(gisViewPage.isCanvasPresent());
     }
@@ -65,7 +65,7 @@ public class GisMapSmokeTest extends BaseTestCase {
     @Description("Check Canvas object bytes size")
     public void checkCanvasObjectSize() {
         String canvasObject = GisViewPage.getGisViewPage(driver, webDriverWait).getCanvasObject();
-        Assert.assertTrue(canvasObject.length() > 80000);
+        Assert.assertTrue(canvasObject.length() > 2000000);
         Assert.assertTrue(generateImage(canvasObject));
     }
 

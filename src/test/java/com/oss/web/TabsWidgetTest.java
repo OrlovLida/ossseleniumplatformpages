@@ -8,7 +8,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 
 public class TabsWidgetTest extends BaseTestCase {
     private static final String PROPERTIES = "Properties";

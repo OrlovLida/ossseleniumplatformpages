@@ -1,7 +1,9 @@
-package com.oss.iaa.servicedesk.CSDI;
+package com.oss.iaa.servicedesk.KDDI5G;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.comarch.oss.web.pages.NotificationWrapperPage;
@@ -14,6 +16,7 @@ import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketSearchPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.IssueCSDIWizardPage;
+import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
 
@@ -22,28 +25,23 @@ import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.EXPORT_WIZARD_I
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 
-public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
+public class CreateCTTAndTicketSearchTest extends BaseTestCase {
 
-    private static final String ISSUE_TITLE = "Selenium Test";
     private static final String SEVERITY = "Warning";
-    private static final String STEPS_TO_REPRODUCE = "Test Steps";
-    private static final String EXPECTED_BEHAVIOR = "Test Behavior";
-    private static final String CONTACT_PERSON = "Test Person";
-    private static final String IMPACT = "Low";
-    private static final String IMPACT_EXPLANATION = "Test Explanation";
-    private static final String URGENCY = "Low";
-    private static final String URGENCY_EXPLANATION = "Test Explanation";
-    private static final String ENVIRONMENT_TYPE = "REF";
-    private static final String COMPONENT = "Service Desk";
-    private static final String FLOW_TYPE = "Incident";
+    private static final String SEVERITY_ID = "TT_WIZARD_INPUT_SEVERITY_LABEL";
+    private static final String FLOW_TYPE = "CTT";
     private static final String INCIDENT_DESCRIPTION = "Selenium test ticket";
     private static final String SEVERITY_ATTRIBUTE_NAME = "Severity";
-    private static final String STATUS_RESOLVED = "Resolved";
+    private static final String DOMAIN_ATTRIBUTE_NAME = "Domain";
+    private static final String STATUS_INPROGRESS = "InProgress";
     private static final String STATUS_CLOSED = "Closed";
     private static final String TT_DOWNLOAD_FILE = "TroubleTicket*.xlsx";
+    private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
+    private static final String ASSIGNEE = "sd_seleniumtest";
+    private static final String DOMAIN = "Nokia";
+    private static final String DOMAIN_ID = "TT_WIZARD_INPUT_DOMAIN_LABEL";
 
     private TicketDashboardPage ticketDashboardPage;
-    private IssueCSDIWizardPage issueCSDIWizardPage;
     private MyGroupTicketsPage myGroupTicketsPage;
     private MyTicketsPage myTicketsPage;
     private TicketSearchPage ticketSearchPage;
@@ -52,36 +50,32 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
     private TicketOverviewTab ticketOverviewTab;
     private ClosedTicketsPage closedTicketsPage;
     private String ticketID;
+    private SDWizardPage sdWizardPage;
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
         ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
     }
 
-    @Test(priority = 1, testName = "Create Incident Ticket", description = "Create Incident Ticket")
-    @Description("Create Incident Ticket")
+    @Parameters({"MOIdentifier"})
+    @Test(priority = 1, testName = "Create CTT Ticket", description = "Create CTT Ticket")
+    @Description("Create CTT Ticket")
     public void createIncidentTicket(
+            @Optional("TEST_MO") String MOIdentifier
     ) {
-        issueCSDIWizardPage = ticketDashboardPage.openCreateTicketWizard(FLOW_TYPE).openIssueCSDIWizardPage();
-        issueCSDIWizardPage.setIssueTitle(ISSUE_TITLE);
-        issueCSDIWizardPage.enterIncidentDescription(INCIDENT_DESCRIPTION);
-        issueCSDIWizardPage.setSeverity(SEVERITY);
-        issueCSDIWizardPage.clickNextButtonInWizard();
-
-        issueCSDIWizardPage.setStepsToReproduce(STEPS_TO_REPRODUCE);
-        issueCSDIWizardPage.setExpectedBehavior(EXPECTED_BEHAVIOR);
-        issueCSDIWizardPage.setContactPerson(CONTACT_PERSON);
-
-        issueCSDIWizardPage.setImpact(IMPACT);
-        issueCSDIWizardPage.setImpactExplanation(IMPACT_EXPLANATION);
-        issueCSDIWizardPage.setUrgency(URGENCY);
-        issueCSDIWizardPage.setUrgencyExplanation(URGENCY_EXPLANATION);
-        issueCSDIWizardPage.setEnvironmentType(ENVIRONMENT_TYPE);
-        issueCSDIWizardPage.setComponent(COMPONENT);
-        issueCSDIWizardPage.clickAcceptButtonInWizard();
-
+        sdWizardPage = ticketDashboardPage.openCreateTicketWizard(FLOW_TYPE);
+        sdWizardPage.getMoStep().enterTextIntoMOIdentifierField(MOIdentifier);
+        sdWizardPage.getMoStep().selectObjectInMOTable(MOIdentifier);
+        sdWizardPage.clickNextButtonInWizard();
+        sdWizardPage.insertValueToComponent(SEVERITY, SEVERITY_ID);
+        sdWizardPage.enterIncidentDescription(INCIDENT_DESCRIPTION);
+        sdWizardPage.insertValueToComponent(ASSIGNEE, TT_WIZARD_ASSIGNEE);
+        sdWizardPage.insertValueToComponent(DOMAIN, DOMAIN_ID);
+        sdWizardPage.clickNextButtonInWizard();
+        sdWizardPage.clickAcceptButtonInWizard();
         ticketID = ticketDashboardPage.getIdFromMessage();
         Assert.assertTrue(ticketDashboardPage.getAttributeFromTable(0, SEVERITY_ATTRIBUTE_NAME).contains(SEVERITY));
+        Assert.assertTrue(ticketDashboardPage.getAttributeFromTable(0, DOMAIN_ATTRIBUTE_NAME).contains(DOMAIN));
         Assert.assertEquals(ticketDashboardPage.getRowForIssueWithID(ticketID), 0);
     }
 
@@ -145,11 +139,9 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
         ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
         ticketOverviewTab.allowEditingTicket();
         issueDetailsPage.skipAllActionsOnCheckList();
-        ticketOverviewTab.changeIssueStatus(STATUS_RESOLVED);
-        ticketOverviewTab.fillReasonChange(webDriverWait, driver);
+        ticketOverviewTab.changeIssueStatus(STATUS_INPROGRESS);
         issueDetailsPage.skipAllActionsOnCheckList();
         ticketOverviewTab.changeIssueStatus(STATUS_CLOSED);
-        ticketOverviewTab.fillReasonChange(webDriverWait, driver);
 
         Assert.assertEquals(ticketOverviewTab.checkTicketStatus(), STATUS_CLOSED);
     }
@@ -158,7 +150,6 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
     @Description("Refresh, search and check if ticket is shown in the closed tickets table")
     public void checkClosedTicketView() {
         closedTicketsPage = new ClosedTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
-        closedTicketsPage.clickRefresh();
         closedTicketsPage.filterBy(ID_ATTRIBUTE, ticketID);
         Assert.assertEquals(closedTicketsPage.getIdForNthTicketInTable(0), ticketID);
     }

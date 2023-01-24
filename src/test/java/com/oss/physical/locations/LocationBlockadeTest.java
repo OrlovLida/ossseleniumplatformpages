@@ -1,5 +1,6 @@
 package com.oss.physical.locations;
 
+import com.comarch.oss.web.pages.OldInventoryView.OldInventoryViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
@@ -7,8 +8,7 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.*;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import io.qameta.allure.Description;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 import static java.lang.String.format;
-import static com.oss.pages.platform.OldInventoryView.helper.OldInventoryViewConstants.*;
+import static com.comarch.oss.web.pages.OldInventoryView.helper.OldInventoryViewConstants.*;
 
 public class LocationBlockadeTest extends BaseTestCase {
 

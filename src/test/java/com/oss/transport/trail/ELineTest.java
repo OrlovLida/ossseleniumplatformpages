@@ -4,15 +4,15 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.SearchObjectTypePage;
+import com.comarch.oss.web.pages.toolsmanager.ToolsManagerPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.SearchObjectTypePage;
-import com.oss.pages.platform.toolsmanager.ToolsManagerPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.ConnectionWizardPage;
 

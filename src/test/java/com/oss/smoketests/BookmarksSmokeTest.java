@@ -5,6 +5,8 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.BookmarkWizardPage;
+import com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.NewBookmarksPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.GlobalNotificationContainer;
 import com.oss.framework.components.layout.ErrorCard;
@@ -13,14 +15,12 @@ import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.advancedsearch.AdvancedSearchWidget;
 import com.oss.framework.widgets.tabs.TabsWidget;
-import com.oss.pages.platform.bookmarksanddashboards.bookmarks.BookmarkWizardPage;
-import com.oss.pages.platform.bookmarksanddashboards.bookmarks.NewBookmarksPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.untils.FakeGenerator;
 
 import io.qameta.allure.Description;
 
-import static com.oss.pages.platform.bookmarksanddashboards.bookmarks.NewBookmarksPage.MANAGEMENT_VIEW_CONTAINER_TABSCARD;
+import static com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.NewBookmarksPage.MANAGEMENT_VIEW_CONTAINER_TABSCARD;
 import static com.oss.web.NewBookmarksTest.BOOKMARK_PROPERTIES;
 import static com.oss.web.NewBookmarksTest.BUTTON_SAVE_BOOKMARK;
 

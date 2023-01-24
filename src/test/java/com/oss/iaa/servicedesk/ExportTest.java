@@ -4,13 +4,13 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.NotificationWrapperPage;
 import com.oss.BaseTestCase;
-import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
+import com.comarch.oss.web.pages.exportguiwizard.ExportGuiWizardPage;
 import com.oss.pages.iaa.servicedesk.BaseSDPage;
 import com.oss.pages.iaa.servicedesk.BaseSearchPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketSearchPage;
-import com.oss.pages.platform.NotificationWrapperPage;
 
 import io.qameta.allure.Description;
 

@@ -11,7 +11,7 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.toolsmanager.ToolsManagerPage;
+import com.comarch.oss.web.pages.toolsmanager.ToolsManagerPage;
 import com.oss.pages.templatecm.templatemanager.CreateEditTemplateFolderPromptPage;
 import com.oss.pages.templatecm.templatemanager.DeleteTemplateFolderPromptPage;
 import com.oss.pages.templatecm.templatemanager.TemplateDetailsPage;

@@ -8,8 +8,8 @@ import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.pages.exportguiwizard.ExportGuiWizardPage;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.exportguiwizard.ExportGuiWizardPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;

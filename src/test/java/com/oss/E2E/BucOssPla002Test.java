@@ -1,5 +1,8 @@
 package com.oss.E2E;
 
+import com.comarch.oss.web.pages.HierarchyViewPage;
+import com.comarch.oss.web.pages.LogManagerPage;
+import com.comarch.oss.web.pages.filtermanager.ShareFilterPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
@@ -12,14 +15,11 @@ import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.tasks.TasksPageV2;
-import com.oss.pages.filtermanager.ShareFilterPage;
 import com.oss.pages.mediation.CLIConfigurationWizardPage;
 import com.oss.pages.mediation.ViewConnectionConfigurationPage;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.LogManagerPage;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;

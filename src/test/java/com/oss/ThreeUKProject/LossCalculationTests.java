@@ -3,7 +3,7 @@ package com.oss.ThreeUKProject;
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.comarch.oss.web.pages.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.repositories.*;
 import com.oss.services.PhysicalInventoryClient;

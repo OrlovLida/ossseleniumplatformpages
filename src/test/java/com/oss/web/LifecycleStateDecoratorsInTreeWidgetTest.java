@@ -15,12 +15,12 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.platform.HierarchyViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.PhysicalInventoryRepository;
@@ -43,6 +43,7 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     private static final String DEVICE_1_MODEL = "N9K-C9396PX";
     private static final String DEVICE_1_NAME = "Device_1_" + FakeGenerator.getRandomInt();
     private static final String DEVICE_1_PATH = BUILDING_NAME + ".Hardware.Switch." + DEVICE_1_NAME;
+    private static final String NODE_1_PLUGGABLE_SLOT = DEVICE_1_PATH + ".Ports.01.Pluggable Module Slot.Slot";
     private static final String PORT_01_PATH = DEVICE_1_PATH + ".Ports.01";
     private static final TreeComponent.Node.DecoratorStatus GREEN = TreeComponent.Node.DecoratorStatus.GREEN;
     private static final TreeComponent.Node.DecoratorStatus PURPLE = TreeComponent.Node.DecoratorStatus.PURPLE;
@@ -148,10 +149,12 @@ public class LifecycleStateDecoratorsInTreeWidgetTest extends BaseTestCase {
     public void completeProjectAndRefreshRelation() {
         hierarchyViewPage =
                 HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, LOCATION_TYPE_BUILDING, buildingId, project1.toString());
+        getNode(NODE_1_PLUGGABLE_SLOT);
         getNode(PORT_01_RELATION).expandNode();
         completeProject(project1);
         getNode(PORT_01_RELATION).callAction(REFRESH_ACTION_ID);
         Assertions.assertThat(getNode(PORT_01_PATH).countDecorators()).isZero();
+        Assertions.assertThat(getNode(NODE_1_PLUGGABLE_SLOT).countDecorators()).isZero();
     }
     
     @Test(priority = 7)

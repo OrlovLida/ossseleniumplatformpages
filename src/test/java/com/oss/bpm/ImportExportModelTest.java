@@ -17,6 +17,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Objects;
+import java.util.Random;
 
 import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
 import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
@@ -38,7 +39,13 @@ public class ImportExportModelTest extends BaseTestCase {
     private static final String OTHER_GROUP_ID = "other";
     private static final String IMPORT_ID = "import";
     private static final String IMPORT_PATH = "bpm/bpm_selenium_import_export_model.bar";
-    private final String modelKeyword = "Selenium " + (int) (Math.random() * 100001);
+    private static final String INVALID_UPLOAD_FILE_MESSAGE = "Invalid upload file status in import model wizard.";
+    private static final String INVALID_IMPORT_WIZARD_VISIBILITY = "Invalid import model wizard visibility.";
+    private static final String INVALID_DOWNLOADED_FILE_VISIBILITY = "Invalid downloaded '%s' file visibility.";
+    private static final String INVALID_MODEL_VISIBILITY = "Invalid process model '%1$s (%2$s)' visibility.";
+    private static final Random RANDOM = new Random();
+
+    private final String modelKeyword = "Selenium." + RANDOM.nextInt(Integer.MAX_VALUE);
 
     @BeforeClass
     public void openBrw() {
@@ -65,10 +72,10 @@ public class ImportExportModelTest extends BaseTestCase {
             String absolutePatch = Paths.get(Objects.requireNonNull(resource).toURI()).toFile().getAbsolutePath();
             importModelWizardPage.attachFile(absolutePatch);
             DelayUtils.sleep(1000);
-            Assert.assertEquals(importModelWizardPage.getImportStatus(), SUCCESS_FILE_UPLOAD_MESSAGE);
+            Assert.assertEquals(importModelWizardPage.getImportStatus(), SUCCESS_FILE_UPLOAD_MESSAGE, INVALID_UPLOAD_FILE_MESSAGE);
             importModelWizardPage.importButton();
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
-            Assert.assertFalse(importModelWizardPage.isImportWizardVisible());
+            Assert.assertFalse(importModelWizardPage.isImportWizardVisible(), INVALID_IMPORT_WIZARD_VISIBILITY);
         } catch (URISyntaxException e) {
             throw new RuntimeException(CANNOT_LOAD_FILE_EXCEPTION, e);
         }
@@ -84,7 +91,8 @@ public class ImportExportModelTest extends BaseTestCase {
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).exportSelectedModelAsBAR();
         //export bar
         try {
-            Assert.assertTrue(processModelsPage.isFileDownloaded(FILE_NAME + BAR_EXTENSION));
+            Assert.assertTrue(processModelsPage.isFileDownloaded(FILE_NAME + BAR_EXTENSION),
+                    String.format(INVALID_DOWNLOADED_FILE_VISIBILITY, FILE_NAME + BAR_EXTENSION));
         } catch (IOException e) {
             throw new RuntimeException(FILE_NOT_DELETED_EXCEPTION);
         }
@@ -98,7 +106,8 @@ public class ImportExportModelTest extends BaseTestCase {
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).exportSelectedModelAsXML();
         //export xml
         try {
-            Assert.assertTrue(processModelsPage.isFileDownloaded(FILE_NAME + ZIP_EXTENSION));
+            Assert.assertTrue(processModelsPage.isFileDownloaded(FILE_NAME + ZIP_EXTENSION),
+                    String.format(INVALID_DOWNLOADED_FILE_VISIBILITY, FILE_NAME + ZIP_EXTENSION));
         } catch (IOException e) {
             throw new RuntimeException(FILE_NOT_DELETED_EXCEPTION);
         }
@@ -110,6 +119,7 @@ public class ImportExportModelTest extends BaseTestCase {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).deleteSelectedModel();
-        Assert.assertFalse(processModelsPage.isModelExists(MODEL_NAME, modelKeyword));
+        Assert.assertFalse(processModelsPage.isModelExists(MODEL_NAME, modelKeyword),
+                String.format(INVALID_MODEL_VISIBILITY, MODEL_NAME, modelKeyword));
     }
 }

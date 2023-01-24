@@ -13,15 +13,15 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.comarch.oss.web.pages.GlobalSearchPage;
+import com.comarch.oss.web.pages.NotificationWrapperPage;
+import com.comarch.oss.web.pages.PerspectiveChooserPage;
 import com.oss.framework.components.mainheader.LoginPanel;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.LoginPage;
 import com.oss.pages.platform.LoginPanelPage;
-import com.oss.pages.platform.NotificationWrapperPage;
-import com.oss.pages.platform.PerspectiveChooserPage;
 
 import io.qameta.allure.Step;
 

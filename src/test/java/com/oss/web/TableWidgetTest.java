@@ -19,7 +19,7 @@ import com.oss.framework.components.pagination.PaginationComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 
 public class TableWidgetTest extends BaseTestCase {
     private static final int PAGE_SIZE_OPTION_200 = 200;

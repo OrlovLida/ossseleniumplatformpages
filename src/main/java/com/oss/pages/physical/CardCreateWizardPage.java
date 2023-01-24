@@ -38,4 +38,10 @@ public class CardCreateWizardPage extends BasePage {
     public void clickAccept() {
         getWizard().clickAccept();
     }
+
+    @Step("Get wizard name")
+    public String getWizardName() {
+        return getWizard().getWizardName();
+    }
+
 }

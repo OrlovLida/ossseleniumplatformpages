@@ -14,7 +14,7 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-public class SpcWizardPage<R extends BasePage> extends BasePage {
+public class SpcWizardPage<R> extends BasePage {
 
     private static final String ID = "NEEDS_TO_UPDATE_ID";
     private final Wizard wizard;

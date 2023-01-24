@@ -26,12 +26,14 @@ import com.oss.framework.widgets.table.TableRow;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
-import com.oss.pages.platform.configuration.SaveConfigurationWizard;
-import com.oss.pages.platform.configuration.SaveConfigurationWizard.Field;
+import com.comarch.oss.web.pages.configuration.ChooseConfigurationWizard;
+import com.comarch.oss.web.pages.configuration.SaveConfigurationWizard;
+import com.comarch.oss.web.pages.configuration.SaveConfigurationWizard.Field;
 
 import io.qameta.allure.Step;
 
+//It's no longer maintained, class moved to web-pages
+@Deprecated
 public class NewInventoryViewPage extends BasePage {
 
     private static final String CHANGE_LAYOUT_BUTTON_ID = "ButtonChooseViewLayouts";

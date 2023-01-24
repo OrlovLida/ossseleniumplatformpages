@@ -21,7 +21,7 @@ import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.platform.configuration.ChooseConfigurationWizard;
+import com.comarch.oss.web.pages.configuration.ChooseConfigurationWizard;
 import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.pages.transport.trail.TerminationWizardPage;

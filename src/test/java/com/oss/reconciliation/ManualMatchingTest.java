@@ -10,6 +10,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.GlobalSearchPage;
 import com.google.common.collect.ImmutableList;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -18,7 +19,6 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.reconciliation.CreateMatchingWizardPage;
 import com.oss.pages.reconciliation.ManualMatchingPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;

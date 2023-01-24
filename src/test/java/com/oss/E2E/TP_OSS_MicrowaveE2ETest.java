@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.toolsmanager.ToolsManagerPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
@@ -17,8 +18,7 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.physical.CardCreateWizardPage;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.platform.HierarchyViewPage;
-import com.oss.pages.platform.toolsmanager.ToolsManagerPage;
+import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.v2.MicrowaveChannelWizardPage;
 import com.oss.pages.transport.trail.v2.MicrowaveLinkWizardPage;

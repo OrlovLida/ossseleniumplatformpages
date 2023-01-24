@@ -1,13 +1,13 @@
 package com.oss.ThreeUKProject;
 
+import com.comarch.oss.web.pages.GlobalSearchPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.GlobalSearchPage;
 import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.OldInventoryView.OldInventoryViewPage;
+import com.comarch.oss.web.pages.OldInventoryView.OldInventoryViewPage;
 import com.oss.pages.radio.Cell3GWizardPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.HostingWizardPage;

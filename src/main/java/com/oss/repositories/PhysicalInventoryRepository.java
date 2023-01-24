@@ -3,6 +3,7 @@ package com.oss.repositories;
 import com.comarch.oss.physicalinventory.api.dto.AttributeDTO;
 import com.comarch.oss.physicalinventory.api.dto.CardDTO;
 import com.comarch.oss.physicalinventory.api.dto.ChassisDTO;
+import com.comarch.oss.physicalinventory.api.dto.DeviceSlotDTO;
 import com.comarch.oss.physicalinventory.api.dto.PhysicalDeviceDTO;
 import com.comarch.oss.physicalinventory.api.dto.PluggableModuleDTO;
 import com.comarch.oss.physicalinventory.api.dto.PortDTO;
@@ -205,4 +206,17 @@ public class PhysicalInventoryRepository {
     public PhysicalDeviceDTO getDevice(String deviceId) {
         return client.getDevice(deviceId);
     }
+
+    public List<DeviceSlotDTO> getDeviceSlots(String deviceId,
+                                              PlanningContext planningContext) {
+        return client.getDeviceSlots(deviceId, planningContext);
+    }
+
+    public String getFirstPortName(Collection<String> portIds,
+                                   PlanningContext planningContext) {
+        return client.getPorts(portIds, planningContext)
+                .get(0)
+                .getName();
+    }
+
 }

@@ -10,7 +10,7 @@ import com.oss.pages.nfv.networkservice.NetworkServiceWizardPage;
 import com.oss.pages.nfv.networkservice.NetworkServiceWizardSecondStep;
 import com.oss.pages.nfv.networkservice.NetworkServiceWizardStep;
 import com.oss.pages.nfv.networkservice.NetworkServiceWizardThirdStep;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.services.nfv.networkservice.NetworkServiceApiClient;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;

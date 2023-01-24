@@ -15,13 +15,13 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.NewInventoryViewPage;
-import com.oss.pages.platform.configuration.SaveConfigurationWizard;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
+import com.comarch.oss.web.pages.configuration.SaveConfigurationWizard;
 import com.oss.utils.TestListener;
 
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.GROUPS;
-import static com.oss.pages.platform.configuration.SaveConfigurationWizard.Property.TYPE;
+import static com.comarch.oss.web.pages.configuration.SaveConfigurationWizard.Property.DEFAULT_VIEW_FOR;
+import static com.comarch.oss.web.pages.configuration.SaveConfigurationWizard.Property.GROUPS;
+import static com.comarch.oss.web.pages.configuration.SaveConfigurationWizard.Property.TYPE;
 
 @Listeners({TestListener.class})
 public class TabsConfigurationTest extends BaseTestCase {

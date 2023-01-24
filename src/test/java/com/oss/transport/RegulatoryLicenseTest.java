@@ -14,7 +14,7 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.table.TableComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableWidget;
-import com.oss.pages.platform.NewInventoryViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.transport.regulatoryLicense.RegulatoryLicenseAssignmentWizardPage;
 import com.oss.pages.transport.regulatoryLicense.RegulatoryLicenseWizardPage;
 

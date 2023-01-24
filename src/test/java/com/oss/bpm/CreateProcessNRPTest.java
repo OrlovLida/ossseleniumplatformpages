@@ -20,7 +20,6 @@ import com.oss.planning.PlanningContext;
 import com.oss.untils.FakeGenerator;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
-import org.assertj.core.api.Assertions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,7 +40,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
-import java.util.regex.Pattern;
 
 import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
 import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
@@ -66,7 +64,6 @@ import static com.oss.pages.bpm.tasks.TasksPageV2.VERIFICATION_TASK;
 
 @Listeners({TestListener.class})
 public class CreateProcessNRPTest extends BaseTestCase {
-    private static final String EMPTY_LIST_EXCEPTION = "The list is empty";
     private static final String DEVICE_MODEL = "7705 SAR-8";
     private static final String CHASSIS_IDENTIFIER1 = CHASSIS_NAME + " (%s )";
     private static final String PLAN_PERSPECTIVE = "PLAN";
@@ -80,21 +77,28 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private static final String PROCESS_CREATED_MESSAGE_PATTERN = "Process %1$s (%2$s) was created";
     private static final String INVALID_PROCESS_CREATION_MESSAGE = "Invalid process NRP creation message";
     private static final String INVALID_TASK_START_MESSAGE_PATTERN = "Invalid task %s start message.";
+    private static final String INVALID_ATTACH_FILE_MESSAGE_PATTERN = "Invalid attach file system message in %s task.";
     private static final String INVALID_OBJECTS_AMOUNT = "Invalid Objects Amount in Process Details View.";
     private static final String INVALID_IP_PROCESSES_AMOUNT = "Invalid IP Processes Amount after Setup Integration.";
     private static final String INVALID_TASK_COMPLETE_MESSAGE_PATTERN = "Invalid task %s complete message.";
+    private static final String INVALID_PERSPECTIVE_PATTERN = "Invalid perspective context in %s task.";
     private static final String TASK_COMPLETED_MESSAGE = "Task properly completed.";
     private static final String TASK_ASSIGNED_MESSAGE = "The task properly assigned.";
+    private static final String ATTACHMENT_ADDED_MESSAGE = "Attachment has been added";
+    private static final String PERSPECTIVE_QUERY = "perspective=%s";
+
     private static final Random RANDOM = new Random();
     private static final LocalDate TODAY = LocalDate.now();
     private static final PlanningContext LIVE = PlanningContext.live();
+    private static final String FILE_NOT_VISIBLE = "Uploaded file is not visible on Attachments tab.";
+    private static final String INVALID_NRP_PROCESS_STATUS = "Invalid NRP Process status.";
     private final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
     private final String BUILDING_NAME = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
-    private final String ROUTER_1_NAME = "CREATE_NRP_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String ROUTER_2_NAME = "CREATE_NRP_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String processIPName1 = "CREATE_NRP_IP.1-" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String processIPName2 = "CREATE_NRP_IP.2-" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String processNRPName = "CREATE_NRP_Selenium Test-" + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String ROUTER_1_NAME = "Create NRP Selenium Test 1." + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String ROUTER_2_NAME = "Create NRP Selenium Test 2." + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String processIPName1 = "Create NRP Selenium Test IP 1." + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String processIPName2 = "Create NRP Selenium Test IP 2." + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String processNRPName = "Create NRP Selenium Test NRP " + RANDOM.nextInt(Integer.MAX_VALUE);
     private SoftAssert softAssert;
     private String processNRPCode;
     private PlanningContext processNRPContext;
@@ -191,10 +195,9 @@ public class CreateProcessNRPTest extends BaseTestCase {
         // then
         assertSystemMessage(TASK_ASSIGNED_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_TASK_START_MESSAGE_PATTERN, LOW_LEVEL_PLANNING_TASK));
-        String currentUrl = driver.getCurrentUrl();
-        String[] split = currentUrl.split(Pattern.quote("?"));
-        String perspectiveContext = split[1];
-        Assertions.assertThat(perspectiveContext).contains(PLAN_PERSPECTIVE);
+
+        Assert.assertTrue(driver.getCurrentUrl().contains(String.format(PERSPECTIVE_QUERY, PLAN_PERSPECTIVE)),
+                String.format(INVALID_PERSPECTIVE_PATTERN, LOW_LEVEL_PLANNING_TASK));
     }
 
     @Test(priority = 6, description = "Assign File to 'Low Level Planning' Task", dependsOnMethods = {"startLLPTask"})
@@ -205,19 +208,18 @@ public class CreateProcessNRPTest extends BaseTestCase {
             URL resource = CreateProcessNRPTest.class.getClassLoader().getResource(UPLOAD_FILE_PATH);
             String absolutePatch = Paths.get(Objects.requireNonNull(resource).toURI()).toFile().getAbsolutePath();
             tasksPage.addFile(processNRPCode, LOW_LEVEL_PLANNING_TASK, absolutePatch);
-            SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-            Assertions
-                    .assertThat(
-                            systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException(EMPTY_LIST_EXCEPTION)).getMessageType())
-                    .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+            assertSystemMessage(ATTACHMENT_ADDED_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
+                    String.format(INVALID_ATTACH_FILE_MESSAGE_PATTERN, LOW_LEVEL_PLANNING_TASK));
         } catch (URISyntaxException e) {
             throw new RuntimeException(CANNOT_LOAD_FILE_EXCEPTION, e);
         }
         DelayUtils.sleep(2000);
         List<String> files = tasksPage.getListOfAttachments();
-        Assertions.assertThat(files.get(0)).contains(UPLOAD_FILE_NAME);
-        Assertions.assertThat(files).isNotEmpty();
-
+        if (files.isEmpty()) {
+            Assert.fail(FILE_NOT_VISIBLE);
+        } else {
+            Assert.assertTrue(files.get(0).contains(UPLOAD_FILE_NAME), FILE_NOT_VISIBLE);
+        }
     }
 
     @Test(priority = 7, description = "Create Second Physical Device", dependsOnMethods = {"startLLPTask"})
@@ -228,8 +230,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
         log.info(String.format("Device 2 ID: %1$s \nChassis 2 ID: %2$s", device2Id, chassis2Id));
 
-        ProcessDetailsPage processDetailsPage =
-                ProcessDetailsPage.goToProcessDetailsView(driver, BASIC_URL, processNRPContext.getProjectId());
+        ProcessDetailsPage processDetailsPage = ProcessDetailsPage.goToProcessDetailsView(driver, BASIC_URL, processNRPContext.getProjectId());
         Assert.assertEquals(processDetailsPage.getObjectsAmount(), 4, INVALID_OBJECTS_AMOUNT);
     }
 
@@ -268,8 +269,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         SetupIntegrationProperties setupIntegrationProperties_IP_1 = SetupIntegrationProperties.builder()
                 .integrationProcessName(processIPName1)
                 .finishedDueDate(TODAY.plusDays(2L))
-                .objectIdentifiers(Arrays.asList(
-                        String.format(CHASSIS_IDENTIFIER1, chassis1Id), ROUTER_1_NAME))
+                .objectIdentifiers(Arrays.asList(String.format(CHASSIS_IDENTIFIER1, chassis1Id), ROUTER_1_NAME))
                 .build();
 
         SetupIntegrationProperties setupIntegrationProperties_IP_2 = SetupIntegrationProperties.builder()
@@ -518,7 +518,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         String processStatus = processOverviewPage.selectProcess(processNRPCode).getProcessStatus();
 
         // then
-        Assertions.assertThat(processStatus).isEqualTo(COMPLETED_STATUS);
+        Assert.assertEquals(processStatus, COMPLETED_STATUS, INVALID_NRP_PROCESS_STATUS);
     }
 
     @Test(priority = 27, description = "Checking system message summary")
@@ -549,8 +549,8 @@ public class CreateProcessNRPTest extends BaseTestCase {
         messageOptional.ifPresent(message -> {
             softAssert.assertEquals(message.getText(), messageContent, systemMessageLog);
             softAssert.assertEquals(message.getMessageType(), messageType, systemMessageLog);
+            systemMessage.close();
         });
-        systemMessage.close();
         waitForPageToLoad();
     }
 
