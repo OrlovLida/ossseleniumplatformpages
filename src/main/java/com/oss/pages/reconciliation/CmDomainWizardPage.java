@@ -2,6 +2,7 @@ package com.oss.pages.reconciliation;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.inputs.SearchBox;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
@@ -15,6 +16,7 @@ public class CmDomainWizardPage extends BasePage {
     private static final String DOMAIN_ID = "narComponent_networkDiscoveryControlViewIddomainSearchBoxId";
     private static final String MEDIATOR_NAME_ID = "narComponent_networkDiscoveryControlViewIdmediatorNameComboboxId";
     private static final String MEDIATION_KEY_ID = "narComponent_networkDiscoveryControlViewIdconnectionAgentInstanceSearchBoxId";
+    private static final String NOTIFICATION_SOURCE_ID = "narComponent_networkDiscoveryControlViewIdnotificationSourceSearchBoxId";
     private static final String BASED_ON_ID = "narComponent_networkDiscoveryControlViewIdbasedOnComboboxId";
     private static final String STOP_ON_ID = "narComponent_networkDiscoveryControlViewIdstopOnComboboxId";
     private static final String SAVE_PERSPECTIVE_ID = "narComponent_networkDiscoveryControlViewIdsavePerspectiveComboboxId";
@@ -68,6 +70,14 @@ public class CmDomainWizardPage extends BasePage {
     @Step("Set mediation key for CM Domain Name")
     public void setMediationKey(String mediationKey) {
         cmDomainWizard.setComponentValue(MEDIATION_KEY_ID, mediationKey);
+    }
+
+    public void typeValueMediationKey(String value) {
+        SearchBox.create(driver, wait, MEDIATION_KEY_ID).typeValue(value);
+    }
+
+    public void typeValueNotificationSource(String value) {
+        SearchBox.create(driver, wait, NOTIFICATION_SOURCE_ID).typeValue(value);
     }
 
     @Step("Set based on for CM Domain Name")
