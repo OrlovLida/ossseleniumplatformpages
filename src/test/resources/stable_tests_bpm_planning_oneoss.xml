@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="BPM_Selenium_Tests_Suite" thread-count="2" parallel="tests" verbose="1">
+<suite name="BPM_Selenium_Tests_Suite" thread-count="1" parallel="tests" verbose="1">
     <test name="CreateProcessNRPTest">
         <classes>
             <class name="com.oss.bpm.CreateProcessNRPTest"/>
