@@ -304,7 +304,7 @@ public class EditMilestoneTest extends BaseTestCase {
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         try {
             modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
-        } catch (NullPointerException e) {
+        } catch (IllegalArgumentException e) {
             milestoneViewPage.chooseMilestoneAttributesConfiguration(BPM_CONFIGURATION_NAME);
             modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
         }

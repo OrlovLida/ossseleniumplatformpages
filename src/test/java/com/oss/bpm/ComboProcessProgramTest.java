@@ -150,6 +150,15 @@ public class ComboProcessProgramTest extends BaseTestCase {
         waitForPageToLoad();
     }
 
+    private void assertNotification(String notificationMessage, String notificationLog) {
+        Notifications notifications = (Notifications) Notifications.create(driver, webDriverWait);
+        Optional<String> notificationOptional = notifications.getFirstNotificationMessage();
+        softAssert.assertTrue(notificationOptional.isPresent(), notificationLog);
+        notificationOptional.ifPresent(notification ->
+                softAssert.assertEquals(notification, notificationMessage, notificationLog));
+        waitForPageToLoad();
+    }
+
     @BeforeClass
     public void openProcessInstancesPage() {
         softAssert = new SoftAssert();
@@ -254,6 +263,8 @@ public class ComboProcessProgramTest extends BaseTestCase {
                 .withProcessRolesAssignment(processRoles)
                 .build();
 
+        Notifications.create(driver, webDriverWait).clearAllNotification();
+
         processOverviewPage.createInstance(properties);
 
         //Assert message
@@ -264,9 +275,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
 
         //Assert notification
         waitForPageToLoad();
-        NotificationsInterface notifications = Notifications.create(driver, webDriverWait);
-        String notification = notifications.getNotificationMessage();
-        softAssert.assertEquals(notification, String.format(PROCESSES_LINKED_TO_PROGRAM_NOTIFICATION, 5,
+        assertNotification(String.format(PROCESSES_LINKED_TO_PROGRAM_NOTIFICATION, 5,
                         PROCESS_DEFINITION_NAME_ROLES, mainProgramName, programCode),
                 String.format(INVALID_PROCESSES_LINKED_TO_PROGRAMS_NOTIFICATION, TC2));
 
@@ -487,6 +496,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
                 .createProgram(programNameTC4, plus5Days, PROGRAM_DEFINITION_NAME);
 
         SystemMessageContainer.create(driver, webDriverWait).close();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
 
         processOverviewPage.createInstance(properties);
         processName = processName + "-4";
@@ -497,10 +507,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
                 String.format(INVALID_BULK_PROCESSES_MESSAGE, TC4));
 
         //Assert notification
-        waitForPageToLoad();
-        NotificationsInterface notifications = Notifications.create(driver, webDriverWait);
-        String notification = notifications.getNotificationMessage();
-        softAssert.assertEquals(notification, String.format(PROCESSES_LINKED_TO_PROGRAMS_NOTIFICATION, 5,
+        assertNotification(String.format(PROCESSES_LINKED_TO_PROGRAMS_NOTIFICATION, 5,
                         PROCESS_DEFINITION_NAME_ROLES),
                 String.format(INVALID_PROCESSES_LINKED_TO_PROGRAMS_NOTIFICATION, TC4));
 
