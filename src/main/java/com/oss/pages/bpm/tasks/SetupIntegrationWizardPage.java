@@ -13,7 +13,9 @@ import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +65,8 @@ public class SetupIntegrationWizardPage extends BasePage {
     }
 
     public void clickAccept() {
-        Wizard integrationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+        Wizard integrationWizard = Wizard.createByComponentId(driver,
+                new WebDriverWait(driver, Duration.ofSeconds(90)), WIZARD_ID);
         integrationWizard.clickButtonById(ACCEPT_BUTTON);
         integrationWizard.waitToClose();
     }
