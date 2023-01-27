@@ -1,5 +1,8 @@
 package com.oss.pages.iaa.servicedesk.issue;
 
+import java.io.IOException;
+import java.nio.file.Paths;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -82,6 +85,11 @@ public abstract class BaseDashboardPage extends BaseSDPage {
     }
 
     public BaseDashboardPage exportFromDashboard(String fileName) {
+        try {
+            log.info("{}", Paths.get(".").toRealPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         exportFromTable(getTableID(), fileName);
         return this;
     }
