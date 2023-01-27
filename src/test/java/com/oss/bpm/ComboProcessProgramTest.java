@@ -6,7 +6,6 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.mainheader.Notifications;
-import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.forecasts.Forecast;
@@ -150,12 +149,16 @@ public class ComboProcessProgramTest extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    private void assertNotification(String notificationMessage, String notificationLog) {
+    private void assertNotification(String notificationMessage, Notifications.NotificationType notificationType, String notificationLog) {
         Notifications notifications = (Notifications) Notifications.create(driver, webDriverWait);
-        Optional<String> notificationOptional = notifications.getFirstNotificationMessage();
+        Optional<Notifications.Notification> notificationOptional = notifications.getFirstNotification();
         softAssert.assertTrue(notificationOptional.isPresent(), notificationLog);
-        notificationOptional.ifPresent(notification ->
-                softAssert.assertEquals(notification, notificationMessage, notificationLog));
+        notificationOptional.ifPresent(notification -> {
+            softAssert.assertEquals(notification.getText(), notificationMessage, notificationLog);
+            softAssert.assertEquals(notification.getType(), notificationType, notificationLog);
+            notification.clear();
+        });
+        notifications.closeNotificationContainer();
         waitForPageToLoad();
     }
 
@@ -277,6 +280,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
         waitForPageToLoad();
         assertNotification(String.format(PROCESSES_LINKED_TO_PROGRAM_NOTIFICATION, 5,
                         PROCESS_DEFINITION_NAME_ROLES, mainProgramName, programCode),
+                Notifications.NotificationType.SUCCESS,
                 String.format(INVALID_PROCESSES_LINKED_TO_PROGRAMS_NOTIFICATION, TC2));
 
         //Assert program roles
@@ -508,7 +512,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
 
         //Assert notification
         assertNotification(String.format(PROCESSES_LINKED_TO_PROGRAMS_NOTIFICATION, 5,
-                        PROCESS_DEFINITION_NAME_ROLES),
+                        PROCESS_DEFINITION_NAME_ROLES), Notifications.NotificationType.SUCCESS,
                 String.format(INVALID_PROCESSES_LINKED_TO_PROGRAMS_NOTIFICATION, TC4));
 
         //Assert process roles
