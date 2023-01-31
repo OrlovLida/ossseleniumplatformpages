@@ -22,7 +22,7 @@ public class IssueCSDIWizardPage extends SDWizardPage {
     private static final String URGENCY_EXPLANATION_ID = "ExplanationOfUrgency";
     private static final String ENVIRONMENT_ID = "EnvironmentType";
     private static final String COMPONENT_ID = "Component";
-
+    private static final String DOMAINS_ID = "COMMON_WIZARD_DOMAINS_FIELD_LABEL";
 
     public IssueCSDIWizardPage(WebDriver driver, WebDriverWait wait, String wizardId) {
         super(driver, wait, wizardId);
@@ -92,5 +92,11 @@ public class IssueCSDIWizardPage extends SDWizardPage {
     public void setComponent(String component) {
         insertValueToComponent(component, COMPONENT_ID);
         log.info("Set component");
+    }
+
+    @Step("Set Domais")
+    public void setDomains(String domains) {
+        insertValueToComponent(domains, DOMAINS_ID);
+        log.info("Set domains");
     }
 }

@@ -41,7 +41,8 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
     private static final String STATUS_RESOLVED = "Resolved";
     private static final String STATUS_CLOSED = "Closed";
     private static final String TT_DOWNLOAD_FILE = "TroubleTicket*.xlsx";
-
+    private static final String DOMAIN = "Domain A";
+    
     private TicketDashboardPage ticketDashboardPage;
     private IssueCSDIWizardPage issueCSDIWizardPage;
     private MyGroupTicketsPage myGroupTicketsPage;
@@ -63,8 +64,9 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
     public void createIncidentTicket(
     ) {
         issueCSDIWizardPage = ticketDashboardPage.openCreateTicketWizard(FLOW_TYPE).openIssueCSDIWizardPage();
+        issueCSDIWizardPage.setDomains(DOMAIN);
         issueCSDIWizardPage.setIssueTitle(ISSUE_TITLE);
-        issueCSDIWizardPage.enterIncidentDescription(INCIDENT_DESCRIPTION);
+        issueCSDIWizardPage.enterDescription(INCIDENT_DESCRIPTION);
         issueCSDIWizardPage.setSeverity(SEVERITY);
         issueCSDIWizardPage.clickNextButtonInWizard();
 
