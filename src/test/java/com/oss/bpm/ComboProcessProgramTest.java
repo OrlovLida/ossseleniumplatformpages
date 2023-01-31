@@ -156,7 +156,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
         notificationOptional.ifPresent(notification -> {
             softAssert.assertEquals(notification.getText(), notificationMessage, notificationLog);
             softAssert.assertEquals(notification.getType(), notificationType, notificationLog);
-            notification.clear();
+            notification.close();
         });
         notifications.closeNotificationContainer();
         waitForPageToLoad();
