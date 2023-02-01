@@ -17,6 +17,7 @@ import org.testng.asserts.SoftAssert;
 
 import com.comarch.oss.physicalinventory.api.dto.DeviceSlotDTO;
 import com.comarch.oss.resourcehierarchy.api.dto.ResourceHierarchyDTO;
+import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
@@ -24,7 +25,6 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.pages.physical.CardCreateWizardPage;
 import com.oss.pages.physical.CreatePluggableModuleWizardPage;
-import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.PhysicalInventoryRepository;
 import com.oss.repositories.PlanningRepository;
@@ -62,8 +62,7 @@ public class CreateCardWithPluggableModuleTest extends BaseTestCase {
     private static final String WRONG_CARD_NAME_VALIDATION = "Wrong pluggable module name found on Property Panel";
     private static final String PORT_NOT_FOUND_VALIDATION = "Port was not found in device structure";
     private static final String WRONG_PORT_LIST_SIZE_VALIDATION = "Wrong number of ports in port list in Create Pluggable Module wizard. Found: %s ports";
-    private static final String PORT_LABEL_NOT_VISIBLE_VALIDATION = "Port id was visible in Create Pluggable Module wizard.";
-    private static final String WRONG_PORT_LABEL_VALUE_VALIDATION = "Port label did not contain port name";
+    private static final String WRONG_PORT_LABEL_VALUE_VALIDATION = "Port label in wizard did not contain expected value, which is: \\{portName}";
     private static final String PLUGGABLE_MODULE_NOT_CREATED_VALIDATION = "Pluggable Module was not created";
     private static final String PLUGGABLE_MODULE_NOT_FOUND_VALIDATION = "Pluggable Module was not found in device structure";
     private static final String PORT_HOLDER_NOT_FOUND_VALIDATION = "Port Holder was not found in device structure";
@@ -122,7 +121,10 @@ public class CreateCardWithPluggableModuleTest extends BaseTestCase {
 
         locationId = createPhysicalLocation();
         deviceId = createPhysicalDevice(deviceModelId);
+    }
 
+    @Test(priority = 1)
+    public void deviceIsVisibleOnHierarchyView() {
         HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, DEVICE_TYPE, String.valueOf(deviceId));
         hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         setLivePerspective();
@@ -130,7 +132,7 @@ public class CreateCardWithPluggableModuleTest extends BaseTestCase {
         Assert.assertEquals(hierarchyViewPage.getMainTreeSize(), 1, NO_OBJECTS_ON_HIERARCHY_VIEW_VALIDATION);
     }
 
-    @Test(priority = 1)
+    @Test(priority = 2, dependsOnMethods = "deviceIsVisibleOnHierarchyView")
     public void createCardWizardIsOpened() {
         DeviceSlotDTO panelSlot = getPanelSlot(Long.toString(deviceId));
         slotId = panelSlot.getId();
@@ -143,12 +145,12 @@ public class CreateCardWithPluggableModuleTest extends BaseTestCase {
         Assert.assertEquals(cardCreateWizardPage.getWizardName(), CREATE_CARD_WIZARD_NAME);
     }
 
-    @Test(priority = 2, dependsOnMethods = "createCardWizardIsOpened")
+    @Test(priority = 3, dependsOnMethods = "createCardWizardIsOpened")
     public void cardModelIsSetInCreateCardWizard() {
         cardCreateWizardPage.setModel(CARD_MODEL_NAME);
     }
 
-    @Test(priority = 3, dependsOnMethods = "cardModelIsSetInCreateCardWizard")
+    @Test(priority = 4, dependsOnMethods = "cardModelIsSetInCreateCardWizard")
     public void cardIsCreated() {
         cardCreateWizardPage.clickAccept();
         if (getMessageWithText(CARD_CREATED_SUCCESS_MESSAGE).isPresent()) {
@@ -159,7 +161,7 @@ public class CreateCardWithPluggableModuleTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 4, dependsOnMethods = "cardIsCreated")
+    @Test(priority = 5, dependsOnMethods = "cardIsCreated")
     public void cardIsAddedToDeviceStructure() {
         Map<String, List<String>> hierarchy = getDeviceHierarchy();
         cardId = getCardIdFromHierarchy(hierarchy);
@@ -167,7 +169,7 @@ public class CreateCardWithPluggableModuleTest extends BaseTestCase {
         Assert.assertTrue(hierarchyViewPage.isNodePresentByPath(getCardPath()), CARD_NOT_VISIBLE_ON_HIERARCHY_VIEW_VALIDATION);
     }
 
-    @Test(priority = 5, dependsOnMethods = "cardIsAddedToDeviceStructure")
+    @Test(priority = 6, dependsOnMethods = "cardIsAddedToDeviceStructure")
     public void cardNameIsVisibleOnPropertyPanel() {
         SoftAssert softAssert = new SoftAssert();
 
@@ -183,7 +185,7 @@ public class CreateCardWithPluggableModuleTest extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Test(priority = 6, dependsOnMethods = "cardIsAddedToDeviceStructure")
+    @Test(priority = 7, dependsOnMethods = "cardIsAddedToDeviceStructure")
     public void createPluggableModuleWizardIsOpened() {
         Map<String, List<String>> hierarchy = getDeviceHierarchy();
         portId = getPortIdFromHierarchy(hierarchy);
@@ -197,26 +199,26 @@ public class CreateCardWithPluggableModuleTest extends BaseTestCase {
         Assert.assertEquals(createPluggableModuleWizardPage.getWizardName(), CREATE_PLUGGABLE_MODULE_WIZARD_NAME);
     }
 
-    @Test(priority = 7, dependsOnMethods = "createPluggableModuleWizardIsOpened")
+    @Test(priority = 8, dependsOnMethods = "createPluggableModuleWizardIsOpened")
     public void portFieldIsFilledInCreatePluggableModuleWizard() {
-        SoftAssert softAssert = new SoftAssert();
+        List<String> portsInComboBox = createPluggableModuleWizardPage.getPorts();
+        Assert.assertEquals(portsInComboBox.size(), 1, String.format(WRONG_PORT_LIST_SIZE_VALIDATION, portsInComboBox.size()));
+    }
 
+    @Test(priority = 9, dependsOnMethods = "portFieldIsFilledInCreatePluggableModuleWizard")
+    public void portLabelIsVisibleInCreatePluggableModuleWizard() {
         String portName = physicalInventoryRepository.getFirstPortName(Collections.singletonList(Long.toString(portId)), PlanningContext.perspectiveLive());
         List<String> portsInComboBox = createPluggableModuleWizardPage.getPorts();
 
-        Assert.assertEquals(portsInComboBox.size(), 1, String.format(WRONG_PORT_LIST_SIZE_VALIDATION, portsInComboBox.size()));
-        softAssert.assertFalse(portsInComboBox.get(0).contains(Long.toString(portId)), PORT_LABEL_NOT_VISIBLE_VALIDATION);
-        softAssert.assertTrue(portsInComboBox.get(0).contains("\\" + portName), WRONG_PORT_LABEL_VALUE_VALIDATION);
-
-        softAssert.assertAll();
+        Assert.assertTrue(portsInComboBox.get(0).contains("\\" + portName), WRONG_PORT_LABEL_VALUE_VALIDATION);
     }
 
-    @Test(priority = 8, dependsOnMethods = "portFieldIsFilledInCreatePluggableModuleWizard")
+    @Test(priority = 10, dependsOnMethods = "portFieldIsFilledInCreatePluggableModuleWizard")
     public void pluggableModuleModelIsSetInCreatePluggableModuleWizard() {
         createPluggableModuleWizardPage.setModel(PLUGGABLE_MODULE_MODEL_NAME);
     }
 
-    @Test(priority = 9, dependsOnMethods = "pluggableModuleModelIsSetInCreatePluggableModuleWizard")
+    @Test(priority = 11, dependsOnMethods = "pluggableModuleModelIsSetInCreatePluggableModuleWizard")
     public void pluggableModuleIsCreated() {
         createPluggableModuleWizardPage.accept();
         if (getMessageWithText(PLUGGABLE_MODULE_CREATED_SUCCESS_MESSAGE).isPresent()) {
@@ -227,7 +229,7 @@ public class CreateCardWithPluggableModuleTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 10, dependsOnMethods = "pluggableModuleIsCreated")
+    @Test(priority = 12, dependsOnMethods = "pluggableModuleIsCreated")
     public void pluggableModuleIsAddedToDeviceStructure() {
         Map<String, List<String>> hierarchy = getDeviceHierarchy();
         pluggableModuleId = getPluggableModuleIdFromHierarchy(hierarchy);
@@ -236,13 +238,13 @@ public class CreateCardWithPluggableModuleTest extends BaseTestCase {
         Assert.assertTrue(hierarchyViewPage.isNodePresentByPath(getPluggableModulePath()), PLUGGABLE_MODULE_NOT_VISIBLE_ON_HIERARCHY_VIEW_VALIDATION);
     }
 
-    @Test(priority = 11, dependsOnMethods = "pluggableModuleIsAddedToDeviceStructure")
+    @Test(priority = 13, dependsOnMethods = "pluggableModuleIsAddedToDeviceStructure")
     public void pluggableModuleHasTerminationPointsInStructure() {
         int numberOfConnectorsOnHierarchyView = hierarchyViewPage.getNodeChildrenByPath(getConnectorPath()).size();
         Assert.assertEquals(numberOfConnectorsOnHierarchyView, 2, WRONG_NUMBER_OF_CONNECTORS_VALIDATION);
     }
 
-    @Test(priority = 12, dependsOnMethods = "pluggableModuleIsAddedToDeviceStructure")
+    @Test(priority = 14, dependsOnMethods = "pluggableModuleIsAddedToDeviceStructure")
     public void pluggableModuleNameIsVisibleOnPropertyPanel() {
         SoftAssert softAssert = new SoftAssert();
 

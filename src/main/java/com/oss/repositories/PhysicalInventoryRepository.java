@@ -18,8 +18,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class PhysicalInventoryRepository {
 
+    private static final Logger log = LoggerFactory.getLogger(PhysicalInventoryRepository.class);
     private static final String CHASSIS = "Chassis";
     private PhysicalInventoryClient client;
 
@@ -112,7 +116,11 @@ public class PhysicalInventoryRepository {
 
     public void deleteDeviceV3(Collection<String> deviceIds,
                                PlanningContext context) {
-        client.deleteDeviceV3(deviceIds, context);
+        if (deviceIds.isEmpty()) {
+            log.warn("Empty devices list provided while deleting device. Request will not be processed.");
+        } else {
+            client.deleteDeviceV3(deviceIds, context);
+        }
     }
 
     public void deleteDevice(String deviceId, long projectId) {

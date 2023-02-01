@@ -1,11 +1,13 @@
 package com.oss.pages.physical;
 
 import java.util.List;
+import java.util.Set;
 
 import org.openqa.selenium.WebDriver;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.data.Data;
+import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -50,6 +52,15 @@ public class CreatePluggableModuleWizardPage extends BasePage {
     @Step("Get port")
     public List<String> getPorts() {
         return getPluggableModuleWizard().getComponent(PORT_COMBOBOX_DATA_ATTRIBUTE_NAME).getStringValues();
+    }
+
+    public Set<String> getAvailableModels() {
+        SearchField model = (SearchField) getPluggableModuleWizard().getComponent(PLUGGABLE_MODULE_MODEL_DATA_ATTRIBUTE_NAME);
+        return model.getOptions();
+    }
+
+    public Input.MouseCursor getPortFieldCursor() {
+        return getPluggableModuleWizard().getComponent(PORT_COMBOBOX_DATA_ATTRIBUTE_NAME).cursor();
     }
 
     private Wizard getPluggableModuleWizard() {
