@@ -3,6 +3,7 @@ package com.oss.E2E;
 import java.util.Random;
 import java.util.UUID;
 
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -346,31 +347,31 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String CONFIRMATION_WIZARD_ID = "deleteWidgetId";
     private static final String EXPECTED_MWL_CAPACITY_VALUE = "234000000";
 
-//    @BeforeClass
-//    public void checkPrerequisites() {
-////        getOrCreateFirstLocations();
-////        getOrCreateSecondLocations();
-//        getMicrowaveFrequencyPlans();
-//    }
+    @BeforeClass
+    public void checkPrerequisites() {
+        getOrCreateFirstLocations();
+        getOrCreateSecondLocations();
+        getMicrowaveFrequencyPlans();
+    }
 
     @Test(priority = 1, description = "Create Physical Devices")
     @Description("Create All Physical Devices from prerequisites")
     public void createDevices() {
-//        createIndoorUnit(FIRST_INDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
-//
-//        createIndoorUnit(SECOND_INDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
-//
-//        createMicrowaveAntenna(FIRST_MICROWAVE_ANTENNA_NAME, FIRST_LOCATION_NAME);
-//
-//        createMicrowaveAntenna(SECOND_MICROWAVE_ANTENNA_NAME, SECOND_LOCATION_NAME);
-//
-//        createOutdoorUnit(FIRST_OUTDOOR_UNIT_MODEL, FIRST_OUTDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
-//
-//        createOutdoorUnit(FIRST_OUTDOOR_UNIT_MODEL, SECOND_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
-//
-//        createOutdoorUnit(SECOND_OUTDOOR_UNIT_MODEL, THIRD_OUTDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
-//
-//        createOutdoorUnit(SECOND_OUTDOOR_UNIT_MODEL, FORTH_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
+        createIndoorUnit(FIRST_INDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
+
+        createIndoorUnit(SECOND_INDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
+
+        createMicrowaveAntenna(FIRST_MICROWAVE_ANTENNA_NAME, FIRST_LOCATION_NAME);
+
+        createMicrowaveAntenna(SECOND_MICROWAVE_ANTENNA_NAME, SECOND_LOCATION_NAME);
+
+        createOutdoorUnit(FIRST_OUTDOOR_UNIT_MODEL, FIRST_OUTDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
+
+        createOutdoorUnit(FIRST_OUTDOOR_UNIT_MODEL, SECOND_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
+
+        createOutdoorUnit(SECOND_OUTDOOR_UNIT_MODEL, THIRD_OUTDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
+
+        createOutdoorUnit(SECOND_OUTDOOR_UNIT_MODEL, FORTH_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
         waitForPageToLoad();
     }
 
