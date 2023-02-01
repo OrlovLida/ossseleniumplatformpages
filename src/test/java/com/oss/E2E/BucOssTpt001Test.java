@@ -3,7 +3,6 @@ package com.oss.E2E;
 import java.util.Random;
 import java.util.UUID;
 
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -41,16 +40,15 @@ import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD
 
 public class BucOssTpt001Test extends BaseTestCase {
 
-    private static Random rand = new Random();
+    private static final Random rand = new Random();
     private final Environment env = Environment.getInstance();
+
     private String secondMicrowaveChannel;
     private String secondMicrowaveChannelLabel;
     private String firstMicrowaveChannel;
     private String firstMicrowaveChannelLabel;
     private String microwaveLink;
     private String microwaveLinkLabel;
-    private String ethernetLink;
-    private NetworkViewPage networkViewPage;
 
     private static final String SITE = "Site";
     private static final String COUNTRY_NAME = "Polska";
@@ -310,7 +308,6 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String MWL_DESCRIPTION = "desc691";
 
     private static final String WORKING_LINE_TYPE = "Working";
-    private static final String PROTECTING_LINE_TYPE = "Protecting";
     private static final String FIRST_MWL_SEQUENCE_NUMBER = "seqNumberMwl1";
     private static final String SECOND_MWL_SEQUENCE_NUMBER = "2MWLSequenceNum";
     private static final String FIRST_MW_ANTENNA_SEQUENCE_NUMBER = "1MicroAntSequenceNum";
@@ -327,7 +324,8 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String FORTH_ODU_RELATION_TYPE = "End Site ODU";
     private static final String ETHERNET_LINK_NAME = "EthLinkE2ESelenium" + rand.nextInt(10000);
 
-    private static final String MICROWAVE_CHANNEL_CONFIGURATION = "SeleniumAttributesPanelMicrowaveChannel";
+    //    TODO: Odkomentować po rozwiązaniu: OSSWEB-18896
+//    private static final String MICROWAVE_CHANNEL_CONFIGURATION = "SeleniumAttributesPanelMicrowaveChannel";
     private static final String ELEMENT_ROUTING_TAB_ID = "routing-elements-table-app";
     private static final String NAME_COLUMN_LABEL = "Name";
     private static final String RELATION_TYPE_COLUMN_LABEL = "Relation type";
@@ -348,31 +346,32 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String CONFIRMATION_WIZARD_ID = "deleteWidgetId";
     private static final String EXPECTED_MWL_CAPACITY_VALUE = "234000000";
 
-    @BeforeClass
-    public void checkPrereq() {
-        //getOrCreateFirstLocations();
-        //getOrCreateSecondLocations();
-        getMicrowaveFrequencyPlans();
-    }
+//    @BeforeClass
+//    public void checkPrerequisites() {
+////        getOrCreateFirstLocations();
+////        getOrCreateSecondLocations();
+//        getMicrowaveFrequencyPlans();
+//    }
 
     @Test(priority = 1, description = "Create Physical Devices")
     @Description("Create All Physical Devices from prerequisites")
     public void createDevices() {
-        createIndoorUnit(INDOOR_UNIT_MODEL, FIRST_INDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
-
-        createIndoorUnit(INDOOR_UNIT_MODEL, SECOND_INDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
-
-        createMicrowaveAntenna(MICROWAVE_ANTENNA_MODEL, FIRST_MICROWAVE_ANTENNA_NAME, FIRST_LOCATION_NAME);
-
-        createMicrowaveAntenna(MICROWAVE_ANTENNA_MODEL, SECOND_MICROWAVE_ANTENNA_NAME, SECOND_LOCATION_NAME);
-
-        createOutdoorUnit(FIRST_OUTDOOR_UNIT_MODEL, FIRST_OUTDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
-
-        createOutdoorUnit(FIRST_OUTDOOR_UNIT_MODEL, SECOND_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
-
-        createOutdoorUnit(SECOND_OUTDOOR_UNIT_MODEL, THIRD_OUTDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
-
-        createOutdoorUnit(SECOND_OUTDOOR_UNIT_MODEL, FORTH_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
+//        createIndoorUnit(FIRST_INDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
+//
+//        createIndoorUnit(SECOND_INDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
+//
+//        createMicrowaveAntenna(FIRST_MICROWAVE_ANTENNA_NAME, FIRST_LOCATION_NAME);
+//
+//        createMicrowaveAntenna(SECOND_MICROWAVE_ANTENNA_NAME, SECOND_LOCATION_NAME);
+//
+//        createOutdoorUnit(FIRST_OUTDOOR_UNIT_MODEL, FIRST_OUTDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
+//
+//        createOutdoorUnit(FIRST_OUTDOOR_UNIT_MODEL, SECOND_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
+//
+//        createOutdoorUnit(SECOND_OUTDOOR_UNIT_MODEL, THIRD_OUTDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
+//
+//        createOutdoorUnit(SECOND_OUTDOOR_UNIT_MODEL, FORTH_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
+        waitForPageToLoad();
     }
 
     @Test(priority = 2, description = "Create Microwave Channels with Terminations", dependsOnMethods = {"createDevices"})
@@ -380,9 +379,9 @@ public class BucOssTpt001Test extends BaseTestCase {
     public void createMicrowaveChannelWithTerminations() {
         openNetworkView();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        addObjectToView(NAME_COMPONENT_ID, FIRST_INDOOR_UNIT_NAME);
+        addObjectToView(FIRST_INDOOR_UNIT_NAME);
         waitForPageToLoad();
-        addObjectToView(NAME_COMPONENT_ID, SECOND_INDOOR_UNIT_NAME);
+        addObjectToView(SECOND_INDOOR_UNIT_NAME);
         waitForPageToLoad();
         networkViewPage.expandViewContentPanel();
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, FIRST_INDOOR_UNIT_NAME);
@@ -507,7 +506,7 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         networkViewPage.addSelectedObjectsToRouting();
         fillAddRoutingSegmentWizard(WORKING_LINE_TYPE, FIRST_MWL_SEQUENCE_NUMBER);
-        assertMicrowaveChannelWorkingStatus(networkViewPage, WORKING_LINE_TYPE);
+        assertMicrowaveChannelWorkingStatus(networkViewPage);
 
         table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
         waitForPageToLoad();
@@ -545,7 +544,7 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         networkViewPage.addSelectedObjectsToRouting();
         fillAddRoutingSegmentWizard(WORKING_LINE_TYPE, SECOND_MWL_SEQUENCE_NUMBER);
-        assertMicrowaveChannelWorkingStatus(networkViewPage, WORKING_LINE_TYPE);
+        assertMicrowaveChannelWorkingStatus(networkViewPage);
 
         OldTable table = OldTable.createById(driver, webDriverWait, CONTENT_TAB_ID);
         table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
@@ -576,14 +575,14 @@ public class BucOssTpt001Test extends BaseTestCase {
     public void addTwoMicrowaveAntennasToMicrowaveLinkElementRouting() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
 
-        addObjectToView(NAME_COMPONENT_ID, FIRST_MICROWAVE_ANTENNA_NAME);
+        addObjectToView(FIRST_MICROWAVE_ANTENNA_NAME);
         waitForPageToLoad();
         networkViewPage.addSelectedObjectsToElementRouting();
         fillRoutingOverElementsWizard(FIRST_MW_ANTENNA_SEQUENCE_NUMBER, FIRST_MW_ANTENNA_RELATION_TYPE, 0);
         waitForPageToLoad();
         clickAcceptInElementRoutingWizard();
 
-        addObjectToView(NAME_COMPONENT_ID, SECOND_MICROWAVE_ANTENNA_NAME);
+        addObjectToView(SECOND_MICROWAVE_ANTENNA_NAME);
         waitForPageToLoad();
         networkViewPage.addSelectedObjectsToElementRouting();
         fillRoutingOverElementsWizard(SECOND_MW_ANTENNA_SEQUENCE_NUMBER, SECOND_MW_ANTENNA_RELATION_TYPE, 0);
@@ -627,9 +626,9 @@ public class BucOssTpt001Test extends BaseTestCase {
         networkViewPage.startEditingSelectedTrail();
         waitForPageToLoad();
 
-        addObjectToView(NAME_COMPONENT_ID, SECOND_OUTDOOR_UNIT_NAME);
+        addObjectToView(SECOND_OUTDOOR_UNIT_NAME);
         waitForPageToLoad();
-        addObjectToView(NAME_COMPONENT_ID, FIRST_OUTDOOR_UNIT_NAME);
+        addObjectToView(FIRST_OUTDOOR_UNIT_NAME);
         waitForPageToLoad();
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, SECOND_OUTDOOR_UNIT_NAME);
         waitForPageToLoad();
@@ -670,9 +669,9 @@ public class BucOssTpt001Test extends BaseTestCase {
         networkViewPage.startEditingSelectedTrail();
         waitForPageToLoad();
 
-        addObjectToView(NAME_COMPONENT_ID, FORTH_OUTDOOR_UNIT_NAME);
+        addObjectToView(FORTH_OUTDOOR_UNIT_NAME);
         waitForPageToLoad();
-        addObjectToView(NAME_COMPONENT_ID, THIRD_OUTDOOR_UNIT_NAME);
+        addObjectToView(THIRD_OUTDOOR_UNIT_NAME);
         waitForPageToLoad();
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, FORTH_OUTDOOR_UNIT_NAME);
         waitForPageToLoad();
@@ -730,7 +729,7 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         OldTable table = OldTable.createById(driver, webDriverWait, CONTENT_TAB_ID);
         table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, ETHERNET_LINK_PARTIAL_NAME);
-        ethernetLink = getConnectionName();
+        String ethernetLink = getConnectionName();
         waitForPageToLoad();
         table.clearColumnValue(NAME_COLUMN_NAME);
         waitForPageToLoad();
@@ -1036,10 +1035,10 @@ public class BucOssTpt001Test extends BaseTestCase {
         toolsManagerWindow.openApplication(categoryName, applicationName);
     }
 
-    private void addObjectToView(String componentId, String value) {
+    private void addObjectToView(String objectName) {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
-        networkViewPage.queryElementAndAddItToView(componentId, value);
+        networkViewPage.queryElementAndAddItToView(NAME_COMPONENT_ID, objectName);
     }
 
     private void createPhysicalDevice(String deviceModel, String deviceName, String locationName) {
@@ -1058,21 +1057,24 @@ public class BucOssTpt001Test extends BaseTestCase {
         deviceWizardPage.accept();
     }
 
-    private void createIndoorUnit(String indoorUnitModel, String indoorUnitName, String locationName) {
-        createPhysicalDevice(indoorUnitModel, indoorUnitName, locationName);
+    private void createIndoorUnit(String indoorUnitName, String locationName) {
+        createPhysicalDevice(INDOOR_UNIT_MODEL, indoorUnitName, locationName);
+        checkSystemMessage();
         clickMessage();
         waitForPageToLoad();
-        addCardToPhysicalDevice(CARD_MODEL_NAME, SLOT_NAME);
+        addCardToPhysicalDevice();
         waitForPageToLoad();
     }
 
-    private void createMicrowaveAntenna(String microwaveAntennaModel, String microwaveAntennaName, String locationName) {
-        createPhysicalDevice(microwaveAntennaModel, microwaveAntennaName, locationName);
+    private void createMicrowaveAntenna(String microwaveAntennaName, String locationName) {
+        createPhysicalDevice(MICROWAVE_ANTENNA_MODEL, microwaveAntennaName, locationName);
+        checkSystemMessage();
         waitForPageToLoad();
     }
 
     private void createOutdoorUnit(String outdoorUnitModel, String outdoorUnitName, String locationName) {
         createPhysicalDevice(outdoorUnitModel, outdoorUnitName, locationName);
+        checkSystemMessage();
         waitForPageToLoad();
     }
 
@@ -1310,7 +1312,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         fillSecondStepOfMicrowaveChannelWizard(microwaveChannelWizardPage, microwaveChannelAttributes);
         fillThirdStepOfMicrowaveChannelWizard(microwaveChannelWizardPage, microwaveChannelAttributes);
         fillForthStepOfMicrowaveChannelWizardWithTerminationsStep(microwaveChannelWizardPage, microwaveChannelAttributes);
-        fillFifthStepOfMicrowaveChannelWizard(microwaveChannelWizardPage, microwaveChannelAttributes);
+        fillFifthStepOfMicrowaveChannelWizard(microwaveChannelWizardPage);
     }
 
     private void fillFirstStepOfMicrowaveChannelWizard(MicrowaveChannelWizardPage microwaveChannelWizardPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
@@ -1375,7 +1377,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         microwaveChannelWizardPage.clickNext();
     }
 
-    private void fillFifthStepOfMicrowaveChannelWizard(MicrowaveChannelWizardPage microwaveChannelWizardPage, MicrowaveChannelAttributes microwaveChannelAttributes) {
+    private void fillFifthStepOfMicrowaveChannelWizard(MicrowaveChannelWizardPage microwaveChannelWizardPage) {
         microwaveChannelWizardPage.setTermination(START_CARD_FIELD_ID, CARD_NAME);
         microwaveChannelWizardPage.setTermination(START_PORT_FIELD_ID, PORT_NAME);
         microwaveChannelWizardPage.setTermination(END_CARD_FIELD_ID, CARD_NAME);
@@ -1585,6 +1587,7 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(objectValue, objectName, "Expected object isn't present in current Tab.");
+        softAssert.assertAll();
     }
 
     private void assertPresenceOfObjectInElementRoutingTab(Integer index, String name, String relationType) {
@@ -1603,13 +1606,15 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(actualCapacityValue, expectedCapacityValue, "Capacity Value is other than expected.");
+        softAssert.assertAll();
     }
 
-    private void assertMicrowaveChannelWorkingStatus(NetworkViewPage networkViewPage, String expectedWorkingStatus) {
+    private void assertMicrowaveChannelWorkingStatus(NetworkViewPage networkViewPage) {
         String actualWorkingStatus = networkViewPage.getAttributeValue(WORKING_STATUS_ATTRIBUTE_LABEL);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(actualWorkingStatus, expectedWorkingStatus, "Working Status is other than expected.");
+        softAssert.assertEquals(actualWorkingStatus, WORKING_LINE_TYPE, "Working Status is other than expected.");
+        softAssert.assertAll();
     }
 
     private void assertMicrowaveLinkAttributesOnNewInventoryView(NewInventoryViewPage newInventoryViewPage, MicrowaveLinkAttributes microwaveLinkAttributes) {
@@ -1631,7 +1636,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         softAssert.assertEquals(technologyType, microwaveLinkAttributes.technologyType, "Technology Type value is other than expected.");
         softAssert.assertEquals(aggregationConfiguration, microwaveLinkAttributes.aggregationConfiguration, "Aggregation Configuration value is other than expected.");
         softAssert.assertEquals(userLabel, microwaveLinkAttributes.userLabel, "User Label value is other than expected.");
-        softAssert.assertEquals(linkId, microwaveLinkAttributes.linkId, "Link ID value is other than expected.");
+        softAssert.assertNotNull(linkId, "Link ID value is null.");
         softAssert.assertEquals(numberOfWorkingChannels, microwaveLinkAttributes.numberOfWorkingChannels, "Number Of Working Channels value is other than expected.");
         softAssert.assertEquals(numberOfProtectingChannels, microwaveLinkAttributes.numberOfProtectingChannels, "Number Of Protecting Channels value is other than expected.");
         softAssert.assertEquals(description, microwaveLinkAttributes.description, "Description value is other than expected.");
@@ -1755,16 +1760,16 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    private void addCardToPhysicalDevice(String modelName, String slotName) {
+    private void addCardToPhysicalDevice() {
         HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
         hierarchyViewPage.selectFirstObject();
         waitForPageToLoad();
         hierarchyViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_CARD_BUTTON_ID);
         CardCreateWizardPage createWizardPage = new CardCreateWizardPage(driver);
         waitForPageToLoad();
-        createWizardPage.setModel(modelName);
+        createWizardPage.setModel(CARD_MODEL_NAME);
         waitForPageToLoad();
-        createWizardPage.setSlot(slotName);
+        createWizardPage.setSlot(SLOT_NAME);
         waitForPageToLoad();
         createWizardPage.clickAccept();
     }

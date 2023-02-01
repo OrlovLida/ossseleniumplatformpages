@@ -21,8 +21,6 @@ public class RoutingWizardPage extends ConnectionWizardPage {
 
     private static final String ID = "RoutingPopupViewId_prompt-card";
     private final Wizard wizard;
-    //Czeka na rozwiązanie: OSSTRAIL-6962
-    private static final String COMPONENT_ID = "Uzupełnić";
     private static final String PROTECTION_TYPE = "routingFormProtectionTypeComponent";
     private static final String LINE_TYPE = "1389524__lineType";
     private static final String SEQUENCE_NUMBER = "1389524__sequenceNumber";
@@ -30,6 +28,11 @@ public class RoutingWizardPage extends ConnectionWizardPage {
     public RoutingWizardPage(WebDriver driver) {
         super(driver);
         wizard = Wizard.createByComponentId(driver, wait, ID);
+    }
+
+    @Override
+    public Wizard getWizard() {
+        return Wizard.createByComponentId(driver, wait, ID);
     }
 
     public void proceed() {
@@ -62,7 +65,4 @@ public class RoutingWizardPage extends ConnectionWizardPage {
         getWizard().waitForWizardToLoad();
     }
 
-    public Wizard getWizard() {
-        return Wizard.createByComponentId(driver, wait, ID);
-    }
 }
