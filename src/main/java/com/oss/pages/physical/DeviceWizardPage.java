@@ -53,6 +53,12 @@ public class DeviceWizardPage extends BasePage {
     private static final String DEVICE_NAME_IN_LIST_POPUP_FIELD_ID = "table-element.name.id-TEXT_FIELD";
     private static final String LOCATION_KEBAB_BUTTON_ID = "location_button-dropdown-wizard";
     private static final String LOCATION_CREATE_OBJECTS_BUTTON_ID = "location_button_open-wizard";
+    private static final String PHYSICAL_LOCATION_KEBAB_BUTTON_ID = "physicalLocation_button-dropdown-wizard";
+    private static final String PHYSICAL_LOCATION_CREATE_OBJECTS_BUTTON_ID = "physicalLocation_button_open-wizard";
+    private static final String PRECISE_LOCATION_KEBAB_BUTTON_ID = "preciseLocation_button-dropdown-wizard";
+    private static final String PRECISE_LOCATION_CREATE_OBJECTS_BUTTON_ID = "preciseLocation_button_open-wizard";
+    private static final String LOGICAL_LOCATION_KEBAB_BUTTON_ID = "logicalLocation_button-dropdown-wizard";
+    private static final String LOGICAL_LOCATION_CREATE_OBJECTS_BUTTON_ID = "logicalLocation_button_open-wizard";
 
     public DeviceWizardPage(WebDriver driver) {
         super(driver);
@@ -401,6 +407,24 @@ public class DeviceWizardPage extends BasePage {
     public void createObjectsForLocation() {
         getDeviceWizard().clickButtonById(LOCATION_KEBAB_BUTTON_ID);
         getDeviceWizard().clickButtonById(LOCATION_CREATE_OBJECTS_BUTTON_ID);
+    }
+
+    @Step("Open Create Physical Location Wizard from kebab button")
+    public void createObjectsForPhysicalLocation() {
+        getDeviceWizard().clickButtonById(PHYSICAL_LOCATION_KEBAB_BUTTON_ID);
+        getDeviceWizard().clickButtonById(PHYSICAL_LOCATION_CREATE_OBJECTS_BUTTON_ID);
+    }
+
+    @Step("Open Create Logical Location Wizard from kebab button")
+    public void createObjectsForPreciseLocation() {
+        getDeviceWizard().clickButtonById(PRECISE_LOCATION_KEBAB_BUTTON_ID);
+        getDeviceWizard().clickButtonById(PRECISE_LOCATION_CREATE_OBJECTS_BUTTON_ID);
+    }
+
+    @Step("Open Create Logical Location Wizard from kebab button")
+    public void createObjectsForLogicalLocation() {
+        getDeviceWizard().clickButtonById(LOGICAL_LOCATION_KEBAB_BUTTON_ID);
+        getDeviceWizard().clickButtonById(LOGICAL_LOCATION_CREATE_OBJECTS_BUTTON_ID);
     }
 
     public String getLocation() {
