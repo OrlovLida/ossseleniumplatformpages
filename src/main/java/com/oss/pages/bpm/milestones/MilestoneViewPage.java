@@ -49,6 +49,11 @@ public class MilestoneViewPage extends BasePage {
         milestoneTable.selectRow(0);
     }
 
+    public boolean isAttributeVisible(String attributeNameId) {
+        PropertyPanel propertyPanel = PropertyPanel.createById(driver, wait, PROPERTY_PANEL_WIDGET);
+        return propertyPanel.getVisibleAttributes().contains(attributeNameId);
+    }
+
     public String getMilestoneAttribute(String attributeNameId) {
         selectFirstMilestone();
         DelayUtils.waitForPageToLoad(driver, wait);
