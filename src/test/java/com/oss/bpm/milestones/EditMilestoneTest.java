@@ -339,7 +339,7 @@ public class EditMilestoneTest extends BaseTestCase {
 
     @AfterClass
     public void terminateProcess() {
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
         processOverviewPage.selectProcess(ProcessOverviewPage.NAME_LABEL, processName).terminateProcess(TERMINATE_REASON);
     }
 
