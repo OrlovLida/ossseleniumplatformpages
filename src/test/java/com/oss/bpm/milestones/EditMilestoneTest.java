@@ -35,6 +35,7 @@ import static com.oss.bpm.BpmPhysicalDataCreator.BPM_ADMIN_USER_LOGIN;
 import static com.oss.bpm.BpmPhysicalDataCreator.BPM_ADMIN_USER_PASSWORD;
 import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
 import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
+import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NAME_LABEL;
 
 /**
  * @author Gabriela Kasza
@@ -56,7 +57,6 @@ public class EditMilestoneTest extends BaseTestCase {
     protected static final String EDIT_MILESTONE_BUTTON = "editMilestonesContextAction";
     private static final String CORRECT_DATA_TASK_NAME = "Correct data";
     private static final String DCP = "Data Correction Process";
-    private static final String BPM_CONFIGURATION_NAME = "bpm_selenium";
     private static final String MILESTONE_NAME = "Edit Milestone Test ";
     private static final String PROCESS_NAME = "Edit Milestone Test Process ";
     private static final String BPM_MILESTONE_MODIFY_DATE = "modifyDate";
@@ -72,6 +72,7 @@ public class EditMilestoneTest extends BaseTestCase {
     private static final String EMPTY_ATTRIBUTE1 = "—";
     private static final String EMPTY_ATTRIBUTE2 = "-";
     private static final Random RANDOM = new Random();
+    private static final String MODIFIER_NAME_LABEL = "Modifier Name";
     private SoftAssert softAssert;
     private final String processName = PROCESS_NAME + RANDOM.nextInt(Integer.MAX_VALUE);
     private final String description = "Milestone Update " + RANDOM.nextInt(Integer.MAX_VALUE);
@@ -302,12 +303,10 @@ public class EditMilestoneTest extends BaseTestCase {
         milestoneViewPage.selectMilestone(newMilestoneName);
         String modifyUser;
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
-        try {
-            modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
-        } catch (NullPointerException e) {
-            milestoneViewPage.chooseMilestoneAttributesConfiguration(BPM_CONFIGURATION_NAME);
-            modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
+        if (!milestoneViewPage.isAttributeVisible(BPM_MILESTONE_MODIFY_USER)) {
+            milestoneViewPage.enableMilestoneAttribute(NAME_LABEL, MODIFIER_NAME_LABEL);
         }
+        modifyUser = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_USER);
 
         // when
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
@@ -339,8 +338,8 @@ public class EditMilestoneTest extends BaseTestCase {
 
     @AfterClass
     public void terminateProcess() {
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
-        processOverviewPage.selectProcess(ProcessOverviewPage.NAME_LABEL, processName).terminateProcess(TERMINATE_REASON);
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
+        processOverviewPage.selectProcess(NAME_LABEL, processName).terminateProcess(TERMINATE_REASON);
     }
 
     private void waitForPageToLoad() {
