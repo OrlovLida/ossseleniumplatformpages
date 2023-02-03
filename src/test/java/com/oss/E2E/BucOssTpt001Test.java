@@ -62,6 +62,27 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String POSTAL_CODE_NAME_1 = "80011";
     private static final String POSTAL_CODE_NAME_2 = "80012";
 
+//    TODO: Odkomentować po rozwiązaniu: OSSWEB-18896
+//    private static final String MICROWAVE_CHANNEL_CONFIGURATION = "SeleniumAttributesPanelMicrowaveChannel";
+
+    private static final String ELEMENT_ROUTING_TAB_ID = "routing-elements-table-app";
+    private static final String NAME_COLUMN_LABEL = "Name";
+    private static final String RELATION_TYPE_COLUMN_LABEL = "Relation type";
+
+    private static final String TERMINATIONS_TAB_LABEL = "Terminations";
+    private static final String OCCUPATION_TAB_LABEL = "Occupation";
+    private static final String ROUTED_TRAILS_TAB_LABEL = "Routed Trails";
+    private static final String ELEMENT_ROUTING_TAB_LABEL = "Element Routing";
+    private static final String MICROWAVE_FREQUENCY_PLAN_LABEL = "Microwave Frequency Plan";
+    private static final String DELETE_CONNECTION_ACTION_ID = "DeleteTrailWizardActionId";
+    private static final String DELETE_SUBMIT_BUTTON_ID = "wizard-submit-button-deleteWidgetId";
+    private static final String DELETE_DEVICE_ACTION_ID = "DeleteDeviceWizardAction";
+    private static final String DELETE_DEVICE_CONFIRMATION_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
+    private static final String DELETE_MW_CONNECTION_CONFIRMATION_ID = "ConfirmationBox_DeletePopupConfirmationBox_action_button";
+    private static final String ACTION_CONTAINER_ID = "logicalview-windowToolbar";
+    private static final String ROUTING_ACTION_ID = "EDIT_Add to Routing-null";
+    private static final String CONFIRMATION_WIZARD_ID = "deleteWidgetId";
+
     private static final String NAME_COMPONENT_ID = "name";
     private static final String NAME_COLUMN_NAME = "Name";
     private static final String MICROWAVE_CHANNEL_TRAIL_TYPE = "Microwave Channel";
@@ -83,9 +104,12 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String ROUTING_ELEMENTS_TAB_ID = "routing-elements-table-app";
     private static final String CARD_SHORT_IDENTIFIER_COLUMN = "card.shortIdentifier";
     private static final String PORT_SHORT_IDENTIFIER_COLUMN = "port.shortIdentifier";
-    private static final String CONNECTION_LABEL_COLUMN = "trail.identifier";
-    private static final String TERMINATIONS_TAB_ID = "TerminationIndexedWidget";
-    private static final String TERMINATIONS_TAB_ON_NEW_IV_ID = "TerminationWidget";
+    private static final String IDENTIFIER_COLUMN = "trail.identifier";
+    private static final String DEVICE_NAME_COLUMN = "physicalDevice.name";
+    private static final String CONNECTION_LABEL_COLUMN = "label";
+    private static final String LABEL_COLUMN = "label";
+    private static final String NV_TERMINATIONS_TAB_ID = "TerminationIndexedWidget";
+    private static final String NIV_TERMINATIONS_TAB_ID = "TerminationWidget";
     private static final String OCCUPATION_TAB_ID = "OccupationWidget";
     private static final String ROUTED_TRAILS_TAB_ID = "RoutedTrailsWidget";
     private static final String FIRST_LEVEL_ROUTING_TAB_ID = "RoutingSegmentIndexedWidget";
@@ -163,25 +187,25 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String FIRST_OUTDOOR_UNIT_MODEL = "Ericsson RAU2 N 23";
     private static final String SECOND_OUTDOOR_UNIT_MODEL = "Ericsson RAU2 N 38";
     private static final String MICROWAVE_ANTENNA_MODEL = "VHLP200-220";
-    private static final String FIRST_INDOOR_UNIT_NAME = "1SeleniumE2ETestIDU";
-    private static final String SECOND_INDOOR_UNIT_NAME = "2SeleniumE2ETestIDU";
-    private static final String FIRST_MICROWAVE_ANTENNA_NAME = "1SeleniumE2ETestMWANT";
-    private static final String SECOND_MICROWAVE_ANTENNA_NAME = "2SeleniumE2ETestMWANT";
-    private static final String FIRST_OUTDOOR_UNIT_NAME = "1SeleniumE2ETestODU";
-    private static final String SECOND_OUTDOOR_UNIT_NAME = "2SeleniumE2ETestODU";
-    private static final String THIRD_OUTDOOR_UNIT_NAME = "3SeleniumE2ETestODU";
-    private static final String FORTH_OUTDOOR_UNIT_NAME = "4SeleniumE2ETestODU";
+    private static final String FIRST_INDOOR_UNIT_NAME = "5SeleniumE2ETestIDU";
+    private static final String SECOND_INDOOR_UNIT_NAME = "6SeleniumE2ETestIDU";
+    private static final String FIRST_MICROWAVE_ANTENNA_NAME = "5SeleniumE2ETestMWANT";
+    private static final String SECOND_MICROWAVE_ANTENNA_NAME = "6SeleniumE2ETestMWANT";
+    private static final String FIRST_OUTDOOR_UNIT_NAME = "5SeleniumE2ETestODU";
+    private static final String SECOND_OUTDOOR_UNIT_NAME = "6SeleniumE2ETestODU";
+    private static final String THIRD_OUTDOOR_UNIT_NAME = "7SeleniumE2ETestODU";
+    private static final String FORTH_OUTDOOR_UNIT_NAME = "8SeleniumE2ETestODU";
 
     private static final String SLOT_NAME = "AMM 6p D\\02";
     private static final String CARD_MODEL_NAME = "Ericsson MMU2 H";
-    private static final String CARD_NAME = "AMM 6p D\\02\\MMU2 H";
+    private static final String CARD_NAME = " AMM 6p D\\02\\MMU2 H";
+    private static final String PORT_NAME = "RAU";
+    private static final String PORT_LABEL = " AMM 6p D\\02\\MMU2 H\\RAU";
+
     private static final String START_CARD_FIELD_ID = "terminationCardComponent_1";
     private static final String END_CARD_FIELD_ID = "terminationCardComponent_2";
-
     private static final String START_PORT_FIELD_ID = "terminationPortComponent_1";
     private static final String END_PORT_FIELD_ID = "terminationPortComponent_2";
-    private static final String PORT_NAME = "RAU";
-    private static final String PORT_LABEL = "AMM 6p D\\02\\MMU2 H\\RAU";
 
     private static final String MWC_DESCRIPTION = "Desc1";
     private static final String BAND = "23";
@@ -302,8 +326,10 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String AGGREGATION_CONFIGURATION = "1+1";
     private static final String NUMBER_OF_WORKING_CHANNELS = "1";
     private static final String NUMBER_OF_PROTECTING_CHANNELS = "1";
-    private static final String FIRST_MWC_CAPACITY_VALUE = "234";
-    private static final String FIRST_AND_SECOND_MWC_CAPACITY_VALUE = "80000234";
+    private static final String MWL_CAPACITY_VALUE = "234";
+    private static final String FIRST_MWC_CAPACITY_VALUE = "154000000";
+    private static final String SECOND_MWC_CAPACITY_VALUE = "80000000";
+    private static final String FIRST_AND_SECOND_MWC_CAPACITY_VALUE = "234000000";
     private static final String NETWORK = "Fixed";
     private static final String PATH_LENGTH = "127";
     private static final String MWL_DESCRIPTION = "desc691";
@@ -325,27 +351,73 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String FORTH_ODU_RELATION_TYPE = "End Site ODU";
     private static final String ETHERNET_LINK_NAME = "EthLinkE2ESelenium" + rand.nextInt(10000);
 
-    //    TODO: Odkomentować po rozwiązaniu: OSSWEB-18896
-//    private static final String MICROWAVE_CHANNEL_CONFIGURATION = "SeleniumAttributesPanelMicrowaveChannel";
-    private static final String ELEMENT_ROUTING_TAB_ID = "routing-elements-table-app";
-    private static final String NAME_COLUMN_LABEL = "Name";
-    private static final String RELATION_TYPE_COLUMN_LABEL = "Relation type";
-
-    private static final String TERMINATIONS_TAB_LABEL = "Terminations";
-    private static final String OCCUPATION_TAB_LABEL = "Occupation";
-    private static final String ROUTED_TRAILS_TAB_LABEL = "Routed Trails";
-    private static final String ELEMENT_ROUTING_TAB_LABEL = "Element Routing";
-    private static final String MICROWAVE_FREQUENCY_PLAN_LABEL = "Microwave Frequency Plan";
-    private static final String DELETE_CONNECTION_ACTION_ID = "DeleteTrailWizardActionId";
-    private static final String DELETE_SUBMIT_BUTTON_ID = "wizard-submit-button-deleteWidgetId";
-    private static final String DELETE_DEVICE_ACTION_ID = "DeleteDeviceWizardAction";
-    private static final String DELETE_DEVICE_CONFIRMATION_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
-    private static final String DELETE_MW_CONNECTION_CONFIRMATION_ID = "ConfirmationBox_DeletePopupConfirmationBox_action_button";
     private static final String SPEED_VALUE = "Unknown";
-    private static final String ACTION_CONTAINER_ID = "logicalview-windowToolbar";
-    private static final String ROUTING_ACTION_ID = "EDIT_Add to Routing-null";
-    private static final String CONFIRMATION_WIZARD_ID = "deleteWidgetId";
     private static final String EXPECTED_MWL_CAPACITY_VALUE = "234000000";
+
+    private static final String BAND_VALUES_NOT_EQUAL_EXCEPTION = "Band value is other than expected.";
+    private static final String CHANNEL_BANDWIDTH_VALUES_NOT_EQUAL_EXCEPTION = "Channel Bandwidth value is other than expected.";
+    private static final String LOW_FREQUENCY_VALUES_NOT_EQUAL_EXCEPTION = "Low Frequency value is other than expected.";
+    private static final String HIGH_FREQUENCY_VALUES_NOT_EQUAL_EXCEPTION = "High Frequency value is other than expected.";
+    private static final String POLARIZATION_VALUES_NOT_EQUAL_EXCEPTION = "Polarization value is other than expected.";
+    private static final String WORKING_STATUS_VALUES_NOT_EQUAL_EXCEPTION = "Working Status value is other than expected.";
+    private static final String HSB_FLAG_VALUES_NOT_EQUAL_EXCEPTION = "HSB Flag value is other than expected.";
+    private static final String XPOL_FLAG_VALUES_NOT_EQUAL_EXCEPTION = "XPOL Flag value is other than expected.";
+    private static final String ADM_FLAG_VALUES_NOT_EQUAL_EXCEPTION = "ADM Flag value is other than expected.";
+    private static final String REFERENCE_CHANNEL_MODULATION_VALUES_NOT_EQUAL_EXCEPTION = "Reference Channel Modulation value is other than expected.";
+    private static final String LOWEST_CHANNEL_MODULATION_VALUES_NOT_EQUAL_EXCEPTION = "Lowest Channel Modulation value is other than expected.";
+    private static final String HIGHEST_CHANNEL_MODULATION_VALUES_NOT_EQUAL_EXCEPTION = "Highest Channel Modulation value is other than expected.";
+    private static final String START_TX_POWER_VALUES_NOT_EQUAL_EXCEPTION = "Start Tx Power value is other than expected.";
+    private static final String END_TX_POWER_VALUES_NOT_EQUAL_EXCEPTION = "End Tx Power value is other than expected.";
+    private static final String START_RX_POWER_VALUES_NOT_EQUAL_EXCEPTION = "Start Rx Power value is other than expected.";
+    private static final String END_RX_POWER_VALUES_NOT_EQUAL_EXCEPTION = "End Rx Power value is other than expected.";
+    private static final String ATPC_VALUES_NOT_EQUAL_EXCEPTION = "ATPC value is other than expected.";
+    private static final String ATPC_RX_MIN_LEVEL_VALUES_NOT_EQUAL_EXCEPTION = "ATPC Rx Min Level value is other than expected.";
+    private static final String ATPC_RX_MAX_LEVEL_VALUES_NOT_EQUAL_EXCEPTION = "ATPC Rx Max Level value is other than expected.";
+    private static final String DCN_LOCATION_VALUES_NOT_EQUAL_EXCEPTION = "DCN Location value is other than expected.";
+    private static final String END_ATTENUATOR_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION = "End Attenuator Manufacturer value is other than expected.";
+    private static final String END_ATTENUATOR_MODEL_VALUES_NOT_EQUAL_EXCEPTION = "End Attenuator Model value is other than expected.";
+    private static final String END_DIVERSITY_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION = "End Diversity Waveguide Length value is other than expected.";
+    private static final String END_DIVERSITY_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION = "End Diversity Waveguide Manufacturer value is other than expected.";
+    private static final String END_DIVERSITY_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION = "End Diversity Waveguide Model value is other than expected.";
+    private static final String START_ATTENUATOR_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION = "Start Attenuator Manufacturer value is other than expected.";
+    private static final String START_ATTENUATOR_MODEL_VALUES_NOT_EQUAL_EXCEPTION = "Start Attenuator Model value is other than expected.";
+    private static final String START_DIVERSITY_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION = "Start Diversity Waveguide Length value is other than expected.";
+    private static final String START_DIVERSITY_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION = "Start Diversity Waveguide Manufacturer value is other than expected.";
+    private static final String START_DIVERSITY_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION = "Start Diversity Waveguide Model value is other than expected.";
+    private static final String START_DIVERSITY_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION = "Start Diversity Waveguide Total Loss value is other than expected.";
+    private static final String START_RADIO_MODEL_VALUES_NOT_EQUAL_EXCEPTION = "Start Radio Model value is other than expected.";
+    private static final String START_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION = "Start Waveguide Manufacturer value is other than expected.";
+    private static final String START_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION = "Start Waveguide Model value is other than expected.";
+    private static final String START_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION = "Start Waveguide Total Loss value is other than expected.";
+    private static final String DESCRIPTION_VALUES_NOT_EQUAL_EXCEPTION = "Description value is other than expected.";
+    private static final String CHANNEL_NAME_VALUES_NOT_EQUAL_EXCEPTION = "Channel Name value is other than expected.";
+    private static final String CHANNEL_NUMBER_VALUES_NOT_EQUAL_EXCEPTION = "Channel Number value is other than expected.";
+    private static final String CONFIGURATION_VALUES_NOT_EQUAL_EXCEPTION = "Configuration value is other than expected.";
+    private static final String END_ATTENUATOR_LOSS_VALUES_NOT_EQUAL_EXCEPTION = "End Attenuator Loss value is other than expected.";
+    private static final String END_DIVERSITY_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION = "End Diversity Waveguide Total Loss value is other than expected.";
+    private static final String END_RADIO_MODEL_VALUES_NOT_EQUAL_EXCEPTION = "End Radio Model value is other than expected.";
+    private static final String END_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION = "End Waveguide Length value is other than expected.";
+    private static final String END_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION = "End Waveguide Manufacturer value is other than expected.";
+    private static final String END_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION = "End Waveguide Model value is other than expected.";
+    private static final String END_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION = "End Waveguide Total Loss value is other than expected.";
+    private static final String START_ATTENUATOR_LOSS_VALUES_NOT_EQUAL_EXCEPTION = "Start Attenuator Loss value is other than expected.";
+    private static final String START_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION = "Start Waveguide Length value is other than expected.";
+    private static final String END_ATTENUATOR_MODE_VALUES_NOT_EQUAL_EXCEPTION = "End Attenuator Mode value is other than expected.";
+    private static final String HIGH_FREQUENCY_SITE_VALUES_NOT_EQUAL_EXCEPTION = "High Frequency Site value is other than expected.";
+    private static final String START_ATTENUATOR_MODE_VALUES_NOT_EQUAL_EXCEPTION = "Start Attenuator Mode value is other than expected.";
+    private static final String CAPACITY_VALUES_NOT_EQUAL_EXCEPTION = "Capacity value is other than expected.";
+    private static final String PATH_LENGTH_VALUES_NOT_EQUAL_EXCEPTION = "Path Length value is other than expected.";
+    private static final String NETWORK_VALUES_NOT_EQUAL_EXCEPTION = "Network value is other than expected.";
+    private static final String TECHNOLOGY_TYPE_VALUES_NOT_EQUAL_EXCEPTION = "Technology Type value is other than expected.";
+    private static final String AGGREGATION_CONFIGURATION_VALUES_NOT_EQUAL_EXCEPTION = "Aggregation Configuration value is other than expected.";
+    private static final String USER_LABEL_VALUES_NOT_EQUAL_EXCEPTION = "User Label value is other than expected.";
+    private static final String LINK_ID_VALUES_NOT_EQUAL_EXCEPTION = "Link ID value is other than expected.";
+    private static final String LINK_ID_IS_NULL_EXCEPTION = "Link ID value is null.";
+    private static final String NUMBER_OF_WORKING_CHANNELS_VALUES_NOT_EQUAL_EXCEPTION = "Number Of Working Channels value is other than expected.";
+    private static final String NUMBER_OF_PROTECTING_CHANNELS_VALUES_NOT_EQUAL_EXCEPTION = "Number Of Protecting Channels value is other than expected.";
+    private static final String EXPECTED_OBJECT_NOT_PRESENT_EXCEPTION = "Expected object isn't present in current Tab.";
+    private static final String RELATION_TYPE_VALUES_NOT_EQUAL_EXCEPTION = "Relation Type Value is other than expected.";
+    private static final String EMPTY_LIST_EXCEPTION = "The list is empty";
 
     @BeforeClass
     public void checkPrerequisites() {
@@ -372,7 +444,6 @@ public class BucOssTpt001Test extends BaseTestCase {
         createOutdoorUnit(SECOND_OUTDOOR_UNIT_MODEL, THIRD_OUTDOOR_UNIT_NAME, FIRST_LOCATION_NAME);
 
         createOutdoorUnit(SECOND_OUTDOOR_UNIT_MODEL, FORTH_OUTDOOR_UNIT_NAME, SECOND_LOCATION_NAME);
-        waitForPageToLoad();
     }
 
     @Test(priority = 2, description = "Create Microwave Channels with Terminations", dependsOnMethods = {"createDevices"})
@@ -399,10 +470,11 @@ public class BucOssTpt001Test extends BaseTestCase {
         //networkViewPage.applyConfigurationForAttributesPanel(MICROWAVE_CHANNEL_CONFIGURATION);
         waitForPageToLoad();
         assertMicrowaveChannel(networkViewPage, firstMicrowaveChannelAttributes);
+        assertCapacityValueOnNetworkView(networkViewPage, FIRST_MWC_CAPACITY_VALUE);
 
         networkViewPage.openTerminationsTab();
-        assertPresenceOfObjectInTab(0, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_LABEL);
-        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_LABEL);
+        assertPresenceOfObjectInTab(0, PORT_SHORT_IDENTIFIER_COLUMN, NV_TERMINATIONS_TAB_ID, PORT_LABEL);
+        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, NV_TERMINATIONS_TAB_ID, PORT_LABEL);
     }
 
     @Test(priority = 3, description = "Create Microwave Channel and add Terminations", dependsOnMethods = {"createMicrowaveChannelWithTerminations"})
@@ -427,6 +499,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         fillMicrowaveChannelWizard(secondMicrowaveChannelWizardPage, secondMicrowaveChannelAttributes);
         waitForPageToLoad();
         assertMicrowaveChannel(networkViewPage, secondMicrowaveChannelAttributes);
+        assertCapacityValueOnNetworkView(networkViewPage, SECOND_MWC_CAPACITY_VALUE);
 
         networkViewPage.startEditingSelectedTrail();
         waitForPageToLoad();
@@ -457,8 +530,8 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
 
         networkViewPage.openTerminationsTab();
-        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, CARD_NAME);
-        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_LABEL);
+        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, NV_TERMINATIONS_TAB_ID, CARD_NAME);
+        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, NV_TERMINATIONS_TAB_ID, PORT_LABEL);
     }
 
     @Test(priority = 4, description = "Create Microwave Link", dependsOnMethods = {"createMicrowaveChannelAndAddTerminations"})
@@ -507,7 +580,7 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         networkViewPage.addSelectedObjectsToRouting();
         fillAddRoutingSegmentWizard(WORKING_LINE_TYPE, FIRST_MWL_SEQUENCE_NUMBER);
-        assertMicrowaveChannelWorkingStatus(networkViewPage);
+        assertMicrowaveChannelWorkingStatusOnNetworkView(networkViewPage);
 
         table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
         waitForPageToLoad();
@@ -520,17 +593,17 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, microwaveLink);
         waitForPageToLoad();
-        assertMicrowaveLinkCapacityValue(networkViewPage, FIRST_MWC_CAPACITY_VALUE);
+        assertCapacityValueOnNetworkView(networkViewPage, FIRST_MWC_CAPACITY_VALUE);
         networkViewPage.hideDockedPanel(DOCKED_PANEL_POSITION);
         waitForPageToLoad();
         networkViewPage.expandDockedPanel(DETAILS_DOCKED_PANEL_POSITION);
 
         networkViewPage.openTerminationsTab();
-        assertPresenceOfObjectInTab(0, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_LABEL);
-        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_LABEL);
+        assertPresenceOfObjectInTab(0, DEVICE_NAME_COLUMN, NV_TERMINATIONS_TAB_ID, FIRST_INDOOR_UNIT_NAME);
+        assertPresenceOfObjectInTab(1, DEVICE_NAME_COLUMN, NV_TERMINATIONS_TAB_ID, SECOND_INDOOR_UNIT_NAME);
 
         networkViewPage.openFirstLevelRoutingTab();
-        assertPresenceOfObjectInTab(0, CONNECTION_LABEL_COLUMN, FIRST_LEVEL_ROUTING_TAB_ID, firstMicrowaveChannelLabel);
+        assertPresenceOfObjectInTab(0, IDENTIFIER_COLUMN, FIRST_LEVEL_ROUTING_TAB_ID, firstMicrowaveChannelLabel);
     }
 
     @Test(priority = 6, description = "Add second Microwave Channel to Microwave Link routing", dependsOnMethods = {"addMicrowaveChannelToMicrowaveLinkRouting"})
@@ -545,7 +618,7 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         networkViewPage.addSelectedObjectsToRouting();
         fillAddRoutingSegmentWizard(WORKING_LINE_TYPE, SECOND_MWL_SEQUENCE_NUMBER);
-        assertMicrowaveChannelWorkingStatus(networkViewPage);
+        assertMicrowaveChannelWorkingStatusOnNetworkView(networkViewPage);
 
         OldTable table = OldTable.createById(driver, webDriverWait, CONTENT_TAB_ID);
         table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
@@ -559,16 +632,16 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_NAME, microwaveLink);
         waitForPageToLoad();
-        assertMicrowaveLinkCapacityValue(networkViewPage, FIRST_AND_SECOND_MWC_CAPACITY_VALUE);
+        assertCapacityValueOnNetworkView(networkViewPage, FIRST_AND_SECOND_MWC_CAPACITY_VALUE);
         networkViewPage.hideDockedPanel(DOCKED_PANEL_POSITION);
         waitForPageToLoad();
 
         networkViewPage.openTerminationsTab();
-        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, CARD_NAME);
-        assertPresenceOfObjectInTab(1, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, CARD_NAME);
+        assertPresenceOfObjectInTab(0, DEVICE_NAME_COLUMN, NV_TERMINATIONS_TAB_ID, FIRST_INDOOR_UNIT_NAME);
+        assertPresenceOfObjectInTab(1, DEVICE_NAME_COLUMN, NV_TERMINATIONS_TAB_ID, SECOND_INDOOR_UNIT_NAME);
 
         networkViewPage.openFirstLevelRoutingTab();
-        assertPresenceOfObjectInTab(1, CONNECTION_LABEL_COLUMN, FIRST_LEVEL_ROUTING_TAB_ID, secondMicrowaveChannelLabel);
+        assertPresenceOfObjectInTab(1, IDENTIFIER_COLUMN, FIRST_LEVEL_ROUTING_TAB_ID, secondMicrowaveChannelLabel);
     }
 
     @Test(priority = 7, description = "Add two Microwave Antennas to Microwave Link element routing", dependsOnMethods = {"addSecondMicrowaveChannelToMicrowaveLinkRouting"})
@@ -749,10 +822,10 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
 
         networkViewPage.openFirstLevelRoutingTab();
-        assertPresenceOfObjectInTab(0, CONNECTION_LABEL_COLUMN, FIRST_LEVEL_ROUTING_TAB_ID, microwaveLinkLabel);
+        assertPresenceOfObjectInTab(0, IDENTIFIER_COLUMN, FIRST_LEVEL_ROUTING_TAB_ID, microwaveLinkLabel);
     }
 
-    @Test(priority = 11, description = "Check Microwave Link attributes and assigned objects on New Inventory View", dependsOnMethods = {"createMicrowaveLink"})
+    @Test(priority = 11, description = "Check Microwave Link attributes and assigned objects on New Inventory View", dependsOnMethods = {"addTwoMicrowaveAntennasToMicrowaveLinkElementRouting"})
     @Description("Check Microwave Link attributes and assigned objects on New Inventory View")
     public void checkMicrowaveLinkAttributesAndAssignedObjectsOnNewInventoryView() {
         homePage.goToHomePage(driver, BASIC_URL);
@@ -769,22 +842,28 @@ public class BucOssTpt001Test extends BaseTestCase {
         assertMicrowaveLinkAttributesOnNewInventoryView(newInventoryViewPage, microwaveLinkAttributes);
 
         openTab(TERMINATIONS_TAB_LABEL);
-        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, CARD_NAME);
-        assertPresenceOfObjectInTab(1, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, CARD_NAME);
+        assertPresenceOfObjectInTab(0, DEVICE_NAME_COLUMN, NIV_TERMINATIONS_TAB_ID, FIRST_INDOOR_UNIT_NAME);
+        assertPresenceOfObjectInTab(1, DEVICE_NAME_COLUMN, NIV_TERMINATIONS_TAB_ID, SECOND_INDOOR_UNIT_NAME);
 
         openTab(OCCUPATION_TAB_LABEL);
-        assertPresenceOfObjectInTab(0, CONNECTION_LABEL_COLUMN, OCCUPATION_TAB_ID, ETHERNET_LINK_NAME);
+        assertPresenceOfObjectInTab(0, LABEL_COLUMN, OCCUPATION_TAB_ID, ETHERNET_LINK_NAME);
 
         openTab(ROUTED_TRAILS_TAB_LABEL);
         assertPresenceOfObjectInTab(0, CONNECTION_LABEL_COLUMN, ROUTED_TRAILS_TAB_ID, firstMicrowaveChannelLabel);
         assertPresenceOfObjectInTab(1, CONNECTION_LABEL_COLUMN, ROUTED_TRAILS_TAB_ID, secondMicrowaveChannelLabel);
 
         openTab(ELEMENT_ROUTING_TAB_LABEL);
+        OldTable table = OldTable.createById(driver, webDriverWait, ROUTING_ELEMENTS_TAB_ID);
+        table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, FIRST_MICROWAVE_ANTENNA_NAME);
         assertPresenceOfObjectInElementRoutingTab(0, FIRST_MICROWAVE_ANTENNA_NAME, FIRST_MW_ANTENNA_RELATION_TYPE);
-        assertPresenceOfObjectInElementRoutingTab(1, SECOND_MICROWAVE_ANTENNA_NAME, SECOND_MW_ANTENNA_RELATION_TYPE);
+        table.clearColumnValue(NAME_COLUMN_NAME);
+
+        table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, SECOND_MICROWAVE_ANTENNA_NAME);
+        assertPresenceOfObjectInElementRoutingTab(0, SECOND_MICROWAVE_ANTENNA_NAME, SECOND_MW_ANTENNA_RELATION_TYPE);
+        table.clearColumnValue(NAME_COLUMN_NAME);
     }
 
-    @Test(priority = 12, description = "Check first Microwave Channel attributes and assigned objects on New Inventory View", dependsOnMethods = {"createMicrowaveChannelWithTerminations"})
+    @Test(priority = 12, description = "Check first Microwave Channel attributes and assigned objects on New Inventory View", dependsOnMethods = {"addTwoOutdoorUnitsToEachMicrowaveChannelElementRouting"})
     @Description("Check first Microwave Channel attributes and assigned objects on New Inventory View")
     public void checkFirstMicrowaveChannelAttributesAndAssignedObjectsOnNewInventoryView() {
         homePage.goToHomePage(driver, BASIC_URL);
@@ -798,20 +877,27 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         MicrowaveChannelAttributes firstMicrowaveChannelAttributes = getFirstMicrowaveChannelAttributes();
         assertMicrowaveChannelAttributesOnNewInventoryView(newInventoryViewPage, firstMicrowaveChannelAttributes);
+        assertMicrowaveChannelWorkingStatusOnNewInventoryView(newInventoryViewPage, WORKING_LINE_TYPE);
 
         openTab(TERMINATIONS_TAB_LABEL);
-        assertPresenceOfObjectInTab(0, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ON_NEW_IV_ID, PORT_LABEL);
-        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ON_NEW_IV_ID, PORT_LABEL);
+        assertPresenceOfObjectInTab(0, PORT_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, PORT_LABEL);
+        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, PORT_LABEL);
 
         openTab(OCCUPATION_TAB_LABEL);
-        assertPresenceOfObjectInTab(0, CONNECTION_LABEL_COLUMN, OCCUPATION_TAB_ID, microwaveLinkLabel);
+        assertPresenceOfObjectInTab(0, LABEL_COLUMN, OCCUPATION_TAB_ID, microwaveLinkLabel);
 
         openTab(ELEMENT_ROUTING_TAB_LABEL);
+        OldTable table = OldTable.createById(driver, webDriverWait, ROUTING_ELEMENTS_TAB_ID);
+        table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, FIRST_OUTDOOR_UNIT_NAME);
         assertPresenceOfObjectInElementRoutingTab(0, FIRST_OUTDOOR_UNIT_NAME, FIRST_ODU_RELATION_TYPE);
-        assertPresenceOfObjectInElementRoutingTab(1, SECOND_OUTDOOR_UNIT_NAME, SECOND_ODU_RELATION_TYPE);
+        table.clearColumnValue(NAME_COLUMN_NAME);
+
+        table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, SECOND_OUTDOOR_UNIT_NAME);
+        assertPresenceOfObjectInElementRoutingTab(0, SECOND_OUTDOOR_UNIT_NAME, SECOND_ODU_RELATION_TYPE);
+        table.clearColumnValue(NAME_COLUMN_NAME);
     }
 
-    @Test(priority = 13, description = "Check second Microwave Channel attributes and assigned objects on New Inventory View", dependsOnMethods = {"createMicrowaveChannelAndAddTerminations"})
+    @Test(priority = 13, description = "Check second Microwave Channel attributes and assigned objects on New Inventory View", dependsOnMethods = {"addTwoOutdoorUnitsToEachMicrowaveChannelElementRouting"})
     @Description("Check second Microwave Channel attributes and assigned objects on New Inventory View")
     public void checkSecondMicrowaveChannelAttributesAndAssignedObjectsOnNewInventoryView() {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
@@ -821,17 +907,24 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
         MicrowaveChannelAttributes secondMicrowaveChannelAttributes = getSecondMicrowaveChannelAttributes();
         assertMicrowaveChannelAttributesOnNewInventoryView(newInventoryViewPage, secondMicrowaveChannelAttributes);
+        assertMicrowaveChannelWorkingStatusOnNewInventoryView(newInventoryViewPage, WORKING_LINE_TYPE);
 
         openTab(TERMINATIONS_TAB_LABEL);
-        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ON_NEW_IV_ID, CARD_NAME);
-        assertPresenceOfObjectInTab(1, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ON_NEW_IV_ID, CARD_NAME);
+        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, CARD_NAME);
+        assertPresenceOfObjectInTab(1, CARD_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, CARD_NAME);
 
         openTab(OCCUPATION_TAB_LABEL);
-        assertPresenceOfObjectInTab(0, CONNECTION_LABEL_COLUMN, OCCUPATION_TAB_ID, microwaveLinkLabel);
+        assertPresenceOfObjectInTab(0, LABEL_COLUMN, OCCUPATION_TAB_ID, microwaveLinkLabel);
 
         openTab(ELEMENT_ROUTING_TAB_LABEL);
+        OldTable table = OldTable.createById(driver, webDriverWait, ROUTING_ELEMENTS_TAB_ID);
+        table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, THIRD_OUTDOOR_UNIT_NAME);
         assertPresenceOfObjectInElementRoutingTab(0, THIRD_OUTDOOR_UNIT_NAME, THIRD_ODU_RELATION_TYPE);
-        assertPresenceOfObjectInElementRoutingTab(1, FORTH_OUTDOOR_UNIT_NAME, FORTH_ODU_RELATION_TYPE);
+        table.clearColumnValue(NAME_COLUMN_NAME);
+
+        table.searchByAttributeWithLabel(NAME_COLUMN_NAME, TEXT_FIELD, FORTH_OUTDOOR_UNIT_NAME);
+        assertPresenceOfObjectInElementRoutingTab(0, FORTH_OUTDOOR_UNIT_NAME, FORTH_ODU_RELATION_TYPE);
+        table.clearColumnValue(NAME_COLUMN_NAME);
     }
 
     @Test(priority = 14, description = "Delete Ethernet Link on New Inventory View", dependsOnMethods = {"createEthernetLink"})
@@ -851,7 +944,8 @@ public class BucOssTpt001Test extends BaseTestCase {
         newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_CONNECTION_ACTION_ID);
         waitForPageToLoad();
         getConfirmationWizard().clickButtonById(DELETE_SUBMIT_BUTTON_ID);
-
+        waitForPageToLoad();
+        newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
         newInventoryViewPage.checkIfTableIsEmpty();
     }
@@ -865,11 +959,15 @@ public class BucOssTpt001Test extends BaseTestCase {
         openInventoryViewForGivenObjectType(MICROWAVE_LINK_TRAIL_TYPE);
 
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        newInventoryViewPage.searchObject(microwaveLink);
+        newInventoryViewPage.searchObject(microwaveLinkLabel);
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
-        newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_MW_CONNECTION_CONFIRMATION_ID);
+        newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_CONNECTION_ACTION_ID);
+        waitForPageToLoad();
+        clickConfirmationBox(DELETE_MW_CONNECTION_CONFIRMATION_ID);
+        waitForPageToLoad();
+        newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
         newInventoryViewPage.checkIfTableIsEmpty();
     }
@@ -883,28 +981,32 @@ public class BucOssTpt001Test extends BaseTestCase {
         openInventoryViewForGivenObjectType(MICROWAVE_CHANNEL_TRAIL_TYPE);
 
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        newInventoryViewPage.searchObject(firstMicrowaveChannel);
+        newInventoryViewPage.searchObject(firstMicrowaveChannelLabel);
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
         newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_CONNECTION_ACTION_ID);
         waitForPageToLoad();
         clickConfirmationBox(DELETE_MW_CONNECTION_CONFIRMATION_ID);
+        waitForPageToLoad();
+        newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
         newInventoryViewPage.checkIfTableIsEmpty();
 
-        newInventoryViewPage.searchObject(secondMicrowaveChannel);
+        newInventoryViewPage.searchObject(secondMicrowaveChannelLabel);
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
         newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_CONNECTION_ACTION_ID);
         waitForPageToLoad();
         clickConfirmationBox(DELETE_MW_CONNECTION_CONFIRMATION_ID);
+        waitForPageToLoad();
+        newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
         newInventoryViewPage.checkIfTableIsEmpty();
     }
 
-    @Test(priority = 17, description = "Delete first and second Microwave Antenna on New Inventory View", dependsOnMethods = {"createDevices"})
+    @Test(priority = 17, description = "Delete first and second Microwave Antenna on New Inventory View", dependsOnMethods = {"deleteMicrowaveLink"})
     @Description("Delete first and second Microwave Antenna")
     public void deleteBothMicrowaveAntennas() {
         homePage.goToHomePage(driver, BASIC_URL);
@@ -975,7 +1077,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         newInventoryViewPage.checkIfTableIsEmpty();
     }
 
-    @Test(priority = 19, description = "Delete first and second Outdoor Units on New Inventory View", dependsOnMethods = {"createDevices"})
+    @Test(priority = 19, description = "Delete first and second Outdoor Units on New Inventory View", dependsOnMethods = {"deleteBothMicrowaveChannels"})
     @Description("Delete first and second Outdoor Units")
     public void deleteBothOutdoorUnits() {
         homePage.goToHomePage(driver, BASIC_URL);
@@ -998,6 +1100,32 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         driver.navigate().refresh();
         newInventoryViewPage.searchObject(SECOND_OUTDOOR_UNIT_NAME);
+        waitForPageToLoad();
+        newInventoryViewPage.selectFirstRow();
+        waitForPageToLoad();
+        newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_DEVICE_ACTION_ID);
+        waitForPageToLoad();
+        clickConfirmationBox(DELETE_DEVICE_CONFIRMATION_ID);
+        waitForPageToLoad();
+        newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
+        newInventoryViewPage.checkIfTableIsEmpty();
+
+        driver.navigate().refresh();
+        newInventoryViewPage.searchObject(THIRD_OUTDOOR_UNIT_NAME);
+        waitForPageToLoad();
+        newInventoryViewPage.selectFirstRow();
+        waitForPageToLoad();
+        newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_DEVICE_ACTION_ID);
+        waitForPageToLoad();
+        clickConfirmationBox(DELETE_DEVICE_CONFIRMATION_ID);
+        waitForPageToLoad();
+        newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
+        newInventoryViewPage.checkIfTableIsEmpty();
+
+        driver.navigate().refresh();
+        newInventoryViewPage.searchObject(FORTH_OUTDOOR_UNIT_NAME);
         waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
@@ -1052,7 +1180,6 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
         deviceWizardPage.next();
         waitForPageToLoad();
-        DelayUtils.sleep(5000);
         deviceWizardPage.setPreciseLocation(locationName);
         waitForPageToLoad();
         deviceWizardPage.accept();
@@ -1209,7 +1336,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         attributes.aggregationConfiguration = AGGREGATION_CONFIGURATION;
         attributes.numberOfWorkingChannels = NUMBER_OF_WORKING_CHANNELS;
         attributes.numberOfProtectingChannels = NUMBER_OF_PROTECTING_CHANNELS;
-        attributes.capacityValue = FIRST_MWC_CAPACITY_VALUE;
+        attributes.capacityValue = MWL_CAPACITY_VALUE;
         attributes.network = NETWORK;
         attributes.pathLength = PATH_LENGTH;
         attributes.description = MWL_DESCRIPTION;
@@ -1501,57 +1628,57 @@ public class BucOssTpt001Test extends BaseTestCase {
         String startAttenuatorMode = networkViewPage.getAttributeValue(START_ATTENUATOR_MODE_ATTRIBUTE_LABEL);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(band, microwaveChannelAttributes.band, "Band value is other than expected.");
-        softAssert.assertEquals(channelBandwidth, microwaveChannelAttributes.channelBandwidth, "Channel Bandwidth value is other than expected.");
-        softAssert.assertEquals(lowFrequency, microwaveChannelAttributes.lowFrequency, "Low Frequency value is other than expected.");
-        softAssert.assertEquals(highFrequency, microwaveChannelAttributes.highFrequency, "High Frequency value is other than expected.");
-        softAssert.assertEquals(polarization, microwaveChannelAttributes.polarization, "Polarization value is other than expected.");
-        softAssert.assertEquals(workingStatus, microwaveChannelAttributes.workingStatus, "Working Status value is other than expected.");
-        softAssert.assertEquals(hsbFlag, microwaveChannelAttributes.hsbFlag, "HSB Flag value is other than expected.");
-        softAssert.assertEquals(xpolFlag, microwaveChannelAttributes.xpolFlag, "XPOL Flag value is other than expected.");
-        softAssert.assertEquals(admFlag, microwaveChannelAttributes.admFlag, "ADM Flag value is other than expected.");
-        softAssert.assertEquals(referenceChannelModulation, microwaveChannelAttributes.referenceChannelModulation, "Reference Channel Modulation value is other than expected.");
-        softAssert.assertEquals(lowestChannelModulation, microwaveChannelAttributes.lowestChannelModulation, "Lowest Channel Modulation value is other than expected.");
-        softAssert.assertEquals(highestChannelModulation, microwaveChannelAttributes.highestChannelModulation, "Highest Channel Modulation value is other than expected.");
-        softAssert.assertEquals(startTxPower, microwaveChannelAttributes.startTxPower, "Start Tx Power value is other than expected.");
-        softAssert.assertEquals(endTxPower, microwaveChannelAttributes.endTxPower, "End Tx Power value is other than expected.");
-        softAssert.assertEquals(startRxPower, microwaveChannelAttributes.startRxPower, "Start Rx Power value is other than expected.");
-        softAssert.assertEquals(endRxPower, microwaveChannelAttributes.endRxPower, "End Rx Power value is other than expected.");
-        softAssert.assertEquals(atpc, microwaveChannelAttributes.atpc, "ATPC value is other than expected.");
-        softAssert.assertEquals(atpcRxMinLevel, microwaveChannelAttributes.atpcRxMinLevel, "ATPC Rx Min Level value is other than expected.");
-        softAssert.assertEquals(atpcRxMaxLevel, microwaveChannelAttributes.atpcRxMaxLevel, "ATPC Rx Max Level value is other than expected.");
-        softAssert.assertEquals(dcnLocation, microwaveChannelAttributes.dcnLocation, "DCN Location value is other than expected.");
-        softAssert.assertEquals(endAttenuatorManufacturer, microwaveChannelAttributes.endAttenuatorManufacturer, "End Attenuator Manufacturer value is other than expected.");
-        softAssert.assertEquals(endAttenuatorModel, microwaveChannelAttributes.endAttenuatorModel, "End Attenuator Model value is other than expected.");
-        softAssert.assertEquals(endDiversityWaveguideLength, microwaveChannelAttributes.endDiversityWaveguideLength, "End Diversity Waveguide Length value is other than expected.");
-        softAssert.assertEquals(endDiversityWaveguideManufacturer, microwaveChannelAttributes.endDiversityWaveguideManufacturer, "End Diversity Waveguide Manufacturer value is other than expected.");
-        softAssert.assertEquals(endDiversityWaveguideModel, microwaveChannelAttributes.endDiversityWaveguideModel, "End Diversity Waveguide Model value is other than expected.");
-        softAssert.assertEquals(startAttenuatorManufacturer, microwaveChannelAttributes.startAttenuatorManufacturer, "Start Attenuator Manufacturer value is other than expected.");
-        softAssert.assertEquals(startAttenuatorModel, microwaveChannelAttributes.startAttenuatorModel, "Start Attenuator Model value is other than expected.");
-        softAssert.assertEquals(startDiversityWaveguideLength, microwaveChannelAttributes.startDiversityWaveguideLength, "Start Diversity Waveguide Length value is other than expected.");
-        softAssert.assertEquals(startDiversityWaveguideManufacturer, microwaveChannelAttributes.startDiversityWaveguideManufacturer, "Start Diversity Waveguide Manufacturer value is other than expected.");
-        softAssert.assertEquals(startDiversityWaveguideModel, microwaveChannelAttributes.startDiversityWaveguideModel, "Start Diversity Waveguide Model value is other than expected.");
-        softAssert.assertEquals(startDiversityWaveguideTotalLoss, microwaveChannelAttributes.startDiversityWaveguideTotalLoss, "Start Diversity Waveguide Total Loss value is other than expected.");
-        softAssert.assertEquals(startRadioModel, microwaveChannelAttributes.startRadioModel, "Start Radio Model value is other than expected.");
-        softAssert.assertEquals(startWaveguideManufacturer, microwaveChannelAttributes.startWaveguideManufacturer, "Start Waveguide Manufacturer value is other than expected.");
-        softAssert.assertEquals(startWaveguideModel, microwaveChannelAttributes.startWaveguideModel, "Start Waveguide Model value is other than expected.");
-        softAssert.assertEquals(startWaveguideTotalLoss, microwaveChannelAttributes.startWaveguideTotalLoss, "Start Waveguide Total Loss value is other than expected.");
-        softAssert.assertEquals(description, microwaveChannelAttributes.description, "Description value is other than expected.");
-        softAssert.assertEquals(channelName, microwaveChannelAttributes.channelName, "Channel Name value is other than expected.");
-        softAssert.assertEquals(channelNumber, microwaveChannelAttributes.channelNumber, "Channel Number value is other than expected.");
-        softAssert.assertEquals(configuration, microwaveChannelAttributes.configuration, "Configuration value is other than expected.");
-        softAssert.assertEquals(endAttenuatorLoss, microwaveChannelAttributes.endAttenuatorLoss, "End Attenuator Loss value is other than expected.");
-        softAssert.assertEquals(endDiversityWaveguideTotalLoss, microwaveChannelAttributes.endDiversityWaveguideTotalLoss, "End Diversity Waveguide Total Loss value is other than expected.");
-        softAssert.assertEquals(endRadioModel, microwaveChannelAttributes.endRadioModel, "End Radio Model value is other than expected.");
-        softAssert.assertEquals(endWaveguideLength, microwaveChannelAttributes.endWaveguideLength, "End Waveguide Length value is other than expected.");
-        softAssert.assertEquals(endWaveguideManufacturer, microwaveChannelAttributes.endWaveguideManufacturer, "End Waveguide Manufacturer value is other than expected.");
-        softAssert.assertEquals(endWaveguideModel, microwaveChannelAttributes.endWaveguideModel, "End Waveguide Model value is other than expected.");
-        softAssert.assertEquals(endWaveguideTotalLoss, microwaveChannelAttributes.endWaveguideTotalLoss, "End Waveguide Total Loss value is other than expected.");
-        softAssert.assertEquals(startAttenuatorLoss, microwaveChannelAttributes.startAttenuatorLoss, "Start Attenuator Loss value is other than expected.");
-        softAssert.assertEquals(startWaveguideLength, microwaveChannelAttributes.startWaveguideLength, "Start Waveguide Length value is other than expected.");
-        softAssert.assertEquals(endAttenuatorMode, microwaveChannelAttributes.endAttenuatorMode, "End Attenuator Mode value is other than expected.");
-        softAssert.assertEquals(highFrequencySite, microwaveChannelAttributes.highFrequencySite, "High Frequency Site value is other than expected.");
-        softAssert.assertEquals(startAttenuatorMode, microwaveChannelAttributes.startAttenuatorMode, "Start Attenuator Mode value is other than expected.");
+        softAssert.assertEquals(band, microwaveChannelAttributes.band, BAND_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(channelBandwidth, microwaveChannelAttributes.channelBandwidth, CHANNEL_BANDWIDTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(lowFrequency, microwaveChannelAttributes.lowFrequency, LOW_FREQUENCY_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(highFrequency, microwaveChannelAttributes.highFrequency, HIGH_FREQUENCY_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(polarization, microwaveChannelAttributes.polarization, POLARIZATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(workingStatus, microwaveChannelAttributes.workingStatus, WORKING_STATUS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(hsbFlag, microwaveChannelAttributes.hsbFlag, HSB_FLAG_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(xpolFlag, microwaveChannelAttributes.xpolFlag, XPOL_FLAG_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(admFlag, microwaveChannelAttributes.admFlag, ADM_FLAG_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(referenceChannelModulation, microwaveChannelAttributes.referenceChannelModulation, REFERENCE_CHANNEL_MODULATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(lowestChannelModulation, microwaveChannelAttributes.lowestChannelModulation, LOWEST_CHANNEL_MODULATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(highestChannelModulation, microwaveChannelAttributes.highestChannelModulation, HIGHEST_CHANNEL_MODULATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startTxPower, microwaveChannelAttributes.startTxPower, START_TX_POWER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endTxPower, microwaveChannelAttributes.endTxPower, END_TX_POWER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startRxPower, microwaveChannelAttributes.startRxPower, START_RX_POWER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endRxPower, microwaveChannelAttributes.endRxPower, END_RX_POWER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(atpc, microwaveChannelAttributes.atpc, ATPC_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(atpcRxMinLevel, microwaveChannelAttributes.atpcRxMinLevel, ATPC_RX_MIN_LEVEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(atpcRxMaxLevel, microwaveChannelAttributes.atpcRxMaxLevel, ATPC_RX_MAX_LEVEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(dcnLocation, microwaveChannelAttributes.dcnLocation, DCN_LOCATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endAttenuatorManufacturer, microwaveChannelAttributes.endAttenuatorManufacturer, END_ATTENUATOR_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endAttenuatorModel, microwaveChannelAttributes.endAttenuatorModel, END_ATTENUATOR_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endDiversityWaveguideLength, microwaveChannelAttributes.endDiversityWaveguideLength, END_DIVERSITY_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endDiversityWaveguideManufacturer, microwaveChannelAttributes.endDiversityWaveguideManufacturer, END_DIVERSITY_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endDiversityWaveguideModel, microwaveChannelAttributes.endDiversityWaveguideModel, END_DIVERSITY_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startAttenuatorManufacturer, microwaveChannelAttributes.startAttenuatorManufacturer, START_ATTENUATOR_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startAttenuatorModel, microwaveChannelAttributes.startAttenuatorModel, START_ATTENUATOR_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startDiversityWaveguideLength, microwaveChannelAttributes.startDiversityWaveguideLength, START_DIVERSITY_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startDiversityWaveguideManufacturer, microwaveChannelAttributes.startDiversityWaveguideManufacturer, START_DIVERSITY_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startDiversityWaveguideModel, microwaveChannelAttributes.startDiversityWaveguideModel, START_DIVERSITY_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startDiversityWaveguideTotalLoss, microwaveChannelAttributes.startDiversityWaveguideTotalLoss, START_DIVERSITY_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startRadioModel, microwaveChannelAttributes.startRadioModel, START_RADIO_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startWaveguideManufacturer, microwaveChannelAttributes.startWaveguideManufacturer, START_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startWaveguideModel, microwaveChannelAttributes.startWaveguideModel, START_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startWaveguideTotalLoss, microwaveChannelAttributes.startWaveguideTotalLoss, START_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(description, microwaveChannelAttributes.description, DESCRIPTION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(channelName, microwaveChannelAttributes.channelName, CHANNEL_NAME_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(channelNumber, microwaveChannelAttributes.channelNumber, CHANNEL_NUMBER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(configuration, microwaveChannelAttributes.configuration, CONFIGURATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endAttenuatorLoss, microwaveChannelAttributes.endAttenuatorLoss, END_ATTENUATOR_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endDiversityWaveguideTotalLoss, microwaveChannelAttributes.endDiversityWaveguideTotalLoss, END_DIVERSITY_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endRadioModel, microwaveChannelAttributes.endRadioModel, END_RADIO_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endWaveguideLength, microwaveChannelAttributes.endWaveguideLength, END_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endWaveguideManufacturer, microwaveChannelAttributes.endWaveguideManufacturer, END_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endWaveguideModel, microwaveChannelAttributes.endWaveguideModel, END_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endWaveguideTotalLoss, microwaveChannelAttributes.endWaveguideTotalLoss, END_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startAttenuatorLoss, microwaveChannelAttributes.startAttenuatorLoss, START_ATTENUATOR_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startWaveguideLength, microwaveChannelAttributes.startWaveguideLength, START_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endAttenuatorMode, microwaveChannelAttributes.endAttenuatorMode, END_ATTENUATOR_MODE_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(highFrequencySite, microwaveChannelAttributes.highFrequencySite, HIGH_FREQUENCY_SITE_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startAttenuatorMode, microwaveChannelAttributes.startAttenuatorMode, START_ATTENUATOR_MODE_VALUES_NOT_EQUAL_EXCEPTION);
         softAssert.assertAll();
     }
 
@@ -1569,16 +1696,16 @@ public class BucOssTpt001Test extends BaseTestCase {
         String description = networkViewPage.getAttributeValue(DESCRIPTION_ATTRIBUTE_LABEL);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(capacityValue, microwaveLinkAttributes.capacityValue, "Capacity value is other than expected.");
-        softAssert.assertEquals(pathLength, microwaveLinkAttributes.pathLength, "Path Length value is other than expected.");
-        softAssert.assertEquals(network, microwaveLinkAttributes.network, "Network value is other than expected.");
-        softAssert.assertEquals(technologyType, microwaveLinkAttributes.technologyType, "Technology Type value is other than expected.");
-        softAssert.assertEquals(aggregationConfiguration, microwaveLinkAttributes.aggregationConfiguration, "Aggregation Configuration value is other than expected.");
-        softAssert.assertEquals(userLabel, microwaveLinkAttributes.userLabel, "User Label value is other than expected.");
-        softAssert.assertEquals(linkId, microwaveLinkAttributes.linkId, "Link ID value is other than expected.");
-        softAssert.assertEquals(numberOfWorkingChannels, microwaveLinkAttributes.numberOfWorkingChannels, "Number Of Working Channels value is other than expected.");
-        softAssert.assertEquals(numberOfProtectingChannels, microwaveLinkAttributes.numberOfProtectingChannels, "Number Of Protecting Channels value is other than expected.");
-        softAssert.assertEquals(description, microwaveLinkAttributes.description, "Description value is other than expected.");
+        softAssert.assertEquals(capacityValue, microwaveLinkAttributes.capacityValue, CAPACITY_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(pathLength, microwaveLinkAttributes.pathLength, PATH_LENGTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(network, microwaveLinkAttributes.network, NETWORK_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(technologyType, microwaveLinkAttributes.technologyType, TECHNOLOGY_TYPE_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(aggregationConfiguration, microwaveLinkAttributes.aggregationConfiguration, AGGREGATION_CONFIGURATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(userLabel, microwaveLinkAttributes.userLabel, USER_LABEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(linkId, microwaveLinkAttributes.linkId, LINK_ID_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(numberOfWorkingChannels, microwaveLinkAttributes.numberOfWorkingChannels, NUMBER_OF_WORKING_CHANNELS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(numberOfProtectingChannels, microwaveLinkAttributes.numberOfProtectingChannels, NUMBER_OF_PROTECTING_CHANNELS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(description, microwaveLinkAttributes.description, DESCRIPTION_VALUES_NOT_EQUAL_EXCEPTION);
         softAssert.assertAll();
     }
 
@@ -1587,7 +1714,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         String objectValue = networkViewPage.getObjectValueFromTab(index, columnId, tabId);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(objectValue, objectName, "Expected object isn't present in current Tab.");
+        softAssert.assertEquals(objectValue, objectName, EXPECTED_OBJECT_NOT_PRESENT_EXCEPTION);
         softAssert.assertAll();
     }
 
@@ -1597,24 +1724,32 @@ public class BucOssTpt001Test extends BaseTestCase {
         String actualRelationTypeValue = routingElements.getCellValue(index, RELATION_TYPE_COLUMN_LABEL);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(actualNameValue, name, "Expected object isn't present in Element Routing Tab.");
-        softAssert.assertEquals(actualRelationTypeValue, relationType, "Relation Type Value is other than expected.");
+        softAssert.assertEquals(actualNameValue, name, EXPECTED_OBJECT_NOT_PRESENT_EXCEPTION);
+        softAssert.assertEquals(actualRelationTypeValue, relationType, RELATION_TYPE_VALUES_NOT_EQUAL_EXCEPTION);
         softAssert.assertAll();
     }
 
-    private void assertMicrowaveLinkCapacityValue(NetworkViewPage networkViewPage, String expectedCapacityValue) {
+    private void assertCapacityValueOnNetworkView(NetworkViewPage networkViewPage, String expectedCapacityValue) {
         String actualCapacityValue = networkViewPage.getAttributeValue(CAPACITY_VALUE_ATTRIBUTE_LABEL);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(actualCapacityValue, expectedCapacityValue, "Capacity Value is other than expected.");
+        softAssert.assertEquals(actualCapacityValue, expectedCapacityValue, CAPACITY_VALUES_NOT_EQUAL_EXCEPTION);
         softAssert.assertAll();
     }
 
-    private void assertMicrowaveChannelWorkingStatus(NetworkViewPage networkViewPage) {
+    private void assertMicrowaveChannelWorkingStatusOnNetworkView(NetworkViewPage networkViewPage) {
         String actualWorkingStatus = networkViewPage.getAttributeValue(WORKING_STATUS_ATTRIBUTE_LABEL);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(actualWorkingStatus, WORKING_LINE_TYPE, "Working Status is other than expected.");
+        softAssert.assertEquals(actualWorkingStatus, WORKING_LINE_TYPE, WORKING_STATUS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertAll();
+    }
+
+    private void assertMicrowaveChannelWorkingStatusOnNewInventoryView(NewInventoryViewPage newInventoryViewPage, String workingStatus) {
+        String actualWorkingStatus = newInventoryViewPage.getPropertyPanelValue(WORKING_STATUS_ATTRIBUTE_LABEL);
+
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertEquals(actualWorkingStatus, workingStatus, WORKING_STATUS_VALUES_NOT_EQUAL_EXCEPTION);
         softAssert.assertAll();
     }
 
@@ -1631,16 +1766,16 @@ public class BucOssTpt001Test extends BaseTestCase {
         String description = newInventoryViewPage.getPropertyPanelValue(DESCRIPTION_ATTRIBUTE_LABEL);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(capacityValue, EXPECTED_MWL_CAPACITY_VALUE, "Capacity value is other than expected.");
-        softAssert.assertEquals(pathLength, microwaveLinkAttributes.pathLength, "Path Length value is other than expected.");
-        softAssert.assertEquals(network, microwaveLinkAttributes.network, "Network value is other than expected.");
-        softAssert.assertEquals(technologyType, microwaveLinkAttributes.technologyType, "Technology Type value is other than expected.");
-        softAssert.assertEquals(aggregationConfiguration, microwaveLinkAttributes.aggregationConfiguration, "Aggregation Configuration value is other than expected.");
-        softAssert.assertEquals(userLabel, microwaveLinkAttributes.userLabel, "User Label value is other than expected.");
-        softAssert.assertNotNull(linkId, "Link ID value is null.");
-        softAssert.assertEquals(numberOfWorkingChannels, microwaveLinkAttributes.numberOfWorkingChannels, "Number Of Working Channels value is other than expected.");
-        softAssert.assertEquals(numberOfProtectingChannels, microwaveLinkAttributes.numberOfProtectingChannels, "Number Of Protecting Channels value is other than expected.");
-        softAssert.assertEquals(description, microwaveLinkAttributes.description, "Description value is other than expected.");
+        softAssert.assertEquals(capacityValue, EXPECTED_MWL_CAPACITY_VALUE, CAPACITY_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(pathLength, microwaveLinkAttributes.pathLength, PATH_LENGTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(network, microwaveLinkAttributes.network, NETWORK_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(technologyType, microwaveLinkAttributes.technologyType, TECHNOLOGY_TYPE_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(aggregationConfiguration, microwaveLinkAttributes.aggregationConfiguration, AGGREGATION_CONFIGURATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(userLabel, microwaveLinkAttributes.userLabel, USER_LABEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertNotNull(linkId, LINK_ID_IS_NULL_EXCEPTION);
+        softAssert.assertEquals(numberOfWorkingChannels, microwaveLinkAttributes.numberOfWorkingChannels, NUMBER_OF_WORKING_CHANNELS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(numberOfProtectingChannels, microwaveLinkAttributes.numberOfProtectingChannels, NUMBER_OF_PROTECTING_CHANNELS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(description, microwaveLinkAttributes.description, DESCRIPTION_VALUES_NOT_EQUAL_EXCEPTION);
         softAssert.assertAll();
     }
 
@@ -1650,7 +1785,6 @@ public class BucOssTpt001Test extends BaseTestCase {
         String lowFrequency = newInventoryViewPage.getPropertyPanelValue(LOW_FREQUENCY_ATTRIBUTE_LABEL);
         String highFrequency = newInventoryViewPage.getPropertyPanelValue(HIGH_FREQUENCY_ATTRIBUTE_LABEL);
         String polarization = newInventoryViewPage.getPropertyPanelValue(POLARIZATION_ATTRIBUTE_LABEL);
-        String workingStatus = newInventoryViewPage.getPropertyPanelValue(WORKING_STATUS_ATTRIBUTE_LABEL);
         String hsbFlag = newInventoryViewPage.getPropertyPanelValue(HSB_FLAG_ATTRIBUTE_LABEL);
         String xpolFlag = newInventoryViewPage.getPropertyPanelValue(XPOL_FLAG_ATTRIBUTE_LABEL);
         String admFlag = newInventoryViewPage.getPropertyPanelValue(ADM_FLAG_ATTRIBUTE_LABEL);
@@ -1697,56 +1831,55 @@ public class BucOssTpt001Test extends BaseTestCase {
         String startAttenuatorMode = newInventoryViewPage.getPropertyPanelValue(START_ATTENUATOR_MODE_ATTRIBUTE_LABEL);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(band, microwaveChannelAttributes.band, "Band value is other than expected.");
-        softAssert.assertEquals(channelBandwidth, microwaveChannelAttributes.channelBandwidth, "Channel Bandwidth value is other than expected.");
-        softAssert.assertEquals(lowFrequency, microwaveChannelAttributes.lowFrequency, "Low Frequency value is other than expected.");
-        softAssert.assertEquals(highFrequency, microwaveChannelAttributes.highFrequency, "High Frequency value is other than expected.");
-        softAssert.assertEquals(polarization, microwaveChannelAttributes.polarization, "Polarization value is other than expected.");
-        softAssert.assertEquals(workingStatus, microwaveChannelAttributes.workingStatus, "Working Status value is other than expected.");
-        softAssert.assertEquals(hsbFlag, microwaveChannelAttributes.hsbFlag, "HSB Flag value is other than expected.");
-        softAssert.assertEquals(xpolFlag, microwaveChannelAttributes.xpolFlag, "XPOL Flag value is other than expected.");
-        softAssert.assertEquals(admFlag, microwaveChannelAttributes.admFlag, "ADM Flag value is other than expected.");
-        softAssert.assertEquals(referenceChannelModulation, microwaveChannelAttributes.referenceChannelModulation, "Reference Channel Modulation value is other than expected.");
-        softAssert.assertEquals(lowestChannelModulation, microwaveChannelAttributes.lowestChannelModulation, "Lowest Channel Modulation value is other than expected.");
-        softAssert.assertEquals(highestChannelModulation, microwaveChannelAttributes.highestChannelModulation, "Highest Channel Modulation value is other than expected.");
-        softAssert.assertEquals(startTxPower, microwaveChannelAttributes.startTxPower, "Start Tx Power value is other than expected.");
-        softAssert.assertEquals(endTxPower, microwaveChannelAttributes.endTxPower, "End Tx Power value is other than expected.");
-        softAssert.assertEquals(startRxPower, microwaveChannelAttributes.startRxPower, "Start Rx Power value is other than expected.");
-        softAssert.assertEquals(endRxPower, microwaveChannelAttributes.endRxPower, "End Rx Power value is other than expected.");
-        softAssert.assertEquals(atpc, microwaveChannelAttributes.atpc, "ATPC value is other than expected.");
-        softAssert.assertEquals(atpcRxMinLevel, microwaveChannelAttributes.atpcRxMinLevel, "ATPC Rx Min Level value is other than expected.");
-        softAssert.assertEquals(atpcRxMaxLevel, microwaveChannelAttributes.atpcRxMaxLevel, "ATPC Rx Max Level value is other than expected.");
-        softAssert.assertEquals(dcnLocation, microwaveChannelAttributes.dcnLocation, "DCN Location value is other than expected.");
-        softAssert.assertEquals(endAttenuatorManufacturer, microwaveChannelAttributes.endAttenuatorManufacturer, "End Attenuator Manufacturer value is other than expected.");
-        softAssert.assertEquals(endAttenuatorModel, microwaveChannelAttributes.endAttenuatorModel, "End Attenuator Model value is other than expected.");
-        softAssert.assertEquals(endDiversityWaveguideLength, microwaveChannelAttributes.endDiversityWaveguideLength, "End Diversity Waveguide Length value is other than expected.");
-        softAssert.assertEquals(endDiversityWaveguideManufacturer, microwaveChannelAttributes.endDiversityWaveguideManufacturer, "End Diversity Waveguide Manufacturer value is other than expected.");
-        softAssert.assertEquals(endDiversityWaveguideModel, microwaveChannelAttributes.endDiversityWaveguideModel, "End Diversity Waveguide Model value is other than expected.");
-        softAssert.assertEquals(startAttenuatorManufacturer, microwaveChannelAttributes.startAttenuatorManufacturer, "Start Attenuator Manufacturer value is other than expected.");
-        softAssert.assertEquals(startAttenuatorModel, microwaveChannelAttributes.startAttenuatorModel, "Start Attenuator Model value is other than expected.");
-        softAssert.assertEquals(startDiversityWaveguideLength, microwaveChannelAttributes.startDiversityWaveguideLength, "Start Diversity Waveguide Length value is other than expected.");
-        softAssert.assertEquals(startDiversityWaveguideManufacturer, microwaveChannelAttributes.startDiversityWaveguideManufacturer, "Start Diversity Waveguide Manufacturer value is other than expected.");
-        softAssert.assertEquals(startDiversityWaveguideModel, microwaveChannelAttributes.startDiversityWaveguideModel, "Start Diversity Waveguide Model value is other than expected.");
-        softAssert.assertEquals(startDiversityWaveguideTotalLoss, microwaveChannelAttributes.startDiversityWaveguideTotalLoss, "Start Diversity Waveguide Total Loss value is other than expected.");
-        softAssert.assertEquals(startRadioModel, microwaveChannelAttributes.startRadioModel, "Start Radio Model value is other than expected.");
-        softAssert.assertEquals(startWaveguideManufacturer, microwaveChannelAttributes.startWaveguideManufacturer, "Start Waveguide Manufacturer value is other than expected.");
-        softAssert.assertEquals(startWaveguideModel, microwaveChannelAttributes.startWaveguideModel, "Start Waveguide Model value is other than expected.");
-        softAssert.assertEquals(startWaveguideTotalLoss, microwaveChannelAttributes.startWaveguideTotalLoss, "Start Waveguide Total Loss value is other than expected.");
-        softAssert.assertEquals(description, microwaveChannelAttributes.description, "Description value is other than expected.");
-        softAssert.assertEquals(channelNumber, microwaveChannelAttributes.channelNumber, "Channel Number value is other than expected.");
-        softAssert.assertEquals(configuration, microwaveChannelAttributes.configuration, "Configuration value is other than expected.");
-        softAssert.assertEquals(endAttenuatorLoss, microwaveChannelAttributes.endAttenuatorLoss, "End Attenuator Loss value is other than expected.");
-        softAssert.assertEquals(endDiversityWaveguideTotalLoss, microwaveChannelAttributes.endDiversityWaveguideTotalLoss, "End Diversity Waveguide Total Loss value is other than expected.");
-        softAssert.assertEquals(endRadioModel, microwaveChannelAttributes.endRadioModel, "End Radio Model value is other than expected.");
-        softAssert.assertEquals(endWaveguideLength, microwaveChannelAttributes.endWaveguideLength, "End Waveguide Length value is other than expected.");
-        softAssert.assertEquals(endWaveguideManufacturer, microwaveChannelAttributes.endWaveguideManufacturer, "End Waveguide Manufacturer value is other than expected.");
-        softAssert.assertEquals(endWaveguideModel, microwaveChannelAttributes.endWaveguideModel, "End Waveguide Model value is other than expected.");
-        softAssert.assertEquals(endWaveguideTotalLoss, microwaveChannelAttributes.endWaveguideTotalLoss, "End Waveguide Total Loss value is other than expected.");
-        softAssert.assertEquals(startAttenuatorLoss, microwaveChannelAttributes.startAttenuatorLoss, "Start Attenuator Loss value is other than expected.");
-        softAssert.assertEquals(startWaveguideLength, microwaveChannelAttributes.startWaveguideLength, "Start Waveguide Length value is other than expected.");
-        softAssert.assertEquals(endAttenuatorMode, microwaveChannelAttributes.endAttenuatorMode, "End Attenuator Mode value is other than expected.");
-        softAssert.assertEquals(highFrequencySite, microwaveChannelAttributes.highFrequencySite, "High Frequency Site value is other than expected.");
-        softAssert.assertEquals(startAttenuatorMode, microwaveChannelAttributes.startAttenuatorMode, "Start Attenuator Mode value is other than expected.");
+        softAssert.assertEquals(band, microwaveChannelAttributes.band, BAND_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(channelBandwidth, microwaveChannelAttributes.channelBandwidth, CHANNEL_BANDWIDTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(lowFrequency, microwaveChannelAttributes.lowFrequency, LOW_FREQUENCY_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(highFrequency, microwaveChannelAttributes.highFrequency, HIGH_FREQUENCY_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(polarization, microwaveChannelAttributes.polarization, POLARIZATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(hsbFlag, microwaveChannelAttributes.hsbFlag, HSB_FLAG_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(xpolFlag, microwaveChannelAttributes.xpolFlag, XPOL_FLAG_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(admFlag, microwaveChannelAttributes.admFlag, ADM_FLAG_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(referenceChannelModulation, microwaveChannelAttributes.referenceChannelModulation, REFERENCE_CHANNEL_MODULATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(lowestChannelModulation, microwaveChannelAttributes.lowestChannelModulation, LOWEST_CHANNEL_MODULATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(highestChannelModulation, microwaveChannelAttributes.highestChannelModulation, HIGHEST_CHANNEL_MODULATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startTxPower, microwaveChannelAttributes.startTxPower, START_TX_POWER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endTxPower, microwaveChannelAttributes.endTxPower, END_TX_POWER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startRxPower, microwaveChannelAttributes.startRxPower, START_RX_POWER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endRxPower, microwaveChannelAttributes.endRxPower, END_RX_POWER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(atpc, microwaveChannelAttributes.atpc, ATPC_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(atpcRxMinLevel, microwaveChannelAttributes.atpcRxMinLevel, ATPC_RX_MIN_LEVEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(atpcRxMaxLevel, microwaveChannelAttributes.atpcRxMaxLevel, ATPC_RX_MAX_LEVEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(dcnLocation, microwaveChannelAttributes.dcnLocation, DCN_LOCATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endAttenuatorManufacturer, microwaveChannelAttributes.endAttenuatorManufacturer, END_ATTENUATOR_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endAttenuatorModel, microwaveChannelAttributes.endAttenuatorModel, END_ATTENUATOR_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endDiversityWaveguideLength, microwaveChannelAttributes.endDiversityWaveguideLength, END_DIVERSITY_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endDiversityWaveguideManufacturer, microwaveChannelAttributes.endDiversityWaveguideManufacturer, END_DIVERSITY_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endDiversityWaveguideModel, microwaveChannelAttributes.endDiversityWaveguideModel, END_DIVERSITY_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startAttenuatorManufacturer, microwaveChannelAttributes.startAttenuatorManufacturer, START_ATTENUATOR_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startAttenuatorModel, microwaveChannelAttributes.startAttenuatorModel, START_ATTENUATOR_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startDiversityWaveguideLength, microwaveChannelAttributes.startDiversityWaveguideLength, START_DIVERSITY_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startDiversityWaveguideManufacturer, microwaveChannelAttributes.startDiversityWaveguideManufacturer, START_DIVERSITY_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startDiversityWaveguideModel, microwaveChannelAttributes.startDiversityWaveguideModel, START_DIVERSITY_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startDiversityWaveguideTotalLoss, microwaveChannelAttributes.startDiversityWaveguideTotalLoss, START_DIVERSITY_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startRadioModel, microwaveChannelAttributes.startRadioModel, START_RADIO_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startWaveguideManufacturer, microwaveChannelAttributes.startWaveguideManufacturer, START_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startWaveguideModel, microwaveChannelAttributes.startWaveguideModel, START_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startWaveguideTotalLoss, microwaveChannelAttributes.startWaveguideTotalLoss, START_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(description, microwaveChannelAttributes.description, DESCRIPTION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(channelNumber, microwaveChannelAttributes.channelNumber, CHANNEL_NUMBER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(configuration, microwaveChannelAttributes.configuration, CONFIGURATION_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endAttenuatorLoss, microwaveChannelAttributes.endAttenuatorLoss, END_ATTENUATOR_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endDiversityWaveguideTotalLoss, microwaveChannelAttributes.endDiversityWaveguideTotalLoss, END_DIVERSITY_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endRadioModel, microwaveChannelAttributes.endRadioModel, END_RADIO_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endWaveguideLength, microwaveChannelAttributes.endWaveguideLength, END_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endWaveguideManufacturer, microwaveChannelAttributes.endWaveguideManufacturer, END_WAVEGUIDE_MANUFACTURER_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endWaveguideModel, microwaveChannelAttributes.endWaveguideModel, END_WAVEGUIDE_MODEL_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endWaveguideTotalLoss, microwaveChannelAttributes.endWaveguideTotalLoss, END_WAVEGUIDE_TOTAL_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startAttenuatorLoss, microwaveChannelAttributes.startAttenuatorLoss, START_ATTENUATOR_LOSS_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startWaveguideLength, microwaveChannelAttributes.startWaveguideLength, START_WAVEGUIDE_LENGTH_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(endAttenuatorMode, microwaveChannelAttributes.endAttenuatorMode, END_ATTENUATOR_MODE_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(highFrequencySite, microwaveChannelAttributes.highFrequencySite, HIGH_FREQUENCY_SITE_VALUES_NOT_EQUAL_EXCEPTION);
+        softAssert.assertEquals(startAttenuatorMode, microwaveChannelAttributes.startAttenuatorMode, START_ATTENUATOR_MODE_VALUES_NOT_EQUAL_EXCEPTION);
         softAssert.assertAll();
     }
 
@@ -1778,7 +1911,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     private void checkSystemMessage() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), SystemMessageContainer.MessageType.SUCCESS);
+        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException(EMPTY_LIST_EXCEPTION)).getMessageType()), SystemMessageContainer.MessageType.SUCCESS);
     }
 
     private void waitForPageToLoad() {

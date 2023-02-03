@@ -22,7 +22,9 @@ public class RoutingWizardPage extends ConnectionWizardPage {
     private static final String ID = "RoutingPopupViewId_prompt-card";
     private final Wizard wizard;
     private static final String PROTECTION_TYPE = "routingFormProtectionTypeComponent";
+    //    TODO: Poprawić po rozwiązaniu OSSTRAIL-7974
     private static final String LINE_TYPE = "1389524__lineType";
+    //    TODO: Poprawić po rozwiązaniu OSSTRAIL-7974
     private static final String SEQUENCE_NUMBER = "1389524__sequenceNumber";
 
     public RoutingWizardPage(WebDriver driver) {

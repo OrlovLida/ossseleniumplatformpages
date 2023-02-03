@@ -111,17 +111,18 @@ public class NetworkViewPage extends BasePage {
     private static final String TRAIL_WIZARD_ERROR_MESSAGE = "Cannot get Trail wizard page: ";
     private static final String ELEMENT_ROUTING_WIZARD_ID = "routingElementWizardWidget";
     private static final String REFRESH_ACTION_ID = "Refresh";
+    private static final String NETWORK_VIEW_ACTION_ID = "Network View";
+    private static final String RESOURCE_INVENTORY_ACTION_ID = "Resource Inventory";
 
     public NetworkViewPage(WebDriver driver) {
         super(driver);
     }
 
-
     @Step("Open Network View")
     public void openNetworkView() {
         waitForPageToLoad();
         SideMenu sideMenu = SideMenu.create(driver, wait);
-        sideMenu.callActionByLabel("Network View", "Resource Inventory");
+        sideMenu.callActionByLabel(NETWORK_VIEW_ACTION_ID, RESOURCE_INVENTORY_ACTION_ID);
         waitForPageToLoad();
     }
 
@@ -154,7 +155,6 @@ public class NetworkViewPage extends BasePage {
         selectTrailType(trailType);
         acceptTrailType();
     }
-
 
     @Step("Open new Trail create wizard")
     public void openWizardPage(String trailType) {
