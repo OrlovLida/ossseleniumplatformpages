@@ -6,7 +6,6 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.mainheader.Notifications;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.forecasts.Forecast;
 import com.oss.pages.bpm.milestones.Milestone;
@@ -33,8 +32,6 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NAME_LABEL;
 
 
@@ -165,15 +162,7 @@ public class ComboProcessProgramTest extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         softAssert = new SoftAssert();
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-
-        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
-        }
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processOverviewPage.clearAllColumnFilters();
+        ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
     }
 
     @Test(priority = 1, description = "Create Process with schedule and process roles")

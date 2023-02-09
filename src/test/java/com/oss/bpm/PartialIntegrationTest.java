@@ -3,7 +3,6 @@ package com.oss.bpm;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.planning.PartialIntegrationWizardPage;
 import com.oss.pages.bpm.planning.ProcessDetailsPage;
@@ -31,8 +30,6 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.UUID;
 
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 import static com.oss.bpm.BpmPhysicalDataCreator.CARD_NAME;
 import static com.oss.bpm.BpmPhysicalDataCreator.CHASSIS_NAME;
 import static com.oss.bpm.BpmPhysicalDataCreator.IP_DEVICE_NAME;
@@ -180,13 +177,6 @@ public class PartialIntegrationTest extends BaseTestCase {
     public void prepareObjectsAndProcesses() {
         softAssert = new SoftAssert();
         PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
-
-        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            plannersViewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
-        }
-        waitForPageToLoad();
 
         //create NRP,DCP processes
         nrp_Code_TC_MAIN = plannersViewPage.createProcessIPD(NRP_TC_MAIN_NAME, 5L, NRP);

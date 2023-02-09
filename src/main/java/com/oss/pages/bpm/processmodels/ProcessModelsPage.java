@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -75,6 +76,7 @@ public class ProcessModelsPage extends BasePage {
     public static ProcessModelsPage goToProcessModelsPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/bpm/models" +
                 "?perspective=LIVE", basicURL));
+        DelayUtils.waitForPageToLoad(driver, new WebDriverWait(driver, Duration.ofSeconds(45)));
         return new ProcessModelsPage(driver);
     }
 

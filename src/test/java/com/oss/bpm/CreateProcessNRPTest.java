@@ -10,7 +10,6 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.planning.ProcessDetailsPage;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
@@ -41,8 +40,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 import static com.oss.bpm.BpmPhysicalDataCreator.CHASSIS_NAME;
 import static com.oss.bpm.BpmPhysicalDataCreator.createBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.createIPDevice;
@@ -113,16 +110,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         softAssert = new SoftAssert();
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-
-        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
-        }
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processOverviewPage.clearAllColumnFilters();
-
+        ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
         buildingId = createBuilding(BUILDING_NAME, LIVE);
         log.info("Building id: " + buildingId);
     }
@@ -509,8 +497,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Description("Check Process status")
     public void checkProcessStatus() {
         // given
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        processOverviewPage.clearAllColumnFilters();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         // when

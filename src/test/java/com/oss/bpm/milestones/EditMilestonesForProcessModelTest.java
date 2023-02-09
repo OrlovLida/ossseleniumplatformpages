@@ -4,7 +4,6 @@ import com.oss.BaseTestCase;
 import com.oss.bpm.ImportExportModelTest;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.bpm.milestones.Milestone;
@@ -29,9 +28,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
-
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 
 /**
  * @author Paweł Rother
@@ -79,12 +75,6 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     public void importProcessModel() {
         softAssert = new SoftAssert();
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
-        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
-        waitForPageToLoad();
-        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processModelsPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
-        }
-        waitForPageToLoad();
         processModelsPage.chooseDomain(DOMAIN);
         processModelsPage.callAction(OTHER_GROUP_ID, IMPORT_ID);
         ImportModelWizardPage importModelWizardPage = new ImportModelWizardPage(driver);
@@ -123,8 +113,6 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
                         .setIsManualCompletion("true")
                         .build());
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
-        waitForPageToLoad();
-
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).addMilestonesForSelectedModel(milestones);
 
         assertSystemMessage(SUCCESS_UPDATE_MILESTONES_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
@@ -190,7 +178,6 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
                         .build());
 
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
-        waitForPageToLoad();
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).editMilestonesForSelectedModel(milestones);
 
         assertSystemMessage(SUCCESS_UPDATE_MILESTONES_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
@@ -238,7 +225,6 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     @Description("Remove existing Milestones for Process Model")
     public void removeMilestonesForProcessModel() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
-        waitForPageToLoad();
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).removeMilestonesForSelectedModel(2);
         waitForPageToLoad();
 
@@ -266,7 +252,6 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
                         .build());
 
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
-        waitForPageToLoad();
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).addMilestonesForSelectedModel(milestones);
 
         assertSystemMessage(EMPTY_NAME_ERROR_MESSAGE, SystemMessageContainer.MessageType.DANGER,
@@ -285,7 +270,6 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     @AfterClass
     public void deleteModel() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
-        waitForPageToLoad();
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).deleteSelectedModel();
         if (processModelsPage.isModelExists(MODEL_NAME, modelKeyword)) {
             throw new IllegalStateException(String.format(MODEL_STILL_VISIBLE_EXCEPTION, MODEL_NAME));
