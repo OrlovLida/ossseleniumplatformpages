@@ -193,6 +193,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         milestonesStepWizardPage.addMilestoneRow(milestone2);
         milestonesStepWizardPage.addMilestoneRow(milestone3);
         milestonesStepWizardPage.clickAcceptButton();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 1, description = "First Milestone Change State Flow")
