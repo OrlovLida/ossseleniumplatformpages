@@ -92,6 +92,7 @@ public class EditMilestoneTest extends BaseTestCase {
                 .defineProcessAndGoToMilestonesStep(processName, 5L, DCP);
         milestonesStepWizardPage.addMilestoneRow(milestone1);
         milestonesStepWizardPage.clickAcceptButton();
+        waitForPageToLoad();
     }
 
     @Test(priority = 1, description = "Edit Description")
