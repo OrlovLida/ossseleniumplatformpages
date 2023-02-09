@@ -7,6 +7,7 @@
 package com.oss.pages.dms;
 
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -32,7 +33,7 @@ public class AttachFileWizardPage extends BasePage {
     }
 
     public static boolean isWizardVisible(WebDriver driver) {
-        return Wizard.isWizardVisible(driver, WIZARD_ID);
+        return CSSUtils.isElementPresent(driver, WIZARD_ID);
     }
 
     public void attachFile(String filePath) {

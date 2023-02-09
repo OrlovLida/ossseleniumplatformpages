@@ -2,6 +2,7 @@ package com.oss.pages.bpm.processmodels;
 
 import com.oss.framework.components.inputs.FileChooser;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
@@ -43,7 +44,7 @@ public class ImportModelWizardPage extends BasePage {
     }
 
     public Boolean isImportWizardVisible() {
-        return Wizard.isWizardVisible(driver, WIZARD_ID);
+        return CSSUtils.isElementPresent(driver, WIZARD_ID);
     }
 
 }
