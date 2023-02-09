@@ -6,14 +6,13 @@
  */
 package com.oss.pages.dms;
 
-import java.util.List;
-
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import org.openqa.selenium.WebDriver;
+
+import java.util.List;
 
 /**
  * @author Gabriela Kasza
@@ -26,10 +25,14 @@ public class AttachFileWizardPage extends BasePage {
     private static final String ACCEPT_BUTTON_ID = "wizard-submit-button-addFileComponentId";
     private static final String RADIO_BUTTONS_ID = "duplicateFilesRadioButtons";
 
-    private Wizard addFileWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    private final Wizard addFileWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     public AttachFileWizardPage(WebDriver driver) {
         super(driver);
+    }
+
+    public static boolean isWizardVisible(WebDriver driver) {
+        return Wizard.isWizardVisible(driver, WIZARD_ID);
     }
 
     public void attachFile(String filePath) {
@@ -42,6 +45,10 @@ public class AttachFileWizardPage extends BasePage {
 
     public void acceptButton() {
         addFileWizard.clickButtonById(ACCEPT_BUTTON_ID);
+    }
+
+    public void cancelButton() {
+        addFileWizard.clickCancel();
     }
 
     public void deleteFiles() {
