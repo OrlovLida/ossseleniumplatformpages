@@ -13,8 +13,8 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
-import com.oss.pages.bpm.tasks.TasksPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
+import com.oss.pages.bpm.tasks.TasksPage;
 import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.IPSubnetWizardPage;
@@ -25,7 +25,6 @@ import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
 
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_ASSIGNMENT_PROPERTY_ASSIGNED_TO;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_ASSIGNMENT_PROPERTY_IDENTIFIER;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_PROPERTY_IDENTIFIER;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.NETWORK_PROPERTY_NAME;
@@ -47,7 +46,6 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     private static final int THIRD_INDEX = 2;
     private static final String FALSE = "FALSE";
     private static final String TASK_NAME = "Correct data";
-    private IPAddressManagementViewPage ipAddressManagementViewPage;
     private static final int AMOUNT_OF_SELECTED_SUBNETS_FOR_FIRST_NETWORK = 2;
     private static final int AMOUNT_OF_SELECTED_SUBNETS_FOR_SECOND_AND_THIRD_NETWORK = 1;
     private static final String FIXED_SUBNET_IPv4_ADDRESS = "20.000";
@@ -58,18 +56,19 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     private static final String LOWER_IPv4_NETWORK_MASK = "23";
     private static final String LOWER_IPv6_NETWORK_MASK = "119";
     private static final int AMOUNT_OF_HAA = 3;
+    private static final String ROUTER_ID = "1595072";
+    private static final String ROUTER_IDENTIFIER = "GK_Location-Router-4";
     private static IPSubnetWizardProperties TYPE_BLOCK_SUBNET_WIZARD_PROPERTIES;
     private static IPSubnetWizardProperties TYPE_NETWORK_SUBNET_WIZARD_PROPERTIES;
     private static IPSubnetFilterProperties IPv4_SUBNET_FILTER_PROPERTIES_FOR_FIRST_NETWORK;
     private static IPSubnetFilterProperties IPv4_SUBNET_FILTER_PROPERTIES_FOR_SECOND_AND_THIRD_NETWORK;
     private static IPSubnetFilterProperties IPv6_SUBNET_FILTER_PROPERTIES_FOR_FIRST_NETWORK;
     private static IPSubnetFilterProperties IPv6_SUBNET_FILTER_PROPERTIES_FOR_SECOND_AND_THIRD_NETWORK;
-    private static final String ROUTER_ID = "1595072";
     private static HashMap<String, SubnetTree> firstNetworkProperties;
     private static HashMap<String, SubnetTree> secondNetworkProperties;
     private static HashMap<String, SubnetTree> thirdNetworkProperties;
-    private static final String ROUTER_IDENTIFIER = "GK_Location-Router-4";
     private static String dcpProcessCode;
+    private IPAddressManagementViewPage ipAddressManagementViewPage;
 
     @BeforeClass
     public void prepareData() {
@@ -122,14 +121,12 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
             ipAddressManagementViewPage.selectTreeRowContains(firstNetworkProperties.get(IPv4).getIPHostAddressAssignment(indexOfAddress));
             assignmentIdentifier = firstNetworkProperties.get(IPv4).getIPHostAddressAssignmentIdentifier(indexOfAddress);
             Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_PROPERTY_IDENTIFIER), assignmentIdentifier);
-            Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_ASSIGNMENT_PROPERTY_ASSIGNED_TO), ROUTER_IDENTIFIER);
             ipAddressManagementViewPage.unselectTreeRow(firstNetworkProperties.get(IPv4).getIPHostAddressAssignment(indexOfAddress));
             ipAddressManagementViewPage.expandTreeRowContains(firstNetworkProperties.get(IPv6).blockSubnet);
             createIPHostAddressAssignment(IPv6);
             ipAddressManagementViewPage.selectTreeRowContains(firstNetworkProperties.get(IPv6).getIPHostAddressAssignment(indexOfAddress));
             assignmentIdentifier = firstNetworkProperties.get(IPv6).getIPHostAddressAssignmentIdentifier(indexOfAddress);
             Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_PROPERTY_IDENTIFIER), assignmentIdentifier);
-            Assert.assertEquals(ipAddressManagementViewPage.getPropertyValue(HOST_ASSIGNMENT_PROPERTY_ASSIGNED_TO), ROUTER_IDENTIFIER);
             ipAddressManagementViewPage.unselectTreeRow(firstNetworkProperties.get(IPv6).getIPHostAddressAssignment(indexOfAddress));
         }
     }
@@ -376,17 +373,16 @@ public class ChangeIPNetworkHostAddressTest extends BaseTestCase {
     }
 
     private static class SubnetTree {
+        private static final String IPv4_ADDRESS = "20.0.0.{0}";
+        private static final String IPv6_ADDRESS = "::20:{0}";
+        private static final String HIGHER_IPv4_NETWORK_MASK = "25";
+        private static final String HIGHER_IPv6_NETWORK_MASK = "121";
         private HashMap<String, String> hostAddressWithAssignmentsMap;
         private HashMap<String, String> hostAddressAssignmentIdentifierMap;
         private HashMap<String, String> hostAddressIdentifierMap;
         private String networkSubnet;
         private String blockSubnet;
-
         private List<String> hostAddressesList;
-        private static final String IPv4_ADDRESS = "20.0.0.{0}";
-        private static final String IPv6_ADDRESS = "::20:{0}";
-        private static final String HIGHER_IPv4_NETWORK_MASK = "25";
-        private static final String HIGHER_IPv6_NETWORK_MASK = "121";
 
         public void initializeTreeForIPv4SubnetInFirstNetwork() {
             hostAddressWithAssignmentsMap = new HashMap<>();

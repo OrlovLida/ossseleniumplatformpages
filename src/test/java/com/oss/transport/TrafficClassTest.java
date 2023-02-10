@@ -76,9 +76,10 @@ public class TrafficClassTest extends BaseTestCase {
 
         deleteTrafficClass(inventoryView);
         boolean hasBeenDeleted = hasBeenDeleted();
-
         Assert.assertTrue(hasBeenDeleted);
+
         inventoryView.refreshMainTable();
+        waitForPageToLoad();
         Assert.assertTrue(inventoryView.checkIfTableIsEmpty());
     }
 
@@ -201,6 +202,9 @@ public class TrafficClassTest extends BaseTestCase {
         return popupMessage.getMessageType() == SystemMessageContainer.MessageType.SUCCESS;
     }
 
+    private void waitForPageToLoad() {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
     private static class TrafficClassAttributes {
         private String trafficClassName;
         private String description;

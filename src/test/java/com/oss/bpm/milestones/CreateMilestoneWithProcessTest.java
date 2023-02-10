@@ -9,7 +9,6 @@ package com.oss.bpm.milestones;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
@@ -30,9 +29,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
-
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 
 /**
  * @author Gabriela Kasza
@@ -81,13 +77,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         softAssert = new SoftAssert();
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
-        waitForPageToLoad();
-        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
-        }
-        waitForPageToLoad();
+        ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
     }
 
     @Test(priority = 1, description = "Create Process with Milestone")
@@ -96,8 +86,6 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         final String milestoneName1 = MILESTONE_NAME + "TC1.1." + RANDOM.nextInt(Integer.MAX_VALUE);
         final String milestoneName2 = MILESTONE_NAME + "TC1.2." + RANDOM.nextInt(Integer.MAX_VALUE);
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        processOverviewPage.clearAllColumnFilters();
-        waitForPageToLoad();
         MilestonesStepWizardPage milestonesStepWizardPage = processOverviewPage.openProcessCreationWizard()
                 .defineProcessAndGoToMilestonesStep(processNameTC1, 10L, GK_MILESTONES);
         Milestone milestone1 = Milestone.builder()
@@ -185,7 +173,6 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     public void updatePredefinedMilestone() {
         final String milestoneName1 = MILESTONE_NAME + "TC2." + RANDOM.nextInt(Integer.MAX_VALUE);
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        waitForPageToLoad();
         MilestonesStepWizardPage milestonesStepWizardPage = processOverviewPage.openProcessCreationWizard()
                 .defineProcessAndGoToMilestonesStep(processNameTC2, 10L, GK_MILESTONES);
 
@@ -293,7 +280,6 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
         final String milestoneName1 = MILESTONE_NAME + "TC3.1." + RANDOM.nextInt(Integer.MAX_VALUE);
         final String milestoneName2 = MILESTONE_NAME + "TC3.2." + RANDOM.nextInt(Integer.MAX_VALUE);
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        waitForPageToLoad();
         MilestonesStepWizardPage milestonesStepWizardPage = processOverviewPage.openProcessCreationWizard()
                 .defineProcessAndGoToMilestonesStep(processNameTC3, 10L, DCP);
         Milestone milestone1 = Milestone.builder()
@@ -371,9 +357,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     public void addMilestoneForExistingProcess() {
         final String milestoneName1 = MILESTONE_NAME + "TC4.1." + RANDOM.nextInt(Integer.MAX_VALUE);
         final String milestoneName2 = MILESTONE_NAME + "TC4.2." + RANDOM.nextInt(Integer.MAX_VALUE);
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        processOverviewPage.clearAllColumnFilters();
-        waitForPageToLoad();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
 
         List<Milestone> milestones = Lists.newArrayList(
                 Milestone.builder()

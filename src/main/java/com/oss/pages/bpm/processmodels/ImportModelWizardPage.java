@@ -1,13 +1,13 @@
 package com.oss.pages.bpm.processmodels;
 
-import java.util.List;
-
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.FileChooser;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import org.openqa.selenium.WebDriver;
+
+import java.util.List;
 
 public class ImportModelWizardPage extends BasePage {
     private static final String FILE_COMPONENT_ID = "bpm_models_view_import-model-popup_model-import-form";
@@ -44,12 +44,7 @@ public class ImportModelWizardPage extends BasePage {
     }
 
     public Boolean isImportWizardVisible() {
-        try {
-            Wizard.createByComponentId(driver, wait, WIZARD_ID);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        return CSSUtils.isElementPresent(driver, WIZARD_ID);
     }
 
 }

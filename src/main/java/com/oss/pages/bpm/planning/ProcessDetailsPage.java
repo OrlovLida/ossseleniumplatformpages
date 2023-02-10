@@ -14,6 +14,8 @@ import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
+
 import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.BPM_AND_PLANNING;
 import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NETWORK_PLANNING;
 
@@ -40,6 +42,7 @@ public class ProcessDetailsPage extends BasePage {
     public static ProcessDetailsPage goToProcessDetailsView(WebDriver driver, String basicURL, Long projectId) {
         driver.get(String.format("%s/#/view/planning/projects" +
                 "?project_id=%d" + "&perspective=PLAN", basicURL, projectId));
+        DelayUtils.waitForPageToLoad(driver, new WebDriverWait(driver, Duration.ofSeconds(45)));
         return new ProcessDetailsPage(driver);
     }
 

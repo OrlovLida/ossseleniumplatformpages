@@ -1,7 +1,6 @@
 package com.oss.bpm;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.processmodels.ImportModelWizardPage;
 import com.oss.pages.bpm.processmodels.ProcessModelsPage;
@@ -18,9 +17,6 @@ import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Random;
-
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 
 /**
  * @author Paweł Rother
@@ -49,13 +45,7 @@ public class ImportExportModelTest extends BaseTestCase {
 
     @BeforeClass
     public void openBrw() {
-        ProcessModelsPage processModelsPage = new ProcessModelsPage(driver);
-        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processModelsPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
-        }
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
     }
 
 
@@ -63,7 +53,6 @@ public class ImportExportModelTest extends BaseTestCase {
     @Description("Import model from BAR")
     public void importModel() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processModelsPage.chooseDomain(DOMAIN);
         processModelsPage.callAction(OTHER_GROUP_ID, IMPORT_ID);
         ImportModelWizardPage importModelWizardPage = new ImportModelWizardPage(driver);
@@ -87,7 +76,6 @@ public class ImportExportModelTest extends BaseTestCase {
     @Description("Export model to BAR")
     public void exportModelBar() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).exportSelectedModelAsBAR();
         //export bar
         try {
@@ -102,7 +90,6 @@ public class ImportExportModelTest extends BaseTestCase {
     @Description("Export model to XML")
     public void exportModelXml() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).exportSelectedModelAsXML();
         //export xml
         try {
@@ -117,7 +104,6 @@ public class ImportExportModelTest extends BaseTestCase {
     @Description("Delete model")
     public void deleteModel() {
         ProcessModelsPage processModelsPage = ProcessModelsPage.goToProcessModelsPage(driver, BASIC_URL);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         processModelsPage.chooseDomain(DOMAIN).selectModel(MODEL_NAME, modelKeyword).deleteSelectedModel();
         Assert.assertFalse(processModelsPage.isModelExists(MODEL_NAME, modelKeyword),
                 String.format(INVALID_MODEL_VISIBILITY, MODEL_NAME, modelKeyword));

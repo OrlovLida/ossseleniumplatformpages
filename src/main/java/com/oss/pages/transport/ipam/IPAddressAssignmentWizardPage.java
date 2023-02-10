@@ -3,6 +3,7 @@ package com.oss.pages.transport.ipam;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.data.Data;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -83,6 +84,18 @@ public class IPAddressAssignmentWizardPage extends BasePage {
         assignIPAddressMainStepWithoutMode(ipAddressAssignmentWizardProperties);
         assignIPAddressAssignmentStep(ipAddressAssignmentWizardProperties);
         assignIPAddressOppositeAssignmentStep(oppositeSideIpAddressAssignmentWizardProperties);
+    }
+
+    @Step("Assign IP Address Summary Step")
+    public void assignIPAddressSummaryStep() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        createPopup().clickButtonById(CLOSE_BUTTON);
+    }
+
+    @Step("Assign IP Address Assignment Step")
+    public void assignIPAddressAssignmentStep() {
+        DelayUtils.waitForPageToLoad(driver, wait);
+        getWizard().clickButtonById(ASSIGN_BUTTON);
     }
 
     @Step("Assign IP Address Main Step")
@@ -167,10 +180,9 @@ public class IPAddressAssignmentWizardPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         switch (assignmentType) {
             case INTERFACE:
-                getWizard().getComponent(SEARCH_INTERFACE_COMPONENT_ID, SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
+                getWizard().getComponent(SEARCH_INTERFACE_COMPONENT_ID, OBJECT_SEARCH_FIELD).setValueContains(Data.createFindFirst(assignmentName));
                 DelayUtils.waitForPageToLoad(driver, wait);
-                System.out.println(getWizard().getComponent(OPPOSITE_CHECKBOX_ID,CHECKBOX).getValue().toString().equals("true"));
-                if(getWizard().isNextStepPresent()) {
+                if (getWizard().isNextStepPresent()) {
                     getWizard().clickNext();
                 } else {
                     assignIPAddressAssignmentStep();
@@ -190,7 +202,6 @@ public class IPAddressAssignmentWizardPage extends BasePage {
                 break;
         }
         DelayUtils.waitForPageToLoad(driver, wait);
-        getWizard().clickNext();
     }
 
     @Step("Assign IP Address Opposite assignment Step")
@@ -214,23 +225,11 @@ public class IPAddressAssignmentWizardPage extends BasePage {
         assignIPAddressAssignmentStep();
     }
 
-    @Step("Assign IP Address Summary Step")
-    public void assignIPAddressSummaryStep() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getSummaryWizard().clickButtonById(CLOSE_BUTTON);
-    }
-
-    @Step("Assign IP Address Assignment Step")
-    public void assignIPAddressAssignmentStep() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        getWizard().clickButtonById(ASSIGN_BUTTON);
+    private Popup createPopup() {
+        return Popup.create(driver, wait);
     }
 
     private Wizard getWizard() {
         return Wizard.createByComponentId(driver, wait, WIZARD_ID);
-    }
-
-    private Wizard getSummaryWizard(){
-        return Wizard.createByComponentId(driver, wait, SUMMARY_WIZARD_ID);
     }
 }

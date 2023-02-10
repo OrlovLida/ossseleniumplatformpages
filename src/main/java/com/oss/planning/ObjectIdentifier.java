@@ -40,4 +40,9 @@ public class ObjectIdentifier {
     public String getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s (%d)", type, id);
+    }
 }

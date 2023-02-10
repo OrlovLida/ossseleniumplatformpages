@@ -32,7 +32,7 @@ import static com.oss.framework.components.contextactions.ActionsContainer.SHOW_
 public class VLANInterfaceTest extends BaseTestCase {
 
     private static final String VLAN_INTERFACE_TYPE = "Subinterface";
-    private static final String VLAN_SUBINTERFACE_ID = "100";
+    private static final String VLAN_SUBINTERFACE_ID = "1" + (int) (Math.random() * 999);
     private static final String DEVICE = "SeleniumTestDeviceVLANInterface";
     private static final String IP_ADDRESS = "126.0.0.2";
     private static final String IP_ADDRESS_WIZARD_MODE = "Existing address selection";
@@ -139,18 +139,18 @@ public class VLANInterfaceTest extends BaseTestCase {
     }
 
     @Test(priority = 7)
-    @Description("Finish rest of NRP and IP Tasks")
-    public void finishProcessesTasks() {
-        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.completeNRP(processNRPCode);
-    }
-
-    @Test(priority = 8)
     @Description("Delete IP Address")
     public void deleteIPAddressAssignment() {
         searchInInventoryView("IP Host Assignment");
         newInventoryViewPage.searchObject(IP_ADDRESS).selectFirstRow();
         newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_ADDRESS_IP_ID).clickConfirmationBox(CONFIRMATION_REMOVAL_IP_BOX_ID);
+    }
+
+    @Test(priority = 8)
+    @Description("Finish rest of NRP and IP Tasks")
+    public void finishProcessesTasks() {
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.completeNRP(processNRPCode);
     }
 
     @Test(priority = 9)

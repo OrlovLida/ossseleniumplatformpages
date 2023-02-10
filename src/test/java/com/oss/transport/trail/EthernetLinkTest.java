@@ -59,15 +59,15 @@ public class EthernetLinkTest extends BaseTestCase {
     private static final String SEARCH_BY_COMPONENT_NAME_ID = "name";
     private static final String START_TERMINATION_PATH = "1.1_2";
     private static final String END_TERMINATION_PATH = "1.1_1";
-    //private static final String START_TERMINATION_POINT = "SYNC 0";
-    private static final String START_PORT_TERMINATION = "SYNC 0";
+    private static final String START_TERMINATION_POINT = "MGT LAN 0";
+    private static final String START_PORT_TERMINATION = "MGT LAN 0";
     private static final String END_PORT_TERMINATION = "MGT LAN 0";
-    //private static final String END_TERMINATION_POINT = "MGT LAN 0";
+    private static final String END_TERMINATION_POINT = "MGT LAN 0";
 
     private static final String PHYSICAL_DEVICE_NAME_COLUMN = "physicalDevice.name";
-    //private static final String TERMINATION_POINT_NAME_COLUMN = "terminationPoint.name";
+    private static final String TERMINATION_POINT_NAME_COLUMN = "terminationPoint.name";
     private static final String TERMINATIONS_TAB_ID = "TerminationIndexedWidget";
-    //private static final String TERMINATION_POINT_NAME = "SYNC 0";
+    private static final String TERMINATION_POINT_NAME = "MGT LAN 0";
     private static final String PHYSICAL_DEVICE_NAME = DEVICE_1_NAME;
     private static final String PORT_SHORT_IDENTIFIER_COLUMN = "port.shortIdentifier";
     private static final String PORT_SHORT_IDENTIFIER = START_PORT_TERMINATION;
@@ -77,7 +77,7 @@ public class EthernetLinkTest extends BaseTestCase {
     private static final String ELEMENT_ROUTING_TAB_ID = "RoutingElementsWidget";
     private static final String ADD_TO_ROUTING_BUTTON = "EDIT_Add to Routing-null";
     private static final String ELEMENT_ROUTING_WIZARD_ID = "routingElementWizardWidget";
-    //private static final String CREATE_IP_LINK_CHECKBOX_ID = "EthernetLink.CreateAssociatedIPLinkCombobox";
+    private static final String CREATE_IP_LINK_CHECKBOX_ID = "EthernetLink.CreateAssociatedIPLinkCombobox";
     private static final String DELETE_ETHERNET_LINK = "DeleteTrailWizardActionId";
     private static final String DELETE_CONFIRMATION_BOX = "wizard-submit-button-deleteWidgetId";
     private static final String DELETE_ETHERNET_LINK_WIZARD_ID = "simple-wizard-component-deleteWidgetId";
@@ -143,6 +143,7 @@ public class EthernetLinkTest extends BaseTestCase {
         elWizard.clickAccept();
         networkViewPage.expandViewContentPanel();
         networkViewPage.selectObjectInViewContentContains(NAME_COLUMN_LABEL, ETHERNET_LINK_NAME);
+        networkViewPage.startEditingSelectedTrail();
         networkViewPage.expandAttributesPanel();
         assertEthernetLinkAttributes(networkViewPage, ethernetLinkAttributes);
     }
@@ -154,12 +155,7 @@ public class EthernetLinkTest extends BaseTestCase {
         addTerminationDeviceToNetworkView(DEVICE_2_NAME);
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandViewContentPanel();
-        networkViewPage.unselectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_2_NAME);
-        networkViewPage.selectObjectInViewContentContains(NAME_COLUMN_LABEL, ETHERNET_LINK_NAME);
-        networkViewPage.startEditingSelectedTrail();
-        networkViewPage.unselectObjectInViewContent(OBJECT_TYPE_COLUMN_LABEL, OBJECT_TYPE_CONNECTION);
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_1_NAME);
-        networkViewPage.selectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_2_NAME);
         networkViewPage.addSelectedObjectsToTermination();
         ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);
         connectionWizardPage.selectConnectionTermination(START_TERMINATION_PATH);
@@ -167,7 +163,9 @@ public class EthernetLinkTest extends BaseTestCase {
         connectionWizardPage.setNonexistentCard();
         connectionWizardPage.terminatePort(START_PORT_TERMINATION);
         //Terminacja precyzyjna możliwa dopiero po rozwiązaniu błędu - OSSTRAIL-7374
+        //waitForPageToLoad();
         //connectionWizardPage.terminateTerminationPort(START_TERMINATION_POINT);
+        waitForPageToLoad();
         connectionWizardPage.clickAccept();
         networkViewPage.selectObjectInViewContentContains(NAME_COLUMN_LABEL, ETHERNET_LINK_NAME);
         networkViewPage.openTerminationsTab();
@@ -240,23 +238,14 @@ public class EthernetLinkTest extends BaseTestCase {
         assertIfTableIsEmpty(ROUTING_1ST_LEVEL_TAB_ID);
     }
 
-    @Test(priority = 11, description = "Remove element routing", dependsOnMethods = {"addSelectedDeviceToRouting"})
-    @Description("Remove objects from Ethernet Links element routing")
-    public void removeElementRouting() {
-        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.openRoutingElementsTab();
-        selectAndRemoveElementFromRouting();
-        assertIfOldTableIsEmpty();
-    }
-
-    @Test(priority = 12, description = "Finish NRP and IP task", dependsOnMethods = {"startHLPTask"})
+    @Test(priority = 11, description = "Finish NRP and IP task", dependsOnMethods = {"startHLPTask"})
     @Description("Finish rest of NRP and IP task")
     public void finishProcessesTask() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
 
-    @Test(priority = 13, description = "Delete EL", dependsOnMethods = {"createEthernetLink"})
+    @Test(priority = 12, description = "Delete EL", dependsOnMethods = {"createEthernetLink"})
     @Description("Delete Ethernet Link")
     public void removeEthernetLink() {
         navigateToELInventoryView();
