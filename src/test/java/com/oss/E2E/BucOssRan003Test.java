@@ -80,11 +80,6 @@ public class BucOssRan003Test extends BaseTestCase {
         radio4gRepository = new Radio4gRepository(env);
         physicalInventoryRepository = new PhysicalInventoryRepository(env);
         waitForPageToLoad();
-    }
-
-    @Test(priority = 1, description = "Check prerequisites")
-    @Description("Check prerequisites")
-    public void checkPrereq() {
         String locationId = getOrCreateLocations();
         getOrCreateMccMnc();
         getOrCreateCarrier();
@@ -93,7 +88,7 @@ public class BucOssRan003Test extends BaseTestCase {
         getOrCreateCells(eNodeBId, bbuId);
     }
 
-    @Test(priority = 2, description = "Create DCP", dependsOnMethods = {"checkPrereq"})
+    @Test(priority = 1, description = "Create DCP")
     @Description("Create new Data Correction Process")
     public void createNewProcess() {
         ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
@@ -102,7 +97,7 @@ public class BucOssRan003Test extends BaseTestCase {
         closeMessage();
     }
 
-    @Test(priority = 3, description = "Start DCP", dependsOnMethods = {"createNewProcess"})
+    @Test(priority = 2, description = "Start DCP", dependsOnMethods = {"createNewProcess"})
     @Description("Start newly created Data Correction Process")
     public void startDCP() {
         openView(TASKS, BPM_AND_PLANNING, PROCESS_OPERATIONS);
@@ -113,7 +108,7 @@ public class BucOssRan003Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 4, description = "Find location and open it in Cell Site Configuration view", dependsOnMethods = {"startDCP"})
+    @Test(priority = 3, description = "Find location and open it in Cell Site Configuration view", dependsOnMethods = {"startDCP"})
     @Description("Find location in new Inventory View and open location in Cell Site Configuration view")
     public void findLocation() {
         openView("Inventory View", "Resource Inventory");
@@ -130,7 +125,7 @@ public class BucOssRan003Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 5, description = "Modify cells", dependsOnMethods = {"findLocation"})
+    @Test(priority = 4, description = "Modify cells", dependsOnMethods = {"findLocation"})
     @Description("Modify Cells 4G parameters in bulk wizard")
     public void modifyCell4Gparameters() {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
@@ -140,7 +135,6 @@ public class BucOssRan003Test extends BaseTestCase {
         waitForPageToLoad();
         cellSiteConfigurationPage.clearColumnFilter(NAME);
         waitForPageToLoad();
-
         for (int i = 0; i < 3; i++) {
             waitForPageToLoad();
             cellSiteConfigurationPage.selectRowByAttributeValueWithLabel(NAME, CELL_NAMES[i]);
@@ -157,7 +151,7 @@ public class BucOssRan003Test extends BaseTestCase {
         checkPopup("Cells 4G updated successfully", String.format(SYSTEM_MESSAGE_PATTERN, "Modify cell 4G parameters", "cell 4G bulk wizard close"));
     }
 
-    @Test(priority = 6, description = "Finish DCP", dependsOnMethods = {"modifyCell4Gparameters"})
+    @Test(priority = 5, description = "Finish DCP", dependsOnMethods = {"modifyCell4Gparameters"})
     @Description("Finish Data Correction Process")
     public void finishDCP() {
         openView(TASKS, BPM_AND_PLANNING, PROCESS_OPERATIONS);
@@ -168,7 +162,7 @@ public class BucOssRan003Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 7, description = "Checking system message summary")
+    @Test(priority = 6, description = "Checking system message summary")
     @Description("Checking system message summary")
     public void systemMessageSummary() {
         softAssert.assertAll();
