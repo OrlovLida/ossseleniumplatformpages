@@ -90,8 +90,6 @@ public class BucOssRan003Test extends BaseTestCase {
         getOrCreateCarrier();
         Long bbuId = getOrCreateBBU(locationId);
         Long eNodeBId = getOrCreateEnodeB(locationId, bbuId);
-        waitForPageToLoad();
-
         getOrCreateCells(eNodeBId, bbuId);
     }
 
