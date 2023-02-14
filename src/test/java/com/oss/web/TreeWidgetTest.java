@@ -11,6 +11,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.HierarchyViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Button;
@@ -19,10 +21,10 @@ import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.tree.TreeComponent.Node;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.propertypanel.PropertyPanel;
+import com.oss.pages.physical.ChassisWizardPage;
 import com.oss.pages.physical.CreatePluggableModuleWizardPage;
 import com.oss.pages.physical.SublocationWizardPage;
-import com.comarch.oss.web.pages.HierarchyViewPage;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.PhysicalInventoryRepository;
@@ -70,6 +72,8 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PORT_02_PATH =
             LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis." + DEVICE_NAME + "/Chassis.Slots.1.Card." + CARD_MODEL
                     + ".Ports.00";
+    private static final String CHASSIS_PATH =
+            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis." + DEVICE_NAME + "/Chassis";
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
     private static final String PLUGGABLE_MODULE_01_PATH =
             PORT_01_PATH + ".Pluggable Module Slot.Slot.Pluggable Module.XFP-10G-MM-SR";
@@ -97,6 +101,10 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String BADGE_4 = "4";
     private static final String CHECKING_BADGES_FOR_SLOTS_RELATION = "Checking bages for Slots Relation";
     private static final String CHECK_BADGE_FOR_PORT_05 = "Check badge for port 05";
+    private static final String NEW_DESCRIPTION = "newDescription";
+    private static final String UPDATED_DESCRIPTION = "updated";
+    private static final String DESCRIPTION = "description";
+    private static final String EDIT_CHASSIS_ACTION = "EditChassisAction";
 
     private Environment env = Environment.getInstance();
     private HierarchyViewPage hierarchyViewPage;
@@ -250,6 +258,16 @@ public class TreeWidgetTest extends BaseTestCase {
     }
 
     @Test(priority = 12)
+    public void checkAutorefresh() {
+        hierarchyViewPage.selectNodeByLabelsPath(CHASSIS_PATH);
+        editChassisDescription(NEW_DESCRIPTION);
+        checkDescription(NEW_DESCRIPTION);
+
+        editChassisDescription(UPDATED_DESCRIPTION);
+        checkDescription(UPDATED_DESCRIPTION);
+    }
+
+    @Test(priority = 13)
     public void searchWithNotExistingData() {
         hierarchyViewPage.clearFiltersOnMainTree();
         hierarchyViewPage.searchObject("hjakserzxaseer");
@@ -259,7 +277,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.clearFiltersOnMainTree();
     }
 
-    @Test(priority = 13)
+    @Test(priority = 14)
     public void searchWithExistingData() {
         Node node = hierarchyViewPage.getFirstNode();
         String label = node.getLabel();
@@ -272,14 +290,14 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.clearFiltersOnMainTree();
     }
 
-    @Test(priority = 14)
+    @Test(priority = 15)
     public void clickInlineAction() {
         hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID);
         Assertions.assertThat(hierarchyViewPage
                 .getFirstNode().isToggled()).isFalse();
     }
 
-    @Test(priority = 15)
+    @Test(priority = 16)
     public void checkAvailabilityOsShowOnInventoryViewActionForDifferentType() {
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
@@ -291,7 +309,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assert.assertFalse(CSSUtils.isElementPresent(driver, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID));
     }
 
-    @Test(priority = 16)
+    @Test(priority = 17)
     public void ShowOnInventoryViewActionForSameType() {
         hierarchyViewPage.unselectNodeByLabelsPath(PATH_DEVICE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -301,7 +319,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assert.assertEquals(inventoryViewPage.getViewTitle(), INVENTORY_VIEW_TITLE);
     }
 
-    @Test(priority = 17)
+    @Test(priority = 18)
     public void showOnHierarchyView() {
         hierarchyViewPage = HierarchyViewPage.openHierarchyViewPage(driver, BASIC_URL, "Location");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -311,7 +329,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assertions.assertThat(nodes).hasSize(1);
     }
 
-    @Test(priority = 18)
+    @Test(priority = 19)
     public void checkBadges() {
         deviceId2 = createRouterWithCards(DEVICE_NAME_2);
         HierarchyViewPage viewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, "Router", deviceId2.toString());
@@ -359,7 +377,7 @@ public class TreeWidgetTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 19)
+    @Test(priority = 20)
     public void deleteRoot() {
         HierarchyViewPage viewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, SUB_LOCATION_TYPE_ROOM, roomId_2.toString());
         viewPage.selectFirstObject();
@@ -436,5 +454,19 @@ public class TreeWidgetTest extends BaseTestCase {
     private Long getFloorId() {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         return locationInventoryRepository.getSublocationId(locationId, FLOOR_NAME);
+    }
+
+    private void editChassisDescription(String description) {
+        hierarchyViewPage.getMainTree().callActionById(ActionsContainer.EDIT_GROUP_ID, EDIT_CHASSIS_ACTION);
+        ChassisWizardPage chassisWizardPage = new ChassisWizardPage(driver);
+        chassisWizardPage.setDescription(description);
+        chassisWizardPage.clickAccept();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    private void checkDescription(String description) {
+        PropertyPanel propertyPanel = hierarchyViewPage.getPropertyPanel();
+        String descriptionInPP = propertyPanel.getPropertyValue(DESCRIPTION);
+        Assert.assertEquals(descriptionInPP, description);
     }
 }
