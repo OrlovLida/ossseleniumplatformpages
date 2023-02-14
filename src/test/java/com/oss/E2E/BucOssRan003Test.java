@@ -1,6 +1,5 @@
 package com.oss.E2E;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -10,6 +9,7 @@ import org.testng.asserts.SoftAssert;
 
 import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.SearchObjectTypePage;
+import com.google.common.collect.Lists;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
@@ -222,12 +222,10 @@ public class BucOssRan003Test extends BaseTestCase {
     }
 
     private void getOrCreateCells(Long eNodeBId, Long bbuId) {
-        List<Long> cellXids = new java.util.ArrayList<>(Collections.emptyList());
+        List<Long> cellXids = Lists.newArrayList();
         if (radio4gRepository.getCell4GIdsByENodeBId(eNodeBId).isEmpty()) {
-            int i = 0;
-            for (String cellName : CELL_NAMES) {
-                cellXids.add(radio4gRepository.createCell4gWithDefaultValues(cellName, Integer.parseInt(CELL_IDS[i]), eNodeBId, MCC, MNC, CARRIER, Integer.parseInt(CELL_IDS[i])));
-                i++;
+            for (int i = 0; i < CELL_NAMES.length; i++) {
+                cellXids.add(radio4gRepository.createCell4gWithDefaultValues(CELL_NAMES[i], Integer.parseInt(CELL_IDS[i]), eNodeBId, MCC, MNC, CARRIER, Integer.parseInt(CELL_IDS[i])));
             }
             DelayUtils.sleep(1500);
             for (Long cellXid : cellXids) {
