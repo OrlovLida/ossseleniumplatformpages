@@ -27,24 +27,23 @@ public class RoutingOverElementsWizardPage extends BasePage {
     @Step("Set Sequence Number = {value}")
     public void setSequenceNumber(int rowNumber, String value) {
         waitForPageToLoad();
-        EditableList editableList = EditableList.createById(driver, wait, EDITABLE_LIST_ID);
-        waitForPageToLoad();
-        editableList.setValue(rowNumber, value, SEQUENCE_NUMBER_COLUMN_ID, SEQUENCE_NUMBER_FIELD_ID);
+        getEditableList().setValue(rowNumber, value, SEQUENCE_NUMBER_COLUMN_ID, SEQUENCE_NUMBER_FIELD_ID);
         waitForPageToLoad();
     }
 
     @Step("Set Relation Type = {value}")
     public void setRelationType(int rowNumber, String value) {
         waitForPageToLoad();
-        EditableList editableList = EditableList.createById(driver, wait, EDITABLE_LIST_ID);
-        waitForPageToLoad();
-        editableList.setValue(rowNumber, value, RELATION_TYPE_COLUMN_ID, RELATION_TYPE_FIELD_ID);
+        getEditableList().setValue(rowNumber, value, RELATION_TYPE_COLUMN_ID, RELATION_TYPE_FIELD_ID);
         waitForPageToLoad();
     }
 
     public void clickAccept() {
         wizard.clickAccept();
-        waitForPageToLoad();
+    }
+
+    public EditableList getEditableList() {
+        return EditableList.createById(driver, wait, EDITABLE_LIST_ID);
     }
 
     private void waitForPageToLoad() {
