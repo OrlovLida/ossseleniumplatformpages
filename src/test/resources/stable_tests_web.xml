@@ -1,5 +1,10 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="RegressionSuiteWeb-WEB" thread-count="1" parallel="tests" verbose="1">
+    <test name="AddExistingObjectToHVTest">
+        <classes>
+            <class name="com.oss.web.AddExistingObjectToHVTest"/>
+        </classes>
+    </test>
     <test name="FilteringOnRelationNodesTest">
         <classes>
             <class name="com.oss.web.FilteringOnRelationNodesTest"/>
@@ -28,11 +33,6 @@
     <test name="ExpandNextLevelOnTreeTest">
         <classes>
             <class name="com.oss.web.ExpandNextLevelOnTreeTest"/>
-        </classes>
-    </test>
-    <test name="AddExistingObjectToHVTest">
-        <classes>
-            <class name="com.oss.web.AddExistingObjectToHVTest"/>
         </classes>
     </test>
 </suite>
