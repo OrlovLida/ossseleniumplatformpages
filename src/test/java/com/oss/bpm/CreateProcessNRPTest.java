@@ -10,12 +10,12 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.planning.ProcessDetailsPage;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.tasks.SetupIntegrationProperties;
 import com.oss.pages.bpm.tasks.TasksPageV2;
+import com.oss.pages.dms.AttachFileWizardPage;
 import com.oss.planning.PlanningContext;
 import com.oss.untils.FakeGenerator;
 import com.oss.utils.TestListener;
@@ -41,8 +41,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.Random;
 
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 import static com.oss.bpm.BpmPhysicalDataCreator.CHASSIS_NAME;
 import static com.oss.bpm.BpmPhysicalDataCreator.createBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.createIPDevice;
@@ -68,7 +66,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private static final String CHASSIS_IDENTIFIER1 = CHASSIS_NAME + " (%s )";
     private static final String PLAN_PERSPECTIVE = "PLAN";
     private static final String UPLOAD_FILE_PATH = "bpm/SeleniumTest.txt";
-    private static final String CANNOT_LOAD_FILE_EXCEPTION = "Cannot load file";
+    private static final String CANNOT_LOAD_FILE_EXCEPTION = "Cannot get file path.";
     private static final String UPLOAD_FILE_NAME = "SeleniumTest";
     private static final String SHOW_WITH_COMPLETED_FILTER = "Show with Completed";
     private static final String COMPLETED_STATUS = "Completed";
@@ -113,16 +111,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @BeforeClass
     public void openProcessInstancesPage() {
         softAssert = new SoftAssert();
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-
-        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
-        }
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        processOverviewPage.clearAllColumnFilters();
-
+        ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
         buildingId = createBuilding(BUILDING_NAME, LIVE);
         log.info("Building id: " + buildingId);
     }
@@ -202,7 +191,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
 
     @Test(priority = 6, description = "Assign File to 'Low Level Planning' Task", dependsOnMethods = {"startLLPTask"})
     @Description("Assign File to 'Low Level Planning' Task")
-    public void assignFile() {
+    public void assignFile() throws URISyntaxException {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL).clearFilters();
         try {
             URL resource = CreateProcessNRPTest.class.getClassLoader().getResource(UPLOAD_FILE_PATH);
@@ -211,9 +200,12 @@ public class CreateProcessNRPTest extends BaseTestCase {
             assertSystemMessage(ATTACHMENT_ADDED_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                     String.format(INVALID_ATTACH_FILE_MESSAGE_PATTERN, LOW_LEVEL_PLANNING_TASK));
         } catch (URISyntaxException e) {
-            throw new RuntimeException(CANNOT_LOAD_FILE_EXCEPTION, e);
+            throw new URISyntaxException(UPLOAD_FILE_PATH, CANNOT_LOAD_FILE_EXCEPTION);
         }
         DelayUtils.sleep(2000);
+        if (AttachFileWizardPage.isWizardVisible(driver)) {
+            new AttachFileWizardPage(driver).cancelButton();
+        }
         List<String> files = tasksPage.getListOfAttachments();
         if (files.isEmpty()) {
             Assert.fail(FILE_NOT_VISIBLE);
@@ -509,8 +501,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Description("Check Process status")
     public void checkProcessStatus() {
         // given
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-        processOverviewPage.clearAllColumnFilters();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
 
         // when

@@ -9,7 +9,6 @@ package com.oss.bpm.milestones;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.milestones.EditMilestoneWizardPage;
 import com.oss.pages.bpm.milestones.Milestone;
@@ -33,8 +32,6 @@ import java.util.Random;
 
 import static com.oss.bpm.BpmPhysicalDataCreator.BPM_ADMIN_USER_LOGIN;
 import static com.oss.bpm.BpmPhysicalDataCreator.BPM_ADMIN_USER_PASSWORD;
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NAME_LABEL;
 
 /**
@@ -83,15 +80,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @BeforeClass
     public void createMilestone() {
         softAssert = new SoftAssert();
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-
-        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
-        waitForPageToLoad();
-        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            processOverviewPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
-        }
-        waitForPageToLoad();
-        processOverviewPage.clearAllColumnFilters();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
 
         Milestone milestone1 = Milestone.builder()
                 .setLeadTime("10")
@@ -103,15 +92,14 @@ public class EditMilestoneTest extends BaseTestCase {
                 .defineProcessAndGoToMilestonesStep(processName, 5L, DCP);
         milestonesStepWizardPage.addMilestoneRow(milestone1);
         milestonesStepWizardPage.clickAcceptButton();
+        waitForPageToLoad();
     }
 
     @Test(priority = 1, description = "Edit Description")
     @Description("Edit Description")
     public void editDescription() {
-        waitForPageToLoad();
         // given
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
         // when
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
@@ -135,10 +123,8 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 2, description = "Edit LeadTime")
     @Description("Edit LeadTime")
     public void editLeadTime() {
-        waitForPageToLoad();
         // given
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
         // when
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
@@ -163,9 +149,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 3, description = "Edit related Task")
     @Description("Edit related Task")
     public void editRelatedTask() {
-        waitForPageToLoad();
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
         milestoneViewPage.selectMilestone(milestoneName);
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
@@ -184,10 +168,8 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 4, description = "Edit Due Date for earlier date")
     @Description("Edit Due Date for earlier date")
     public void editDueDateEarlierDate() {
-        waitForPageToLoad();
         // given
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
         // when
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
@@ -212,10 +194,8 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 5, description = "Edit Due Date for later date")
     @Description("Edit Due Date for later date")
     void editDueDateLaterDate() {
-        waitForPageToLoad();
         // given
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
         // when
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
@@ -241,9 +221,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 6, description = "Edit Manual Completion")
     @Description("Edit Manual Completion")
     void editManualCompletion() {
-        waitForPageToLoad();
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
@@ -266,9 +244,7 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 7, description = "Edit Milestone Name")
     @Description("Edit Milestone name")
     void editName() {
-        waitForPageToLoad();
         MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
         // when
         milestoneViewPage.selectMilestone(milestoneName);
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);
@@ -294,12 +270,10 @@ public class EditMilestoneTest extends BaseTestCase {
     @Test(priority = 8, description = "Check if Modify User is updated", dependsOnMethods = {"editName"})
     @Description("Check if Modify User is updated")
     public void checkIfModifyUserIsUpdated() {
-        waitForPageToLoad();
         // given
-        MilestoneViewPage milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
+        MilestoneViewPage milestoneViewPage = new MilestoneViewPage(driver);
         milestoneViewPage.changeUser(BPM_ADMIN_USER_LOGIN, BPM_ADMIN_USER_PASSWORD);
-        waitForPageToLoad();
+        MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
         milestoneViewPage.selectMilestone(newMilestoneName);
         String modifyUser;
         String modifyDate = milestoneViewPage.getMilestoneAttribute(BPM_MILESTONE_MODIFY_DATE);

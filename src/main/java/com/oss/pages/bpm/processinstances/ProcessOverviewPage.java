@@ -19,6 +19,7 @@ import com.oss.pages.platform.HomePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -65,7 +66,7 @@ public class ProcessOverviewPage extends BasePage {
     public static ProcessOverviewPage goToProcessOverviewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/view/bpm/processes" +
                 "?perspective=LIVE", basicURL));
-
+        DelayUtils.waitForPageToLoad(driver, new WebDriverWait(driver, Duration.ofSeconds(45)));
         return new ProcessOverviewPage(driver);
     }
 

@@ -3,7 +3,6 @@ package com.oss.bpm.milestones;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
-import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.milestones.ChangeStateMilestoneWizardPage;
@@ -27,8 +26,6 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.Random;
 
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_LOGIN;
-import static com.oss.bpm.BpmPhysicalDataCreator.BPM_USER_PASSWORD;
 import static com.oss.bpm.milestones.EditMilestoneTest.EDIT_MILESTONE_BUTTON;
 
 /**
@@ -171,15 +168,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     @BeforeClass
     public void createProcessWithMilestones() {
         softAssert = new SoftAssert();
-        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
-
-        ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
-        waitForPageToLoad();
-        if (!toolbarWidget.getUserName().equals(BPM_USER_LOGIN)) {
-            changeStateMilestoneWizardPage.changeUser(BPM_USER_LOGIN, BPM_USER_PASSWORD);
-        }
-        waitForPageToLoad();
-        processOverviewPage.clearAllColumnFilters();
+        ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
         changeStateMilestoneWizardPage = new ChangeStateMilestoneWizardPage(driver);
 
         Milestone milestone1 = Milestone.builder()
@@ -204,6 +193,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         milestonesStepWizardPage.addMilestoneRow(milestone2);
         milestonesStepWizardPage.addMilestoneRow(milestone3);
         milestonesStepWizardPage.clickAcceptButton();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
     @Test(priority = 1, description = "First Milestone Change State Flow")
@@ -212,9 +202,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         /**
          * not needed → new → in progress → not needed
          */
-        waitForPageToLoad();
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
         milestoneViewPage.selectMilestone(milestoneName1);
 
         changeMilestoneState(NOT_NEEDED_STATE, NEW_STATE, true, TC1);
@@ -228,9 +216,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         /**
          * new → in progress → completed (not permitted).....{change manual completion flag}.....in progress → completed
          */
-        waitForPageToLoad();
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
         milestoneViewPage.selectMilestone(milestoneName2);
 
         changeMilestoneState(NEW_STATE, IN_PROGRESS_STATE, false, TC2);
@@ -267,10 +253,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         /**
          * not needed → new → suspended → in progress → completed → in progress → suspended → new → not needed
          */
-        waitForPageToLoad();
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
-
         milestoneViewPage.selectMilestone(milestoneName3);
 
         changeMilestoneState(NOT_NEEDED_STATE, NEW_STATE, true, TC3);
@@ -289,9 +272,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
         /**
          * not needed → new → in progress → suspended → in progress
          */
-        waitForPageToLoad();
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
 
         milestoneViewPage.selectMilestone(milestoneName1);
         milestoneViewPage.selectMilestone(milestoneName3);
@@ -321,9 +302,7 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     @Test(priority = 5, description = "Multiselect Milestones Change State (Different States)", dependsOnMethods = {TC1, TC2})
     @Description("Multiselect Milestones Change State (Different States)")
     public void checkMultiChangeStateDifferent() {
-        waitForPageToLoad();
         milestoneViewPage = MilestoneViewPage.goToMilestoneViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
 
         milestoneViewPage.selectMilestone(milestoneName1);
         milestoneViewPage.selectMilestone(milestoneName2);
