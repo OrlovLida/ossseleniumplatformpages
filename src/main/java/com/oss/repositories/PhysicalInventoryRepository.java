@@ -1,5 +1,12 @@
 package com.oss.repositories;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.comarch.oss.physicalinventory.api.dto.AttributeDTO;
 import com.comarch.oss.physicalinventory.api.dto.CardDTO;
 import com.comarch.oss.physicalinventory.api.dto.ChassisDTO;
@@ -13,13 +20,6 @@ import com.comarch.oss.resourcehierarchy.api.dto.ResourceHierarchyDTO;
 import com.oss.services.PhysicalInventoryClient;
 import com.oss.transport.infrastructure.planning.PlanningContext;
 import com.oss.untils.Environment;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class PhysicalInventoryRepository {
 
@@ -137,6 +137,14 @@ public class PhysicalInventoryRepository {
 
     private List<SearchDTO> getDeviceSearchDTO(String locationId, String deviceName) {
         return client.getDeviceId(locationId, "Name==" + deviceName).getSearchResult();
+    }
+
+    public Long getOrCreateDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
+        List<SearchDTO> devicesList = getDeviceSearchDTO(String.valueOf(locationId), deviceName);
+        if (devicesList.isEmpty()) {
+            return createDevice(locationType, locationId, deviceModelId, deviceName, deviceModelType);
+        }
+        return devicesList.get(0).getId();
     }
 
     private PhysicalDeviceDTO buildDevice(String locationType, Long locationId, Long deviceModelId, String deviceName,

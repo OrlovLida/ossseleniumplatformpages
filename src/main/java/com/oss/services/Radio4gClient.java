@@ -26,6 +26,9 @@ public class Radio4gClient {
     private static final String BAND_TYPE = "bandtype";
     private static final String CARRIER = "carrier";
     private static final String CARRIER_BY_NAME_PATH = "carrier/name/";
+    private static final String ENODEB_BY_NAME_PATH = "/enodeb/name";
+    private static final String CELL4G_BY_ENODEB_PATH_PATTERN = "/enodeb/%s/cell";
+    private static final String MAX_RESULTS = "maxResults";
 
     private static Radio4gClient instance;
     private final Environment env;
@@ -94,8 +97,6 @@ public class Radio4gClient {
                 .body(hRENodeB)
                 .when()
                 .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
-                .queryParam(Constants.ID, eNodeId)
-                .queryParam(Constants.CELL_ID, cellId)
                 .post(cellHRPath)
                 .then()
                 .statusCode(Response.Status.NO_CONTENT.getStatusCode()).assertThat();
@@ -107,6 +108,16 @@ public class Radio4gClient {
                 .queryParam(Constants.COMMON_NAME_ATTRIBUTE, bandTypeName)
                 .when()
                 .get(BAND_TYPE)
+                .jsonPath()
+                .getList(Constants.ID);
+    }
+
+    public List<Integer> getCell4GIdsByENodeBId(Long eNodeBId) {
+        return env.getRadioCore4GSpecification()
+                .given()
+                .when()
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .get(String.format(CELL4G_BY_ENODEB_PATH_PATTERN, eNodeBId))
                 .jsonPath()
                 .getList(Constants.ID);
     }
@@ -124,6 +135,18 @@ public class Radio4gClient {
                 .extract()
                 .as(RanBandTypeResponseDTO.class)
                 .getId();
+    }
+
+    public List<Integer> getEnodeBIds(String eNodeBName) {
+        return env.getRadioCore4GSpecification()
+                .given()
+                .queryParam(Constants.COMMON_NAME_ATTRIBUTE, eNodeBName)
+                .queryParam(MAX_RESULTS, 1)
+                .queryParam(Constants.PERSPECTIVE, Constants.LIVE)
+                .when()
+                .get(ENODEB_BY_NAME_PATH)
+                .jsonPath()
+                .getList(Constants.ID);
     }
 
     public boolean isCarriePresent(String carrierName) {
