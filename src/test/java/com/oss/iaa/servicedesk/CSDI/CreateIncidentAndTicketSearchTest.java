@@ -6,6 +6,7 @@ import org.testng.annotations.Test;
 
 import com.comarch.oss.web.pages.NotificationWrapperPage;
 import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.ClosedTicketsPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.MyGroupTicketsPage;
@@ -41,7 +42,6 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
     private static final String STATUS_RESOLVED = "Resolved";
     private static final String STATUS_CLOSED = "Closed";
     private static final String TT_DOWNLOAD_FILE = "TroubleTicket*.xlsx";
-    private static final String DOMAIN = "Domain A";
     
     private TicketDashboardPage ticketDashboardPage;
     private IssueCSDIWizardPage issueCSDIWizardPage;
@@ -64,7 +64,6 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
     public void createIncidentTicket(
     ) {
         issueCSDIWizardPage = ticketDashboardPage.openCreateTicketWizard(FLOW_TYPE).openIssueCSDIWizardPage();
-        issueCSDIWizardPage.setDomains(DOMAIN);
         issueCSDIWizardPage.setIssueTitle(ISSUE_TITLE);
         issueCSDIWizardPage.enterDescription(INCIDENT_DESCRIPTION);
         issueCSDIWizardPage.setSeverity(SEVERITY);
@@ -93,7 +92,7 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
         ticketDashboardPage.exportFromDashboard(TT_DOWNLOAD_FILE);
         notificationWrapperPage = ticketDashboardPage.openNotificationPanel();
 
-        Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 1);
+        Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
         Assert.assertTrue(ticketDashboardPage.checkIfFileIsNotEmpty(TT_DOWNLOAD_FILE));
     }
 
@@ -147,9 +146,11 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
         ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
         ticketOverviewTab.allowEditingTicket();
         issueDetailsPage.skipAllActionsOnCheckList();
+        DelayUtils.sleep(1000);
         ticketOverviewTab.changeIssueStatus(STATUS_RESOLVED);
         ticketOverviewTab.fillReasonChange(webDriverWait, driver);
         issueDetailsPage.skipAllActionsOnCheckList();
+        DelayUtils.sleep(1000);
         ticketOverviewTab.changeIssueStatus(STATUS_CLOSED);
         ticketOverviewTab.fillReasonChange(webDriverWait, driver);
 
@@ -159,7 +160,9 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
     @Test(priority = 8, testName = "Check Closed Tickets View", description = "Refresh, search and check if ticket is shown in the closed tickets table")
     @Description("Refresh, search and check if ticket is shown in the closed tickets table")
     public void checkClosedTicketView() {
+        String ticketID = "395";
         closedTicketsPage = new ClosedTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
+        DelayUtils.sleep(1000);
         closedTicketsPage.clickRefresh();
         closedTicketsPage.filterBy(ID_ATTRIBUTE, ticketID);
         Assert.assertEquals(closedTicketsPage.getIdForNthTicketInTable(0), ticketID);

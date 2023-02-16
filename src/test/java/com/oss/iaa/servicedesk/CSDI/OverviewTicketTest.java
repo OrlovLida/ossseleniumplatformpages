@@ -7,6 +7,7 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.iaa.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.ExternalTab;
@@ -104,7 +105,7 @@ public class OverviewTicketTest extends BaseTestCase {
     ) {
         issueCSDIWizardPage = ticketDashboardPage.openCreateTicketWizard(FLOW_TYPE).openIssueCSDIWizardPage();
         issueCSDIWizardPage.setIssueTitle(ISSUE_TITLE);
-        issueCSDIWizardPage.enterIncidentDescription(INCIDENT_DESCRIPTION);
+        issueCSDIWizardPage.enterDescription(INCIDENT_DESCRIPTION);
         issueCSDIWizardPage.setSeverity(SEVERITY);
         issueCSDIWizardPage.clickNextButtonInWizard();
 
@@ -198,7 +199,7 @@ public class OverviewTicketTest extends BaseTestCase {
 
         ticketOverviewTab.changeIssueStatus(STATUS_RESOLVED);
         ticketOverviewTab.fillReasonChange(webDriverWait, driver);
-
+        DelayUtils.sleep(1000);
         Assert.assertEquals(ticketOverviewTab.checkTicketStatus(), STATUS_RESOLVED);
     }
 
@@ -206,8 +207,8 @@ public class OverviewTicketTest extends BaseTestCase {
     @Description("Edit Ticket Details and check if change is visible in Description tab")
     public void editTicketDetails() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        sdWizardPage = issueDetailsPage.openEditDetailsWizard();
-        sdWizardPage.enterIncidentDescription(TT_DESCRIPTION_EDITED);
+        sdWizardPage = issueDetailsPage.clickEditDetails();
+        sdWizardPage.enterDescription(TT_DESCRIPTION_EDITED);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
 
@@ -271,7 +272,7 @@ public class OverviewTicketTest extends BaseTestCase {
     @Parameters({"RelatedTicketID"})
     @Test(priority = 12, testName = "Check Related Tickets Tab - link Ticket", description = "Check Related Tickets Tab - link Ticket")
     @Description("Check Related Tickets Tab - link Ticket")
-    public void linkTicketToTicket(@Optional("18") String RelatedTicketID) {
+    public void linkTicketToTicket(@Optional("397") String RelatedTicketID) {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
         relatedTicketsTab.linkIssue(RelatedTicketID, "issueIdsToLink");
