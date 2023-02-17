@@ -1,5 +1,7 @@
 package com.oss.pages.platform;
 
+import java.time.Duration;
+
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -13,9 +15,11 @@ import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.comarch.oss.web.pages.InputsWizardPage;
 import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.languageservice.LanguageServicePage;
+import com.comarch.oss.web.pages.toolsmanager.ToolsManagerPage;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.Popup;
+import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
@@ -23,8 +27,6 @@ import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
 
 import io.qameta.allure.Step;
-
-import java.time.Duration;
 
 public class HomePage extends BasePage {
     
@@ -50,22 +52,28 @@ public class HomePage extends BasePage {
     // @FindBy(xpath = "//button[@data-original-title='Save bookmark']/i")
     @FindBy(xpath = "//i[contains(@class,'buttonIcon fa fa-floppy-o')]")
     private WebElement saveBookmarksButton;
-    
+
     public HomePage(WebDriver driver) {
         super(driver);
     }
-    
+
     @Step("Go to Home Page")
     public HomePage goToHomePage(WebDriver driver, String basicURL) {
         DelayUtils.waitForPageToLoad(driver, wait);
         driver.get(String.format("%s/#/", basicURL));
         return new HomePage(driver);
     }
-    
+
+    public void openApplication(String categoryName, String applicationName) {
+        ToolsManagerPage toolsManagerPage = new ToolsManagerPage(driver);
+        ToolsManagerWindow toolsManagerWindow = toolsManagerPage.getToolsManager();
+        toolsManagerWindow.openApplication(categoryName, applicationName);
+    }
+
     public WebElement getLoginButton() {
         return loginButton;
     }
-    
+
     public String getPageTitle() {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(45));
         DelayUtils.waitForPageToLoad(driver, wait);
