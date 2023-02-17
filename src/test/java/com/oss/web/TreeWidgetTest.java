@@ -6,7 +6,6 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -306,7 +305,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.selectNodeByLabelsPath(PATH_DEVICE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Button.createById(driver, ActionsContainer.SHOW_ON_GROUP_ID).click();
-        Assert.assertFalse(CSSUtils.isElementPresent(driver, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID));
+        Assertions.assertThat(CSSUtils.isElementPresent(driver, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID)).isFalse();
     }
 
     @Test(priority = 17)
@@ -316,7 +315,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.SHOW_ON_GROUP_ID, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-        Assert.assertEquals(inventoryViewPage.getViewTitle(), INVENTORY_VIEW_TITLE);
+        Assertions.assertThat(inventoryViewPage.getViewTitle()).isEqualTo(INVENTORY_VIEW_TITLE);
     }
 
     @Test(priority = 18)
@@ -386,8 +385,8 @@ public class TreeWidgetTest extends BaseTestCase {
         ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(CONFIRM_DELETE_BUTTON);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> nodes = viewPage.getVisibleNodesLabel();
-        Assert.assertTrue(nodes.isEmpty());
-        Assert.assertTrue(viewPage.getMainTree().hasNoData());
+        Assertions.assertThat(nodes.isEmpty()).isTrue();
+        Assertions.assertThat(viewPage.getMainTree().hasNoData());
     }
 
     @AfterClass
@@ -467,6 +466,6 @@ public class TreeWidgetTest extends BaseTestCase {
     private void checkDescription(String description) {
         PropertyPanel propertyPanel = hierarchyViewPage.getPropertyPanel();
         String descriptionInPP = propertyPanel.getPropertyValue(DESCRIPTION);
-        Assert.assertEquals(descriptionInPP, description);
+        Assertions.assertThat(descriptionInPP).isEqualTo(description);
     }
 }
