@@ -8,17 +8,15 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
-import com.comarch.oss.web.pages.toolsmanager.ToolsManagerPage;
+import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.physical.CardCreateWizardPage;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.v2.MicrowaveChannelWizardPage;
 import com.oss.pages.transport.trail.v2.MicrowaveLinkWizardPage;
@@ -345,8 +343,6 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
         fillMicrowaveChannelWizard(secondMicrowaveChannelWizardPage, secondMicrowaveChannelAttributes);
         waitForPageToLoad();
         assertMicrowaveChannel(networkViewPage, secondMicrowaveChannelAttributes);
-        TODO:
-        //Add Terminations using Terminations Tab
 
         networkViewPage.startEditingSelectedTrail();
         waitForPageToLoad();
@@ -406,22 +402,14 @@ public class TP_OSS_MicrowaveE2ETest extends BaseTestCase {
 
     private void openNetworkView() {
         homePage.goToHomePage(driver, BASIC_URL);
-        expandTiles(RESOURCE_INVENTORY_CATEGORY_NAME, NETWORK_VIEW_APPLICATION_NAME);
+        homePage.openApplication(RESOURCE_INVENTORY_CATEGORY_NAME, NETWORK_VIEW_APPLICATION_NAME);
         waitForPageToLoad();
     }
 
     private void openPhysicalDeviceWizard() {
         homePage.goToHomePage(driver, BASIC_URL);
-        expandTiles(INFRASTRUCTURE_MANAGEMENT_CATEGORY_NAME, CREATE_DEVICE_APPLICATION_NAME);
+        homePage.openApplication(INFRASTRUCTURE_MANAGEMENT_CATEGORY_NAME, CREATE_DEVICE_APPLICATION_NAME);
         waitForPageToLoad();
-    }
-
-    private void expandTiles(String categoryName, String applicationName) {
-        ToolsManagerPage toolsManagerPage = new ToolsManagerPage(driver);
-        waitForPageToLoad();
-        ToolsManagerWindow toolsManagerWindow = toolsManagerPage.getToolsManager();
-        waitForPageToLoad();
-        toolsManagerWindow.openApplication(categoryName, applicationName);
     }
 
     private void addObjectToView(String componentId, String value) {
