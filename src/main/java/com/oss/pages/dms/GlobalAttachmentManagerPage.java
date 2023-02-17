@@ -14,7 +14,9 @@ public class GlobalAttachmentManagerPage extends BasePage {
     private static final String GLOBAL_ATTACHMENT_MANAGER_VIEW_ID = "globalAttachmentManager_templateWindow";
     public static final String CREATE_DIRECTORY_ACTION_ID = "dms_createDirectoryAct";
     public static final String EDIT_DIRECTORY_ACTION_ID = "editFolderAct";
+    public static final String ATTACH_FILE_ACTION_ID = "dms_addAttachmentAct";
     public static final String DELETE_DIRECTORY_ACTION_ID = "deleteFolderAct";
+    public static final String DELETE_FILE_ACTION_ID = "deleteAttachmentAct";
     private static final String ATTACHMENTS_LIST_ID = "globalAttachmentManager_commonList";
     private static final String NAME_COLUMN = "Name";
     private static final String OWNER_COLUMN = "Owner";
@@ -22,11 +24,6 @@ public class GlobalAttachmentManagerPage extends BasePage {
 
     public GlobalAttachmentManagerPage(WebDriver driver) {
         super(driver);
-    }
-
-    @Step("Get list")
-    private CommonList getList() {
-        return CommonList.create(driver, wait, ATTACHMENTS_LIST_ID);
     }
 
     @Step("Use context action")
@@ -51,9 +48,24 @@ public class GlobalAttachmentManagerPage extends BasePage {
         return getList().getRow(TAGS_COLUMN, tags).getValue(TAGS_COLUMN);
     }
 
-    @Step("Select current row")
-    public void selectRow(String directoryName) {
-        getList().getRow(NAME_COLUMN, directoryName).selectRow();
+    @Step("Get list")
+    private CommonList getList() {
+        return CommonList.create(driver, wait, ATTACHMENTS_LIST_ID);
     }
 
+    @Step("Check if list is empty")
+    public boolean isListEmpty() {
+        return getList().hasNoData();
+    }
+
+    @Step("Select current row")
+    public void selectRow(String name) {
+        getList().getRow(NAME_COLUMN, name).selectRow();
+    }
+
+//    TODO: Odkomentowac po rozwiazaniu: OSSSELEN-659
+//    @Step("Open directory with name = {directoryName}")
+//    public void openDirectory(String directoryName) {
+//        getList().getRow(NAME_COLUMN, directoryName).getCell(NAME_COLUMN).click();
+//    }
 }
