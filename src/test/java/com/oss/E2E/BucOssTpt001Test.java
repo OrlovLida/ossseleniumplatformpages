@@ -11,12 +11,10 @@ import org.testng.asserts.SoftAssert;
 import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.SearchObjectTypePage;
-import com.comarch.oss.web.pages.toolsmanager.ToolsManagerPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.wizard.Wizard;
@@ -24,8 +22,8 @@ import com.oss.pages.physical.CardCreateWizardPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.EthernetLinkWizardPage;
+import com.oss.pages.transport.trail.MicrowaveChannelRoutingWizard;
 import com.oss.pages.transport.trail.RoutingOverElementsWizardPage;
-import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.pages.transport.trail.v2.MicrowaveChannelWizardPage;
 import com.oss.pages.transport.trail.v2.MicrowaveLinkWizardPage;
 import com.oss.repositories.AddressRepository;
@@ -902,17 +900,19 @@ public class BucOssTpt001Test extends BaseTestCase {
     }
 
     private void openNetworkView() {
-        expandTiles(RESOURCE_INVENTORY_CATEGORY_NAME, NETWORK_VIEW_APPLICATION_NAME);
+        homePage.openApplication(RESOURCE_INVENTORY_CATEGORY_NAME, NETWORK_VIEW_APPLICATION_NAME);
         waitForPageToLoad();
     }
 
     private void openPhysicalDeviceWizard() {
-        expandTiles(INFRASTRUCTURE_MANAGEMENT_CATEGORY_NAME, CREATE_DEVICE_APPLICATION_NAME);
+        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.openApplication(INFRASTRUCTURE_MANAGEMENT_CATEGORY_NAME, CREATE_DEVICE_APPLICATION_NAME);
         waitForPageToLoad();
     }
 
     private void openInventoryViewForGivenObjectType(String objectType) {
-        expandTiles(RESOURCE_INVENTORY_CATEGORY_NAME, INVENTORY_VIEW_APPLICATION_NAME);
+        homePage.goToHomePage(driver, BASIC_URL);
+        homePage.openApplication(RESOURCE_INVENTORY_CATEGORY_NAME, INVENTORY_VIEW_APPLICATION_NAME);
         waitForPageToLoad();
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType(objectType);
@@ -933,15 +933,6 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
-    }
-
-    private void expandTiles(String categoryName, String applicationName) {
-        homePage.goToHomePage(driver, BASIC_URL);
-        ToolsManagerPage toolsManagerPage = new ToolsManagerPage(driver);
-        waitForPageToLoad();
-        ToolsManagerWindow toolsManagerWindow = toolsManagerPage.getToolsManager();
-        waitForPageToLoad();
-        toolsManagerWindow.openApplication(categoryName, applicationName);
     }
 
     private void addObjectToView(String objectName) {
@@ -1311,12 +1302,12 @@ public class BucOssTpt001Test extends BaseTestCase {
     }
 
     private void fillAddRoutingSegmentWizard(String lineType, String sequenceNumber) {
-        RoutingWizardPage routingWizardPage = new RoutingWizardPage(driver);
+        MicrowaveChannelRoutingWizard microwaveChannelRoutingWizard = new MicrowaveChannelRoutingWizard(driver);
         waitForPageToLoad();
 //        TODO: odkomentować po rozwiązaniu OSSTRAIL-7974
-//        routingWizardPage.setLineType(lineType);
-//        routingWizardPage.setSequenceNumber(sequenceNumber);
-        routingWizardPage.proceed();
+//        microwaveChannelRoutingWizard.setLineType(lineType);
+//        microwaveChannelRoutingWizard.setSequenceNumber(sequenceNumber);
+        microwaveChannelRoutingWizard.proceed();
     }
 
     private void fillRoutingOverElementsWizard(String sequenceNumber, String relationType, int rowNumber) {
@@ -1708,7 +1699,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     }
 
     private void checkMicrowaveFrequencyPlans() {
-        expandTiles(RESOURCE_INVENTORY_CATEGORY_NAME, INVENTORY_VIEW_APPLICATION_NAME);
+        homePage.openApplication(RESOURCE_INVENTORY_CATEGORY_NAME, INVENTORY_VIEW_APPLICATION_NAME);
         waitForPageToLoad();
         SearchObjectTypePage searchObjectType = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectType.searchType(MICROWAVE_FREQUENCY_PLAN_LABEL);

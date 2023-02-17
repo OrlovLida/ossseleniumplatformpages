@@ -40,8 +40,6 @@ public class NetworkViewPage extends BasePage {
     public static final String REMOVE_FROM_VIEW_ACTION = "display_group_Remove from view-null";
     public static final String CREATE_DEVICE_ACTION = "CREATE_Create Physical Device-null";
     private static final String FIRST_LEVEL_ROUTING_TAB_NAME = "Routing - 1st level";
-    private static final String BOTTOM_TABS_ID = "bottomTabs";
-    private static final String ELEMENT_ROUTING_TAB_TOOLBAR_ID = "bottomTabs-windowToolbar";
     public static final String DELETE_ELEMENT_ACTION = "Delete Element-null";
     public static final String DELETE_DEVICE_ACTION = "EDIT_Delete Physical Device-null";
     public static final String ADD_TO_VIEW_ACTION = "add_to_view_group";
@@ -98,6 +96,7 @@ public class NetworkViewPage extends BasePage {
     private static final String DOCKED_PANEL_BOTTOM_POSITION = "bottom";
     private static final String TRAIL_WIZARD_ERROR_MESSAGE = "Cannot get Trail wizard page: ";
     private static final String ELEMENT_ROUTING_WIZARD_ID = "routingElementWizardWidget";
+    private static final String REFRESH_BUTTON_IN_ELEMENT_ROUTING_TAB_ID = "Reload element routing";
 
     public NetworkViewPage(WebDriver driver) {
         super(driver);
@@ -369,17 +368,8 @@ public class NetworkViewPage extends BasePage {
     }
 
     public void refreshElementRoutingTab() {
-        callActionInTab(ELEMENT_ROUTING_TAB_TOOLBAR_ID, TableWidget.REFRESH_ACTION_ID);
-    }
-
-    private TableWidget getOldTable() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return TableWidget.createById(driver, BOTTOM_TABS_ID, wait);
-    }
-
-    @Step("Call {actionId} action from {groupId} group")
-    private void callActionInTab(String groupId, String actionId) {
-        getOldTable().callAction(groupId, actionId);
+        getTabsWidget(OLD_TABLE_ID).callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_IN_ELEMENT_ROUTING_TAB_ID);
+        waitForPageToLoad();
     }
 
     @Step("Delete Routing Element")
