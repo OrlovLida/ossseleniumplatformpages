@@ -1,5 +1,7 @@
 package com.oss.pages.reconciliation;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -19,12 +21,10 @@ import com.oss.pages.physical.DeviceWizardPage;
 
 import io.qameta.allure.Step;
 
-import java.time.Duration;
-
 public class NetworkInconsistenciesViewPage extends BasePage {
 
-    private static final String APPLY_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionApplyId";
-    private static final String APPLY_BUTTON_ID = "narComponent_DiscrepancyActionApplyId";
+    private static final String ACCEPT_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionAcceptId";
+    private static final String ACCEPT_BUTTON_ID = "narComponent_DiscrepancyActionAcceptId";
     private static final String PHYSICAL_INCONSITENCIES_TABLE_ID = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
     private static final String PHYSICAL_WIZARD_ID = "optional_prompt-card";
     private static final String RAN_INCONSITENCIES_TABLE_ID = "radioAppId";
@@ -52,16 +52,13 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Expand two tree levels of Inconsistencies")
     public void expandTree() {
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView().expandLastTreeRow();
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView().expandLastTreeRow();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     @Step("Expand tree row that contains {rowName}")
     public void expandTreeRowContains(String rowName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
         getTreeView().expandTreeRowContains(rowName);
     }
 
@@ -104,7 +101,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         TabsInterface nivTabs = TabsWidget.createById(driver, wait, TAB_ID);
         nivTabs.selectTabById(NIV_TREE);
         DelayUtils.sleep(1000);
-        nivTabs.callActionById(APPLY_GROUP_BUTTON_ID);
+        nivTabs.callActionById(ACCEPT_GROUP_BUTTON_ID);
         DelayUtils.sleep(1000);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
@@ -114,7 +111,7 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         TabsInterface nivTabs = TabsWidget.createById(driver, wait, TAB_ID);
         nivTabs.selectTabById(NIV_TREE);
         DelayUtils.sleep(1000);
-        nivTabs.callActionById(APPLY_BUTTON_ID);
+        nivTabs.callActionById(ACCEPT_BUTTON_ID);
         DelayUtils.sleep(1000);
         DelayUtils.waitForPageToLoad(driver, wait);
     }

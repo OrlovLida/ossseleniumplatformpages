@@ -39,14 +39,14 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
     private static final String LIVE_PERSPECTIVE_TEXT = "Live";
 
     private static final String dateAndTime = new SimpleDateFormat("dd-MM-yyyy_HH:mm").format(Calendar.getInstance().getTime());
-    private final String time = dateAndTime.substring(11);
+    private static final String time = dateAndTime.substring(11);
 
-    private static final String COUNTRY_NAME = "country_kk";
+    private static final String COUNTRY_NAME = "country_kk" + time;
     private static final String POSTAL_CODE_NAME = "23-456";
     private static final String REGION_NAME = "region_kk";
     private static final String CITY_NAME = "city_kk" + dateAndTime;
     private static final String DISTRICT_NAME = "district_kk";
-    private static final String LOCATION_NAME = "selenium test bu_kk";
+    private static final String LOCATION_NAME = "buildingcomplex_selenium test bu_kk";
     private static final String RACK_MODEL_MANUFACTURER_MODEL_NAME = "Generic";
     private static final String RACK_MODEL_PARTLY_NAME = "19";
 
@@ -56,7 +56,6 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
     private static final String ROOM_TYPE = "Room";
     private static final String RACK_TYPE = "Rack";
 
-    private static final String PRECISE_LOCATION = "B";
     private static final String RACK_MODEL = "Generic 19";
     private static final String DESCRIPTION = "description";
     private static final String REMARKS = "remarks";
@@ -156,7 +155,7 @@ public class CreateAndDeleteSublocationTest extends BaseTestCase {
             sublocationWizardPage.setSublocationType(type);
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             if (!type.equals(FLOOR_TYPE)) {
-                sublocationWizardPage.setPreciseLocation(PRECISE_LOCATION);
+                sublocationWizardPage.setPreciseLocation(LOCATION_TYPE_API);
             }
             sublocationWizardPage.setSublocationName(type + dateAndTime);
             if (type.equals(RACK_TYPE)) {

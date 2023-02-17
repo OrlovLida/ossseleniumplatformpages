@@ -380,6 +380,14 @@ public class CellSiteConfigurationPage extends BasePage {
         return getGisMapInterface().getCanvasObject();
     }
 
+    public String getMapScale() {
+        return getGisMapInterface().getScale();
+    }
+
+    public void zoomOutMap() {
+        getGisMapInterface().zoomOut();
+    }
+
     private void selectTreeTable(String type, String manufacturer, String name) {
         OldTreeTableWidget widget = OldTreeTableWidget.create(driver, wait, TREE_TABLE_ID);
         widget.expandNode(type, "Type");

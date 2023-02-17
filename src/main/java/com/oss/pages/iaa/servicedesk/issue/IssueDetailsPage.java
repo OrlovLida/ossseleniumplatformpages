@@ -38,11 +38,14 @@ import io.qameta.allure.Step;
 
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.AFFECTED_TAB_LABEL;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.ATTACHMENTS_TAB_LABEL;
+import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.CHANGE_WIZARD_ID;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.COMMON_WIZARD_ID;
+import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.CREATE_CHANGE_BUTTON_ID;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.DESCRIPTION_TAB_LABEL;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.DETAILS_TABS_CONTAINER_ID;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.EXTERNAL_TAB_LABEL;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.MESSAGES_TAB_LABEL;
+import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.NORMAL_BUTTON_ID;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.OVERVIEW_TAB_LABEL;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.PARTICIPANTS_TAB_LABEL;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.PROBLEM_SOLUTION_TAB_LABEL;
@@ -326,6 +329,13 @@ public class IssueDetailsPage extends BaseSDPage {
             log.error("Table doesn't exist");
             return false;
         }
+    }
+
+    @Step("Click Edit Details")
+    public SDWizardPage clickEditDetails() {
+        getDetailsViewOldActionsContainer().callActionById(EDIT_DETAILS_ID);
+        log.info("Clicking Edit Details");
+        return new SDWizardPage(driver, wait, COMMON_WIZARD_ID);
     }
 
     public OldTable getOldTable(String tableId) {

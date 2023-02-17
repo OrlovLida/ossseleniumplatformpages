@@ -1,4 +1,4 @@
-package com.oss.iaa.servicedesk.CSDI;
+package com.oss.iaa.servicedesk.P450Connect;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -7,7 +7,6 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.iaa.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.ExternalTab;
@@ -18,7 +17,6 @@ import com.oss.pages.iaa.servicedesk.issue.tabs.ResolutionTab;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.iaa.servicedesk.issue.wizard.ExternalPromptPage;
-import com.oss.pages.iaa.servicedesk.issue.wizard.IssueCSDIWizardPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
 
 import io.qameta.allure.Description;
@@ -34,21 +32,10 @@ import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.TYPE_COMMENT;
 
 public class OverviewTicketTest extends BaseTestCase {
 
-    private static final String ISSUE_TITLE = "Selenium Test";
     private static final String SEVERITY = "Warning";
-    private static final String STEPS_TO_REPRODUCE = "Test Steps";
-    private static final String EXPECTED_BEHAVIOR = "Test Behavior";
-    private static final String CONTACT_PERSON = "Test Person";
-    private static final String IMPACT = "Low";
-    private static final String IMPACT_EXPLANATION = "Test Explanation";
-    private static final String URGENCY = "Low";
-    private static final String URGENCY_EXPLANATION = "Test Explanation";
-    private static final String ENVIRONMENT_TYPE = "REF";
-    private static final String COMPONENT = "Service Desk";
-    private static final String FLOW_TYPE = "Incident";
+    private static final String FLOW_TYPE = "CTT";
     private static final String INCIDENT_DESCRIPTION = "Selenium test ticket";
     private static final String SEVERITY_ATTRIBUTE_NAME = "Severity";
-    private static final String STATUS_RESOLVED = "Resolved";
     private static final String DESCRIPTION_TAB_ARIA_CONTROLS = "_descriptionTab";
     private static final String TABLES_WINDOW_ID = "_tablesWindow";
     private static final String DESCRIPTION_FIELD_ID = "TEXT_FIELD_COMPONENT-_incidentDescriptionApp";
@@ -75,12 +62,27 @@ public class OverviewTicketTest extends BaseTestCase {
     private static final String ADD_TO_LIBRARY_LABEL = "Add to Library";
     private static final String ADD_TO_LIBRARY_WIZARD_ID = "addToLibraryPrompt_prompt-card";
     private static final String WIZARD_LIBRARY_TYPE_ID = "{\"identifier\":\"type\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"type\"}";
-    private static final String WIZARD_CATEGORY_ID = "{\"identifier\":\"RootCauseCategory\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"RootCauseCategory\"}";
-    private static final String TT_LIBRARY_TYPE = "Root Cause Category";
-    private static final String TT_CATEGORY_NAME = "Comarch application error";
+    private static final String WIZARD_CATEGORY_ID = "{\"identifier\":\"Cause\",\"parentIdentifier\":\"type\",\"parentValueIdentifier\":\"\",\"groupId\":\"Cause\"}";
+    private static final String TT_LIBRARY_TYPE = "Cause";
+    private static final String TT_CATEGORY_NAME = "User Error";
+    private static final String PRIORITY = "P1 - Critical Priority";
+    private static final String SEVERITY_ID = "TT_WIZARD_INPUT_SEVERITY_LABEL";
+    private static final String PRIORITY_ID = "TT_WIZARD_INPUT_PRIORITY_LABEL";
+    private static final String STATUS_INPROGRESS = "In Progress";
+    private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
+    private static final String ASSIGNEE = "sd_seleniumtest";
+    private static final String DOMAIN = "Nokia";
+    private static final String DOMAIN_ID = "COMMON_WIZARD_DOMAINS_FIELD_LABEL";
+    private static final String NUMBER_SIM = "000";
+    private static final String REASON_PRIORITY = "selenium_test";
+    private static final String SERVICE_TYPE = "VoiceService";
+    private static final String SERVICE_TYPE_ID = "GenericDictionaryField_Service_type_1";
+    private static final String COMMUNICATION_CHANNEL = "Email";
+    private static final String COMMUNICATION_CHANNEL_ID = "GenericDictionaryField_Communication_channel_1";
+    private static final String NUMBER_OF_SIM_ID = "GenericWizardUserAttributeField_numberOfSIMs";
+    private static final String REASON_ID = "GenericWizardUserAttributeField_ticketPriorityReason";
 
     private TicketDashboardPage ticketDashboardPage;
-    private IssueCSDIWizardPage issueCSDIWizardPage;
     private IssueDetailsPage issueDetailsPage;
     private TicketOverviewTab ticketOverviewTab;
     private String ticketID;
@@ -99,28 +101,28 @@ public class OverviewTicketTest extends BaseTestCase {
         ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
     }
 
-    @Test(priority = 1, testName = "Create Incident Ticket", description = "Create Incident Ticket")
-    @Description("Create Incident Ticket")
+    @Parameters({"MOIdentifier"})
+    @Test(priority = 1, testName = "Create CTT Ticket", description = "Create CTT Ticket")
+    @Description("Create CTT Ticket")
     public void createIncidentTicket(
+            @Optional("TEST_MO") String MOIdentifier
     ) {
-        issueCSDIWizardPage = ticketDashboardPage.openCreateTicketWizard(FLOW_TYPE).openIssueCSDIWizardPage();
-        issueCSDIWizardPage.setIssueTitle(ISSUE_TITLE);
-        issueCSDIWizardPage.enterDescription(INCIDENT_DESCRIPTION);
-        issueCSDIWizardPage.setSeverity(SEVERITY);
-        issueCSDIWizardPage.clickNextButtonInWizard();
-
-        issueCSDIWizardPage.setStepsToReproduce(STEPS_TO_REPRODUCE);
-        issueCSDIWizardPage.setExpectedBehavior(EXPECTED_BEHAVIOR);
-        issueCSDIWizardPage.setContactPerson(CONTACT_PERSON);
-
-        issueCSDIWizardPage.setImpact(IMPACT);
-        issueCSDIWizardPage.setImpactExplanation(IMPACT_EXPLANATION);
-        issueCSDIWizardPage.setUrgency(URGENCY);
-        issueCSDIWizardPage.setUrgencyExplanation(URGENCY_EXPLANATION);
-        issueCSDIWizardPage.setEnvironmentType(ENVIRONMENT_TYPE);
-        issueCSDIWizardPage.setComponent(COMPONENT);
-        issueCSDIWizardPage.clickAcceptButtonInWizard();
-
+        sdWizardPage = ticketDashboardPage.openCreateTicketWizard(FLOW_TYPE);
+        sdWizardPage.getMoStep().enterTextIntoMOIdentifierField(MOIdentifier);
+        sdWizardPage.getMoStep().selectObjectInMOTable(MOIdentifier);
+        sdWizardPage.clickNextButtonInWizard();
+        sdWizardPage.insertValueToComponent(SEVERITY, SEVERITY_ID);
+        sdWizardPage.insertValueToComponent(PRIORITY, PRIORITY_ID);
+        sdWizardPage.insertValueToComponent(NUMBER_SIM, NUMBER_OF_SIM_ID);
+        sdWizardPage.insertValueToComponent(REASON_PRIORITY, REASON_ID);
+        sdWizardPage.insertValueToComponent(SERVICE_TYPE, SERVICE_TYPE_ID);
+        sdWizardPage.insertValueToComponent(COMMUNICATION_CHANNEL, COMMUNICATION_CHANNEL_ID);
+        sdWizardPage.enterDescription(INCIDENT_DESCRIPTION);
+        sdWizardPage.insertValueToComponent(ASSIGNEE, TT_WIZARD_ASSIGNEE);
+//        sdWizardPage.insertValueToComponent(DOMAIN, DOMAIN_ID); //TODO: usunąć zakomentowanie gdy domeny bedą już gotowe w tym projekcie
+        sdWizardPage.clickNextButtonInWizard();
+        sdWizardPage.clickNextButtonInWizard();
+        sdWizardPage.clickAcceptButtonInWizard();
         ticketID = ticketDashboardPage.getIdFromMessage();
         Assert.assertTrue(ticketDashboardPage.getAttributeFromTable(0, SEVERITY_ATTRIBUTE_NAME).contains(SEVERITY));
         Assert.assertEquals(ticketDashboardPage.getRowForIssueWithID(ticketID), 0);
@@ -197,10 +199,9 @@ public class OverviewTicketTest extends BaseTestCase {
         ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
         issueDetailsPage.skipAllActionsOnCheckList();
 
-        ticketOverviewTab.changeIssueStatus(STATUS_RESOLVED);
-        ticketOverviewTab.fillReasonChange(webDriverWait, driver);
-        DelayUtils.sleep(1000);
-        Assert.assertEquals(ticketOverviewTab.checkTicketStatus(), STATUS_RESOLVED);
+        ticketOverviewTab.changeIssueStatus(STATUS_INPROGRESS);
+
+        Assert.assertEquals(ticketOverviewTab.checkTicketStatus(), STATUS_INPROGRESS);
     }
 
     @Test(priority = 8, testName = "Edit Ticket Details", description = "Edit Ticket Details and check if change is visible in Description tab")
@@ -208,7 +209,9 @@ public class OverviewTicketTest extends BaseTestCase {
     public void editTicketDetails() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         sdWizardPage = issueDetailsPage.clickEditDetails();
+        sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.enterDescription(TT_DESCRIPTION_EDITED);
+        sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
 
@@ -272,7 +275,7 @@ public class OverviewTicketTest extends BaseTestCase {
     @Parameters({"RelatedTicketID"})
     @Test(priority = 12, testName = "Check Related Tickets Tab - link Ticket", description = "Check Related Tickets Tab - link Ticket")
     @Description("Check Related Tickets Tab - link Ticket")
-    public void linkTicketToTicket(@Optional("397") String RelatedTicketID) {
+    public void linkTicketToTicket(@Optional("717") String RelatedTicketID) {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
         relatedTicketsTab.linkIssue(RelatedTicketID, "issueIdsToLink");

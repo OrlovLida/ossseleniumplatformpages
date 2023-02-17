@@ -33,6 +33,8 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String RECONCILIATION_TREE_TAB_ID = "narComponent_networkDiscoveryControlViewIdcmDomainsTreeTabId";
     private static final String CREATE_CM_DOMAIN_ACTION_ID = "narComponent_CmDomainActionCreateId";
     private static final String DELETE_CM_DOMAIN_ACTION_ID = "narComponent_CmDomainActionDeleteCmDomainId";
+    private static final String CANCEL_WITH_SUBSEQUENT_ACTION_ID = "narComponent_CmDomainActionCancelSubsequentDiscrepanciesId";
+    private static final String CONFIRM_CANCEL_WITH_SUBSEQUENT_BUTTON_ID = "ConfirmationBox_narComponent_networkInconsistenciesViewIdcancelDiscrepanciesConfirmationBoxId_action_button";
     private static final String SHOW_INCONCISTENCIES_ACTION_ID = "narComponent_CmDomainActionShowInconsistenciesId";
     private static final String SHOW_SAMPLES_MANAGEMENT_ACTION_ID = "narComponent_CmDomainActionCmSamplesManagementId";
     private static final String ISSUES_TABLE_ID = "narComponent_networkDiscoveryControlViewIdissuesTableId";
@@ -146,6 +148,15 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         prompt.clickButtonByLabel("Delete");
     }
 
+    @Step("Cancel all inconsistencies with subsequents")
+    public void cancelWithSubsequents() {
+        TabsInterface tabs = getTabsInterface();
+        tabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
+        tabs.callActionById(ActionsContainer.OTHER_GROUP_ID, CANCEL_WITH_SUBSEQUENT_ACTION_ID);
+        ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, wait);
+        prompt.clickButtonById(CONFIRM_CANCEL_WITH_SUBSEQUENT_BUTTON_ID);
+    }
+
     @Step("Check notification after deleting CM Domain")
     public String checkDeleteCmDomainNotification() {
         return Notifications.create(driver, wait).getNotificationMessage();
@@ -232,7 +243,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     }
 
     public List<String> getTabsLabels() {
-        return TabsWidget.createById(driver, wait,  RECONCILIATION_TAB_ID).getTabLabels();
+        return TabsWidget.createById(driver, wait, RECONCILIATION_TAB_ID).getTabLabels();
     }
 
     private void logIssues(String type) {
