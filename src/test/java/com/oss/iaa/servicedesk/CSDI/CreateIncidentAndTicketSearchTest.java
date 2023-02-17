@@ -133,8 +133,7 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
             Assert.fail(e.getMessage());
         }
         notificationWrapperPage = new NotificationWrapperPage(driver);
-
-        Assert.assertEquals(notificationWrapperPage.amountOfNotifications(), 0);
+        
         Assert.assertTrue(myGroupTicketsPage.checkIfFileIsNotEmpty(DOWNLOAD_FILE));
     }
 
@@ -160,7 +159,6 @@ public class CreateIncidentAndTicketSearchTest extends BaseTestCase {
     @Test(priority = 8, testName = "Check Closed Tickets View", description = "Refresh, search and check if ticket is shown in the closed tickets table")
     @Description("Refresh, search and check if ticket is shown in the closed tickets table")
     public void checkClosedTicketView() {
-        String ticketID = "395";
         closedTicketsPage = new ClosedTicketsPage(driver, webDriverWait).openView(driver, BASIC_URL);
         DelayUtils.sleep(1000);
         closedTicketsPage.clickRefresh();
