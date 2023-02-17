@@ -10,6 +10,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.comarch.oss.web.pages.GlobalSearchPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
@@ -17,8 +18,8 @@ import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
+import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
@@ -50,13 +51,13 @@ public class BucOssNar004Test extends BaseTestCase {
     public void createCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         waitForPageToLoad();
-        networkDiscoveryControlViewPage.openCmDomainWizard();
-        CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
-        wizard.setName(CM_DOMAIN_NAME);
-        wizard.setInterface(INTERFACE_NAME);
-        wizard.setDomain(DOMAIN);
-        wizard.save();
+        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, DOMAIN);
         waitForPageToLoad();
+        if (CSSUtils.isElementPresent(driver, CmDomainWizardPage.CM_DOMAIN_WIZARD_ID)) {
+            CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
+            wizard.cancel();
+            Assert.fail("Create CM Domain wizard was still open.");
+        }
     }
 
     @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
@@ -184,6 +185,8 @@ public class BucOssNar004Test extends BaseTestCase {
     public void deleteCmDomain() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.cancelWithSubsequents();
+        waitForPageToLoad();
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete CM Domain", "CM Domain delete"));

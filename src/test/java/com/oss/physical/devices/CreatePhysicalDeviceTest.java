@@ -537,7 +537,7 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
     private enum RANAntennaAdditionalAttributes {
         MECHANICAL_TILT("Mechanical Tilt [deg]", "1"),
         AZIMUTH("Azimuth [deg]", "2"),
-        HEIGHT("Height [m]", "3"),
+        HEIGHT("Height AGL [m]", "3"),
         SIDE_TILT("Side Tilt [deg]", "4"),
         MOUNTING_TYPE("Mounting Type", "Wall");
 

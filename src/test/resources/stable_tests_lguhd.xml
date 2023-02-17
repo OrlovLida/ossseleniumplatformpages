@@ -6,9 +6,4 @@
             <class name="com.oss.web.ExportByScheduleTest"/>
         </classes>
     </test>
-    <test name="LayoutTests">
-        <classes>
-            <class name="com.oss.web.LayoutTest"/>
-        </classes>
-    </test>
 </suite>
