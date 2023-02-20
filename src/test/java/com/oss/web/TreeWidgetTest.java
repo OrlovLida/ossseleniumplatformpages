@@ -104,7 +104,7 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String UPDATED_DESCRIPTION = "updated";
     private static final String DESCRIPTION = "description";
     private static final String EDIT_CHASSIS_ACTION = "EditChassisAction";
-    private static final String CHECK_DESCRIPTION_I_PROPERTY_PANEL = "Check description i Property Panel";
+    private static final String CHECK_DESCRIPTION_IN_PROPERTY_PANEL = "Check description in Property Panel";
     private static final String ROOT_SHOULD_NOT_BE_SELECTED = "Root should not be selected";
     private static final String SHOW_ON_IV_ACTION_SHOULD_NOT_BE_PRESENT = "Show on IV action should not be present";
     private static final String IV_IS_OPENED = "IV is opened";
@@ -472,6 +472,6 @@ public class TreeWidgetTest extends BaseTestCase {
     private void checkDescription(String description) {
         PropertyPanel propertyPanel = hierarchyViewPage.getPropertyPanel();
         String descriptionInPP = propertyPanel.getPropertyValue(DESCRIPTION);
-        Assertions.assertThat(descriptionInPP).as(CHECK_DESCRIPTION_I_PROPERTY_PANEL).isEqualTo(description);
+        Assertions.assertThat(descriptionInPP).as(CHECK_DESCRIPTION_IN_PROPERTY_PANEL).isEqualTo(description);
     }
 }
