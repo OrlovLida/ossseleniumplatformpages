@@ -3,12 +3,12 @@ package com.oss.smoketests;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
 
@@ -37,6 +37,9 @@ public class GisMapSmokeTest extends BaseTestCase {
     private static final String RED_COLOR_LOG_PATTERN = "Red color value is %s.";
     private static final String GREEN_COLOR_LOG_PATTERN = "Green color value is %s.";
     private static final String BLUE_COLOR_LOG_PATTERN = "Blue color value is %s.";
+    private static final String CANVAS_LENGTH_EXCEPTION_PATTERN = "Canvas object length is %s. Expected to be at least 2000000.";
+    private static final String CANVAS_PRESENT_EXCEPTION = "Canvas object does not exist.";
+    private static final String GENERATE_IMAGE_EXCEPTION = "Problem generationg the map image.";
     private static String FILE_PATH;
 
     @Test(priority = 1, description = "Open GIS View")
@@ -58,15 +61,15 @@ public class GisMapSmokeTest extends BaseTestCase {
         checkGlobalNotificationContainer();
         gisViewPage.setMap(MAP_NAME);
         waitForPageToLoad();
-        Assert.assertTrue(gisViewPage.isCanvasPresent());
+        Assert.assertTrue(gisViewPage.isCanvasPresent(), CANVAS_PRESENT_EXCEPTION);
     }
 
     @Test(priority = 3, description = "Check Canvas object bytes size", dependsOnMethods = {"isCanvasObjectPresent"})
     @Description("Check Canvas object bytes size")
     public void checkCanvasObjectSize() {
         String canvasObject = GisViewPage.getGisViewPage(driver, webDriverWait).getCanvasObject();
-        Assert.assertTrue(canvasObject.length() > 2000000);
-        Assert.assertTrue(generateImage(canvasObject));
+        Assert.assertTrue(canvasObject.length() > 2000000, CANVAS_LENGTH_EXCEPTION_PATTERN);
+        Assert.assertTrue(generateImage(canvasObject), GENERATE_IMAGE_EXCEPTION);
     }
 
     @Test(priority = 4, description = "Check the colors of Canvas object", dependsOnMethods = {"checkCanvasObjectSize"})
@@ -104,7 +107,7 @@ public class GisMapSmokeTest extends BaseTestCase {
                 }
             }
             FILE_PATH = getFilePath() + "/" + FILE_NAME;
-            OutputStream out = new FileOutputStream(FILE_PATH);
+            OutputStream out = Files.newOutputStream(Paths.get(FILE_PATH));
             out.write(b);
             out.flush();
             out.close();
