@@ -104,6 +104,12 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String UPDATED_DESCRIPTION = "updated";
     private static final String DESCRIPTION = "description";
     private static final String EDIT_CHASSIS_ACTION = "EditChassisAction";
+    private static final String CHECK_DESCRIPTION_I_PROPERTY_PANEL = "Check description i Property Panel";
+    private static final String ROOT_SHOULD_NOT_BE_SELECTED = "Root should not be selected";
+    private static final String SHOW_ON_IV_ACTION_SHOULD_NOT_BE_PRESENT = "Show on IV action should not be present";
+    private static final String IV_IS_OPENED = "IV is opened";
+    private static final String ONE_ROOT_IS_OPENED_ON_HV = "One root is opened on HV";
+    private static final String THERE_IS_NO_DATA_ON_TREE = "There is no data on tree";
 
     private Environment env = Environment.getInstance();
     private HierarchyViewPage hierarchyViewPage;
@@ -293,7 +299,7 @@ public class TreeWidgetTest extends BaseTestCase {
     public void clickInlineAction() {
         hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID);
         Assertions.assertThat(hierarchyViewPage
-                .getFirstNode().isToggled()).isFalse();
+                .getFirstNode().isToggled()).as(ROOT_SHOULD_NOT_BE_SELECTED).isFalse();
     }
 
     @Test(priority = 16)
@@ -305,7 +311,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.selectNodeByLabelsPath(PATH_DEVICE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Button.createById(driver, ActionsContainer.SHOW_ON_GROUP_ID).click();
-        Assertions.assertThat(CSSUtils.isElementPresent(driver, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID)).isFalse();
+        Assertions.assertThat(CSSUtils.isElementPresent(driver, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID)).as(SHOW_ON_IV_ACTION_SHOULD_NOT_BE_PRESENT).isFalse();
     }
 
     @Test(priority = 17)
@@ -315,7 +321,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.SHOW_ON_GROUP_ID, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-        Assertions.assertThat(inventoryViewPage.getViewTitle()).isEqualTo(INVENTORY_VIEW_TITLE);
+        Assertions.assertThat(inventoryViewPage.getViewTitle()).as(IV_IS_OPENED).isEqualTo(INVENTORY_VIEW_TITLE);
     }
 
     @Test(priority = 18)
@@ -325,7 +331,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID,
                 HierarchyViewPage.OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID);
         List<Node> nodes = hierarchyViewPage.getMainTree().getVisibleNodes();
-        Assertions.assertThat(nodes).hasSize(1);
+        Assertions.assertThat(nodes).as(ONE_ROOT_IS_OPENED_ON_HV).hasSize(1);
     }
 
     @Test(priority = 19)
@@ -385,8 +391,8 @@ public class TreeWidgetTest extends BaseTestCase {
         ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(CONFIRM_DELETE_BUTTON);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> nodes = viewPage.getVisibleNodesLabel();
-        Assertions.assertThat(nodes.isEmpty()).isTrue();
-        Assertions.assertThat(viewPage.getMainTree().hasNoData());
+        Assertions.assertThat(nodes).isEmpty();
+        Assertions.assertThat(viewPage.getMainTree().hasNoData()).as(THERE_IS_NO_DATA_ON_TREE).isTrue();
     }
 
     @AfterClass
@@ -466,6 +472,6 @@ public class TreeWidgetTest extends BaseTestCase {
     private void checkDescription(String description) {
         PropertyPanel propertyPanel = hierarchyViewPage.getPropertyPanel();
         String descriptionInPP = propertyPanel.getPropertyValue(DESCRIPTION);
-        Assertions.assertThat(descriptionInPP).isEqualTo(description);
+        Assertions.assertThat(descriptionInPP).as(CHECK_DESCRIPTION_I_PROPERTY_PANEL).isEqualTo(description);
     }
 }
