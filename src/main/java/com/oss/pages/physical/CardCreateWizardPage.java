@@ -1,8 +1,14 @@
 package com.oss.pages.physical;
 
+import java.util.List;
+import java.util.Set;
+
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.data.Data;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.inputs.SearchField;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -42,6 +48,28 @@ public class CardCreateWizardPage extends BasePage {
     @Step("Get wizard name")
     public String getWizardName() {
         return getWizard().getWizardName();
+    }
+
+    @Step("Get available slots")
+    public List<String> getAvailableSlots() {
+        return getWizard().getComponent(AVAILABLE_SLOTS_ID).getStringValues();
+    }
+
+    @Step("Get available slots field mouse cursor")
+    public Input.MouseCursor getAvailableSlotsCursor() {
+        return getWizard().getComponent(AVAILABLE_SLOTS_ID).cursor();
+    }
+
+    @Step("Get available slot field messages")
+    public List<String> getAvailableSlotMessages() {
+        return getWizard().getComponent(AVAILABLE_SLOTS_ID).getMessages();
+    }
+
+    @Step("Get available card models for model: {model}")
+    public Set<String> getModelsContains(String model) {
+        SearchField modelField = (SearchField) getWizard().getComponent(MODEL_ID);
+        Data modelData = Data.createSingleData(model);
+        return modelField.getOptionsContains(modelData);
     }
 
 }
