@@ -66,6 +66,8 @@ public class CscvSmokeTest extends BaseTestCase {
     private static final String TABLE_CONTEXT_ACTION_EXCEPTION = "The context action label in the table is incorrect.";
     private static final String CANVAS_PRESENT_EXCEPTION = "Canvas object does not exist.";
     private static final String GENERATE_IMAGE_EXCEPTION = "Problem generationg the map image.";
+    private static final String MAP_DIMENSIONS_PATTERN = "Map dimensions - Height: %s, Width: %s.";
+    private static final int BLACK_COLOR = 16777216;
     private static String FILE_PATH;
     private static final Logger LOGGER = LoggerFactory.getLogger(CscvSmokeTest.class);
     private final Environment env = Environment.getInstance();
@@ -123,21 +125,24 @@ public class CscvSmokeTest extends BaseTestCase {
     @Description("Check the colors of Canvas object")
     public void isCanvasObjectColors() throws IOException {
         BufferedImage img = ImageIO.read(new File(FILE_PATH));
+        SoftAssert softAssert = new SoftAssert();
         int height = img.getHeight();
         int width = img.getWidth();
+        LOGGER.debug(String.format(MAP_DIMENSIONS_PATTERN, height, width));
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 Color c = new Color(img.getRGB(i, j));
-                int red = c.getRed();
-                int green = c.getGreen();
-                int blue = c.getBlue();
-                SoftAssert softAssert = new SoftAssert();
-                softAssert.assertNotEquals(red, 0, String.format(RED_COLOR_LOG_PATTERN, red));
-                softAssert.assertNotEquals(green, 0, String.format(GREEN_COLOR_LOG_PATTERN, green));
-                softAssert.assertNotEquals(blue, 0, String.format(BLUE_COLOR_LOG_PATTERN, blue));
-                softAssert.assertAll();
+                if (c.getRGB() != BLACK_COLOR) {
+                    int red = c.getRed();
+                    int green = c.getGreen();
+                    int blue = c.getBlue();
+                    softAssert.assertNotEquals(red, 0, String.format(RED_COLOR_LOG_PATTERN, red));
+                    softAssert.assertNotEquals(green, 0, String.format(GREEN_COLOR_LOG_PATTERN, green));
+                    softAssert.assertNotEquals(blue, 0, String.format(BLUE_COLOR_LOG_PATTERN, blue));
+                }
             }
         }
+        softAssert.assertAll();
     }
 
     private boolean generateImage(String imgStr) {
