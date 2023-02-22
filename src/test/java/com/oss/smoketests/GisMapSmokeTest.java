@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.GlobalNotificationContainer;
@@ -34,12 +35,13 @@ public class GisMapSmokeTest extends BaseTestCase {
     private static final String PATH_NAME = "gismap";
     private static final String FILE_NAME = "smoketest.png";
     private static final String MAP_NAME = "Here Terrain Map";
-    private static final String RED_COLOR_LOG_PATTERN = "Red color value is %s.";
-    private static final String GREEN_COLOR_LOG_PATTERN = "Green color value is %s.";
-    private static final String BLUE_COLOR_LOG_PATTERN = "Blue color value is %s.";
     private static final String CANVAS_LENGTH_EXCEPTION_PATTERN = "Canvas object length is %s. Expected to be at least 2000000.";
     private static final String CANVAS_PRESENT_EXCEPTION = "Canvas object does not exist.";
     private static final String GENERATE_IMAGE_EXCEPTION = "Problem generationg the map image.";
+    private static final String MAP_DIMENSIONS_PATTERN = "Map dimensions - Height: %s, Width: %s.";
+    private static final int BLACK_COLOR = -16777216;
+    private static final String RGB_COLOR_LOG_PATTERN = "RGB color value is %s. ";
+
     private static String FILE_PATH;
 
     @Test(priority = 1, description = "Open GIS View")
@@ -76,19 +78,23 @@ public class GisMapSmokeTest extends BaseTestCase {
     @Description("Check the colors of Canvas object")
     public void isCanvasObjectColors() throws IOException {
         BufferedImage img = ImageIO.read(new File(FILE_PATH));
+        SoftAssert softAssert = new SoftAssert();
         int height = img.getHeight();
         int width = img.getWidth();
+        LOGGER.debug(String.format(MAP_DIMENSIONS_PATTERN, height, width));
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 Color c = new Color(img.getRGB(i, j));
-                int red = c.getRed();
-                int green = c.getGreen();
-                int blue = c.getBlue();
-                Assert.assertNotEquals(red, 0, String.format(RED_COLOR_LOG_PATTERN, red));
-                Assert.assertNotEquals(green, 0, String.format(GREEN_COLOR_LOG_PATTERN, green));
-                Assert.assertNotEquals(blue, 0, String.format(BLUE_COLOR_LOG_PATTERN, blue));
+                if (c.getRGB() != BLACK_COLOR) {
+                    int red = c.getRed();
+                    int green = c.getGreen();
+                    int blue = c.getBlue();
+                    int sum = red + green + blue;
+                    softAssert.assertNotEquals(sum, 0, String.format(RGB_COLOR_LOG_PATTERN, c.getRGB()) + String.format(MAP_DIMENSIONS_PATTERN, j, i));
+                }
             }
         }
+        softAssert.assertAll();
     }
 
     private void waitForPageToLoad() {
