@@ -48,8 +48,8 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
     private static final String TAG_FOLDER = "tagsmoke";
     private static final String OWNER = CONFIGURATION.getLogin();
     private static final String HOME_DIRECTORY = "HOME";
-    private static final String NAME_MESSAGE = " name is other than expected";
-    private static final String OWNER_MESSAGE = " owner is other than expected";
+    private static final String NAME_MESSAGE_EXCEPTION_PATTERN = "%s name is other than expected";
+    private static final String LIST_MESSAGE_EXCEPTION = "List is empty";
 
     @Test(priority = 1, description = "Check Home Page")
     @Description("Check Home Page")
@@ -102,7 +102,7 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         attachNewFile();
         checkPopup();
         closeMessage();
-        globalAttachmentManagerPage.openDirectory(UPDATED_DIRECTORY_NAME);
+        globalAttachmentManagerPage.clickDirectoryLinkInPath(UPDATED_DIRECTORY_NAME);
 
     }
 
@@ -114,9 +114,9 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         confirmDeletion();
 
         GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
-        Assert.assertTrue(globalAttachmentManagerPage.isListEmpty());
+        Assert.assertTrue(globalAttachmentManagerPage.isListEmpty(), LIST_MESSAGE_EXCEPTION);
 
-        globalAttachmentManagerPage.clickLink(HOME_DIRECTORY);
+        globalAttachmentManagerPage.clickLinkInList(HOME_DIRECTORY);
     }
 
     @Test(priority = 7, description = "Delete Directory", dependsOnMethods = {"createDirectory"})
@@ -170,9 +170,9 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(globalAttachmentManagerPage.isNamePresent(expectedDirectoryName), "Directory" + NAME_MESSAGE);
-        softAssert.assertTrue(globalAttachmentManagerPage.isOwnerPresent(OWNER), "Directory" + OWNER_MESSAGE);
-        softAssert.assertTrue(globalAttachmentManagerPage.areTagsPresent(expectedTags), "Directory tags are other than expected");
+        softAssert.assertTrue(globalAttachmentManagerPage.isNamePresent(expectedDirectoryName), String.format(NAME_MESSAGE_EXCEPTION_PATTERN, "Directory"));
+        softAssert.assertTrue(globalAttachmentManagerPage.isOwnerPresent(OWNER), String.format(NAME_MESSAGE_EXCEPTION_PATTERN, "Owner"));
+        softAssert.assertTrue(globalAttachmentManagerPage.areTagsPresent(expectedTags), String.format(NAME_MESSAGE_EXCEPTION_PATTERN, "Tags"));
         softAssert.assertAll();
     }
 
@@ -181,8 +181,8 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertTrue(globalAttachmentManagerPage.isNamePresent(FILE_NAME), "File" + NAME_MESSAGE);
-        softAssert.assertTrue(globalAttachmentManagerPage.isOwnerPresent(OWNER), "File" + OWNER_MESSAGE);
+        softAssert.assertTrue(globalAttachmentManagerPage.isNamePresent(FILE_NAME), String.format(NAME_MESSAGE_EXCEPTION_PATTERN, "File"));
+        softAssert.assertTrue(globalAttachmentManagerPage.isOwnerPresent(OWNER), String.format(NAME_MESSAGE_EXCEPTION_PATTERN, "Owner"));
         softAssert.assertAll();
     }
 

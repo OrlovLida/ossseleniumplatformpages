@@ -12,7 +12,7 @@ import io.qameta.allure.Step;
 
 public class GlobalAttachmentManagerPage extends BasePage {
 
-    private static final String HOME_DIRECTORY_BUTTON = "OLD_TEXT_FIELD_APP-globalAttachmentManager_textField";
+    private static final String HOME_DIRECTORY_INPUT = "OLD_TEXT_FIELD_APP-globalAttachmentManager_textField";
     private static final String GLOBAL_ATTACHMENT_MANAGER_VIEW_ID = "globalAttachmentManager_templateWindow";
     public static final String CREATE_DIRECTORY_ACTION_ID = "dms_createDirectoryAct";
     public static final String EDIT_DIRECTORY_ACTION_ID = "editFolderAct";
@@ -35,17 +35,17 @@ public class GlobalAttachmentManagerPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Get name")
+    @Step("Check if object with given {name} is present")
     public boolean isNamePresent(String name) {
         return getList().isRowDisplayed(NAME_COLUMN, name);
     }
 
-    @Step("Get owner")
+    @Step("Check if object with given {owner} is present")
     public boolean isOwnerPresent(String owner) {
         return getList().isRowDisplayed(OWNER_COLUMN, owner);
     }
 
-    @Step("Get tags")
+    @Step("Check if object with given {tags} is present")
     public boolean areTagsPresent(String tags) {
         return getList().isRowDisplayed(TAGS_COLUMN, tags);
     }
@@ -60,20 +60,20 @@ public class GlobalAttachmentManagerPage extends BasePage {
         return getList().hasNoData();
     }
 
-    @Step("Select current row")
+    @Step("Select row")
     public void selectRow(String name) {
         getList().getRow(NAME_COLUMN, name).selectRow();
     }
 
     @Step("Open directory with name = {directoryName}")
-    public void openDirectory(String directoryName) {
+    public void clickDirectoryLinkInPath(String directoryName) {
         getList().getRow(NAME_COLUMN, directoryName).clickLink(directoryName);
         DelayUtils.waitForPageToLoad(driver, wait);
     }
 
-    @Step("Click link")
-    public void clickLink(String link) {
-        CommentTextField input = CommentTextField.create(driver, wait, HOME_DIRECTORY_BUTTON);
+    @Step("Click link on List")
+    public void clickLinkInList(String link) {
+        CommentTextField input = CommentTextField.create(driver, wait, HOME_DIRECTORY_INPUT);
         input.clickLink(link);
     }
 }
