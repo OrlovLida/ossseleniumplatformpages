@@ -2,6 +2,7 @@ package com.oss.pages.dms;
 
 import org.openqa.selenium.WebDriver;
 
+import com.oss.framework.components.inputs.CommentTextField;
 import com.oss.framework.components.layout.Card;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
@@ -11,6 +12,7 @@ import io.qameta.allure.Step;
 
 public class GlobalAttachmentManagerPage extends BasePage {
 
+    private static final String HOME_DIRECTORY_BUTTON = "OLD_TEXT_FIELD_APP-globalAttachmentManager_textField";
     private static final String GLOBAL_ATTACHMENT_MANAGER_VIEW_ID = "globalAttachmentManager_templateWindow";
     public static final String CREATE_DIRECTORY_ACTION_ID = "dms_createDirectoryAct";
     public static final String EDIT_DIRECTORY_ACTION_ID = "editFolderAct";
@@ -34,18 +36,18 @@ public class GlobalAttachmentManagerPage extends BasePage {
     }
 
     @Step("Get name")
-    public String getName(String directoryName) {
-        return getList().getRow(NAME_COLUMN, directoryName).getValue(NAME_COLUMN);
+    public boolean isNamePresent(String name) {
+        return getList().isRowDisplayed(NAME_COLUMN, name);
     }
 
     @Step("Get owner")
-    public String getOwner(String owner) {
-        return getList().getRow(OWNER_COLUMN, owner).getValue(OWNER_COLUMN);
+    public boolean isOwnerPresent(String owner) {
+        return getList().isRowDisplayed(OWNER_COLUMN, owner);
     }
 
     @Step("Get tags")
-    public String getTags(String tags) {
-        return getList().getRow(TAGS_COLUMN, tags).getValue(TAGS_COLUMN);
+    public boolean areTagsPresent(String tags) {
+        return getList().isRowDisplayed(TAGS_COLUMN, tags);
     }
 
     @Step("Get list")
@@ -63,9 +65,15 @@ public class GlobalAttachmentManagerPage extends BasePage {
         getList().getRow(NAME_COLUMN, name).selectRow();
     }
 
-//    TODO: Odkomentowac po rozwiazaniu: OSSSELEN-659
-//    @Step("Open directory with name = {directoryName}")
-//    public void openDirectory(String directoryName) {
-//        getList().getRow(NAME_COLUMN, directoryName).getCell(NAME_COLUMN).click();
-//    }
+    @Step("Open directory with name = {directoryName}")
+    public void openDirectory(String directoryName) {
+        getList().getRow(NAME_COLUMN, directoryName).clickLink(directoryName);
+        DelayUtils.waitForPageToLoad(driver, wait);
+    }
+
+    @Step("Click link")
+    public void clickLink(String link) {
+        CommentTextField input = CommentTextField.create(driver, wait, HOME_DIRECTORY_BUTTON);
+        input.clickLink(link);
+    }
 }

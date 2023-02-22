@@ -4,7 +4,6 @@ import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.List;
 
-import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -33,27 +32,24 @@ import static com.oss.configuration.Configuration.CONFIGURATION;
 import static com.oss.pages.dms.GlobalAttachmentManagerPage.ATTACH_FILE_ACTION_ID;
 import static com.oss.pages.dms.GlobalAttachmentManagerPage.CREATE_DIRECTORY_ACTION_ID;
 import static com.oss.pages.dms.GlobalAttachmentManagerPage.DELETE_DIRECTORY_ACTION_ID;
+import static com.oss.pages.dms.GlobalAttachmentManagerPage.DELETE_FILE_ACTION_ID;
 import static com.oss.pages.dms.GlobalAttachmentManagerPage.EDIT_DIRECTORY_ACTION_ID;
 import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.DELETE_BUTTON_LABEL;
 
 public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
-    String homeDirectoryUrl;
-    private static final Logger LOGGER = LoggerFactory.getLogger(GisMapSmokeTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GlobalAttachmentManagerSmokeTest.class);
     private static final String RESOURCE_INVENTORY_CATEGORY_NAME = "Resource Inventory";
     private static final String GLOBAL_ATTACHMENT_MANAGER_APPLICATION_NAME = "Global Attachment Manager";
-
-    private static final String FILE_NAME = "SeleniumTest.txt";
+    private static final String FILE_NAME = "GamTest.txt";
     private static final String DIRECTORY_NAME = "01SmokeTestDirectory";
     private static final String UPDATED_DIRECTORY_NAME = "02SmokeTestUpdatedFolder";
-    private static final String HOME_DIRECTORY_NAME = "HOME";
     private static final String UPDATED_TAG_FOLDER = "tagtest";
     private static final String EXPECTED_TAGS_LIST = "tagtest, tagsmoke";
     private static final String TAG_FOLDER = "tagsmoke";
     private static final String OWNER = CONFIGURATION.getLogin();
-    private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
-    private static final String CREATE_DIRECTORY_SUCCESS_MESSAGE = "Success! Directory with name SmokeTestDirectory has been created";
-    private static final String UPDATE_DIRECTORY_SUCCESS_MESSAGE = "Success! Directory was successfully edited";
-    private static final String DELETE_DIRECTORY_SUCCESS_MESSAGE = "Success! Successful removed folder";
+    private static final String HOME_DIRECTORY = "HOME";
+    private static final String NAME_MESSAGE = " name is other than expected";
+    private static final String OWNER_MESSAGE = " owner is other than expected";
 
     @Test(priority = 1, description = "Check Home Page")
     @Description("Check Home Page")
@@ -63,7 +59,7 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         checkGlobalNotificationContainer();
     }
 
-    @Test(priority = 2, description = "Open Global Attachment Manager")
+    @Test(priority = 2, description = "Open Global Attachment Manager", dependsOnMethods = {"checkHomePage"})
     @Description("Open Global Attachment Manager")
     public void openGlobalAttachmentManager() {
         HomePage homePage = new HomePage(driver);
@@ -73,7 +69,7 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         checkGlobalNotificationContainer();
     }
 
-    @Test(priority = 3, description = "Create Directory")
+    @Test(priority = 3, description = "Create Directory", dependsOnMethods = {"openGlobalAttachmentManager"})
     @Description("Create Directory")
     public void createDirectory() {
         GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
@@ -85,7 +81,7 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 4, description = "Edit Directory")
+    @Test(priority = 4, description = "Edit Directory", dependsOnMethods = {"createDirectory"})
     @Description("Edit Directory")
     public void editDirectory() {
         GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
@@ -97,7 +93,7 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         closeMessage();
     }
 
-    @Test(priority = 5, description = "Attach File")
+    @Test(priority = 5, description = "Attach File", dependsOnMethods = {"createDirectory"})
     @Description("Attach File")
     public void attachFile() {
         GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
@@ -106,25 +102,24 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         attachNewFile();
         checkPopup();
         closeMessage();
-        homeDirectoryUrl = driver.getCurrentUrl();
+        globalAttachmentManagerPage.openDirectory(UPDATED_DIRECTORY_NAME);
+
     }
 
-//    TODO: Odkomentowac po rozwizaniu: OSSSELEN-659
-//    @Test(priority = 6, description = "Check nd delete attached file")
-//    @Description("Check nd delete attached file")
-//    public void checkAndDeleteAttachedFile() {
-//        GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
-//        globalAttachmentManagerPage.openDirectory(UPDATED_DIRECTORY_NAME);
-//        assertFilePresenceInDirectory(FILE_NAME);
-//        globalAttachmentManagerPage.selectRow(FILE_NAME);
-//        globalAttachmentManagerPage.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_FILE_ACTION_ID);
-//        confirmDeletion();
-//        Assert.assertTrue(globalAttachmentManagerPage.isListEmpty());
-//        globalAttachmentManagerPage.openDirectory(HOME_DIRECTORY_NAME);
-//        driver.navigate().to(homeDirectoryUrl);
-//    }
+    @Test(priority = 6, description = "Check nd delete attached file", dependsOnMethods = {"attachFile"})
+    @Description("Check and delete attached file")
+    public void checkAndDeleteAttachedFile() {
+        assertFilePresenceInDirectory();
+        deleteFile();
+        confirmDeletion();
 
-    @Test(priority = 7, description = "Delete Directory")
+        GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
+        Assert.assertTrue(globalAttachmentManagerPage.isListEmpty());
+
+        globalAttachmentManagerPage.clickLink(HOME_DIRECTORY);
+    }
+
+    @Test(priority = 7, description = "Delete Directory", dependsOnMethods = {"createDirectory"})
     @Description("Delete Directory")
     public void deleteDirectory() {
         GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
@@ -166,40 +161,29 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
     private void checkPopup() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
-        Assertions.assertThat(messages).hasSize(1);
-        Assertions.assertThat(systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType())
-                .isEqualTo(SystemMessageContainer.MessageType.SUCCESS);
+        Assert.assertEquals(messages.size(), 1);
+        Assert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS, "The list is empty");
     }
 
     @Step("Assert Directory Attributes")
-    private void assertDirectoryAttributes(String expectedDirectoryName, String expectedTagFolder) {
+    private void assertDirectoryAttributes(String expectedDirectoryName, String expectedTags) {
         GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
-        String actualName = globalAttachmentManagerPage.getName(expectedDirectoryName);
-        String actualOwner = globalAttachmentManagerPage.getOwner(OWNER);
-        String actualTags = globalAttachmentManagerPage.getTags(expectedTagFolder);
 
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(expectedDirectoryName, actualName);
-        softAssert.assertEquals(OWNER, actualOwner);
-        softAssert.assertEquals(expectedTagFolder, actualTags);
+        softAssert.assertTrue(globalAttachmentManagerPage.isNamePresent(expectedDirectoryName), "Directory" + NAME_MESSAGE);
+        softAssert.assertTrue(globalAttachmentManagerPage.isOwnerPresent(OWNER), "Directory" + OWNER_MESSAGE);
+        softAssert.assertTrue(globalAttachmentManagerPage.areTagsPresent(expectedTags), "Directory tags are other than expected");
         softAssert.assertAll();
     }
 
     @Step("Assert attached file")
-    private void assertFilePresenceInDirectory(String expectedFileName) {
+    private void assertFilePresenceInDirectory() {
         GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
-        String actualName = globalAttachmentManagerPage.getName(expectedFileName);
-        String actualOwner = globalAttachmentManagerPage.getOwner(OWNER);
-        SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(expectedFileName, actualName);
-        softAssert.assertEquals(OWNER, actualOwner);
-        softAssert.assertAll();
-    }
 
-    @Step("Assert attached file was removed")
-    private void assertFileDeletion() {
-        GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
-        globalAttachmentManagerPage.isListEmpty();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(globalAttachmentManagerPage.isNamePresent(FILE_NAME), "File" + NAME_MESSAGE);
+        softAssert.assertTrue(globalAttachmentManagerPage.isOwnerPresent(OWNER), "File" + OWNER_MESSAGE);
+        softAssert.assertAll();
     }
 
     @Step("Create Directory")
@@ -220,6 +204,13 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         waitForPageToLoad();
     }
 
+    @Step("Delete file")
+    private void deleteFile() {
+        GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
+        globalAttachmentManagerPage.selectRow(FILE_NAME);
+        globalAttachmentManagerPage.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_FILE_ACTION_ID);
+    }
+
     @Step("Confirm Deletion")
     private void confirmDeletion() {
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
@@ -230,13 +221,12 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
     @Step("Close Message")
     private void closeMessage() {
         SystemMessageContainer.create(driver, webDriverWait).close();
-        waitForPageToLoad();
     }
 
     @Step("Attach File")
     private void attachNewFile() {
         try {
-            java.net.URL resource = GlobalAttachmentManagerSmokeTest.class.getClassLoader().getResource("bpm/" + FILE_NAME);
+            java.net.URL resource = GlobalAttachmentManagerSmokeTest.class.getClassLoader().getResource("gam/" + FILE_NAME);
             assert resource != null;
             String absolutePatch = Paths.get(resource.toURI()).toFile().getAbsolutePath();
             AttachFileWizardPage attachFileWizardPage = new AttachFileWizardPage(driver);
