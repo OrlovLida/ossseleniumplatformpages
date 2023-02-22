@@ -48,8 +48,6 @@ public class NetworkViewPage extends BasePage {
     public static final String CONNECTION_ACTION = "add_to_view_group_Connection-null";
     public static final String CREATE_MEDIATION_CONFIGURATION_ID = "CREATE_Mediation Configuration-null";
     public static final String DELETE_CONNECTION_ID = "EDIT_Delete-null";
-    public static final String DELETE_CONNECTION_CONFIRMATION_BUTTON_ID = "ConfirmationBox_DeletePopupConfirmationBox_action_button";
-    public static final String DELETE_DEVICE_CONFIRMATION_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
     public static final String CREATE_CONNECTION_ID = "CREATE_Create Connection-null";
     public static final String MODIFY_TERMINATION_ACTION_ID = "ModifyTerminationActionId";
     public static final String TRAIL_TYPE_ACCEPT_BUTTON_ID = "wizard-submit-button-trailTypeWizardWidget";
@@ -65,7 +63,6 @@ public class NetworkViewPage extends BasePage {
     private static final String LEFT_PANEL_TAB_ID = "dockedPanel-left";
     private static final String VALIDATION_RESULT_ID = "Validation Results";
     public static final String ELEMENT_ROUTING_TABLE_APP_ID = "routing-elements-table-app";
-    private static final String TERMINATION_TABLE_APP_ID = "TerminationIndexedWidget";
     private static final String FIRST_LEVEL_ROUTING_TABLE_APP_ID = "RoutingSegmentIndexedWidget";
     private static final String CONTENT_VIEW_TABLE_APP_ID = "objectsApp";
     private static final String SUPPRESSION_WIZARD_ID = "plaSuppressionWizard_prompt-card";
@@ -78,14 +75,10 @@ public class NetworkViewPage extends BasePage {
     private static final String ATTRIBUTES_PANEL_ID = "NetworkViewPropertyPanelWidget";
     private static final String REFRESH_BUTTON_ID = "refreshButton";
     private static final String REMOVE_FROM_ELEMENT_ROUTING_BUTTON_ID = "Remove from routing";
-    private static final String TERMINATIONS_TABLE_APP_ID = "TerminationIndexedWidget";
+    public static final String TERMINATIONS_TABLE_APP_ID = "TerminationIndexedWidget";
     private static final String VALIDATION_RESULTS_PANEL_ID = "plaValidationResultsV3ForProcessApp";
     private static final String REASON_FIELD_ID = "reasonField";
-    public static final String DELETE_CONNECTION_ON_IV_ACTION_ID = "DeleteTrailWizardActionId";
-    public static final String DELETE_DEVICE_ON_IV_ACTION_ID = "DeleteDeviceWizardAction";
-    public static final String DELETE_SUBMIT_BUTTON_ID = "wizard-submit-button-deleteWidgetId";
     private static final String ROUTING_ACTION_ID = "EDIT_Add to Routing-null";
-    private static final String FIRST_LEVEL_ROUTING_TAB_LABEL = "Routing - 1st level";
     public static final String ELEMENT_ROUTING_TAB_LABEL = "Element Routing";
     public static final String TERMINATIONS_TAB_LABEL = "Terminations";
     public static final String OCCUPATION_TAB_LABEL = "Occupation";
@@ -135,7 +128,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Add selected objects to Routing with not custom Wizard")
     public void addSelectedConnectionToRouting() {
-        OldActionsContainer.createById(driver, wait, ACTION_CONTAINER_ID).callActionById(EDIT_GROUP_ID, ROUTING_ACTION_ID);
+        getMainActionContainer().callActionById(EDIT_GROUP_ID, ROUTING_ACTION_ID);
         waitForPageToLoad();
         ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);
         connectionWizardPage.clickAccept();
@@ -231,7 +224,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Open modify termination wizard")
     public void modifyTermination() {
-        TableWidget tableWidget = TableWidget.createById(driver, TERMINATION_TABLE_APP_ID, wait);
+        TableWidget tableWidget = TableWidget.createById(driver, TERMINATIONS_TABLE_APP_ID, wait);
         tableWidget.callAction(EDIT_GROUP_ID, MODIFY_TERMINATION_ACTION_ID);
     }
 
@@ -287,12 +280,6 @@ public class NetworkViewPage extends BasePage {
         getOldTable(CONTENT_VIEW_TABLE_APP_ID).unselectRowContains(attributeLabel, value);
     }
 
-    public void openFirstLevelRoutingTab() {
-        expandDetailsPanel();
-        selectTabFromBottomPanel(FIRST_LEVEL_ROUTING_TAB_NAME);
-        waitForPageToLoad();
-    }
-
     @Step("Click on object in View content by partial name: {partialName} and index {index}")
     public void clickOnObject(String partialName, int index) {
         expandViewContentPanel();
@@ -303,7 +290,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Select Termination in details panel")
     public void selectTermination(String attributeId, String value) {
-        selectObjectInTableWidgetTab(TERMINATION_TABLE_APP_ID, attributeId, value);
+        selectObjectInTableWidgetTab(TERMINATIONS_TABLE_APP_ID, attributeId, value);
         waitForPageToLoad();
     }
 
@@ -464,32 +451,27 @@ public class NetworkViewPage extends BasePage {
     }
 
     public String getObjectValueFromContentTab(Integer index, String attributeLabel) {
-        OldTable table = OldTable.createById(driver, wait, CONTENT_VIEW_TABLE_APP_ID);
-        return table.getCellValue(index, attributeLabel);
+        return getOldTable(CONTENT_VIEW_TABLE_APP_ID).getCellValue(index, attributeLabel);
     }
 
-    public void searchObjectInContentTabByPartialName(String attributeLabel, Input.ComponentType componentType, String value) {
-        OldTable table = OldTable.createById(driver, wait, CONTENT_VIEW_TABLE_APP_ID);
-        table.searchByAttributeWithLabel(attributeLabel, componentType, value);
+    public void searchObjectInContentTab(String attributeLabel, Input.ComponentType componentType, String value) {
+        searchObjectInDetailTab(attributeLabel, componentType, value, CONTENT_VIEW_TABLE_APP_ID);
     }
 
-    public void searchObjectInDetailTabByPartialName(String attributeLabel, Input.ComponentType componentType, String value, String tabId) {
-        OldTable table = OldTable.createById(driver, wait, tabId);
-        table.searchByAttributeWithLabel(attributeLabel, componentType, value);
+    private void searchObjectInDetailTab(String attributeLabel, Input.ComponentType componentType, String value, String tabId) {
+        getOldTable(tabId).searchByAttributeWithLabel(attributeLabel, componentType, value);
     }
 
     public void searchObjectInElementRoutingTab(String attributeLabel, Input.ComponentType componentType, String value) {
-        searchObjectInDetailTabByPartialName(attributeLabel, componentType, value, ELEMENT_ROUTING_TABLE_APP_ID);
+        searchObjectInDetailTab(attributeLabel, componentType, value, ELEMENT_ROUTING_TABLE_APP_ID);
     }
 
     public void clearColumnSearchFieldInContentTab(String columnName) {
-        OldTable table = OldTable.createById(driver, wait, CONTENT_VIEW_TABLE_APP_ID);
-        table.clearColumnValue(columnName);
+        getOldTable(CONTENT_VIEW_TABLE_APP_ID).clearColumnValue(columnName);
     }
 
-    public void clearColumnSearchFieldInDetailTab(String columnName, String tabid) {
-        OldTable table = OldTable.createById(driver, wait, tabid);
-        table.clearColumnValue(columnName);
+    private void clearColumnSearchFieldInDetailTab(String columnName, String tabId) {
+        getOldTable(tabId).clearColumnValue(columnName);
     }
 
     public void clearColumnSearchFieldInElementRoutingTab(String columnName) {
@@ -534,13 +516,13 @@ public class NetworkViewPage extends BasePage {
     }
 
     public void refreshTerminationsTab() {
-        getTableWidget(TERMINATION_TABLE_APP_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_ID);
+        getTableWidget(TERMINATIONS_TABLE_APP_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_ID);
         waitForPageToLoad();
     }
 
     public void openRouting1stLevelTab() {
         expandDetailsPanel();
-        selectTabFromBottomPanel(FIRST_LEVEL_ROUTING_TAB_LABEL);
+        selectTabFromBottomPanel(FIRST_LEVEL_ROUTING_TAB_NAME);
         waitForPageToLoad();
     }
 

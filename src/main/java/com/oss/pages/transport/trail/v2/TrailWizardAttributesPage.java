@@ -24,8 +24,6 @@ public abstract class TrailWizardAttributesPage extends BasePage {
     private static final String UNDEFINED = "Undefined";
     private static final String ID = "NEEDS_TO_UPDATE_ID";
 
-    private static final String COMPONENT_ID = "trailWizardId_prompt-card";
-
     private final Wizard wizard;
 
     protected TrailWizardAttributesPage(WebDriver driver) {

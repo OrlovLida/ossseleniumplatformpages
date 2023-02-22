@@ -10,7 +10,6 @@ import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.wizard.Wizard;
 
 import io.qameta.allure.Step;
 
@@ -19,21 +18,12 @@ import io.qameta.allure.Step;
  */
 public class RoutingWizardPage extends ConnectionWizardPage {
 
-    private static final String ID = "RoutingPopupViewId_prompt-card";
     private static final String PROTECTION_TYPE = "routingFormProtectionTypeComponent";
-
-    //    TODO: Poprawić po rozwiązaniu OSSTRAIL-7974
-    private static final String LINE_TYPE = "__lineType";
-    private static final String SEQUENCE_NUMBER = "__sequenceNumber";
+    private static final String LINE_TYPE = "routingFormLineTypeComponent";
+    private static final String SEQUENCE_NUMBER = "routingFormSequenceNumberComponent";
 
     public RoutingWizardPage(WebDriver driver) {
         super(driver);
-        getWizard();
-    }
-
-    @Override
-    public Wizard getWizard() {
-        return Wizard.createByComponentId(driver, wait, ID);
     }
 
     public void proceed() {
@@ -65,5 +55,4 @@ public class RoutingWizardPage extends ConnectionWizardPage {
         treeComponent.getNodeByLabelsPath(labelPath).toggleNode();
         getWizard().waitForWizardToLoad();
     }
-
 }

@@ -241,9 +241,8 @@ public class BucOssTpt011Test extends BaseTestCase {
         String connectionPath = AGGREGATED_ETHERNET_LINK_NAME + "." + FIRST_ETHERNET_LINK_NAME;
         wizard.selectConnection(connectionPath);
         wizard.setProtectionType(PROTECTION_TYPE);
-//        TODO: Odkomentować po rozwiązaniu OSSTRAIL-7974
-//        wizard.setLineType(LINE_TYPE);
-//        wizard.setSequenceNumber(SEQUENCE_NUMBER);
+        wizard.setLineType(LINE_TYPE);
+        wizard.setSequenceNumber(SEQUENCE_NUMBER);
         wizard.accept();
         checkPopupMessageType();
         waitForPageToLoad();

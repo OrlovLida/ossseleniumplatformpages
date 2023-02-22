@@ -34,15 +34,11 @@ import io.qameta.allure.Description;
 
 import static com.oss.framework.components.contextactions.ActionsContainer.EDIT_GROUP_ID;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_FIELD;
-import static com.oss.pages.transport.NetworkViewPage.DELETE_CONNECTION_CONFIRMATION_BUTTON_ID;
-import static com.oss.pages.transport.NetworkViewPage.DELETE_CONNECTION_ON_IV_ACTION_ID;
-import static com.oss.pages.transport.NetworkViewPage.DELETE_DEVICE_CONFIRMATION_ID;
-import static com.oss.pages.transport.NetworkViewPage.DELETE_DEVICE_ON_IV_ACTION_ID;
-import static com.oss.pages.transport.NetworkViewPage.DELETE_SUBMIT_BUTTON_ID;
 import static com.oss.pages.transport.NetworkViewPage.ELEMENT_ROUTING_TABLE_APP_ID;
 import static com.oss.pages.transport.NetworkViewPage.ELEMENT_ROUTING_TAB_LABEL;
 import static com.oss.pages.transport.NetworkViewPage.OCCUPATION_TAB_LABEL;
 import static com.oss.pages.transport.NetworkViewPage.ROUTED_TRAILS_TAB_LABEL;
+import static com.oss.pages.transport.NetworkViewPage.TERMINATIONS_TABLE_APP_ID;
 import static com.oss.pages.transport.NetworkViewPage.TERMINATIONS_TAB_LABEL;
 
 public class BucOssTpt001Test extends BaseTestCase {
@@ -97,9 +93,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String PORT_SHORT_IDENTIFIER_COLUMN = "port.shortIdentifier";
     private static final String IDENTIFIER_COLUMN = "trail.identifier";
     private static final String DEVICE_NAME_COLUMN = "physicalDevice.name";
-    private static final String CONNECTION_LABEL_COLUMN = "label";
     private static final String LABEL_COLUMN = "label";
-    private static final String NV_TERMINATIONS_TAB_ID = "TerminationIndexedWidget";
     private static final String NIV_TERMINATIONS_TAB_ID = "TerminationWidget";
     private static final String OCCUPATION_TAB_ID = "OccupationWidget";
     private static final String ROUTED_TRAILS_TAB_ID = "RoutedTrailsWidget";
@@ -350,6 +344,12 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String EXPECTED_OBJECT_NOT_PRESENT_EXCEPTION = "Expected object isn't present in current Tab.";
     private static final String EMPTY_LIST_EXCEPTION = "The list is empty";
 
+    public static final String DELETE_CONNECTION_ON_IV_ACTION_ID = "DeleteTrailWizardActionId";
+    public static final String DELETE_DEVICE_ON_IV_ACTION_ID = "DeleteDeviceWizardAction";
+    public static final String DELETE_SUBMIT_BUTTON_ID = "wizard-submit-button-deleteWidgetId";
+    public static final String DELETE_DEVICE_CONFIRMATION_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
+    public static final String DELETE_CONNECTION_CONFIRMATION_BUTTON_ID = "ConfirmationBox_DeletePopupConfirmationBox_action_button";
+
     @BeforeClass
     public void checkPrerequisites() {
         getOrCreateFirstLocations();
@@ -404,15 +404,15 @@ public class BucOssTpt001Test extends BaseTestCase {
         assertCapacityValueOnNetworkView(networkViewPage, FIRST_MWC_CAPACITY_VALUE);
 
         networkViewPage.openTerminationsTab();
-        assertPresenceOfObjectInTab(0, PORT_SHORT_IDENTIFIER_COLUMN, NV_TERMINATIONS_TAB_ID, PORT_LABEL);
-        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, NV_TERMINATIONS_TAB_ID, PORT_LABEL);
+        assertPresenceOfObjectInTab(0, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TABLE_APP_ID, PORT_LABEL);
+        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TABLE_APP_ID, PORT_LABEL);
     }
 
     @Test(priority = 3, description = "Create Microwave Channel and add Terminations", dependsOnMethods = {"createMicrowaveChannelWithTerminations"})
     @Description("Create Microwave Channel and add terminations using Terminations Tab")
     public void createMicrowaveChannelAndAddTerminations() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.searchObjectInContentTabByPartialName(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
+        networkViewPage.searchObjectInContentTab(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
         firstMicrowaveChannelName = networkViewPage.getObjectValueFromContentTab(0, NAME_ATTRIBUTE_LABEL);
         waitForPageToLoad();
         firstMicrowaveChannelLabel = networkViewPage.getAttributeValue(LABEL_ATTRIBUTE_ID);
@@ -433,7 +433,7 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         networkViewPage.startEditingSelectedTrail();
         waitForPageToLoad();
-        networkViewPage.searchObjectInContentTabByPartialName(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
+        networkViewPage.searchObjectInContentTab(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
         secondMicrowaveChannelName = networkViewPage.getObjectValueFromContentTab(1, NAME_ATTRIBUTE_LABEL);
         waitForPageToLoad();
         secondMicrowaveChannelLabel = networkViewPage.getAttributeValue(LABEL_ATTRIBUTE_ID);
@@ -460,8 +460,8 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
 
         networkViewPage.openTerminationsTab();
-        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, NV_TERMINATIONS_TAB_ID, CARD_NAME);
-        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, NV_TERMINATIONS_TAB_ID, PORT_LABEL);
+        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TABLE_APP_ID, CARD_NAME);
+        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TABLE_APP_ID, PORT_LABEL);
     }
 
     @Test(priority = 4, description = "Create Microwave Link", dependsOnMethods = {"createMicrowaveChannelAndAddTerminations"})
@@ -495,7 +495,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         networkViewPage.startEditingSelectedTrail();
         waitForPageToLoad();
         networkViewPage.expandDockedPanel(DOCKED_PANEL_POSITION);
-        networkViewPage.searchObjectInContentTabByPartialName(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_LINK_PARTIAL_NAME);
+        networkViewPage.searchObjectInContentTab(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_LINK_PARTIAL_NAME);
         microwaveLinkName = networkViewPage.getObjectValueFromContentTab(0, NAME_ATTRIBUTE_LABEL);
         waitForPageToLoad();
         microwaveLinkLabel = networkViewPage.getAttributeValue(LABEL_ATTRIBUTE_ID);
@@ -511,7 +511,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         fillAddRoutingSegmentWizard(WORKING_LINE_TYPE, FIRST_MWL_SEQUENCE_NUMBER);
         assertMicrowaveChannelWorkingStatusOnNetworkView(networkViewPage);
 
-        networkViewPage.searchObjectInContentTabByPartialName(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
+        networkViewPage.searchObjectInContentTab(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
         waitForPageToLoad();
         firstMicrowaveChannelName = networkViewPage.getObjectValueFromContentTab(0, NAME_ATTRIBUTE_LABEL);
         waitForPageToLoad();
@@ -528,10 +528,10 @@ public class BucOssTpt001Test extends BaseTestCase {
         networkViewPage.expandDockedPanel(DETAILS_DOCKED_PANEL_POSITION);
 
         networkViewPage.openTerminationsTab();
-        assertPresenceOfObjectInTab(0, DEVICE_NAME_COLUMN, NV_TERMINATIONS_TAB_ID, FIRST_INDOOR_UNIT_NAME);
-        assertPresenceOfObjectInTab(1, DEVICE_NAME_COLUMN, NV_TERMINATIONS_TAB_ID, SECOND_INDOOR_UNIT_NAME);
+        assertPresenceOfObjectInTab(0, DEVICE_NAME_COLUMN, TERMINATIONS_TABLE_APP_ID, FIRST_INDOOR_UNIT_NAME);
+        assertPresenceOfObjectInTab(1, DEVICE_NAME_COLUMN, TERMINATIONS_TABLE_APP_ID, SECOND_INDOOR_UNIT_NAME);
 
-        networkViewPage.openFirstLevelRoutingTab();
+        networkViewPage.openRouting1stLevelTab();
         assertPresenceOfObjectInTab(0, IDENTIFIER_COLUMN, FIRST_LEVEL_ROUTING_TAB_ID, firstMicrowaveChannelLabel);
     }
 
@@ -549,7 +549,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         fillAddRoutingSegmentWizard(WORKING_LINE_TYPE, SECOND_MWL_SEQUENCE_NUMBER);
         assertMicrowaveChannelWorkingStatusOnNetworkView(networkViewPage);
 
-        networkViewPage.searchObjectInContentTabByPartialName(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
+        networkViewPage.searchObjectInContentTab(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
         waitForPageToLoad();
         secondMicrowaveChannelName = networkViewPage.getObjectValueFromContentTab(1, NAME_ATTRIBUTE_LABEL);
         waitForPageToLoad();
@@ -565,10 +565,10 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
 
         networkViewPage.openTerminationsTab();
-        assertPresenceOfObjectInTab(0, DEVICE_NAME_COLUMN, NV_TERMINATIONS_TAB_ID, FIRST_INDOOR_UNIT_NAME);
-        assertPresenceOfObjectInTab(1, DEVICE_NAME_COLUMN, NV_TERMINATIONS_TAB_ID, SECOND_INDOOR_UNIT_NAME);
+        assertPresenceOfObjectInTab(0, DEVICE_NAME_COLUMN, TERMINATIONS_TABLE_APP_ID, FIRST_INDOOR_UNIT_NAME);
+        assertPresenceOfObjectInTab(1, DEVICE_NAME_COLUMN, TERMINATIONS_TABLE_APP_ID, SECOND_INDOOR_UNIT_NAME);
 
-        networkViewPage.openFirstLevelRoutingTab();
+        networkViewPage.openRouting1stLevelTab();
         assertPresenceOfObjectInTab(1, IDENTIFIER_COLUMN, FIRST_LEVEL_ROUTING_TAB_ID, secondMicrowaveChannelLabel);
     }
 
@@ -704,7 +704,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         networkViewPage.startEditingSelectedTrail();
         waitForPageToLoad();
 
-        networkViewPage.searchObjectInContentTabByPartialName(NAME_COLUMN_NAME, TEXT_FIELD, ETHERNET_LINK_PARTIAL_NAME);
+        networkViewPage.searchObjectInContentTab(NAME_COLUMN_NAME, TEXT_FIELD, ETHERNET_LINK_PARTIAL_NAME);
         String ethernetLink = networkViewPage.getObjectValueFromContentTab(0, NAME_ATTRIBUTE_LABEL);
         waitForPageToLoad();
         networkViewPage.clearColumnSearchFieldInContentTab(NAME_COLUMN_NAME);
@@ -723,7 +723,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         networkViewPage.hideDockedPanel(DOCKED_PANEL_POSITION);
         waitForPageToLoad();
 
-        networkViewPage.openFirstLevelRoutingTab();
+        networkViewPage.openRouting1stLevelTab();
         assertPresenceOfObjectInTab(0, IDENTIFIER_COLUMN, FIRST_LEVEL_ROUTING_TAB_ID, microwaveLinkLabel);
     }
 
@@ -744,8 +744,8 @@ public class BucOssTpt001Test extends BaseTestCase {
         assertPresenceOfObjectInTab(0, LABEL_COLUMN, OCCUPATION_TAB_ID, ETHERNET_LINK_NAME);
 
         openTab(ROUTED_TRAILS_TAB_LABEL);
-        assertPresenceOfObjectInTab(0, CONNECTION_LABEL_COLUMN, ROUTED_TRAILS_TAB_ID, firstMicrowaveChannelLabel);
-        assertPresenceOfObjectInTab(1, CONNECTION_LABEL_COLUMN, ROUTED_TRAILS_TAB_ID, secondMicrowaveChannelLabel);
+        assertPresenceOfObjectInTab(0, LABEL_COLUMN, ROUTED_TRAILS_TAB_ID, firstMicrowaveChannelLabel);
+        assertPresenceOfObjectInTab(1, LABEL_COLUMN, ROUTED_TRAILS_TAB_ID, secondMicrowaveChannelLabel);
 
         openTab(ELEMENT_ROUTING_TAB_LABEL);
         assertObjectPresenceInElementRouting(FIRST_MICROWAVE_ANTENNA_NAME, FIRST_MW_ANTENNA_RELATION_TYPE);
@@ -804,8 +804,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         searchAndSelectObjectOnInventoryView(ETHERNET_LINK_NAME);
         deleteObjectAndRefreshMainTable(DELETE_CONNECTION_ON_IV_ACTION_ID, DELETE_SUBMIT_BUTTON_ID);
 
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
     }
 
     @Test(priority = 15, description = "Delete Microwave Link on New Inventory View", dependsOnMethods = {"checkMicrowaveLinkAttributesAndAssignedObjectsOnNewInventoryView"})
@@ -815,8 +814,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         searchAndSelectObjectOnInventoryView(microwaveLinkLabel);
         deleteObjectAndRefreshMainTable(DELETE_CONNECTION_ON_IV_ACTION_ID, DELETE_CONNECTION_CONFIRMATION_BUTTON_ID);
 
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
     }
 
     @Test(priority = 16, description = "Delete both Microwave Channels on New Inventory View", dependsOnMethods = {"checkFirstMicrowaveChannelAttributesAndAssignedObjectsOnNewInventoryView"})
@@ -826,13 +824,12 @@ public class BucOssTpt001Test extends BaseTestCase {
         searchAndSelectObjectOnInventoryView(firstMicrowaveChannelLabel);
         deleteObjectAndRefreshMainTable(DELETE_CONNECTION_ON_IV_ACTION_ID, DELETE_CONNECTION_CONFIRMATION_BUTTON_ID);
 
-        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
 
         searchAndSelectObjectOnInventoryView(secondMicrowaveChannelLabel);
         deleteObjectAndRefreshMainTable(DELETE_CONNECTION_ON_IV_ACTION_ID, DELETE_CONNECTION_CONFIRMATION_BUTTON_ID);
 
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
     }
 
     @Test(priority = 17, description = "Delete both Microwave Antennas on New Inventory View", dependsOnMethods = {"deleteMicrowaveLink"})
@@ -843,14 +840,13 @@ public class BucOssTpt001Test extends BaseTestCase {
         deleteObjectAndRefreshMainTable(DELETE_DEVICE_ON_IV_ACTION_ID, DELETE_DEVICE_CONFIRMATION_ID);
 
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
         newInventoryViewPage.clearFilters();
 
-        driver.navigate().refresh();
         searchAndSelectObjectOnInventoryView(SECOND_MICROWAVE_ANTENNA_NAME);
         deleteObjectAndRefreshMainTable(DELETE_DEVICE_ON_IV_ACTION_ID, DELETE_DEVICE_CONFIRMATION_ID);
 
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
     }
 
     @Test(priority = 18, description = "Delete first and second Indoor Units on New Inventory View", dependsOnMethods = {"createDevices"})
@@ -861,13 +857,13 @@ public class BucOssTpt001Test extends BaseTestCase {
         deleteObjectAndRefreshMainTable(DELETE_DEVICE_ON_IV_ACTION_ID, DELETE_DEVICE_CONFIRMATION_ID);
 
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
+        newInventoryViewPage.clearFilters();
 
-        driver.navigate().refresh();
         searchAndSelectObjectOnInventoryView(SECOND_INDOOR_UNIT_NAME);
         deleteObjectAndRefreshMainTable(DELETE_DEVICE_ON_IV_ACTION_ID, DELETE_DEVICE_CONFIRMATION_ID);
 
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
     }
 
     @Test(priority = 19, description = "Delete four Outdoor Units on New Inventory View", dependsOnMethods = {"deleteBothMicrowaveChannels"})
@@ -878,25 +874,25 @@ public class BucOssTpt001Test extends BaseTestCase {
         deleteObjectAndRefreshMainTable(DELETE_DEVICE_ON_IV_ACTION_ID, DELETE_DEVICE_CONFIRMATION_ID);
 
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
+        newInventoryViewPage.clearFilters();
 
-        driver.navigate().refresh();
         searchAndSelectObjectOnInventoryView(SECOND_OUTDOOR_UNIT_NAME);
         deleteObjectAndRefreshMainTable(DELETE_DEVICE_ON_IV_ACTION_ID, DELETE_DEVICE_CONFIRMATION_ID);
 
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
+        newInventoryViewPage.clearFilters();
 
-        driver.navigate().refresh();
         searchAndSelectObjectOnInventoryView(THIRD_OUTDOOR_UNIT_NAME);
         deleteObjectAndRefreshMainTable(DELETE_DEVICE_ON_IV_ACTION_ID, DELETE_DEVICE_CONFIRMATION_ID);
 
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
+        newInventoryViewPage.clearFilters();
 
-        driver.navigate().refresh();
         searchAndSelectObjectOnInventoryView(FORTH_OUTDOOR_UNIT_NAME);
         deleteObjectAndRefreshMainTable(DELETE_DEVICE_ON_IV_ACTION_ID, DELETE_DEVICE_CONFIRMATION_ID);
 
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+        Assert.assertTrue(isInventoryViewEmpty());
     }
 
     private void openNetworkView() {
@@ -1639,12 +1635,17 @@ public class BucOssTpt001Test extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    public void assertObjectPresenceInElementRouting(String objectName, String relationType) {
+    private void assertObjectPresenceInElementRouting(String objectName, String relationType) {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.searchObjectInElementRoutingTab(NAME_COLUMN_NAME, TEXT_FIELD, objectName);
         assertPresenceOfObjectInElementRoutingTab(0, objectName, relationType);
         networkViewPage.clearColumnSearchFieldInElementRoutingTab(NAME_COLUMN_NAME);
         waitForPageToLoad();
+    }
+
+    private boolean isInventoryViewEmpty() {
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        return newInventoryViewPage.checkIfTableIsEmpty();
     }
 
     private void openTab(String tabLabel) {
@@ -1708,12 +1709,12 @@ public class BucOssTpt001Test extends BaseTestCase {
         newInventoryViewPage.searchObject(MICROWAVE_FREQUENCY_PLAN_NAME);
         waitForPageToLoad();
         SoftAssert assertions = new SoftAssert();
-        assertions.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
+        assertions.assertFalse(isInventoryViewEmpty());
         newInventoryViewPage.clearFilters();
         waitForPageToLoad();
         newInventoryViewPage.searchObject(MICROWAVE_FREQUENCY_PLAN2_NAME);
         waitForPageToLoad();
-        assertions.assertFalse(newInventoryViewPage.checkIfTableIsEmpty());
+        assertions.assertFalse(isInventoryViewEmpty());
         assertions.assertAll();
     }
 }
