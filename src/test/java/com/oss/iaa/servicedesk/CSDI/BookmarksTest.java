@@ -77,6 +77,7 @@ public class BookmarksTest extends BaseTestCase {
         bookmarkWizardPage.clickSave();
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         checkErrorPage(BOOKMARKS_PAGE);
+        ticketSearchPage.closeMessagePrompt();
         NewBookmarksPage.goToBookmarksPage(driver, webDriverWait, BASIC_URL);
         bookmarksPage.expandCategory(CATEGORY_NAME);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -132,7 +133,7 @@ public class BookmarksTest extends BaseTestCase {
         shareBookmarkWizardPage.setName(SHARE_TO_USER);
         shareBookmarkWizardPage.clickAddViewer();
         shareBookmarkWizardPage.clickAccept();
-
+        DelayUtils.sleep();
         bookmarksPage.openLoginPanel().changeUser(SHARE_TO_USER, PASSWORD);
 
         bookmarksPage = NewBookmarksPage.goToBookmarksPage(driver, webDriverWait, BASIC_URL);

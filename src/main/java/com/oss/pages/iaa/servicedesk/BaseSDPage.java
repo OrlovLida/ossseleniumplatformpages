@@ -28,10 +28,9 @@ import static com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage.DETAILS_PAGE_
 
 public abstract class BaseSDPage extends BasePage {
 
-    protected static final Logger log = LoggerFactory.getLogger(BaseSDPage.class);
-
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN);
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATE_PATTERN_WITHOUT_SPACE);
+    protected static final Logger log = LoggerFactory.getLogger(BaseSDPage.class);
     private static final String GROUP_ID_OLD_ACTIONS_CONTAINER = "frameworkCustomEllipsis";
     private static final String EXPORT_BUTTON_ID = "EXPORT";
 
@@ -39,8 +38,12 @@ public abstract class BaseSDPage extends BasePage {
         super(driver, wait);
     }
 
+    public static String getDateFormat() {
+        return LocalDateTime.now().format(DATE_FORMATTER);
+    }
+
     public void openPage(WebDriver driver, String url) {
-        WebDriverWait wait = new WebDriverWait(driver,  Duration.ofSeconds(150));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(150));
         driver.get(url);
         DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Opening page: {}", url);
@@ -57,10 +60,6 @@ public abstract class BaseSDPage extends BasePage {
         String startDate = LocalDateTime.now().minusMinutes(minutes).format(DATE_TIME_FORMATTER);
         String endDate = LocalDateTime.now().format(DATE_TIME_FORMATTER);
         return startDate + " - " + endDate;
-    }
-
-    public static String getDateFormat() {
-        return LocalDateTime.now().format(DATE_FORMATTER);
     }
 
     @Step("Attach downloaded file to report")
@@ -151,5 +150,9 @@ public abstract class BaseSDPage extends BasePage {
             return splitMessage[1];
         }
         return "No message is shown";
+    }
+
+    public void closeMessagePrompt() {
+        SystemMessageContainer.create(driver, wait).close();
     }
 }
