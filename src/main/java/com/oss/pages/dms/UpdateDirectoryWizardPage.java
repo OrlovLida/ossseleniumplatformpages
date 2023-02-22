@@ -19,22 +19,22 @@ public class UpdateDirectoryWizardPage extends CreateDirectoryWizardPage {
     @Step("Set directory name = {name}")
     @Override
     public void setDirectoryName(String name) {
-        getWizard().setComponentValue(UPDATE_NAME_FIELD_ID, name);
+        getUpdateDirectoryWizard().setComponentValue(UPDATE_NAME_FIELD_ID, name);
     }
 
     @Override
     @Step("Set tag folder = {tagFolder}")
     public void setTagFolder(String tagFolder) {
-        getWizard().setComponentValue(TAG_FOLDER_FIELD_ID, tagFolder);
+        getUpdateDirectoryWizard().setComponentValue(TAG_FOLDER_FIELD_ID, tagFolder);
     }
 
     @Step("Click Accept")
     @Override
     public void clickAccept() {
-        getWizard().clickButtonById(ACCEPT_ID);
+        getUpdateDirectoryWizard().clickButtonById(ACCEPT_ID);
     }
 
-    private Wizard getWizard() {
+    private Wizard getUpdateDirectoryWizard() {
         return Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 }

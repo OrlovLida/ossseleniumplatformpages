@@ -20,20 +20,20 @@ public class CreateDirectoryWizardPage extends BasePage {
 
     @Step("Set directory name = {name}")
     public void setDirectoryName(String name) {
-        getWizard().setComponentValue(NAME_FIELD_ID, name);
+        getCreateDirectoryWizard().setComponentValue(NAME_FIELD_ID, name);
     }
 
     @Step("Set tag folder = {tagFolder}")
     public void setTagFolder(String tagFolder) {
-        getWizard().setComponentValue(TAG_FOLDER_FIELD_ID, tagFolder);
+        getCreateDirectoryWizard().setComponentValue(TAG_FOLDER_FIELD_ID, tagFolder);
     }
 
     @Step("Click Accept")
     public void clickAccept() {
-        getWizard().clickButtonById(ACCEPT_ID);
+        getCreateDirectoryWizard().clickButtonById(ACCEPT_ID);
     }
 
-    private Wizard getWizard() {
+    private Wizard getCreateDirectoryWizard() {
         return Wizard.createByComponentId(driver, wait, WIZARD_ID);
     }
 }
