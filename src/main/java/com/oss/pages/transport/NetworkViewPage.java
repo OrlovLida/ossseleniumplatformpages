@@ -5,8 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.openqa.selenium.WebDriver;
 
+import com.comarch.oss.web.pages.configuration.ChooseConfigurationWizard;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.contextactions.OldActionsContainer;
+import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -21,7 +23,6 @@ import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.comarch.oss.web.pages.configuration.ChooseConfigurationWizard;
 import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.transport.trail.RoutingWizardPage;
 import com.oss.pages.transport.trail.TerminationWizardPage;
@@ -34,11 +35,11 @@ import static com.oss.framework.components.inputs.Input.ComponentType.COMBOBOX;
 import static com.oss.framework.components.inputs.Input.ComponentType.TEXT_AREA;
 
 public class NetworkViewPage extends BasePage {
-
     public static final String ATTRIBUTES_AND_TERMINATIONS_ACTION = "EDIT_Attributes and terminations-null";
     public static final String DISPLAY_ACTION = "display_group";
     public static final String REMOVE_FROM_VIEW_ACTION = "display_group_Remove from view-null";
     public static final String CREATE_DEVICE_ACTION = "CREATE_Create Physical Device-null";
+    private static final String FIRST_LEVEL_ROUTING_TAB_NAME = "Routing - 1st level";
     public static final String DELETE_ELEMENT_ACTION = "Delete Element-null";
     public static final String DELETE_DEVICE_ACTION = "EDIT_Delete Physical Device-null";
     public static final String ADD_TO_VIEW_ACTION = "add_to_view_group";
@@ -61,8 +62,7 @@ public class NetworkViewPage extends BasePage {
     private static final String TRAIL_TYPE_COMBOBOX_ID = "trailTypeCombobox";
     private static final String LEFT_PANEL_TAB_ID = "dockedPanel-left";
     private static final String VALIDATION_RESULT_ID = "Validation Results";
-    private static final String ELEMENT_ROUTING_TABLE_APP_ID = "routing-elements-table-app";
-    private static final String TERMINATION_TABLE_APP_ID = "TerminationIndexedWidget";
+    public static final String ELEMENT_ROUTING_TABLE_APP_ID = "routing-elements-table-app";
     private static final String FIRST_LEVEL_ROUTING_TABLE_APP_ID = "RoutingSegmentIndexedWidget";
     private static final String CONTENT_VIEW_TABLE_APP_ID = "objectsApp";
     private static final String SUPPRESSION_WIZARD_ID = "plaSuppressionWizard_prompt-card";
@@ -74,21 +74,22 @@ public class NetworkViewPage extends BasePage {
     private static final String CHOOSE_CONFIGURATION_ID = "chooseConfiguration";
     private static final String ATTRIBUTES_PANEL_ID = "NetworkViewPropertyPanelWidget";
     private static final String REFRESH_BUTTON_ID = "refreshButton";
-    private static final String REFRESH_BUTTON_IN_ELEMENT_ROUTING_TAB_ID = "Reload element routing";
     private static final String REMOVE_FROM_ELEMENT_ROUTING_BUTTON_ID = "Remove from routing";
-    private static final String TERMINATIONS_TABLE_APP_ID = "TerminationIndexedWidget";
+    public static final String TERMINATIONS_TABLE_APP_ID = "TerminationIndexedWidget";
     private static final String VALIDATION_RESULTS_PANEL_ID = "plaValidationResultsV3ForProcessApp";
     private static final String REASON_FIELD_ID = "reasonField";
     private static final String ROUTING_ACTION_ID = "EDIT_Add to Routing-null";
-    private static final String FIRST_LEVEL_ROUTING_TAB_LABEL = "Routing - 1st level";
-    private static final String ELEMENT_ROUTING_TAB_LABEL = "Element Routing";
-    private static final String TERMINATIONS_TAB_LABEL = "Terminations";
+    public static final String ELEMENT_ROUTING_TAB_LABEL = "Element Routing";
+    public static final String TERMINATIONS_TAB_LABEL = "Terminations";
+    public static final String OCCUPATION_TAB_LABEL = "Occupation";
+    public static final String ROUTED_TRAILS_TAB_LABEL = "Routed Trails";
     private static final String DELETE_BUTTON_LABEL = "Delete";
     private static final String DOCKED_PANEL_LEFT_POSITION = "left";
     private static final String DOCKED_PANEL_RIGHT_POSITION = "right";
     private static final String DOCKED_PANEL_BOTTOM_POSITION = "bottom";
     private static final String TRAIL_WIZARD_ERROR_MESSAGE = "Cannot get Trail wizard page: ";
     private static final String ELEMENT_ROUTING_WIZARD_ID = "routingElementWizardWidget";
+    private static final String REFRESH_BUTTON_IN_ELEMENT_ROUTING_TAB_ID = "Reload element routing";
 
     public NetworkViewPage(WebDriver driver) {
         super(driver);
@@ -125,10 +126,22 @@ public class NetworkViewPage extends BasePage {
         return new RoutingWizardPage(driver);
     }
 
+    @Step("Add selected objects to Routing with not custom Wizard")
+    public void addSelectedConnectionToRouting() {
+        getMainActionContainer().callActionById(EDIT_GROUP_ID, ROUTING_ACTION_ID);
+        waitForPageToLoad();
+        ConnectionWizardPage connectionWizardPage = new ConnectionWizardPage(driver);
+        connectionWizardPage.clickAccept();
+    }
+
     @Step("Add selected objects to Element Routing")
     public void addSelectedObjectsToElementRouting() {
+        openElementRoutingWizard().clickAccept();
+    }
+
+    public Wizard openElementRoutingWizard() {
         useContextAction(EDIT_GROUP_ID, ROUTING_ACTION_ID);
-        Wizard.createByComponentId(driver, wait, ELEMENT_ROUTING_WIZARD_ID).clickAccept();
+        return Wizard.createByComponentId(driver, wait, ELEMENT_ROUTING_WIZARD_ID);
     }
 
     @Step("Add selected objects to Termination V2")
@@ -142,13 +155,6 @@ public class NetworkViewPage extends BasePage {
         useContextAction(EDIT_GROUP_ID, TERMINATION_ACTION);
         waitForPageToLoad();
         return new TerminationWizardPage(driver);
-    }
-
-    @Step("Create Device by context action")
-    public DeviceWizardPage openCreateDeviceWizard() {
-        useContextAction(ActionsContainer.CREATE_GROUP_ID, CREATE_DEVICE_ACTION);
-        waitForPageToLoad();
-        return new DeviceWizardPage(driver);
     }
 
     @Step("Open Trail create wizard")
@@ -195,6 +201,13 @@ public class NetworkViewPage extends BasePage {
         getConnectionTypeWizard().setComponentValue(TRAIL_TYPE_COMBOBOX_ID, trailType, COMBOBOX);
     }
 
+    @Step("Create Device by context action")
+    public DeviceWizardPage openCreateDeviceWizard() {
+        useContextAction(ActionsContainer.CREATE_GROUP_ID, CREATE_DEVICE_ACTION);
+        waitForPageToLoad();
+        return new DeviceWizardPage(driver);
+    }
+
     @Step("Accept trail type")
     public void acceptTrailType() {
         getConnectionTypeWizard().clickButtonById(TRAIL_TYPE_ACCEPT_BUTTON_ID);
@@ -211,7 +224,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Open modify termination wizard")
     public void modifyTermination() {
-        TableWidget tableWidget = TableWidget.createById(driver, TERMINATION_TABLE_APP_ID, wait);
+        TableWidget tableWidget = TableWidget.createById(driver, TERMINATIONS_TABLE_APP_ID, wait);
         tableWidget.callAction(EDIT_GROUP_ID, MODIFY_TERMINATION_ACTION_ID);
     }
 
@@ -258,6 +271,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Unselect object in view content")
     public void unselectObjectInViewContent(String attributeLabel, String value) {
+        waitForPageToLoad();
         getOldTable(CONTENT_VIEW_TABLE_APP_ID).unselectRow(attributeLabel, value);
     }
 
@@ -276,7 +290,7 @@ public class NetworkViewPage extends BasePage {
 
     @Step("Select Termination in details panel")
     public void selectTermination(String attributeId, String value) {
-        selectObjectInTableWidgetTab(TERMINATION_TABLE_APP_ID, attributeId, value);
+        selectObjectInTableWidgetTab(TERMINATIONS_TABLE_APP_ID, attributeId, value);
         waitForPageToLoad();
     }
 
@@ -340,12 +354,18 @@ public class NetworkViewPage extends BasePage {
         waitForPageToLoad();
     }
 
+    public void refreshElementRoutingTab() {
+        getTabsWidget(OLD_TABLE_ID).callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_IN_ELEMENT_ROUTING_TAB_ID);
+        waitForPageToLoad();
+    }
+
     @Step("Delete Routing Element")
     public void deleteSelectedElementsFromRouting() {
         OldTable.createTableForActiveTab(driver, wait).callAction(REMOVE_FROM_ELEMENT_ROUTING_BUTTON_ID);
         waitForPageToLoad();
         clickConfirmationBoxButtonByLabel(DELETE_BUTTON_LABEL);
         refreshElementRoutingTab();
+        waitForPageToLoad();
     }
 
     @Step("Delete from routing")
@@ -430,6 +450,34 @@ public class NetworkViewPage extends BasePage {
         return getTableWidget(componentId).getCellValue(index, column);
     }
 
+    public String getObjectValueFromContentTab(Integer index, String attributeLabel) {
+        return getOldTable(CONTENT_VIEW_TABLE_APP_ID).getCellValue(index, attributeLabel);
+    }
+
+    public void searchObjectInContentTab(String attributeLabel, Input.ComponentType componentType, String value) {
+        searchObjectInDetailTab(attributeLabel, componentType, value, CONTENT_VIEW_TABLE_APP_ID);
+    }
+
+    private void searchObjectInDetailTab(String attributeLabel, Input.ComponentType componentType, String value, String tabId) {
+        getOldTable(tabId).searchByAttributeWithLabel(attributeLabel, componentType, value);
+    }
+
+    public void searchObjectInElementRoutingTab(String attributeLabel, Input.ComponentType componentType, String value) {
+        searchObjectInDetailTab(attributeLabel, componentType, value, ELEMENT_ROUTING_TABLE_APP_ID);
+    }
+
+    public void clearColumnSearchFieldInContentTab(String columnName) {
+        clearColumnSearchFieldInDetailTab(columnName, CONTENT_VIEW_TABLE_APP_ID);
+    }
+
+    private void clearColumnSearchFieldInDetailTab(String columnName, String tabId) {
+        getOldTable(tabId).clearColumnValue(columnName);
+    }
+
+    public void clearColumnSearchFieldInElementRoutingTab(String columnName) {
+        clearColumnSearchFieldInDetailTab(columnName, ELEMENT_ROUTING_TABLE_APP_ID);
+    }
+
     private Wizard getSuppressionWizard() {
         return getWizard(SUPPRESSION_WIZARD_ID);
     }
@@ -468,18 +516,13 @@ public class NetworkViewPage extends BasePage {
     }
 
     public void refreshTerminationsTab() {
-        getTableWidget(TERMINATION_TABLE_APP_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_ID);
-        waitForPageToLoad();
-    }
-
-    public void refreshElementRoutingTab() {
-        getTabsWidget(OLD_TABLE_ID).callActionById(ActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_IN_ELEMENT_ROUTING_TAB_ID);
+        getTableWidget(TERMINATIONS_TABLE_APP_ID).callAction(ActionsContainer.KEBAB_GROUP_ID, REFRESH_BUTTON_ID);
         waitForPageToLoad();
     }
 
     public void openRouting1stLevelTab() {
         expandDetailsPanel();
-        selectTabFromBottomPanel(FIRST_LEVEL_ROUTING_TAB_LABEL);
+        selectTabFromBottomPanel(FIRST_LEVEL_ROUTING_TAB_NAME);
         waitForPageToLoad();
     }
 

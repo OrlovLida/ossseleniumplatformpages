@@ -10,7 +10,7 @@ import io.qameta.allure.Step;
 
 public class MicrowaveLinkWizardPage extends BasePage {
 
-    private static final String WIZARD_ID = "MicrowaveLinkWizardId_prompt-card";
+    private static final String WIZARD_ID = "trailWizardId_prompt-card";
 
     private static final String USER_LABEL_FIELD_ID = "oss.transport.trail.type.MicrowaveLink.UserLabel";
     private static final String LINK_ID_FIELD_ID = "oss.transport.trail.type.MicrowaveLink.LinkID";
