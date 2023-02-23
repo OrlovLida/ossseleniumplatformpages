@@ -11,6 +11,8 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.HierarchyViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Button;
@@ -21,8 +23,6 @@ import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.CreatePluggableModuleWizardPage;
 import com.oss.pages.physical.SublocationWizardPage;
-import com.comarch.oss.web.pages.HierarchyViewPage;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.PhysicalInventoryRepository;
@@ -282,6 +282,7 @@ public class TreeWidgetTest extends BaseTestCase {
     @Test(priority = 15)
     public void checkAvailabilityOsShowOnInventoryViewActionForDifferentType() {
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
+        hierarchyViewPage.getMainTree().unselectAllNodes();
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         hierarchyViewPage.selectNodeByLabelsPath(LOCATION_NAME);
         hierarchyViewPage.selectNodeByLabelsPath(PATH_ROOM_1);
