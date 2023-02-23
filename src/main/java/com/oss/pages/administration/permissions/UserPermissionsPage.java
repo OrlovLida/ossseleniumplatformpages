@@ -1,5 +1,7 @@
 package com.oss.pages.administration.permissions;
 
+import java.time.Duration;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -15,16 +17,15 @@ import com.oss.pages.BasePage;
 
 import io.qameta.allure.Step;
 
-import java.time.Duration;
-
 public class UserPermissionsPage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(UserPermissionsPage.class);
     private static final String USERS_PANEL_ID = "usersPanelAppId";
-    private static final String PERMISSIONS_PANEL_ID = "user_permissionsPanelAppId";
+    private static final String PERMISSIONS_PANEL_ID = "user_permissionsPanelTemplateId";
     private static final String PROFILES_TABLE_ID = "user_profilesPanelListAppId";
     private static final String OLD_ACTIONS_CONTAINER_ID = "user_permissionsPanelAppId-windowToolbar";
     private static final String ASSIGN_ACTION_ID = "addAction";
+    private static final String DIVEST_ACTION_ID = "deleteAction";
     private static final String DIRECT_INHERITED_COLUMN_LABEL = "Direct/Inherited";
     private static final String DIRECT_ROLE = "Direct";
     private static final String INHERITED_ROLE = "Inherited";
@@ -96,12 +97,20 @@ public class UserPermissionsPage extends BasePage {
         }
     }
 
-    private void selectFirstRow() {
+    public void selectFirstRow() {
         getUserProfileTable().selectFirstRow();
     }
 
-    private void clickAssign() {
-        OldActionsContainer.createById(driver, wait, OLD_ACTIONS_CONTAINER_ID).callActionById(ASSIGN_ACTION_ID);
+    public void clickAssign() {
+        getOldActionsContainer().callActionById(ASSIGN_ACTION_ID);
+    }
+
+    public void clickDivest() {
+        getOldActionsContainer().callActionById(DIVEST_ACTION_ID);
+    }
+
+    private OldActionsContainer getOldActionsContainer() {
+        return OldActionsContainer.createById(driver, wait, OLD_ACTIONS_CONTAINER_ID);
     }
 
     private boolean isAssigned() {
@@ -116,7 +125,7 @@ public class UserPermissionsPage extends BasePage {
         return TabsWidget.createById(driver, wait, PERMISSIONS_PANEL_ID);
     }
 
-    private OldTable getUserProfileTable() {
+    public OldTable getUserProfileTable() {
         return OldTable.createById(driver, wait, PROFILES_TABLE_ID);
     }
 }

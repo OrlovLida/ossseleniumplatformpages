@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -16,21 +17,21 @@ import org.testng.Assert;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Factory;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.comarch.oss.resourcehierarchy.api.dto.ResourceHierarchyDTO;
+import com.comarch.oss.web.pages.HierarchyViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.attributechooser.AttributesChooser;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.comarch.oss.web.pages.HierarchyViewPage;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.repositories.LocationInventoryRepository;
 import com.oss.repositories.PhysicalInventoryRepository;
 import com.oss.repositories.PlanningRepository;
@@ -53,6 +54,7 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
     private static final String PROPERTY_PANEL_WIDGET_ID = "PropertyPanelWidget";
     private static final Pattern ID_PATTERN = Pattern.compile("id=[\\d]+");
 
+    private static final String NO_SUCCESSFUL_MESSAGE_VALIDATION = "No message about successful device creation";
     private static final String WRONG_STEP_TITLE = "Wrong title of %s wizard step for equipment type: %s";
     private static final String WRONG_ATTRIBUTE_VALUE_VALIDATION = "Wrong value of %s attribute for type: %s";
     private static final String ATTRIBUTE_DOES_NOT_EXIST_ON_PROPERTY_PANEL_VALIDATION = "Attribute %s does not exist on Property Panel for type: %s";
@@ -64,6 +66,7 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
     private static final String NUMBER_OF_PORTS_DOES_NOT_MATCH_MODEL_VALIDATION = "Number of Ports does not match the model for device with equipment type: %s";
     private static final String NUMBER_OF_CONNECTORS_DOES_NOT_MATCH_MODEL_VALIDATION = "Number of Connectors does not match the model for device with equipment type: %s";
     private static final String NUMBER_OF_LOGICAL_FUNCTIONS_DOES_NOT_MATCH_MODEL_VALIDATION = "Number of Logical Functions does not match the model for device with equipment type: %s";
+    private static final String CANNOT_ENABLE_ATTRIBUTE_VALIDATION = "Cannot enable attribute with label: %s in Attributes Chooser";
 
     private static final String DEVICE_HAS_BEEN_CREATED_MESSAGE = "Device has been created successfully";
 
@@ -82,19 +85,10 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
     private final String equipmentType;
     private final String model;
 
-    @Factory(dataProvider = "deviceTypesWithModels")
+    @Parameters({"equipmentType", "model"})
     public CreatePhysicalDeviceTest(String equipmentType, String model) {
         this.equipmentType = equipmentType;
         this.model = model;
-    }
-
-    @DataProvider(name = "deviceTypesWithModels")
-    private static Object[][] dataset() {
-        return new Object[][]{
-                {"DWDM Device", "Alcatel 1626LM Compact"},
-                {"ODF", "Optomer PS-19/72 3U"},
-                {"RAN Antenna", "Generic 1-Array Antenna"}
-        };
     }
 
     @BeforeClass
@@ -194,13 +188,13 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 10)
+    @Test(priority = 10, dependsOnMethods = "openHierarchyViewFromActiveLink")
     public void checkIfDeviceIsVisibleOnHierarchyView() {
         Assert.assertEquals(getMainTreeSize(), 1, String.format(NO_DEVICE_ON_HIERARCHY_VIEW_VALIDATION, equipmentType));
     }
 
     @Test(priority = 11, dependsOnMethods = "checkIfDeviceIsVisibleOnHierarchyView")
-    public void addAttributesToPropertyPanelOnHierarchyView() {
+    public void addAdditionalAttributesToPropertyPanelOnHierarchyView() {
         hierarchyViewPage.selectFirstObject();
         hierarchyViewPage.setPropertyPanelConfiguration(PRODUCT_PROPERTY_PANEL_CONFIGURATION);
         addAdditionalAttributesToPropertyPanel();
@@ -251,14 +245,14 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
         }
     }
 
-    @Test(priority = 14, dependsOnMethods = {"checkIfDeviceIsVisibleOnHierarchyView"})
+    @Test(priority = 14, dependsOnMethods = "checkIfDeviceIsVisibleOnHierarchyView")
     public void moveToInventoryView() {
         hierarchyViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "InventoryView");
         Assert.assertFalse(newInventoryViewPage.getMainTable().hasNoData(), String.format(NO_DEVICE_ON_INVENTORY_VIEW_VALIDATION, equipmentType));
     }
 
     @Test(priority = 15, dependsOnMethods = "moveToInventoryView")
-    public void addAttributesToPropertyPanelOnInventoryView() {
+    public void addAdditionalAttributesToPropertyPanelOnInventoryView() {
         newInventoryViewPage.applyConfigurationForProperties(0, PROPERTY_PANEL_WIDGET_ID, PRODUCT_PROPERTY_PANEL_CONFIGURATION);
         addAdditionalAttributesToPropertyPanel();
     }
@@ -284,7 +278,7 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
 
     @Step("Check system message")
     private void checkSystemMessage() {
-        Assert.assertTrue(getMessageWithText().isPresent());
+        Assert.assertTrue(getMessageWithText().isPresent(), NO_SUCCESSFUL_MESSAGE_VALIDATION);
     }
 
     @Step("Click system message link")
@@ -400,25 +394,41 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
     private void addAdditionalAttributesToPropertyPanel() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         PropertyPanel propertyPanel = PropertyPanel.createById(driver, webDriverWait, PROPERTY_PANEL_WIDGET_ID);
+        SoftAssert softAssert = new SoftAssert();
 
         switch (equipmentType) {
             case "DWDM Device":
                 for (DWDMAdditionalAttributes additionalAttribute : DWDMAdditionalAttributes.values()) {
-                    propertyPanel.enableAttributeByLabel(additionalAttribute.name);
+                    tryToEnableAttributeByLabel(additionalAttribute.name, propertyPanel, softAssert);
+                    DelayUtils.waitForPageToLoad(driver, webDriverWait);
                 }
                 break;
             case "ODF":
                 for (ODFAdditionalAttributes additionalAttribute : ODFAdditionalAttributes.values()) {
-                    propertyPanel.enableAttributeByLabel(additionalAttribute.name);
+                    tryToEnableAttributeByLabel(additionalAttribute.name, propertyPanel, softAssert);
+                    DelayUtils.waitForPageToLoad(driver, webDriverWait);
                 }
                 break;
             case "RAN Antenna":
                 for (RANAntennaAdditionalAttributes additionalAttribute : RANAntennaAdditionalAttributes.values()) {
-                    propertyPanel.enableAttributeByLabel(additionalAttribute.name);
+                    tryToEnableAttributeByLabel(additionalAttribute.name, propertyPanel, softAssert);
+                    DelayUtils.waitForPageToLoad(driver, webDriverWait);
                 }
                 break;
             default:
                 throw new IllegalArgumentException(String.format(UNSUPPORTED_EQUIPMENT_TYPE_VALIDATION, equipmentType));
+        }
+        softAssert.assertAll();
+    }
+
+    private void tryToEnableAttributeByLabel(String label,
+                                             PropertyPanel propertyPanel,
+                                             SoftAssert softAssert) {
+        try {
+            propertyPanel.enableAttributeByLabel(label);
+        } catch (NoSuchElementException exception) {
+            AttributesChooser.create(driver, webDriverWait).clickCancel();
+            softAssert.fail(String.format(CANNOT_ENABLE_ATTRIBUTE_VALIDATION, label));
         }
     }
 
@@ -527,7 +537,7 @@ public class CreatePhysicalDeviceTest extends BaseTestCase {
     private enum RANAntennaAdditionalAttributes {
         MECHANICAL_TILT("Mechanical Tilt [deg]", "1"),
         AZIMUTH("Azimuth [deg]", "2"),
-        HEIGHT("Height [m]", "3"),
+        HEIGHT("Height AGL [m]", "3"),
         SIDE_TILT("Side Tilt [deg]", "4"),
         MOUNTING_TYPE("Mounting Type", "Wall");
 

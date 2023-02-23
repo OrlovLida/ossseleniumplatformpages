@@ -6,24 +6,24 @@ public class IPSubnetWizardProperties {
     private String role;
     private String description;
 
-    public IPSubnetWizardProperties(String subnetType){
+    public IPSubnetWizardProperties(String subnetType) {
         this.subnetType = subnetType;
     }
 
-    public IPSubnetWizardProperties(String subnetType, String status, String role, String description){
+    public IPSubnetWizardProperties(String subnetType, String status, String role, String description) {
         this.subnetType = subnetType;
         this.status = status;
         this.role = role;
         this.description = description;
     }
 
-    public IPSubnetWizardProperties(String subnetType, String role, String description){
+    public IPSubnetWizardProperties(String subnetType, String role, String description) {
         this.subnetType = subnetType;
         this.role = role;
         this.description = description;
     }
 
-    public IPSubnetWizardProperties(String subnetType, String role){
+    public IPSubnetWizardProperties(String subnetType, String role) {
         this.subnetType = subnetType;
         this.role = role;
     }

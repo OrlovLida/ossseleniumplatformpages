@@ -7,11 +7,15 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
+import com.oss.pages.iaa.servicedesk.issue.MoreDetailsPage;
+import com.oss.pages.iaa.servicedesk.issue.RemainderForm;
 import com.oss.pages.iaa.servicedesk.issue.tabs.AttachmentsTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.ExternalTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.ImprovementTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.MessagesTab;
+import com.oss.pages.iaa.servicedesk.issue.tabs.ParticipantsTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.RelatedTicketsTab;
 import com.oss.pages.iaa.servicedesk.issue.tabs.ResolutionTab;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
@@ -78,6 +82,11 @@ public class OverviewTicketTest extends BaseTestCase {
     private static final String TT_LIBRARY_TYPE = "Root Cause Category";
     private static final String TT_CATEGORY_NAME = "Comarch application error";
 
+    private static final String PARTICIPANT_FIRST_NAME = "SeleniumTest";
+    private static final String PARTICIPANT_SURNAME = "Selenium";
+    private static final String PARTICIPANT_ROLE = "Contact";
+    private static final String REMAINDER_NOTE = "Selenium Description Note";
+
     private TicketDashboardPage ticketDashboardPage;
     private IssueCSDIWizardPage issueCSDIWizardPage;
     private IssueDetailsPage issueDetailsPage;
@@ -92,6 +101,9 @@ public class OverviewTicketTest extends BaseTestCase {
     private ImprovementTab improvementTab;
     private AttachmentsTab attachmentsTab;
     private RelatedTicketsTab relatedTicketsTab;
+    private ParticipantsTab participantsTab;
+    private RemainderForm remainderForm;
+    private MoreDetailsPage moreDetailsPage;
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
@@ -104,7 +116,7 @@ public class OverviewTicketTest extends BaseTestCase {
     ) {
         issueCSDIWizardPage = ticketDashboardPage.openCreateTicketWizard(FLOW_TYPE).openIssueCSDIWizardPage();
         issueCSDIWizardPage.setIssueTitle(ISSUE_TITLE);
-        issueCSDIWizardPage.enterIncidentDescription(INCIDENT_DESCRIPTION);
+        issueCSDIWizardPage.enterDescription(INCIDENT_DESCRIPTION);
         issueCSDIWizardPage.setSeverity(SEVERITY);
         issueCSDIWizardPage.clickNextButtonInWizard();
 
@@ -198,7 +210,7 @@ public class OverviewTicketTest extends BaseTestCase {
 
         ticketOverviewTab.changeIssueStatus(STATUS_RESOLVED);
         ticketOverviewTab.fillReasonChange(webDriverWait, driver);
-
+        DelayUtils.sleep(1000);
         Assert.assertEquals(ticketOverviewTab.checkTicketStatus(), STATUS_RESOLVED);
     }
 
@@ -206,8 +218,8 @@ public class OverviewTicketTest extends BaseTestCase {
     @Description("Edit Ticket Details and check if change is visible in Description tab")
     public void editTicketDetails() {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
-        sdWizardPage = issueDetailsPage.openEditDetailsWizard();
-        sdWizardPage.enterIncidentDescription(TT_DESCRIPTION_EDITED);
+        sdWizardPage = issueDetailsPage.clickEditDetails();
+        sdWizardPage.enterDescription(TT_DESCRIPTION_EDITED);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
 
@@ -271,7 +283,7 @@ public class OverviewTicketTest extends BaseTestCase {
     @Parameters({"RelatedTicketID"})
     @Test(priority = 12, testName = "Check Related Tickets Tab - link Ticket", description = "Check Related Tickets Tab - link Ticket")
     @Description("Check Related Tickets Tab - link Ticket")
-    public void linkTicketToTicket(@Optional("18") String RelatedTicketID) {
+    public void linkTicketToTicket(@Optional("397") String RelatedTicketID) {
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         relatedTicketsTab = issueDetailsPage.selectRelatedTicketsTab();
         relatedTicketsTab.linkIssue(RelatedTicketID, "issueIdsToLink");
@@ -289,5 +301,45 @@ public class OverviewTicketTest extends BaseTestCase {
         relatedTicketsTab.confirmUnlinking();
 
         Assert.assertTrue(relatedTicketsTab.isRelatedIssueTableEmpty());
+    }
+
+    @Test(priority = 14, testName = "Check Participants", description = "Check Participants Tab - add Participant")
+    @Description("Check Participants Tab - add Participant")
+    public void addParticipant() {
+        issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        participantsTab = issueDetailsPage.selectParticipantsTab();
+        participantsTab.createParticipantAndLinkToIssue(PARTICIPANT_FIRST_NAME, PARTICIPANT_SURNAME, PARTICIPANT_ROLE);
+        int newParticipantRow = participantsTab.participantRow(PARTICIPANT_FIRST_NAME);
+
+        Assert.assertEquals(participantsTab.checkParticipantFirstName(newParticipantRow), PARTICIPANT_FIRST_NAME);
+        Assert.assertEquals(participantsTab.checkParticipantSurname(newParticipantRow), PARTICIPANT_SURNAME);
+        Assert.assertEquals(participantsTab.checkParticipantRole(newParticipantRow), PARTICIPANT_ROLE.toUpperCase());
+    }
+
+    @Test(priority = 15, testName = "Remove Participant", description = "Remove Edited Participant")
+    @Description("Remove Edited Participant")
+    public void removeParticipant() {
+        issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        participantsTab = issueDetailsPage.selectParticipantsTab();
+        int participantsInTable = participantsTab.countParticipantsInTable();
+        participantsTab.selectParticipant(participantsTab.participantRow(PARTICIPANT_FIRST_NAME));
+        participantsTab.clickRemoveParticipant();
+        participantsTab.clickConfirmRemove();
+
+        Assert.assertEquals(participantsTab.countParticipantsInTable(), participantsInTable - 1);
+    }
+
+    @Test(priority = 16, testName = "Add Remainder", description = "Add Remainder")
+    @Description("Add Remainder")
+    public void addRemainderTest() {
+        issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
+        ticketOverviewTab.maximizeWindow(DETAILS_TABS_CONTAINER_ID);
+        remainderForm = ticketOverviewTab.clickAddRemainder();
+        remainderForm.createReminderWithNote(REMAINDER_NOTE);
+        moreDetailsPage = ticketOverviewTab.clickMoreDetails();
+        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
+
+        Assert.assertTrue(ticketDashboardPage.isReminderPresent(ticketDashboardPage.getRowForIssueWithID(ticketID), REMAINDER_NOTE));
     }
 }

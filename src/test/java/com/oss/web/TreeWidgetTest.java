@@ -6,7 +6,6 @@ import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -21,6 +20,8 @@ import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.tree.TreeComponent.Node;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.propertypanel.PropertyPanel;
+import com.oss.pages.physical.ChassisWizardPage;
 import com.oss.pages.physical.CreatePluggableModuleWizardPage;
 import com.oss.pages.physical.SublocationWizardPage;
 import com.oss.repositories.AddressRepository;
@@ -70,6 +71,8 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String PORT_02_PATH =
             LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis." + DEVICE_NAME + "/Chassis.Slots.1.Card." + CARD_MODEL
                     + ".Ports.00";
+    private static final String CHASSIS_PATH =
+            LOCATION_NAME + ".Hardware.Router." + DEVICE_NAME + ".Chassis." + DEVICE_NAME + "/Chassis";
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
     private static final String PLUGGABLE_MODULE_01_PATH =
             PORT_01_PATH + ".Pluggable Module Slot.Slot.Pluggable Module.XFP-10G-MM-SR";
@@ -97,6 +100,16 @@ public class TreeWidgetTest extends BaseTestCase {
     private static final String BADGE_4 = "4";
     private static final String CHECKING_BADGES_FOR_SLOTS_RELATION = "Checking bages for Slots Relation";
     private static final String CHECK_BADGE_FOR_PORT_05 = "Check badge for port 05";
+    private static final String NEW_DESCRIPTION = "newDescription";
+    private static final String UPDATED_DESCRIPTION = "updated";
+    private static final String DESCRIPTION = "description";
+    private static final String EDIT_CHASSIS_ACTION = "EditChassisAction";
+    private static final String CHECK_DESCRIPTION_IN_PROPERTY_PANEL = "Check description in Property Panel";
+    private static final String ROOT_SHOULD_NOT_BE_SELECTED = "Root should not be selected";
+    private static final String SHOW_ON_IV_ACTION_SHOULD_NOT_BE_PRESENT = "Show on IV action should not be present";
+    private static final String IV_IS_OPENED = "IV is opened";
+    private static final String ONE_ROOT_IS_OPENED_ON_HV = "One root is opened on HV";
+    private static final String THERE_IS_NO_DATA_ON_TREE = "There is no data on tree";
 
     private Environment env = Environment.getInstance();
     private HierarchyViewPage hierarchyViewPage;
@@ -250,6 +263,16 @@ public class TreeWidgetTest extends BaseTestCase {
     }
 
     @Test(priority = 12)
+    public void checkAutorefresh() {
+        hierarchyViewPage.selectNodeByLabelsPath(CHASSIS_PATH);
+        editChassisDescription(NEW_DESCRIPTION);
+        checkDescription(NEW_DESCRIPTION);
+
+        editChassisDescription(UPDATED_DESCRIPTION);
+        checkDescription(UPDATED_DESCRIPTION);
+    }
+
+    @Test(priority = 13)
     public void searchWithNotExistingData() {
         hierarchyViewPage.clearFiltersOnMainTree();
         hierarchyViewPage.searchObject("hjakserzxaseer");
@@ -259,7 +282,7 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.clearFiltersOnMainTree();
     }
 
-    @Test(priority = 13)
+    @Test(priority = 14)
     public void searchWithExistingData() {
         Node node = hierarchyViewPage.getFirstNode();
         String label = node.getLabel();
@@ -272,14 +295,14 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.clearFiltersOnMainTree();
     }
 
-    @Test(priority = 14)
+    @Test(priority = 15)
     public void clickInlineAction() {
         hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID);
         Assertions.assertThat(hierarchyViewPage
-                .getFirstNode().isToggled()).isFalse();
+                .getFirstNode().isToggled()).as(ROOT_SHOULD_NOT_BE_SELECTED).isFalse();
     }
 
-    @Test(priority = 15)
+    @Test(priority = 16)
     public void checkAvailabilityOsShowOnInventoryViewActionForDifferentType() {
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
         hierarchyViewPage.getMainTree().unselectAllNodes();
@@ -289,30 +312,30 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.selectNodeByLabelsPath(PATH_DEVICE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Button.createById(driver, ActionsContainer.SHOW_ON_GROUP_ID).click();
-        Assert.assertFalse(CSSUtils.isElementPresent(driver, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID));
+        Assertions.assertThat(CSSUtils.isElementPresent(driver, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID)).as(SHOW_ON_IV_ACTION_SHOULD_NOT_BE_PRESENT).isFalse();
     }
 
-    @Test(priority = 16)
+    @Test(priority = 17)
     public void ShowOnInventoryViewActionForSameType() {
         hierarchyViewPage.unselectNodeByLabelsPath(PATH_DEVICE);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.SHOW_ON_GROUP_ID, OPEN_INVENTORY_VIEW_CONTEXT_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         NewInventoryViewPage inventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-        Assert.assertEquals(inventoryViewPage.getViewTitle(), INVENTORY_VIEW_TITLE);
+        Assertions.assertThat(inventoryViewPage.getViewTitle()).as(IV_IS_OPENED).isEqualTo(INVENTORY_VIEW_TITLE);
     }
 
-    @Test(priority = 17)
+    @Test(priority = 18)
     public void showOnHierarchyView() {
         hierarchyViewPage = HierarchyViewPage.openHierarchyViewPage(driver, BASIC_URL, "Location");
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         hierarchyViewPage.getFirstNode().callAction(ActionsContainer.SHOW_ON_GROUP_ID,
                 HierarchyViewPage.OPEN_HIERARCHY_VIEW_CONTEXT_ACTION_ID);
         List<Node> nodes = hierarchyViewPage.getMainTree().getVisibleNodes();
-        Assertions.assertThat(nodes).hasSize(1);
+        Assertions.assertThat(nodes).as(ONE_ROOT_IS_OPENED_ON_HV).hasSize(1);
     }
 
-    @Test(priority = 18)
+    @Test(priority = 19)
     public void checkBadges() {
         deviceId2 = createRouterWithCards(DEVICE_NAME_2);
         HierarchyViewPage viewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, "Router", deviceId2.toString());
@@ -360,7 +383,7 @@ public class TreeWidgetTest extends BaseTestCase {
 
     }
 
-    @Test(priority = 19)
+    @Test(priority = 20)
     public void deleteRoot() {
         HierarchyViewPage viewPage = HierarchyViewPage.goToHierarchyViewPage(driver, BASIC_URL, SUB_LOCATION_TYPE_ROOM, roomId_2.toString());
         viewPage.selectFirstObject();
@@ -369,8 +392,8 @@ public class TreeWidgetTest extends BaseTestCase {
         ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(CONFIRM_DELETE_BUTTON);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         List<String> nodes = viewPage.getVisibleNodesLabel();
-        Assert.assertTrue(nodes.isEmpty());
-        Assert.assertTrue(viewPage.getMainTree().hasNoData());
+        Assertions.assertThat(nodes).isEmpty();
+        Assertions.assertThat(viewPage.getMainTree().hasNoData()).as(THERE_IS_NO_DATA_ON_TREE).isTrue();
     }
 
     @AfterClass
@@ -437,5 +460,19 @@ public class TreeWidgetTest extends BaseTestCase {
     private Long getFloorId() {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         return locationInventoryRepository.getSublocationId(locationId, FLOOR_NAME);
+    }
+
+    private void editChassisDescription(String description) {
+        hierarchyViewPage.getMainTree().callActionById(ActionsContainer.EDIT_GROUP_ID, EDIT_CHASSIS_ACTION);
+        ChassisWizardPage chassisWizardPage = new ChassisWizardPage(driver);
+        chassisWizardPage.setDescription(description);
+        chassisWizardPage.clickAccept();
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    private void checkDescription(String description) {
+        PropertyPanel propertyPanel = hierarchyViewPage.getPropertyPanel();
+        String descriptionInPP = propertyPanel.getPropertyValue(DESCRIPTION);
+        Assertions.assertThat(descriptionInPP).as(CHECK_DESCRIPTION_IN_PROPERTY_PANEL).isEqualTo(description);
     }
 }

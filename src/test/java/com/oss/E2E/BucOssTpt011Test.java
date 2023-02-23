@@ -15,6 +15,7 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.comarch.oss.transport.tpt.tp.api.dto.TerminationPointDetailDTO;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
@@ -26,7 +27,6 @@ import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.AELWizardPage;
 import com.oss.pages.transport.trail.ConnectionWizardPage;
@@ -174,16 +174,16 @@ public class BucOssTpt011Test extends BaseTestCase {
         softAssert.assertEquals(wizard.getNetworkElementTermination(), DEVICE_1_NAME, String.format(WRONG_TERMINATION_PATTERN, "Start"));
         wizard.selectConnectionTermination(END_CONNECTION_DATA_PATH);
         softAssert.assertEquals(wizard.getNetworkElementTermination(), DEVICE_2_NAME, String.format(WRONG_TERMINATION_PATTERN, "End"));
-        wizard.clickNext();
         softAssert.assertAll();
-        wizard.getWizard().waitForWizardToLoad();
-        Assert.assertEquals(wizard.getWizard().getCurrentStepTitle(), AE_INTERFACES_STEP_NAME, WIZARD_STEP_NAME_VALIDATION);
     }
 
     @Test(priority = 4, description = "Create Aggregated Ethernet Interfaces at both endpoints and set their related attributes.", dependsOnMethods = {"fillTerminations"})
     @Description("Create Aggregated Ethernet Interfaces at both endpoints and set their related attributes.")
     public void fillAggregatedEthernetInterfaces() {
         AELWizardPage wizard = new AELWizardPage(driver);
+        wizard.clickNext();
+        wizard.getWizard().waitForWizardToLoad();
+        Assert.assertEquals(wizard.getWizard().getCurrentStepTitle(), AE_INTERFACES_STEP_NAME, WIZARD_STEP_NAME_VALIDATION);
         wizard.setCreateStartAggregatedEthernetInterface();
         wizard.setStartAeiName(AEI_NAME_1);
         wizard.setStartAeiNumber(AEI_NUMBER);
@@ -231,14 +231,14 @@ public class BucOssTpt011Test extends BaseTestCase {
     @Description("Set routing attributes.")
     public void fillRoutingWizard() {
         RoutingWizardPage wizard = new RoutingWizardPage(driver);
-        String connectionPath = AGGREGATED_ETHERNET_LINK_NAME + "." + FIRST_ETHERNET_LINK_NAME;
-        if (!isNodePresent(wizard, connectionPath)) {
+        if (!isNodePresent(wizard)) {
             wizard.clickCancel();
             networkViewPage = new NetworkViewPage(driver);
             networkViewPage.unselectObjectInViewContentContains(NAME_COLUMN, FIRST_ETHERNET_LINK_NAME);
             networkViewPage.unselectObjectInViewContentContains(NAME_COLUMN, SECOND_ETHERNET_LINK_NAME);
             Assert.fail(WIZARD_LABEL_NOT_PRESENT);
         }
+        String connectionPath = AGGREGATED_ETHERNET_LINK_NAME + "." + FIRST_ETHERNET_LINK_NAME;
         wizard.selectConnection(connectionPath);
         wizard.setProtectionType(PROTECTION_TYPE);
         wizard.setLineType(LINE_TYPE);
@@ -375,7 +375,7 @@ public class BucOssTpt011Test extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    private boolean isNodePresent(RoutingWizardPage wizard, String connectionPath) {
-        return wizard.getWizard().getTreeComponent().getVisibleNodes().stream().map(TreeComponent.Node::getLabel).collect(Collectors.toList()).contains(connectionPath);
+    private boolean isNodePresent(RoutingWizardPage wizard) {
+        return wizard.getWizard().getTreeComponent().getVisibleNodes().stream().map(TreeComponent.Node::getLabel).collect(Collectors.toList()).contains(BucOssTpt011Test.AGGREGATED_ETHERNET_LINK_NAME);
     }
 }

@@ -11,13 +11,13 @@ import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 
-
 public class ChangeIPNetworkWizardPage extends BasePage {
     private static final String WIZARD_ID = "ipnetworkReassignmentWizardWigetId";
     private static final String SELECT_DESTINATION_NETWORK_COMPONENT_ID = "mainStepSelectNetworkComponentId";
     private static final String TABLE_CONFLICTS_STEP_IP_OBJECTS_TABLE_COMPONENT_ID = "ipnetworkReassignmentWizardWidgetId";
     private static final String CONFLICTS_STEP_RESOLVE_BUTTON_COMPONENT_ID = "conflictsStepResolveButtonComponentId";
     private static final String ID = "NEEDS_TO_UPDATE_ID";
+    private static final String CHANGE_BUTTON_ID = "wizard-submit-button-ipnetworkReassignmentWizardWidgetId";
 
     public ChangeIPNetworkWizardPage(WebDriver driver) {
         super(driver);
@@ -58,7 +58,7 @@ public class ChangeIPNetworkWizardPage extends BasePage {
 
     private void summaryStep() {
         Wizard summaryStep = Wizard.createByComponentId(driver, wait, ID);
-        summaryStep.clickAccept();
+        summaryStep.clickButtonById(CHANGE_BUTTON_ID);
     }
 
     private Wizard getWizard() {

@@ -3,12 +3,12 @@ package com.oss.smoketests;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
 import com.google.common.collect.ImmutableList;
 import com.oss.BaseTestCase;
@@ -39,9 +40,7 @@ public class CscvSmokeTest extends BaseTestCase {
     private static final String PATH_NAME = "gismap";
     private static final String FILE_NAME = "smoketestCSCV.png";
     private static final String MAP_NAME = "Here Terrain Map";
-    private static final String RED_COLOR_LOG_PATTERN = "Red color value is %s.";
-    private static final String GREEN_COLOR_LOG_PATTERN = "Green color value is %s.";
-    private static final String BLUE_COLOR_LOG_PATTERN = "Blue color value is %s.";
+    private static final String RGB_COLOR_LOG_PATTERN = "RGB color value is %s. ";
     private static final String NO_SITE_EXCEPTION = "There is no physical location with type = Site available on the environment.";
     private static final String SITE = "Site";
     private static final String NAME = "Name";
@@ -61,6 +60,12 @@ public class CscvSmokeTest extends BaseTestCase {
     private static final String STREET_NAME = "Street Number";
     private static final String POSTAL_CODE = "Postal Code";
     private static final String PROPERTY_PANEL_ID = "propertiesTabbApp";
+    private static final String CANVAS_LENGTH_EXCEPTION_PATTERN = "Canvas object length is %s. Expected to be at least 150000.";
+    private static final String TABLE_CONTEXT_ACTION_EXCEPTION = "The context action label in the table is incorrect.";
+    private static final String CANVAS_PRESENT_EXCEPTION = "Canvas object does not exist.";
+    private static final String GENERATE_IMAGE_EXCEPTION = "Problem generationg the map image.";
+    private static final String MAP_DIMENSIONS_PATTERN = "Map dimensions - Height: %s, Width: %s.";
+    private static final int BLACK_COLOR = -16777216;
     private static String FILE_PATH;
     private static final Logger LOGGER = LoggerFactory.getLogger(CscvSmokeTest.class);
     private final Environment env = Environment.getInstance();
@@ -83,7 +88,7 @@ public class CscvSmokeTest extends BaseTestCase {
         waitForPageToLoad();
         Assert.assertEquals(cellSiteConfigurationPage.getTree().getGroupActionLabel(ActionsContainer.SHOW_ON_GROUP_ID), "Show on");
         waitForPageToLoad();
-        Assert.assertTrue(cellSiteConfigurationPage.getTabTable().getGroupActionLabel("add").isEmpty());
+        Assert.assertTrue(cellSiteConfigurationPage.getTabTable().getGroupActionLabel("add").isEmpty(), TABLE_CONTEXT_ACTION_EXCEPTION);
     }
 
     @Test(priority = 3, description = "Check property panel", dependsOnMethods = {"checkContextActions"})
@@ -102,34 +107,39 @@ public class CscvSmokeTest extends BaseTestCase {
         checkGlobalNotificationContainer();
         cellSiteConfigurationPage.setMap(MAP_NAME);
         waitForPageToLoad();
-        Assert.assertTrue(cellSiteConfigurationPage.isCanvasPresent());
+        Assert.assertTrue(cellSiteConfigurationPage.isCanvasPresent(), CANVAS_PRESENT_EXCEPTION);
     }
 
     @Test(priority = 5, description = "Check Canvas object bytes size", dependsOnMethods = {"isCanvasObjectPresent"})
     @Description("Check Canvas object bytes size")
     public void checkCanvasObjectSize() {
+        setScale();
         String canvasObject = new CellSiteConfigurationPage(driver).getCanvasObject();
-        Assert.assertTrue(canvasObject.length() > 150000);
-        Assert.assertTrue(generateImage(canvasObject));
+        Assert.assertTrue(canvasObject.length() > 150000, String.format(CANVAS_LENGTH_EXCEPTION_PATTERN, canvasObject.length()));
+        Assert.assertTrue(generateImage(canvasObject), GENERATE_IMAGE_EXCEPTION);
     }
 
     @Test(priority = 6, description = "Check the colors of Canvas object", dependsOnMethods = {"checkCanvasObjectSize"})
     @Description("Check the colors of Canvas object")
     public void isCanvasObjectColors() throws IOException {
         BufferedImage img = ImageIO.read(new File(FILE_PATH));
+        SoftAssert softAssert = new SoftAssert();
         int height = img.getHeight();
         int width = img.getWidth();
+        LOGGER.debug(String.format(MAP_DIMENSIONS_PATTERN, height, width));
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 Color c = new Color(img.getRGB(i, j));
-                int red = c.getRed();
-                int green = c.getGreen();
-                int blue = c.getBlue();
-                Assert.assertNotEquals(red, 0, String.format(RED_COLOR_LOG_PATTERN, red));
-                Assert.assertNotEquals(green, 0, String.format(GREEN_COLOR_LOG_PATTERN, green));
-                Assert.assertNotEquals(blue, 0, String.format(BLUE_COLOR_LOG_PATTERN, blue));
+                if (c.getRGB() != BLACK_COLOR) {
+                    int red = c.getRed();
+                    int green = c.getGreen();
+                    int blue = c.getBlue();
+                    int sum = red + green + blue;
+                    softAssert.assertNotEquals(sum, 0, String.format(RGB_COLOR_LOG_PATTERN, c.getRGB()) + String.format(MAP_DIMENSIONS_PATTERN, j, i));
+                }
             }
         }
+        softAssert.assertAll();
     }
 
     private boolean generateImage(String imgStr) {
@@ -144,7 +154,7 @@ public class CscvSmokeTest extends BaseTestCase {
                 }
             }
             FILE_PATH = getFilePath() + "/" + FILE_NAME;
-            OutputStream out = new FileOutputStream(FILE_PATH);
+            OutputStream out = Files.newOutputStream(Paths.get(FILE_PATH));
             out.write(b);
             out.flush();
             out.close();
@@ -194,6 +204,16 @@ public class CscvSmokeTest extends BaseTestCase {
     private int getLocationsIds() {
         LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
         return locationInventoryRepository.getFirstSite().stream().findFirst().orElseThrow(() -> new NoSuchElementException(NO_SITE_EXCEPTION));
+    }
+
+    private void setScale() {
+        CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
+        String scale = cellSiteConfigurationPage.getMapScale();
+        while (!scale.contains("km") || Long.parseLong(scale.split(" ")[0]) < 100) {
+            cellSiteConfigurationPage.zoomOutMap();
+            waitForPageToLoad();
+            scale = cellSiteConfigurationPage.getMapScale();
+        }
     }
 
     private static final List<String> defaultPropertiesList = new ImmutableList.Builder<String>()

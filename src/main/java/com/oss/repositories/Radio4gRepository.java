@@ -2,6 +2,7 @@ package com.oss.repositories;
 
 import java.util.List;
 
+import com.comarch.oss.radio.api.dto.AdministrativeStateDTO;
 import com.comarch.oss.radio.api.dto.BaseStationResponseIdDTO;
 import com.comarch.oss.radio.api.dto.CardIdentificationDTO;
 import com.comarch.oss.radio.api.dto.CarrierDTO;
@@ -12,6 +13,7 @@ import com.comarch.oss.radio.api.dto.HniDTO;
 import com.comarch.oss.radio.api.dto.HostRelationDTO;
 import com.comarch.oss.radio.api.dto.HostingResourceDTO;
 import com.comarch.oss.radio.api.dto.MccMncDTO;
+import com.comarch.oss.radio.api.dto.MimoModeDTO;
 import com.comarch.oss.radio.api.dto.PortIdentificationDTO;
 import com.comarch.oss.radio.api.dto.RanBandType4GDTO;
 import com.oss.services.Radio4gClient;
@@ -35,6 +37,11 @@ public class Radio4gRepository {
         Radio4gClient client = Radio4gClient.getInstance(env);
         CellResponseIdDTO cell = client.createCell4G(buildCell4g(cellName, cellId, mcc, mnc, carrier), eNodeBId);
         return cell.getId();
+    }
+
+    public Long createCell4gWithDefaultValues(String cellName, Integer cellId, Long eNodeBId, String mcc, String mnc, String carrier, int localCellId) {
+        Radio4gClient client = Radio4gClient.getInstance(env);
+        return client.createCell4G(buildCell4g(cellName, cellId, mcc, mnc, carrier, localCellId), eNodeBId).getId();
     }
 
     public void createHRENodeBDevice(Long hostingResourceId, Long eNodeBId) {
@@ -65,6 +72,22 @@ public class Radio4gRepository {
     public void createHRCellDeviceCard(Long hostingResourceId, Long eNodeBId, Long cellId, String slotName, String cardName) {
         Radio4gClient client = Radio4gClient.getInstance(env);
         client.createHRCell(buildDeviceCardHR(hostingResourceId, slotName, cardName), eNodeBId, cellId);
+    }
+
+    public Long getOrCreateENodeB(String name, Long locationId, String mcc, String mnc, String eNodeBModel, Long deviceId) {
+        Radio4gClient client = Radio4gClient.getInstance(env);
+        List<Integer> eNodeBList = client.getEnodeBIds(name);
+        if (client.getEnodeBIds(name).isEmpty()) {
+            Long eNodeBId = createENodeB(name, locationId, mcc, mnc, eNodeBModel);
+            createHRENodeBDevice(deviceId, eNodeBId);
+            return eNodeBId;
+        }
+        return Long.valueOf(eNodeBList.get(0));
+    }
+
+    public List<Integer> getCell4GIdsByENodeBId(Long eNodeBId) {
+        Radio4gClient client = Radio4gClient.getInstance(env);
+        return client.getCell4GIdsByENodeBId(eNodeBId);
     }
 
     public Long getOrCreateBandType(String bandTypeName, int dLfrequencyStart, int dLfrequencyEnd, int uLfrequencyStart, int uLfrequencyEnd) {
@@ -123,6 +146,7 @@ public class Radio4gRepository {
                 .addMccMncs(getMccMnc(mcc, mnc))
                 .enodeBId(-1)
                 .locationId(locationId)
+                .administrativeState(AdministrativeStateDTO.UNLOCKED)
                 .build();
     }
 
@@ -143,6 +167,22 @@ public class Radio4gRepository {
                 .build();
     }
 
+    private Cell4gDTO buildCell4g(String name, Integer cellId, String mcc, String mnc, String carrier, int localCellId) {
+        return Cell4gDTO.builder()
+                .name(name)
+                .cellId(cellId)
+                .carrier(carrier)
+                .addMccMncs(getHni(mcc, mnc))
+                .tac(13)
+                .bandwidthDL(1)
+                .txPower(5)
+                .cellReselectionPriority(2)
+                .mimoMode(MimoModeDTO.MIMO_1Tx1Rx)
+                .localCellId(localCellId)
+                .referenceSignalPower(12)
+                .build();
+    }
+
     private HniDTO getHni(String mcc, String mnc) {
         return HniDTO.builder()
                 .mcc(mcc)
@@ -153,6 +193,7 @@ public class Radio4gRepository {
     private HostingResourceDTO getHostingResource(Long hostingResourceId) {
         return HostingResourceDTO.builder()
                 .hostingResourceId(hostingResourceId)
+                .hostingResourceType(HostingResourceDTO.HostingResourceTypeEnum.PHYSICAL_DEVICE)
                 .build();
     }
 

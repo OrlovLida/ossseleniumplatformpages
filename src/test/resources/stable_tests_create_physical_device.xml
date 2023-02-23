@@ -1,0 +1,30 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="Create Physical Device" verbose="1">
+    <test name="Create DWDM Device">
+        <parameter name="equipmentType" value="DWDM Device">
+            <parameter name="model" value="Alcatel 1626LM Compact">
+                <classes>
+                    <class name="com.oss.physical.devices.CreatePhysicalDeviceTest"/>
+                </classes>
+            </parameter>
+        </parameter>
+    </test>
+    <test name="Create ODF">
+        <parameter name="equipmentType" value="ODF">
+            <parameter name="model" value="Optomer PS-19/72 3U">
+                <classes>
+                    <class name="com.oss.physical.devices.CreatePhysicalDeviceTest"/>
+                </classes>
+            </parameter>
+        </parameter>
+    </test>
+    <test name="Create RAN Antenna">
+        <parameter name="equipmentType" value="RAN Antenna">
+            <parameter name="model" value="Generic 1-Array Antenna">
+                <classes>
+                    <class name="com.oss.physical.devices.CreatePhysicalDeviceTest"/>
+                </classes>
+            </parameter>
+        </parameter>
+    </test>
+</suite>

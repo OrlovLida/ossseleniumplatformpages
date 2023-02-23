@@ -11,8 +11,8 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
-import com.oss.pages.bpm.tasks.TasksPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
+import com.oss.pages.bpm.tasks.TasksPage;
 import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.IPSubnetWizardPage;
@@ -32,7 +32,6 @@ import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPE
 public class ChangeIPNetworkSubnetTest extends BaseTestCase {
     private static final String FALSE = "FALSE";
     private static final String TASK_NAME = "Correct data";
-    private static IPAddressManagementViewPage ipAddressManagementViewPage;
     private static final String FIRST_NETWORK_NAME = "ChangeIPNetworkSubnet1";
     private static final String SECOND_NETWORK_NAME = "ChangeIPNetworkSubnet2";
     private static final String THIRD_NETWORK_NAME = "ChangeIPNetworkSubnet3";
@@ -66,6 +65,7 @@ public class ChangeIPNetworkSubnetTest extends BaseTestCase {
     private static final String EQUAL = "=";
     private static final String ROUTER_ID = "1830300";
     private static final String ROUTER_IDENTIFIER = "MKTEST-Router-1";
+    private static IPAddressManagementViewPage ipAddressManagementViewPage;
     private static String firstDCPProcessCode;
     private static String secondDCPProcessCode;
     private static HashMap<String, SubnetTree> firstNetworkProperties;

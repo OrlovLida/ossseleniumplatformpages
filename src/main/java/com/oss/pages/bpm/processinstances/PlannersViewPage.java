@@ -288,6 +288,7 @@ public class PlannersViewPage extends BasePage {
 
     public PlannersViewPage enablePropertyByLabel(String propertyLabel, String... path) {
         getPropertyPanel().enableAttributeByLabel(propertyLabel, path);
+        waitForPageToLoad();
         return this;
     }
 

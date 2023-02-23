@@ -10,6 +10,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -19,9 +20,9 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
+import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.logicalfunction.LogicalFunctionWizardPreStep;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
@@ -73,6 +74,10 @@ public class BucOssNar005Test extends BaseTestCase {
         wizard.setSavePerspective(SAVE_PERSPECTIVE);
         wizard.save();
         waitForPageToLoad();
+        if (CSSUtils.isElementPresent(driver, CmDomainWizardPage.CM_DOMAIN_WIZARD_ID)) {
+            wizard.cancel();
+            Assert.fail("Create CM Domain wizard was still open.");
+        }
     }
 
     @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
@@ -243,6 +248,8 @@ public class BucOssNar005Test extends BaseTestCase {
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        waitForPageToLoad();
+        networkDiscoveryControlViewPage.cancelWithSubsequents();
         waitForPageToLoad();
         networkDiscoveryControlViewPage.clearOldNotifications();
         networkDiscoveryControlViewPage.deleteCmDomain();

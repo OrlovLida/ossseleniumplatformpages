@@ -7,13 +7,15 @@
 package com.oss.pages.bpm.milestones;
 
 import com.comarch.oss.web.pages.configuration.ChooseConfigurationWizard;
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.BasePage;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
 
 /**
  * @author Gabriela Kasza
@@ -33,6 +35,7 @@ public class MilestoneViewPage extends BasePage {
     public static MilestoneViewPage goToMilestoneViewPage(WebDriver driver, String basicURL) {
         driver.get(String.format("%s/#/views/bpm/milestones" +
                 "?perspective=LIVE", basicURL));
+        DelayUtils.waitForPageToLoad(driver, new WebDriverWait(driver, Duration.ofSeconds(45)));
         return new MilestoneViewPage(driver);
     }
 
@@ -47,6 +50,11 @@ public class MilestoneViewPage extends BasePage {
         DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget milestoneTable = TableWidget.createById(driver, MILESTONE_TABLE_ID, wait);
         milestoneTable.selectRow(0);
+    }
+
+    public boolean isAttributeVisible(String attributeNameId) {
+        PropertyPanel propertyPanel = PropertyPanel.createById(driver, wait, PROPERTY_PANEL_WIDGET);
+        return propertyPanel.getVisibleAttributes().contains(attributeNameId);
     }
 
     public String getMilestoneAttribute(String attributeNameId) {

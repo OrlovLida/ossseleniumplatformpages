@@ -1,5 +1,12 @@
 package com.oss.repositories;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.comarch.oss.physicalinventory.api.dto.AttributeDTO;
 import com.comarch.oss.physicalinventory.api.dto.CardDTO;
 import com.comarch.oss.physicalinventory.api.dto.ChassisDTO;
@@ -14,12 +21,9 @@ import com.oss.services.PhysicalInventoryClient;
 import com.oss.transport.infrastructure.planning.PlanningContext;
 import com.oss.untils.Environment;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
 public class PhysicalInventoryRepository {
 
+    private static final Logger log = LoggerFactory.getLogger(PhysicalInventoryRepository.class);
     private static final String CHASSIS = "Chassis";
     private PhysicalInventoryClient client;
 
@@ -112,7 +116,11 @@ public class PhysicalInventoryRepository {
 
     public void deleteDeviceV3(Collection<String> deviceIds,
                                PlanningContext context) {
-        client.deleteDeviceV3(deviceIds, context);
+        if (deviceIds.isEmpty()) {
+            log.warn("Empty devices list provided while deleting device. Request will not be processed.");
+        } else {
+            client.deleteDeviceV3(deviceIds, context);
+        }
     }
 
     public void deleteDevice(String deviceId, long projectId) {
@@ -129,6 +137,14 @@ public class PhysicalInventoryRepository {
 
     private List<SearchDTO> getDeviceSearchDTO(String locationId, String deviceName) {
         return client.getDeviceId(locationId, "Name==" + deviceName).getSearchResult();
+    }
+
+    public Long getOrCreateDevice(String locationType, Long locationId, Long deviceModelId, String deviceName, String deviceModelType) {
+        List<SearchDTO> devicesList = getDeviceSearchDTO(String.valueOf(locationId), deviceName);
+        if (devicesList.isEmpty()) {
+            return createDevice(locationType, locationId, deviceModelId, deviceName, deviceModelType);
+        }
+        return devicesList.get(0).getId();
     }
 
     private PhysicalDeviceDTO buildDevice(String locationType, Long locationId, Long deviceModelId, String deviceName,

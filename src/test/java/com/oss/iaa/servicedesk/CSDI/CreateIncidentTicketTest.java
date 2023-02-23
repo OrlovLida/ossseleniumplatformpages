@@ -33,20 +33,9 @@ public class CreateIncidentTicketTest extends BaseTestCase {
     private static final String FLOW_TYPE = "Incident";
     private static final String INCIDENT_DESCRIPTION = "Selenium test ticket";
     private static final String SEVERITY_ATTRIBUTE_NAME = "Severity";
-    private static final String STATUS_RESOLVED = "Resolved";
-    private static final String TEST_REASON = "Selenium_Test";
-    private static final String ATTRIBUTE_WIZARD_ID = "_configureStepPrompt_prompt-card";
-    private static final String STATUS_CLOSED = "Closed";
 
     private TicketDashboardPage ticketDashboardPage;
     private IssueCSDIWizardPage issueCSDIWizardPage;
-    private MyGroupTicketsPage myGroupTicketsPage;
-    private MyTicketsPage myTicketsPage;
-    private TicketSearchPage ticketSearchPage;
-    private NotificationWrapperPage notificationWrapperPage;
-    private IssueDetailsPage issueDetailsPage;
-    private TicketOverviewTab ticketOverviewTab;
-    private ChangeAttributeWizardPage changeAttributeWizardPage;
     private String ticketID;
 
     @BeforeMethod
@@ -60,7 +49,7 @@ public class CreateIncidentTicketTest extends BaseTestCase {
     ) {
         issueCSDIWizardPage = ticketDashboardPage.openCreateTicketWizard(FLOW_TYPE).openIssueCSDIWizardPage();
         issueCSDIWizardPage.setIssueTitle(ISSUE_TITLE);
-        issueCSDIWizardPage.enterIncidentDescription(INCIDENT_DESCRIPTION);
+        issueCSDIWizardPage.enterDescription(INCIDENT_DESCRIPTION);
         issueCSDIWizardPage.setSeverity(SEVERITY);
         issueCSDIWizardPage.clickNextButtonInWizard();
 

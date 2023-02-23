@@ -1,22 +1,27 @@
 package com.oss.transport.ipam;
 
-import com.oss.BaseTestCase;
-import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
-import com.oss.pages.transport.ipam.IPSubnetWizardPage;
-import com.oss.pages.transport.ipam.helper.IPSubnetFilterProperties;
-import com.oss.pages.transport.ipam.helper.IPSubnetWizardProperties;
-import com.oss.utils.TestListener;
-import io.qameta.allure.Description;
+import java.text.MessageFormat;
+import java.util.HashMap;
+
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import java.text.MessageFormat;
-import java.util.HashMap;
+import com.oss.BaseTestCase;
+import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
+import com.oss.pages.transport.ipam.IPSubnetWizardPage;
+import com.oss.pages.transport.ipam.helper.IPSubnetFilterProperties;
+import com.oss.pages.transport.ipam.helper.IPSubnetWizardProperties;
+import com.oss.utils.TestListener;
 
-import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.*;
+import io.qameta.allure.Description;
+
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_PROPERTY_IDENTIFIER;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.HOST_PROPERTY_IP_NETWORK_NAME;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_CHILD_COUNT;
+import static com.oss.pages.transport.ipam.helper.IPAMTreeConstants.SUBNET_PROPERTY_PERCENT_FREE;
 
 @Listeners({TestListener.class})
 public class IPAddressBulkReservationTest extends BaseTestCase {
@@ -76,7 +81,6 @@ public class IPAddressBulkReservationTest extends BaseTestCase {
     private static SubnetProperties secondIPv4SubnetProperties;
     private static SubnetProperties firstIPv6SubnetProperties;
     private static SubnetProperties secondIPv6SubnetProperties;
-
 
     @BeforeClass
     public void prepareData() {
@@ -259,17 +263,9 @@ public class IPAddressBulkReservationTest extends BaseTestCase {
 
     private static class SubnetProperties {
 
+        private final HashMap<String, HostAddressProperties> hostAddressPropertiesMap = new HashMap<>();
         private String percentFree;
         private String childCount;
-        private final HashMap<String, HostAddressProperties> hostAddressPropertiesMap = new HashMap<>();
-
-        public void setPercentFree(String percentFree) {
-            this.percentFree = percentFree;
-        }
-
-        public void setChildCount(String childCount) {
-            this.childCount = childCount;
-        }
 
         public void addBoundaryAddressProperties(String ipAddressToFormat, String networkMask, String lastOctetOrHextet, String boundaryAddress) {
             String ipAddressRowName = MessageFormat.format(ipAddressToFormat, lastOctetOrHextet) + "/" + networkMask;
@@ -281,8 +277,16 @@ public class IPAddressBulkReservationTest extends BaseTestCase {
             return percentFree;
         }
 
+        public void setPercentFree(String percentFree) {
+            this.percentFree = percentFree;
+        }
+
         public String getChildCount() {
             return childCount;
+        }
+
+        public void setChildCount(String childCount) {
+            this.childCount = childCount;
         }
 
         public HashMap<String, HostAddressProperties> getBoundaryHostAddressPropertiesMap() {
@@ -291,8 +295,8 @@ public class IPAddressBulkReservationTest extends BaseTestCase {
     }
 
     private static class HostAddressProperties {
-        private final String IDENTIFIER;
         private static final String IP_NETWORK = NETWORK_NAME;
+        private final String IDENTIFIER;
         private final String HOST_ADDRESS_ROW_NAME;
 
         public HostAddressProperties(String identifier, String hostAddressRowName) {

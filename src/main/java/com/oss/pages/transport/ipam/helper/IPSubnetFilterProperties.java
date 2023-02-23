@@ -6,14 +6,14 @@ public class IPSubnetFilterProperties {
     private String operator;
     private String maskLength;
 
-    public IPSubnetFilterProperties(String startIp, String endIp, String operator, String maskLength){
+    public IPSubnetFilterProperties(String startIp, String endIp, String operator, String maskLength) {
         this.startIp = startIp;
         this.endIp = endIp;
         this.operator = operator;
         this.maskLength = maskLength;
     }
 
-    public IPSubnetFilterProperties(String startIp, String endIp){
+    public IPSubnetFilterProperties(String startIp, String endIp) {
         this.startIp = startIp;
         this.endIp = endIp;
     }

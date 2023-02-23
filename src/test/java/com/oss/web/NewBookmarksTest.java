@@ -7,17 +7,18 @@ import org.assertj.core.api.Assertions;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.BookmarkWizardPage;
 import com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.NewBookmarksPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.mainheader.ButtonPanel;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.untils.FakeGenerator;
 
 import io.qameta.allure.Description;
 
+@Deprecated
 public class NewBookmarksTest extends BaseTestCase {
 
     public static final String BOOKMARK_PROPERTIES = "Bookmark properties" + FakeGenerator.getRandomInt();
