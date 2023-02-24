@@ -23,6 +23,7 @@ public class MicrowaveChannelWizardPage extends BasePage {
     private static final String CHANNEL_NUMBER_FIELD_ID = "oss.transport.trail.type.MicrowaveChannel.ChannelNumber";
     private static final String CONFIGURATION_FIELD_ID = "oss.transport.trail.type.MicrowaveChannel.Configuration";
     private static final String MICROWAVE_FREQUENCY_PLANS_COMPONENT_ID = "table-TableComponentId";
+    private static final String CHANNEL_NAME_COLUMN_ID = "ChannelName";
 
     private static final String START_RADIO_MODEL_FIELD_ID = "oss.transport.trail.type.MicrowaveChannel.StartRadioModel";
     private static final String END_RADIO_MODEL_FIELD_ID = "oss.transport.trail.type.MicrowaveChannel.EndRadioModel";
@@ -114,10 +115,10 @@ public class MicrowaveChannelWizardPage extends BasePage {
     }
 
     @Step("Set Microwave Frequency Plan")
-    public void setMicrowaveFrequencyPlan() {
+    public void setMicrowaveFrequencyPlan(String channelNameValue) {
         waitForPageToLoad();
         TableComponent tableComponent = TableComponent.createById(driver, wait, MICROWAVE_FREQUENCY_PLANS_COMPONENT_ID);
-        tableComponent.selectRow(0);
+        tableComponent.getRow(channelNameValue, CHANNEL_NAME_COLUMN_ID).selectRow();
         waitForPageToLoad();
     }
 
