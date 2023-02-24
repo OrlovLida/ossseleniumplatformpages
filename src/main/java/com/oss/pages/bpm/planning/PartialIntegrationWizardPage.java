@@ -19,8 +19,8 @@ public class PartialIntegrationWizardPage extends BasePage {
     public static final String OBJECT_TYPE = "Object Type";
     public static final String OBJECT_NAME = "Object Name";
     public static final String OPERATION_TYPE = "Operation Type";
-    private static final String PLANNED_OBJECTS_TABLE_ID = "table-plaPartialActivationWizard_appId";
-    private static final String OBJECTS_TO_INTEGRATION_TABLE_ID = "table-plaPartialActivationWizard_appId";
+    private static final String PLANNED_OBJECTS_TABLE_ID = "table-RootsInProjectCompId";
+    private static final String OBJECTS_TO_INTEGRATION_TABLE_ID = "table-RootsToActivateCompId";
     private static final String PLANNED_OBJECTS_SEARCH_INPUT_ID = "RootsInProjectSearchCompId";
     private static final String OBJECTS_TO_INTEGRATION_SEARCH_INPUT_ID = "RootsToActivateSearchCompId";
     private static final String CANCEL_BUTTON_ID = "wizard-cancel-button-plaPartialActivationWizard_appId";
