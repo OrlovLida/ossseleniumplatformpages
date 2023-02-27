@@ -40,7 +40,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     private static final String RELATIONS_TAB_ID = "tab_2";
     private static final String DETAILS_VALUE_COLUMN = "Value";
     private static final String DETAILS_NAME_COLUMN = "Name";
-    private static final String ERROR_MESSAGE_INFO = "Incorrect attribute value: ";
+    private static final String ERROR_MESSAGE_INFO = "Incorrect attribute value: %s";
     private static final String FALSE_VALUE = "false";
     private static final String NAMING_RULE_VALUE = "{name}-{InstanceNumber}";
     private static final String ACTION_ANY_VALUE = "ANY";
@@ -76,139 +76,127 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     @Description("AEL Resource Specification")
     public void aggregatedEthernetLinkRSTest() {
         searchObjectResourceSpecification(AGGREGATED_ETHERNET_LINK_NAME);
-        DetailTabAttributes aelDetailTabAttributesForAssertion = getAELDetailTabAttributesForAssertion();
-        assertDetailsTabAttributes(aelDetailTabAttributesForAssertion);
+        assertDetailsTabAttributes(defaultAggregatedEthernetLinkAttributes());
         selectTab(CHARACTERISTIC_TAB_ID);
         assertCharacteristicTabAttributesForAEL();
-        selectTab(DETAILS_TAB_ID);
     }
 
     @Test(priority = 2, description = "Ethernet Link Resource Specification")
     @Description("EL Resource Specification")
     public void ethernetLinkRSTest() {
+        selectTab(DETAILS_TAB_ID);
         clearAllFiltersOnSearch();
         searchObjectResourceSpecification(ETHERNET_LINK_NAME);
-        DetailTabAttributes elDetailTabAttributesForAssertion = getELDetailTabAttributesForAssertion();
-        assertDetailsTabAttributes(elDetailTabAttributesForAssertion);
+        assertDetailsTabAttributes(defaultEthernetLinkAttributes());
         selectTab(CHARACTERISTIC_TAB_ID);
         assertCharacteristicTabAttributesForEL();
-        selectTab(DETAILS_TAB_ID);
     }
 
     @Test(priority = 3, description = "E-Line Resource Specification")
     @Description("ELine Resource Specification")
     public void eLineRSTest() {
+        selectTab(DETAILS_TAB_ID);
         clearAllFiltersOnSearch();
         searchObjectResourceSpecification(ELINE_NAME);
-        DetailTabAttributes eLineDetailTabAttributesForAssertion = getELineDetailTabAttributesForAssertion();
-        assertDetailsTabAttributes(eLineDetailTabAttributesForAssertion);
+        assertDetailsTabAttributes(defaultELineAttributes());
         selectTab(CHARACTERISTIC_TAB_ID);
         assertCharacteristicTabAttributesForELine();
-        selectTab(DETAILS_TAB_ID);
     }
 
     @Test(priority = 4, description = "Virtual Network Resource Specification")
     @Description("Virtual Network Resource Specification")
     public void virtualNetworkRSTest() {
+        selectTab(DETAILS_TAB_ID);
         clearAllFiltersOnSearch();
         searchObjectResourceSpecification(VIRTUAL_NETWORK_NAME);
-        DetailTabAttributes vnDetailTabAttributesForAssertion = getVNDetailTabAttributesForAssertion();
-        assertDetailsTabAttributes(vnDetailTabAttributesForAssertion);
+        assertDetailsTabAttributes(defaultVirtualNetworkAttributes());
         selectTab(CHARACTERISTIC_TAB_ID);
         assertCharacteristicTabAttributesForVN();
-        selectTab(DETAILS_TAB_ID);
     }
 
     @Test(priority = 5, description = "VLAN Resource Specification")
     @Description("VLAN Resource Specification")
     public void vlanRSTest() {
+        selectTab(DETAILS_TAB_ID);
         clearAllFiltersOnSearch();
         searchObjectResourceSpecification(VLAN_NAME);
-        DetailTabAttributes vlanDetailTabAttributesForAssertion = getVLANDetailTabAttributesForAssertion();
-        assertDetailsTabAttributes(vlanDetailTabAttributesForAssertion);
+        assertDetailsTabAttributes(defaultVLANAttributes());
         selectTab(CHARACTERISTIC_TAB_ID);
         assertCharacteristicTabAttributesForVLAN();
-        selectTab(DETAILS_TAB_ID);
     }
 
     @Test(priority = 6, description = "Aggregated Ethernet Interface Resource Specification")
     @Description("AEI Resource Specification")
     public void aeiRSTest() {
+        selectTab(DETAILS_TAB_ID);
         clearAllFiltersOnSearch();
         searchObjectResourceSpecification(AGGREGATED_ETHERNET_INTERFACE_NAME);
-        DetailTabAttributes aeiDetailTabAttributesForAssertion = getAEIDetailTabAttributesForAssertion();
-        assertDetailsTabAttributes(aeiDetailTabAttributesForAssertion);
+        assertDetailsTabAttributes(defaultAggregatedEthernetInterfaceAttributes());
         selectTab(CHARACTERISTIC_TAB_ID);
         assertCharacteristicTabAttributesForAEI();
         selectTab(RELATIONS_TAB_ID);
         assertRelationsTabAttributesForAEI();
-        selectTab(DETAILS_TAB_ID);
     }
 
     @Test(priority = 7, description = "Ethernet Interface Resource Specification")
     @Description("EI Resource Specification")
     public void ethernetInterfaceRSTest() {
+        selectTab(DETAILS_TAB_ID);
         clearAllFiltersOnSearch();
         searchObjectResourceSpecification(ETHERNET_INTERFACE_NAME);
-        DetailTabAttributes eiDetailTabAttributesForAssertion = getEIDetailTabAttributesForAssertion();
-        assertDetailsTabAttributes(eiDetailTabAttributesForAssertion);
+        assertDetailsTabAttributes(defaultEthernetInterfaceAttributes());
         selectTab(CHARACTERISTIC_TAB_ID);
         assertCharacteristicTabAttributesForEI();
         selectTab(RELATIONS_TAB_ID);
         assertRelationsTabAttributesForEI();
-        selectTab(DETAILS_TAB_ID);
     }
 
     @Test(priority = 8, description = "IP Network Element Resource Specification")
     @Description("IPNE Resource Specification")
     public void ipNetworkElementRSTest() {
+        selectTab(DETAILS_TAB_ID);
         clearAllFiltersOnSearch();
         searchObjectResourceSpecification(IP_NETWORK_ELEMENT_NAME);
-        DetailTabAttributes ipneDetailTabAttributesForAssertion = getIPNetworkElementDetailTabAttributesForAssertion();
-        assertDetailsTabAttributes(ipneDetailTabAttributesForAssertion);
+        assertDetailsTabAttributes(defaultIPNetworkElementAttributes());
         selectTab(CHARACTERISTIC_TAB_ID);
         assertCharacteristicTabAttributesForIPNE();
         selectTab(RELATIONS_TAB_ID);
         assertRelationsTabAttributesForIPNE();
-        selectTab(DETAILS_TAB_ID);
     }
 
     @Test(priority = 9, description = "IRB Interface Resource Specification")
     @Description("IRB Resource Specification")
     public void irbInterfaceRSTest() {
+        selectTab(DETAILS_TAB_ID);
         clearAllFiltersOnSearch();
         searchObjectResourceSpecification(IRB_INTERFACE_NAME);
-        DetailTabAttributes irbDetailTabAttributesForAssertion = getIRBInterfaceDetailTabAttributesForAssertion();
-        assertDetailsTabAttributes(irbDetailTabAttributesForAssertion);
+        assertDetailsTabAttributes(defaultIRBInterfaceAttributes());
         selectTab(CHARACTERISTIC_TAB_ID);
         assertCharacteristicTabAttributesForIRB();
-        selectTab(DETAILS_TAB_ID);
     }
 
     @Test(priority = 10, description = "Loopback Interface Resource Specification")
     @Description("Loopback Interface Resource Specification")
     public void loopbackInterfaceRSTest() {
+        selectTab(DETAILS_TAB_ID);
         clearAllFiltersOnSearch();
         searchObjectResourceSpecification(LOOPBACK_INTERFACE_NAME);
-        DetailTabAttributes loopbackDetailTabAttributesForAssertion = getLoopbackInterfaceDetailTabAttributesForAssertion();
-        assertDetailsTabAttributes(loopbackDetailTabAttributesForAssertion);
+        assertDetailsTabAttributes(defaultLoopbackInterfaceAttributes());
         selectTab(CHARACTERISTIC_TAB_ID);
         assertCharacteristicTabAttributesForLoopback();
-        selectTab(DETAILS_TAB_ID);
     }
 
     @Test(priority = 11, description = "VLAN Interface Resource Specification")
     @Description("VLAN Interface Resource Specification")
     public void vlanInterfaceRSTest() {
+        selectTab(DETAILS_TAB_ID);
         clearAllFiltersOnSearch();
         searchObjectResourceSpecification(VLAN_INTERFACE_NAME);
-        DetailTabAttributes vlanInterfaceDetailTabAttributesForAssertion = getVLANInterfaceDetailTabAttributesForAssertion();
-        assertDetailsTabAttributes(vlanInterfaceDetailTabAttributesForAssertion);
+        assertDetailsTabAttributes(defaultVLANInterfaceAttributes());
         selectTab(CHARACTERISTIC_TAB_ID);
         assertCharacteristicTabAttributesForVLANInterface();
         selectTab(RELATIONS_TAB_ID);
         assertRelationsTabAttributesForVLANInterface();
-        selectTab(DETAILS_TAB_ID);
     }
 
     private void openResourceSpecificationView() {
@@ -229,8 +217,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void selectTab(String tabId) {
-        TabsWidget tabsWidget = TabsWidget.createById(driver, webDriverWait, "rsRightWindowId");
-        tabsWidget.selectTabById(tabId);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        resourceSpecificationsViewPage.selectTab(tabId);
     }
 
     private void assertDetailsTabAttributes(DetailTabAttributes detailTabAttributes) {
@@ -251,26 +239,27 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         String actualOrigin = commonList.getRow(DETAILS_NAME_COLUMN, "Origin").getValue(DETAILS_VALUE_COLUMN);
         String actualTemplateInputParameter = commonList.getRow(DETAILS_NAME_COLUMN, "Template input parameter").getValue(DETAILS_VALUE_COLUMN);
         SoftAssert softAssert = new SoftAssert();
-        softAssert.assertEquals(actualIdentifier, detailTabAttributes.identifier, String.format(ERROR_MESSAGE_INFO + actualIdentifier));
-        softAssert.assertEquals(actualName, detailTabAttributes.name, String.format(ERROR_MESSAGE_INFO + actualName));
-        softAssert.assertEquals(actualCategory, detailTabAttributes.category, String.format(ERROR_MESSAGE_INFO + actualCategory));
-        softAssert.assertEquals(actualType, detailTabAttributes.type, String.format(ERROR_MESSAGE_INFO + actualType));
-        softAssert.assertEquals(actualInventoryType, detailTabAttributes.inventoryType, String.format(ERROR_MESSAGE_INFO + actualInventoryType));
-        softAssert.assertEquals(actualInstanceType, detailTabAttributes.instanceType, String.format(ERROR_MESSAGE_INFO + actualInstanceType));
-        softAssert.assertEquals(actualLifeCycle, detailTabAttributes.lifeCycle, String.format(ERROR_MESSAGE_INFO + actualLifeCycle));
-        softAssert.assertEquals(actualBaseSpecification, detailTabAttributes.baseSpecification, String.format(ERROR_MESSAGE_INFO + actualBaseSpecification));
-        softAssert.assertEquals(actualAction, detailTabAttributes.action, String.format(ERROR_MESSAGE_INFO + actualAction));
-        softAssert.assertEquals(actualDescription, detailTabAttributes.description, String.format(ERROR_MESSAGE_INFO + actualDescription));
-        softAssert.assertEquals(actualNamingRule, detailTabAttributes.namingRule, String.format(ERROR_MESSAGE_INFO + actualNamingRule));
-        softAssert.assertEquals(actualHasDescriptor, detailTabAttributes.hasDescriptor, String.format(ERROR_MESSAGE_INFO + actualHasDescriptor));
-        softAssert.assertEquals(actualIsAbstract, detailTabAttributes.isAbstract, String.format(ERROR_MESSAGE_INFO + actualIsAbstract));
-        softAssert.assertEquals(actualOrigin, detailTabAttributes.origin, String.format(ERROR_MESSAGE_INFO + actualOrigin));
-        softAssert.assertEquals(actualTemplateInputParameter, detailTabAttributes.templateInputParameter, String.format(ERROR_MESSAGE_INFO + actualTemplateInputParameter));
+        softAssert.assertEquals(actualIdentifier, detailTabAttributes.identifier, String.format(ERROR_MESSAGE_INFO, actualIdentifier));
+        softAssert.assertEquals(actualName, detailTabAttributes.name, String.format(ERROR_MESSAGE_INFO, actualName));
+        softAssert.assertEquals(actualCategory, detailTabAttributes.category, String.format(ERROR_MESSAGE_INFO, actualCategory));
+        softAssert.assertEquals(actualType, detailTabAttributes.type, String.format(ERROR_MESSAGE_INFO, actualType));
+        softAssert.assertEquals(actualInventoryType, detailTabAttributes.inventoryType, String.format(ERROR_MESSAGE_INFO, actualInventoryType));
+        softAssert.assertEquals(actualInstanceType, detailTabAttributes.instanceType, String.format(ERROR_MESSAGE_INFO, actualInstanceType));
+        softAssert.assertEquals(actualLifeCycle, detailTabAttributes.lifeCycle, String.format(ERROR_MESSAGE_INFO, actualLifeCycle));
+        softAssert.assertEquals(actualBaseSpecification, detailTabAttributes.baseSpecification, String.format(ERROR_MESSAGE_INFO, actualBaseSpecification));
+        softAssert.assertEquals(actualAction, detailTabAttributes.action, String.format(ERROR_MESSAGE_INFO, actualAction));
+        softAssert.assertEquals(actualDescription, detailTabAttributes.description, String.format(ERROR_MESSAGE_INFO, actualDescription));
+        softAssert.assertEquals(actualNamingRule, detailTabAttributes.namingRule, String.format(ERROR_MESSAGE_INFO, actualNamingRule));
+        softAssert.assertEquals(actualHasDescriptor, detailTabAttributes.hasDescriptor, String.format(ERROR_MESSAGE_INFO, actualHasDescriptor));
+        softAssert.assertEquals(actualIsAbstract, detailTabAttributes.isAbstract, String.format(ERROR_MESSAGE_INFO, actualIsAbstract));
+        softAssert.assertEquals(actualOrigin, detailTabAttributes.origin, String.format(ERROR_MESSAGE_INFO, actualOrigin));
+        softAssert.assertEquals(actualTemplateInputParameter, detailTabAttributes.templateInputParameter, String.format(ERROR_MESSAGE_INFO, actualTemplateInputParameter));
         softAssert.assertAll();
     }
 
     private void assertCharacteristicTabAttributesForAEL() {
-        OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("AggregationProtocol", CHARACTERISTIC_NAME_COLUMN);
@@ -290,7 +279,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForEL() {
-        OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("EffectiveCapacityMbps", CHARACTERISTIC_NAME_COLUMN);
@@ -323,7 +313,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForELine() {
-        OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("VLANID", CHARACTERISTIC_NAME_COLUMN);
@@ -344,7 +335,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForVN() {
-        OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("NetworkType", CHARACTERISTIC_NAME_COLUMN);
@@ -368,7 +360,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForVLAN() {
-        OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("NetworkRole", CHARACTERISTIC_NAME_COLUMN);
@@ -393,7 +386,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForAEI() {
-        OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("administrativeState", CHARACTERISTIC_NAME_COLUMN);
@@ -442,7 +436,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForEI() {
-        OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("accessFunction", CHARACTERISTIC_NAME_COLUMN);
@@ -531,7 +526,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForIPNE() {
-        OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("neRole", CHARACTERISTIC_NAME_COLUMN);
@@ -545,12 +541,14 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         softAssert.assertEquals(neRoleType, STRING_TYPE);
         softAssert.assertEquals(neRoleAllowableValues, "Leaf, external_Leaf, Spine, Unknown");
         softAssert.assertEquals(supportedLayersType, STRING_TYPE);
-        softAssert.assertEquals(supportedLayersAllowableValues, "ETHERNET, VLAN, IP, MPLS, NFV/DC, INFRASTRUCTURE, Generic, E5, E4, E3, E2, E1, E0, T3, T1, E0XV, E1XV, T1XV, VT15, VT15XV, STS1, STS1XV, STS3, STS12, STS48, STS192, OC1, OC3, OC12, OC48, OC192, VPLS, PWE3, VC3, VC4, VC12, STM, STM1, STM16, STM4, STM64");
+        softAssert.assertEquals(supportedLayersAllowableValues, "VT15XV, STS1, STS1XV, STS3, STS12, STS48, STS192, OC1, OC3, OC12, OC48, OC192, VPLS, PWE3, VC3, VC4, VC12, STM, STM1, STM16, STM4, STM64, ETHERNET, VLAN, IP, MPLS, NFV/DC, INFRASTRUCTURE, Generic, E5, E4, E3, E2, E1, E0, T3, T1, E0XV, E1XV, T1XV, VT15");
         softAssert.assertAll();
     }
 
     private void assertCharacteristicTabAttributesForIRB() {
-        OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
+        //OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("vlanId", CHARACTERISTIC_NAME_COLUMN);
@@ -571,7 +569,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         softAssert.assertEquals(mtuType, NUMBER_TYPE);
         softAssert.assertEquals(administrativeStateType, STRING_TYPE);
         softAssert.assertEquals(administrativeStateDefaultValue, "Active");
-        softAssert.assertEquals(administrativeStateAllowableValues, "Active, Down, Unknown, Enabled, Inactive, Maintenance, Up, Disabled, Testing");
+        softAssert.assertEquals(administrativeStateAllowableValues, "Unknown, Active, Down, Enabled, Inactive, Maintenance, Up, Disabled, Testing");
         softAssert.assertEquals(operationalStateType, STRING_TYPE);
         softAssert.assertEquals(operationalStateDefaultValue, "Enabled");
         softAssert.assertEquals(operationalStateAllowableValues, "Degraded, Down, Unknown, Failed, Transition, Enabled, Up, Disabled, PartiallyDown, Unspecified");
@@ -579,7 +577,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForLoopback() {
-        OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("administrativeState", CHARACTERISTIC_NAME_COLUMN);
@@ -602,7 +601,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForVLANInterface() {
-        OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("administrativeState", CHARACTERISTIC_NAME_COLUMN);
@@ -612,6 +612,9 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         String bandwidthType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
         rowNumber = oldTable.getRowNumber("innerVlanId", CHARACTERISTIC_NAME_COLUMN);
         String innerVlanIdType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
+        rowNumber = oldTable.getRowNumber("interfaceRole",CHARACTERISTIC_NAME_COLUMN);
+        String interfaceRoleType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
+        String interfaceRoleAllowableValues = oldTable.getCellValue(rowNumber, CHARACTERISTIC_ALLOWABLE_VALUES_COLUMN);
         rowNumber = oldTable.getRowNumber("mtu", CHARACTERISTIC_NAME_COLUMN);
         String mtuType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
         rowNumber = oldTable.getRowNumber("nativeVlanId", CHARACTERISTIC_NAME_COLUMN);
@@ -632,6 +635,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         softAssert.assertEquals(administrativeStateAllowableValues, "ACTIVE, DISABLED, DOWN, ENABLED, INACTIVE, MAINTENANCE, TESTING, UNKNOWN, UP");
         softAssert.assertEquals(bandwidthType, NUMBER_TYPE);
         softAssert.assertEquals(innerVlanIdType, NUMBER_TYPE);
+        softAssert.assertEquals(interfaceRoleType,STRING_TYPE);
+        softAssert.assertEquals(interfaceRoleAllowableValues,"U_Plane, C_Plane, M_Plane, S_Plane");
         softAssert.assertEquals(mtuType, NUMBER_TYPE);
         softAssert.assertEquals(nativeVlanIdType, NUMBER_TYPE);
         softAssert.assertEquals(operationalStateType, STRING_TYPE);
@@ -639,7 +644,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         softAssert.assertEquals(outerVlanIdType, NUMBER_TYPE);
         softAssert.assertEquals(subinterfaceIdType, NUMBER_TYPE);
         softAssert.assertEquals(vlanInterfaceTypeType, STRING_TYPE);
-        softAssert.assertEquals(vlanInterfaceTypeAllowableValues, "Subinterface, Trunk, Access, Undefined");
+        softAssert.assertEquals(vlanInterfaceTypeAllowableValues, "Undefined, Subinterface, Trunk, Access");
         softAssert.assertAll();
     }
 
@@ -725,7 +730,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         private String templateInputParameter;
     }
 
-    private DetailTabAttributes getAELDetailTabAttributesForAssertion() {
+    private DetailTabAttributes defaultAggregatedEthernetLinkAttributes() {
         DetailTabAttributes aelDetailAttributes = new DetailTabAttributes();
         aelDetailAttributes.identifier = "AggregatedEthernetLink";
         aelDetailAttributes.name = "Aggregated Ethernet Link";
@@ -745,7 +750,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         return aelDetailAttributes;
     }
 
-    private DetailTabAttributes getELDetailTabAttributesForAssertion() {
+    private DetailTabAttributes defaultEthernetLinkAttributes() {
         DetailTabAttributes elDetailAttributes = new DetailTabAttributes();
         elDetailAttributes.identifier = "EthernetLink";
         elDetailAttributes.name = "Ethernet Link";
@@ -765,7 +770,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         return elDetailAttributes;
     }
 
-    private DetailTabAttributes getELineDetailTabAttributesForAssertion() {
+    private DetailTabAttributes defaultELineAttributes() {
         DetailTabAttributes eLineDetailAttributes = new DetailTabAttributes();
         eLineDetailAttributes.identifier = "ELine";
         eLineDetailAttributes.name = "E-Line";
@@ -785,7 +790,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         return eLineDetailAttributes;
     }
 
-    private DetailTabAttributes getVNDetailTabAttributesForAssertion() {
+    private DetailTabAttributes defaultVirtualNetworkAttributes() {
         DetailTabAttributes detailAttributes = new DetailTabAttributes();
         detailAttributes.identifier = "VirtualNetwork";
         detailAttributes.name = "Virtual Network";
@@ -805,7 +810,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         return detailAttributes;
     }
 
-    private DetailTabAttributes getVLANDetailTabAttributesForAssertion() {
+    private DetailTabAttributes defaultVLANAttributes() {
         DetailTabAttributes detailAttributes = new DetailTabAttributes();
         detailAttributes.identifier = "VLAN";
         detailAttributes.name = "VLAN";
@@ -825,7 +830,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         return detailAttributes;
     }
 
-    private DetailTabAttributes getAEIDetailTabAttributesForAssertion() {
+    private DetailTabAttributes defaultAggregatedEthernetInterfaceAttributes() {
         DetailTabAttributes detailAttributes = new DetailTabAttributes();
         detailAttributes.identifier = "AggregatedEthernetInterface_TP";
         detailAttributes.name = "Aggregated Ethernet Interface";
@@ -845,7 +850,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         return detailAttributes;
     }
 
-    private DetailTabAttributes getEIDetailTabAttributesForAssertion() {
+    private DetailTabAttributes defaultEthernetInterfaceAttributes() {
         DetailTabAttributes detailAttributes = new DetailTabAttributes();
         detailAttributes.identifier = "EthernetInterface_TP";
         detailAttributes.name = "Ethernet Interface";
@@ -865,7 +870,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         return detailAttributes;
     }
 
-    private DetailTabAttributes getIRBInterfaceDetailTabAttributesForAssertion() {
+    private DetailTabAttributes defaultIRBInterfaceAttributes() {
         DetailTabAttributes detailAttributes = new DetailTabAttributes();
         detailAttributes.identifier = "IRBInterface_TP";
         detailAttributes.name = "IRB Interface";
@@ -885,7 +890,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         return detailAttributes;
     }
 
-    private DetailTabAttributes getLoopbackInterfaceDetailTabAttributesForAssertion() {
+    private DetailTabAttributes defaultLoopbackInterfaceAttributes() {
         DetailTabAttributes detailAttributes = new DetailTabAttributes();
         detailAttributes.identifier = "LoopbackInterface_TP";
         detailAttributes.name = "Loopback Interface";
@@ -905,7 +910,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         return detailAttributes;
     }
 
-    private DetailTabAttributes getVLANInterfaceDetailTabAttributesForAssertion() {
+    private DetailTabAttributes defaultVLANInterfaceAttributes() {
         DetailTabAttributes detailAttributes = new DetailTabAttributes();
         detailAttributes.identifier = "VLANInterface_TP";
         detailAttributes.name = "VLAN Interface";
@@ -925,7 +930,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         return detailAttributes;
     }
 
-    private DetailTabAttributes getIPNetworkElementDetailTabAttributesForAssertion() {
+    private DetailTabAttributes defaultIPNetworkElementAttributes() {
         DetailTabAttributes detailAttributes = new DetailTabAttributes();
         detailAttributes.identifier = "IPNetworkElement";
         detailAttributes.name = "IP Network Element";
