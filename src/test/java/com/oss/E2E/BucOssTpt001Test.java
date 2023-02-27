@@ -184,10 +184,8 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String SLOT_NAME = "AMM 6p D\\02";
     private static final String CARD_MODEL_NAME = "Ericsson MMU2 H";
     private static final String CARD_NAME = "AMM 6p D\\02\\MMU2 H";
-    private static final String CARD_IN_TERMINATIONS_TAB = " AMM 6p D\\02\\MMU2 H";
     private static final String PORT_NAME = "RAU";
     private static final String PORT_LABEL = "AMM 6p D\\02\\MMU2 H\\RAU";
-    private static final String PORT_IN_TERMINATIONS_TAB = " AMM 6p D\\02\\MMU2 H\\RAU";
 
     private static final String START_CARD_FIELD_ID = "terminationCardComponent_1";
     private static final String END_CARD_FIELD_ID = "terminationCardComponent_2";
@@ -765,8 +763,8 @@ public class BucOssTpt001Test extends BaseTestCase {
         assertMicrowaveChannelWorkingStatusOnNewInventoryView(WORKING_LINE_TYPE);
 
         openTab(TERMINATIONS_TAB_LABEL);
-        assertPresenceOfObjectInTab(0, PORT_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, PORT_IN_TERMINATIONS_TAB);
-        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, PORT_IN_TERMINATIONS_TAB);
+        assertPresenceOfObjectInTab(0, PORT_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, PORT_LABEL);
+        assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, PORT_LABEL);
 
         openTab(OCCUPATION_TAB_LABEL);
         assertPresenceOfObjectInTab(0, LABEL_COLUMN, OCCUPATION_TAB_ID, microwaveLinkLabel);
@@ -788,8 +786,8 @@ public class BucOssTpt001Test extends BaseTestCase {
         assertMicrowaveChannelWorkingStatusOnNewInventoryView(WORKING_LINE_TYPE);
 
         openTab(TERMINATIONS_TAB_LABEL);
-        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, CARD_IN_TERMINATIONS_TAB);
-        assertPresenceOfObjectInTab(1, CARD_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, CARD_IN_TERMINATIONS_TAB);
+        assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, CARD_NAME);
+        assertPresenceOfObjectInTab(1, CARD_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, CARD_NAME);
 
         openTab(OCCUPATION_TAB_LABEL);
         assertPresenceOfObjectInTab(0, LABEL_COLUMN, OCCUPATION_TAB_ID, microwaveLinkLabel);
