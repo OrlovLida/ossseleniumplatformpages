@@ -90,6 +90,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private static final PlanningContext LIVE = PlanningContext.live();
     private static final String FILE_NOT_VISIBLE = "Uploaded file is not visible on Attachments tab.";
     private static final String INVALID_NRP_PROCESS_STATUS = "Invalid NRP Process status.";
+    private static final String WIZARD_STILL_OPENED = "Attach file wizard is still open after trying to upload file.";
     private final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
     private final String BUILDING_NAME = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
     private final String ROUTER_1_NAME = "Create NRP Selenium Test 1." + RANDOM.nextInt(Integer.MAX_VALUE);
@@ -205,6 +206,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         DelayUtils.sleep(2000);
         if (AttachFileWizardPage.isWizardVisible(driver)) {
             new AttachFileWizardPage(driver).cancelButton();
+            Assert.fail(WIZARD_STILL_OPENED);
         }
         List<String> files = tasksPage.getListOfAttachments();
         if (files.isEmpty()) {

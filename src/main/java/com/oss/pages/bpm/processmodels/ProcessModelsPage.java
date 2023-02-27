@@ -21,8 +21,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
@@ -117,21 +120,19 @@ public class ProcessModelsPage extends BasePage {
 
     public boolean isFileDownloaded(String fileName) throws IOException {
         String downloadPath = CONFIGURATION.getDownloadDir();
-        File dir = new File(downloadPath);
-        File[] dirContents = dir.listFiles();
-        if (dirContents == null) {
+
+        Optional<File> optionalFile = Stream.of(Objects.requireNonNull(new File(downloadPath).listFiles()))
+                .filter(File::isFile)
+                .filter(file -> file.getName().contains(fileName))
+                .findFirst();
+
+        if (optionalFile.isPresent()) {
+            long length = optionalFile.get().length();
+            Files.delete(Paths.get(optionalFile.get().getAbsolutePath()));
+            return length > 0;
+        } else {
             return false;
         }
-
-        for (File dirContent : dirContents) {
-            if (dirContent.getName().contains(fileName)) {
-                boolean isFileNotEmpty = dirContent.length() > 0;
-                // File has been found, it can now be deleted:
-                Files.delete(Paths.get(dirContent.getAbsolutePath()));
-                return isFileNotEmpty;
-            }
-        }
-        return false;
     }
 
     public boolean isModelExists(String modelName, String modelKeyword) {
