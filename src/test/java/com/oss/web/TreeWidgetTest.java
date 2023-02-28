@@ -305,8 +305,8 @@ public class TreeWidgetTest extends BaseTestCase {
     @Test(priority = 16)
     public void checkAvailabilityOsShowOnInventoryViewActionForDifferentType() {
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
-        hierarchyViewPage.getMainTree().unselectAllNodes();
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
+        hierarchyViewPage.getMainTree().unselectAllNodes();
         hierarchyViewPage.selectNodeByLabelsPath(LOCATION_NAME);
         hierarchyViewPage.selectNodeByLabelsPath(PATH_ROOM_1);
         hierarchyViewPage.selectNodeByLabelsPath(PATH_DEVICE);
