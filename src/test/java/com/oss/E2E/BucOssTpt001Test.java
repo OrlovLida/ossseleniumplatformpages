@@ -172,14 +172,14 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String FIRST_OUTDOOR_UNIT_MODEL = "Ericsson RAU2 N 23";
     private static final String SECOND_OUTDOOR_UNIT_MODEL = "Ericsson RAU2 N 38";
     private static final String MICROWAVE_ANTENNA_MODEL = "VHLP200-220";
-    private static final String FIRST_INDOOR_UNIT_NAME = "5SeleniumE2ETestIDU";
-    private static final String SECOND_INDOOR_UNIT_NAME = "6SeleniumE2ETestIDU";
-    private static final String FIRST_MICROWAVE_ANTENNA_NAME = "5SeleniumE2ETestMWANT";
-    private static final String SECOND_MICROWAVE_ANTENNA_NAME = "6SeleniumE2ETestMWANT";
-    private static final String FIRST_OUTDOOR_UNIT_NAME = "5SeleniumE2ETestODU";
-    private static final String SECOND_OUTDOOR_UNIT_NAME = "6SeleniumE2ETestODU";
-    private static final String THIRD_OUTDOOR_UNIT_NAME = "7SeleniumE2ETestODU";
-    private static final String FORTH_OUTDOOR_UNIT_NAME = "8SeleniumE2ETestODU";
+    private static final String FIRST_INDOOR_UNIT_NAME = "5SeleniumE2ETestIDU" + rand.nextInt(10000);
+    private static final String SECOND_INDOOR_UNIT_NAME = "6SeleniumE2ETestIDU" + rand.nextInt(10000);
+    private static final String FIRST_MICROWAVE_ANTENNA_NAME = "5SeleniumE2ETestMWANT" + rand.nextInt(10000);
+    private static final String SECOND_MICROWAVE_ANTENNA_NAME = "6SeleniumE2ETestMWANT" + rand.nextInt(10000);
+    private static final String FIRST_OUTDOOR_UNIT_NAME = "5SeleniumE2ETestODU" + rand.nextInt(10000);
+    private static final String SECOND_OUTDOOR_UNIT_NAME = "6SeleniumE2ETestODU" + rand.nextInt(10000);
+    private static final String THIRD_OUTDOOR_UNIT_NAME = "7SeleniumE2ETestODU" + rand.nextInt(10000);
+    private static final String FORTH_OUTDOOR_UNIT_NAME = "8SeleniumE2ETestODU" + rand.nextInt(10000);
 
     private static final String SLOT_NAME = "AMM 6p D\\02";
     private static final String CARD_MODEL_NAME = "Ericsson MMU2 H";
