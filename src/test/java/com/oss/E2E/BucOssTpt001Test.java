@@ -15,9 +15,9 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.wizard.Wizard;
 import com.oss.pages.physical.CardCreateWizardPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
@@ -925,7 +925,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.callAction(EDIT_GROUP_ID, deleteButtonId);
         waitForPageToLoad();
-        getConfirmationWizard().clickButtonById(submitButtonId);
+        getConfirmationBox().clickButtonById(submitButtonId);
         waitForPageToLoad();
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
@@ -981,8 +981,8 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    private Wizard getConfirmationWizard() {
-        return Wizard.createByComponentId(driver, webDriverWait, CONFIRMATION_WIZARD_ID);
+    private ConfirmationBox getConfirmationBox() {
+        return ConfirmationBox.create(driver, webDriverWait);
     }
 
     private void clickMessage() {
