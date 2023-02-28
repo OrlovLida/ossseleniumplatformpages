@@ -202,7 +202,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String CHANNEL_NUMBER = "40";
     private static final String CONFIGURATION = "1 + 2";
     private static final String CHANNEL_NAME = "A001";
-    private static final String MICROWAVE_FREQUENCY_PLAN_NAME = "23_28_A001";
+    private static final String MICROWAVE_FREQUENCY_PLAN_NAME = "ARG_TEF_23_28_A001";
     private static final String LOW_FREQUENCY = "21819";
     private static final String HIGH_FREQUENCY = "23051";
 
@@ -216,7 +216,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String CHANNEL_NUMBER2 = "1";
     private static final String CONFIGURATION2 = "A + B";
     private static final String CHANNEL_NAME2 = "001";
-    private static final String MICROWAVE_FREQUENCY_PLAN2_NAME = "001";
+    private static final String MICROWAVE_FREQUENCY_PLAN2_NAME = "ARG_TEF_38_14_001";
     private static final String LOW_FREQUENCY2 = "37009";
     private static final String HIGH_FREQUENCY2 = "38269";
 
@@ -343,6 +343,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String LINK_ID_IS_NULL_EXCEPTION = "Link ID value is null.";
     private static final String EXPECTED_OBJECT_NOT_PRESENT_EXCEPTION = "Expected object isn't present in current Tab.";
     private static final String EMPTY_LIST_EXCEPTION = "The list is empty";
+    private static final String MFP_EXCEPTION = "Microwave Frequency Plan doesn't exist";
 
     public static final String DELETE_CONNECTION_ON_IV_ACTION_ID = "DeleteTrailWizardActionId";
     public static final String DELETE_DEVICE_ON_IV_ACTION_ID = "DeleteDeviceWizardAction";
@@ -1709,12 +1710,12 @@ public class BucOssTpt001Test extends BaseTestCase {
         newInventoryViewPage.searchObject(MICROWAVE_FREQUENCY_PLAN_NAME);
         waitForPageToLoad();
         SoftAssert assertions = new SoftAssert();
-        assertions.assertFalse(isInventoryViewEmpty());
+        assertions.assertFalse(isInventoryViewEmpty(), String.format(MICROWAVE_FREQUENCY_PLAN_NAME, MFP_EXCEPTION));
         newInventoryViewPage.clearFilters();
         waitForPageToLoad();
         newInventoryViewPage.searchObject(MICROWAVE_FREQUENCY_PLAN2_NAME);
         waitForPageToLoad();
-        assertions.assertFalse(isInventoryViewEmpty());
+        assertions.assertFalse(isInventoryViewEmpty(), String.format(MICROWAVE_FREQUENCY_PLAN2_NAME, MFP_EXCEPTION));
         assertions.assertAll();
     }
 }
