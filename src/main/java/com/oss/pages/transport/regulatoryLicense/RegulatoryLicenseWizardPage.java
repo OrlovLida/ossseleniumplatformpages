@@ -68,7 +68,6 @@ public class RegulatoryLicenseWizardPage extends BasePage {
     @Step("Click accept button")
     public void clickAccept() {
         getWizard().clickAccept();
-        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private void setTextFieldComponentValue(String componentId, String value) {
