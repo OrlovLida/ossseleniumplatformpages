@@ -32,6 +32,7 @@ import java.util.Random;
 
 import static com.oss.bpm.BpmPhysicalDataCreator.BPM_ADMIN_USER_LOGIN;
 import static com.oss.bpm.BpmPhysicalDataCreator.BPM_ADMIN_USER_PASSWORD;
+import static com.oss.bpm.BpmPhysicalDataCreator.nextMaxInt;
 import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NAME_LABEL;
 
 /**
@@ -68,14 +69,13 @@ public class EditMilestoneTest extends BaseTestCase {
     private static final String TERMINATE_REASON = "Selenium Termination Process After Tests.";
     private static final String EMPTY_ATTRIBUTE1 = "—";
     private static final String EMPTY_ATTRIBUTE2 = "-";
-    private static final Random RANDOM = new Random();
     private static final String MODIFIER_NAME_LABEL = "Modifier Name";
     private SoftAssert softAssert;
-    private final String processName = PROCESS_NAME + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String description = "Milestone Update " + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String leadTime = String.valueOf(RANDOM.nextInt(100));
-    private final String newMilestoneName = "Edit Milestone Test Update " + RANDOM.nextInt(Integer.MAX_VALUE);
-    private String milestoneName = "Edit Milestone Test Update " + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String processName = PROCESS_NAME + nextMaxInt();
+    private final String description = "Milestone Update " + nextMaxInt();
+    private final String leadTime = String.valueOf(new Random().nextInt(100));
+    private final String newMilestoneName = "Edit Milestone Test Update " + nextMaxInt();
+    private String milestoneName = "Edit Milestone Test Update " + nextMaxInt();
 
     @BeforeClass
     public void createMilestone() {
@@ -285,7 +285,7 @@ public class EditMilestoneTest extends BaseTestCase {
         // when
         milestoneViewPage.callAction(EDIT_MILESTONE_BUTTON);
         EditMilestoneWizardPage editWizard = new EditMilestoneWizardPage(driver);
-        Milestone updated_name = Milestone.builder().setName(MILESTONE_NAME + RANDOM.nextInt(Integer.MAX_VALUE)).build();
+        Milestone updated_name = Milestone.builder().setName(MILESTONE_NAME + nextMaxInt()).build();
         editWizard.editMilestone(updated_name);
 
         assertSystemMessage(SUCCESS_UPDATE_MILESTONES_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,

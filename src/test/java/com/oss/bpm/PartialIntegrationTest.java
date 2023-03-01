@@ -11,7 +11,6 @@ import com.oss.pages.bpm.tasks.SetupIntegrationProperties;
 import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.planning.PlanningContext;
 import com.oss.planning.validationresults.ValidationResult;
-import com.oss.untils.FakeGenerator;
 import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
@@ -27,7 +26,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.UUID;
 
 import static com.oss.bpm.BpmPhysicalDataCreator.CARD_NAME;
@@ -44,6 +42,8 @@ import static com.oss.bpm.BpmPhysicalDataCreator.deleteBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.deleteIPDevice;
 import static com.oss.bpm.BpmPhysicalDataCreator.getDeviceChassisId;
 import static com.oss.bpm.BpmPhysicalDataCreator.isDeviceVisibleInLIVE;
+import static com.oss.bpm.BpmPhysicalDataCreator.nextMaxInt;
+import static com.oss.bpm.BpmPhysicalDataCreator.nextRandomBuildingName;
 import static com.oss.bpm.BpmPhysicalDataCreator.suppressValidationResult;
 import static com.oss.bpm.BpmPhysicalDataCreator.updateBuildingInPlan;
 import static com.oss.bpm.BpmPhysicalDataCreator.updateIPDeviceSerialNumberInPlan;
@@ -54,36 +54,35 @@ import static com.oss.pages.bpm.processinstances.creation.ProcessWizardPage.NRP;
 
 
 public class PartialIntegrationTest extends BaseTestCase {
-    private static final Random RANDOM = new Random();
     private static final LocalDate TODAY = LocalDate.now();
     private static final PlanningContext LIVE = PlanningContext.live();
-    private static final String BUILDING_NAME_TC_MAIN = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
-    private static final String BUILDING_NAME_TC1_1 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
-    private static final String BUILDING_NAME_TC1_2 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
-    private static final String BUILDING_NAME_TC1_3 = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
-    private static final String NRP_TC_MAIN_NAME = "Partial_Integration_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String NRP_TC5_NAME = "TC_5_Partial_Integration_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String DRP_TC5_NAME = "TC_5_Partial_Integration_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String DCP_TC5_NAME = "TC_5_Partial_Integration_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String IP_TC1_NAME = "TC_1_Partial_Integration_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String IP_TC2_NAME = "TC_2_Partial_Integration_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String IP_TC3_1_NAME = "TC_3_1_Partial_Integration_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String IP_TC3_2_NAME = "TC_3_2_Partial_Integration_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String IP_TC4_NAME = "TC_4_Partial_Integration_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String IP_TC6_NAME = "TC_6_Partial_Integration_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC2_1_NAME = "TC_2_1_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC2_2_NAME = "TC_2_2_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC2_3_NAME = "TC_2_3_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC3_1_NAME = "TC_3_1_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC3_2_NAME = "TC_3_2_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC3_3_NAME = "TC_3_3_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC4_1_NAME = "TC_4_1_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC4_T1_NAME = "TC_4_T1_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC5_1_NAME = "TC_5_1_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC5_2_NAME = "TC_5_2_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC5_3_NAME = "TC_5_3_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC6_1_NAME = "TC_6_1_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
-    private static final String ROUTER_TC6_2_NAME = "TC_6_2_Partial_I_Router_BPM_Selenium_" + RANDOM.nextInt(Integer.MAX_VALUE);
+    private static final String BUILDING_NAME_TC_MAIN = nextRandomBuildingName();
+    private static final String BUILDING_NAME_TC1_1 = nextRandomBuildingName();
+    private static final String BUILDING_NAME_TC1_2 = nextRandomBuildingName();
+    private static final String BUILDING_NAME_TC1_3 = nextRandomBuildingName();
+    private static final String NRP_TC_MAIN_NAME = "Partial_Integration_BPM_Selenium_" + nextMaxInt();
+    private static final String NRP_TC5_NAME = "TC_5_Partial_Integration_BPM_Selenium_" + nextMaxInt();
+    private static final String DRP_TC5_NAME = "TC_5_Partial_Integration_BPM_Selenium_" + nextMaxInt();
+    private static final String DCP_TC5_NAME = "TC_5_Partial_Integration_BPM_Selenium_" + nextMaxInt();
+    private static final String IP_TC1_NAME = "TC_1_Partial_Integration_BPM_Selenium_" + nextMaxInt();
+    private static final String IP_TC2_NAME = "TC_2_Partial_Integration_BPM_Selenium_" + nextMaxInt();
+    private static final String IP_TC3_1_NAME = "TC_3_1_Partial_Integration_BPM_Selenium_" + nextMaxInt();
+    private static final String IP_TC3_2_NAME = "TC_3_2_Partial_Integration_BPM_Selenium_" + nextMaxInt();
+    private static final String IP_TC4_NAME = "TC_4_Partial_Integration_BPM_Selenium_" + nextMaxInt();
+    private static final String IP_TC6_NAME = "TC_6_Partial_Integration_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC2_1_NAME = "TC_2_1_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC2_2_NAME = "TC_2_2_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC2_3_NAME = "TC_2_3_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC3_1_NAME = "TC_3_1_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC3_2_NAME = "TC_3_2_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC3_3_NAME = "TC_3_3_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC4_1_NAME = "TC_4_1_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC4_T1_NAME = "TC_4_T1_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC5_1_NAME = "TC_5_1_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC5_2_NAME = "TC_5_2_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC5_3_NAME = "TC_5_3_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC6_1_NAME = "TC_6_1_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String ROUTER_TC6_2_NAME = "TC_6_2_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
     private static final String TC1 = "TC1";
     private static final String TC2 = "TC2";
     private static final String TC3 = "TC3";
@@ -346,13 +345,13 @@ public class PartialIntegrationTest extends BaseTestCase {
 
         //create VR for TC6
         vr_TC6_1 = ValidationResult.builder()
-                .type(SELENIUM_VR_TEST_TYPE + RANDOM.nextInt(Integer.MAX_VALUE))
-                .description(SELENIUM_VR_TEST_DESCRIPTION + RANDOM.nextInt(Integer.MAX_VALUE))
+                .type(SELENIUM_VR_TEST_TYPE + nextMaxInt())
+                .description(SELENIUM_VR_TEST_DESCRIPTION + nextMaxInt())
                 .build();
 
         ValidationResult vr_TC6_2 = ValidationResult.builder()
-                .type(SELENIUM_VR_TEST_TYPE + RANDOM.nextInt(Integer.MAX_VALUE))
-                .description(SELENIUM_VR_TEST_DESCRIPTION + RANDOM.nextInt(Integer.MAX_VALUE))
+                .type(SELENIUM_VR_TEST_TYPE + nextMaxInt())
+                .description(SELENIUM_VR_TEST_DESCRIPTION + nextMaxInt())
                 .severity(ValidationResult.Severity.LOW)
                 .build();
         vrId_TC6_1 = createValidationResultForRouter(deviceId_TC6_1, vr_TC6_1, ip_TC6_plan);

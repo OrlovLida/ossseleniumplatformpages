@@ -16,7 +16,8 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Paths;
 import java.util.Objects;
-import java.util.Random;
+
+import static com.oss.bpm.BpmPhysicalDataCreator.nextMaxInt;
 
 /**
  * @author Paweł Rother
@@ -39,9 +40,7 @@ public class ImportExportModelTest extends BaseTestCase {
     private static final String INVALID_IMPORT_WIZARD_VISIBILITY = "Invalid import model wizard visibility.";
     private static final String INVALID_DOWNLOADED_FILE_VISIBILITY = "Invalid downloaded '%s' file visibility.";
     private static final String INVALID_MODEL_VISIBILITY = "Invalid process model '%1$s (%2$s)' visibility.";
-    private static final Random RANDOM = new Random();
-
-    private final String modelKeyword = "Selenium." + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String modelKeyword = "Selenium." + nextMaxInt();
 
     @BeforeClass
     public void openBrw() {

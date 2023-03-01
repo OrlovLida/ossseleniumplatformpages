@@ -28,7 +28,8 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+
+import static com.oss.bpm.BpmPhysicalDataCreator.nextMaxInt;
 
 /**
  * @author Gabriela Kasza
@@ -67,11 +68,10 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     private static final String UPDATE_DESCRIPTION_2 = "Update 2";
     private static final String UPDATE_DESCRIPTION_3 = "Update 3";
     private static final String TERMINATE_REASON = "Selenium Termination Process After Tests.";
-    private static final Random RANDOM = new Random();
-    private final String processNameTC1 = PROCESS_NAME + "TC1." + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String processNameTC2 = PROCESS_NAME + "TC2." + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String processNameTC3 = PROCESS_NAME + "TC3." + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String processNameTC4 = PROCESS_NAME + "TC4." + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String processNameTC1 = PROCESS_NAME + "TC1." + nextMaxInt();
+    private final String processNameTC2 = PROCESS_NAME + "TC2." + nextMaxInt();
+    private final String processNameTC3 = PROCESS_NAME + "TC3." + nextMaxInt();
+    private final String processNameTC4 = PROCESS_NAME + "TC4." + nextMaxInt();
     private SoftAssert softAssert;
 
     @BeforeClass
@@ -83,8 +83,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @Test(priority = 1, description = "Create Process with Milestone")
     @Description("Create Process with Milestone")
     public void createProcessWithMilestones() {
-        final String milestoneName1 = MILESTONE_NAME + "TC1.1." + RANDOM.nextInt(Integer.MAX_VALUE);
-        final String milestoneName2 = MILESTONE_NAME + "TC1.2." + RANDOM.nextInt(Integer.MAX_VALUE);
+        final String milestoneName1 = MILESTONE_NAME + "TC1.1." + nextMaxInt();
+        final String milestoneName2 = MILESTONE_NAME + "TC1.2." + nextMaxInt();
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
         MilestonesStepWizardPage milestonesStepWizardPage = processOverviewPage.openProcessCreationWizard()
                 .defineProcessAndGoToMilestonesStep(processNameTC1, 10L, GK_MILESTONES);
@@ -171,7 +171,7 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @Test(priority = 2, description = "Update Predefined Milestone")
     @Description("Update Predefined Milestone")
     public void updatePredefinedMilestone() {
-        final String milestoneName1 = MILESTONE_NAME + "TC2." + RANDOM.nextInt(Integer.MAX_VALUE);
+        final String milestoneName1 = MILESTONE_NAME + "TC2." + nextMaxInt();
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
         MilestonesStepWizardPage milestonesStepWizardPage = processOverviewPage.openProcessCreationWizard()
                 .defineProcessAndGoToMilestonesStep(processNameTC2, 10L, GK_MILESTONES);
@@ -277,8 +277,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @Test(priority = 3, description = "Add Milestone for Data Correction Process")
     @Description("Add Milestone for Data Correction Process")
     public void addMilestoneForDCP() {
-        final String milestoneName1 = MILESTONE_NAME + "TC3.1." + RANDOM.nextInt(Integer.MAX_VALUE);
-        final String milestoneName2 = MILESTONE_NAME + "TC3.2." + RANDOM.nextInt(Integer.MAX_VALUE);
+        final String milestoneName1 = MILESTONE_NAME + "TC3.1." + nextMaxInt();
+        final String milestoneName2 = MILESTONE_NAME + "TC3.2." + nextMaxInt();
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
         MilestonesStepWizardPage milestonesStepWizardPage = processOverviewPage.openProcessCreationWizard()
                 .defineProcessAndGoToMilestonesStep(processNameTC3, 10L, DCP);
@@ -355,8 +355,8 @@ public class CreateMilestoneWithProcessTest extends BaseTestCase {
     @Test(priority = 4, description = "Add Milestone for existing Data Correction Process")
     @Description("Add Milestone for existing Data Correction Process")
     public void addMilestoneForExistingProcess() {
-        final String milestoneName1 = MILESTONE_NAME + "TC4.1." + RANDOM.nextInt(Integer.MAX_VALUE);
-        final String milestoneName2 = MILESTONE_NAME + "TC4.2." + RANDOM.nextInt(Integer.MAX_VALUE);
+        final String milestoneName1 = MILESTONE_NAME + "TC4.1." + nextMaxInt();
+        final String milestoneName2 = MILESTONE_NAME + "TC4.2." + nextMaxInt();
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
 
         List<Milestone> milestones = Lists.newArrayList(
