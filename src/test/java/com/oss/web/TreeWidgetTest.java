@@ -142,33 +142,33 @@ public class TreeWidgetTest extends BaseTestCase {
         createRow(roomId);
     }
 
-    @Test(priority = 1, enabled = false)
+    @Test(priority = 1)
     public void selectFirstNode() {
         hierarchyViewPage.selectFirstObject();
         Assertions.assertThat(hierarchyViewPage
                 .getFirstNode().isToggled()).isTrue();
     }
 
-    @Test(priority = 2, enabled = false)
+    @Test(priority = 2)
     public void unselectFirstNode() {
         hierarchyViewPage.unselectFirstObject();
         Assertions.assertThat(hierarchyViewPage
                 .getFirstNode().isToggled()).isFalse();
     }
 
-    @Test(priority = 3, enabled = false)
+    @Test(priority = 3)
     public void expandNode() {
         hierarchyViewPage.expandTreeNode(hierarchyViewPage.getFirstNode().getLabel());
         Assertions.assertThat(hierarchyViewPage.getFirstNode().isExpanded()).isTrue();
     }
 
-    @Test(priority = 4, enabled = false)
+    @Test(priority = 4)
     public void collapseNode() {
         hierarchyViewPage.getFirstNode().collapseNode();
         Assertions.assertThat(hierarchyViewPage.getFirstNode().isExpanded()).isFalse();
     }
 
-    @Test(priority = 5, enabled = false)
+    @Test(priority = 5)
     public void expandNextLevel() {
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Node nodeRoom = hierarchyViewPage.getMainTree()
@@ -176,7 +176,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assertions.assertThat(nodeRoom.isExpanded()).isFalse();
     }
 
-    @Test(priority = 6, enabled = false)
+    @Test(priority = 6)
     public void refreshRelation() {
         roomId_2 = createRoom(ROOM_NAME_2, Long.valueOf(locationId), LOCATION_TYPE_BUILDING);
         hierarchyViewPage.getMainTree()
@@ -241,7 +241,7 @@ public class TreeWidgetTest extends BaseTestCase {
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PATH_ROOM_3)).isFalse();
     }
 
-    @Test(priority = 11, enabled = false)
+    @Test(priority = 11)
     public void multiPluggableModuleCreation() {
         deviceId = createRouterWithCards(DEVICE_NAME);
         driver.navigate().refresh();
