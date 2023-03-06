@@ -63,7 +63,7 @@ public class IPAMTreeConstants {
     public static final String DELETE_IPV4_SUBNET_TYPE_OF_NETWORK_ACTION = "DeleteIPv4SubnetNetworkContextAction";
     public static final String DELETE_IPV6_SUBNET_TYPE_OF_BLOCK_ACTION = "DeleteIPv6SubnetBlockContextAction";
     public static final String DELETE_IPV6_SUBNET_TYPE_OF_NETWORK_ACTION = "DeleteIPv6SubnetNetworkContextAction";
-    public static final String DELETE_HOST_ADDRESS_ACTION = "DeleteHostAddressContextAction";
+    public static final String DELETE_HOST_ADDRESS_ACTION = "BulkDeleteIPHostAddress";
     public static final String SPLIT_IPV4_SUBNET_ACTION = "SplitIPv4Subnet";
     public static final String SPLIT_IPV6_SUBNET_ACTION = "SplitIPv6SubnetContextAction";
     public static final String MERGE_IPV4_SUBNET_ACTION = "MergeIPv4SubnetOnSubnet";
