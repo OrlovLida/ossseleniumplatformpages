@@ -4,6 +4,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.comarch.oss.web.pages.toolsmanager.ToolsManagerPage;
 import com.oss.BaseTestCase;
@@ -12,7 +13,6 @@ import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.ConnectionWizardPage;
 
@@ -87,7 +87,7 @@ public class ELineTest extends BaseTestCase {
         setPreciseTerminations();
         networkViewPage.selectObjectInViewContentContains(NAME_COLUMN_LABEL, ELINE_NAME_UPDATE);
         networkViewPage.openTerminationsTab();
-        // TERMINATIONS_TAB_ID - należy wykorzystać metodę z NetworkViewPage - isObjectInTerminations
+        // TERMINATIONS_TAB_ID - należy wykorzystać metodę z NetworkViewPage - isObjectInTerminations - OSSTRAIL-7999
         // assertPresenceOfObjectInTab(0, TERMINATION_POINT_NAME_COLUMN, TERMINATIONS_TAB_ID, START_TERMINATION_POINT);
         // assertPresenceOfObjectInTab(1, TERMINATION_POINT_NAME_COLUMN, TERMINATIONS_TAB_ID, END_TERMINATION_POINT);
     }
@@ -99,6 +99,7 @@ public class ELineTest extends BaseTestCase {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.addSelectedObjectsToRouting().accept();
         networkViewPage.selectObjectInViewContentContains(NAME_COLUMN_LABEL, ELINE_NAME_UPDATE);
+        networkViewPage.hideDockedPanel("left");
         networkViewPage.openRouting1stLevelTab();
         assertPresenceOfObjectInTab();
     }
@@ -107,6 +108,7 @@ public class ELineTest extends BaseTestCase {
     @Description("Add IP Device to E-lines element routing")
     public void addDeviceToElementRouting() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        networkViewPage.expandViewContentPanel();
         networkViewPage.unselectObjectInViewContent(NAME_COLUMN_LABEL, ELINE_NAME_UPDATE_FULL);
         networkViewPage.selectObjectInViewContent(NAME_COLUMN_LABEL, DEVICE_NAME_1);
         networkViewPage.addSelectedObjectsToElementRouting();
@@ -198,7 +200,7 @@ public class ELineTest extends BaseTestCase {
         connectionWizardPage.setNonexistentCard();
         connectionWizardPage.terminatePort(START_PORT_TERMINATION);
         waitForPageToLoad();
-        //Terminowanie precyzyjne blokowane przez - OSSTRAIL-7374
+        //Terminowanie precyzyjne blokowane przez - OSSTRAIL-7999
         //connectionWizardPage.terminateTerminationPort(START_TERMINATION_POINT);
         connectionWizardPage.selectConnectionTermination(END_TERMINATION_PATH);
         waitForPageToLoad();

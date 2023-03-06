@@ -28,6 +28,7 @@ public class EIWizardPage extends BasePage {
     private static final String ACCESS_FUNCTION_FIELD_ID = "AccessFunctionFieldID";
     private static final String DESCRIPTION_FIELD_DATA_ATTRIBUTE_NAME = "DescriptionFieldID";
     private static final String EI_WIZARD_ID = "EthernetInterfaceWizardWidgetId";
+    private static final String NAME_FIELD_ID = "NameFieldID";
     private final Wizard wizard;
 
     public EIWizardPage(WebDriver driver) {
@@ -37,6 +38,10 @@ public class EIWizardPage extends BasePage {
 
     public Wizard getWizard() {
         return wizard;
+    }
+
+    public void setName(String name) {
+        getWizard().setComponentValue(NAME_FIELD_ID, name);
     }
 
     public void setAdministrativeState(String administrativeState) {
@@ -113,6 +118,11 @@ public class EIWizardPage extends BasePage {
     public void clearBandwidth() {
         Input bandwidthComponent = wizard.getComponent(BANDWIDTH_FIELD_DATA_ATTRIBUTE_NAME, Input.ComponentType.TEXT_FIELD);
         bandwidthComponent.clearByAction();
+    }
+
+    public void clearEncapsulation() {
+        Combobox encapsulationComponent = (Combobox) wizard.getComponent(ENCAPSULATION_FIELD_ID, Input.ComponentType.COMBOBOX);
+        encapsulationComponent.clear();
     }
 
     public void clearSwitchPort() {
