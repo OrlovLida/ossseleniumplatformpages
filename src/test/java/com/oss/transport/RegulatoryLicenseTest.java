@@ -74,6 +74,8 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     private static final String DETACH_MICROWAVE_LINK_FROM_REGULATORY_LICENSE_ACTION_ID = "DetachMicrowaveLinkFromRegulatoryLicenseApplicationContextAction";
     private static final String DETACH_MICROWAVE_CHANNEL_FROM_REGULATORY_LICENSE_ACTION_ID = "DetachMicrowaveChannelFromRegulatoryLicenseApplicationContextAction";
     private static final String DELETE_REGULATORY_LICENSE_ACTION_ID = "DeleteRegulatoryLicenseApplicationContextAction";
+    private static final String TAB_ISN_T_EMPTY_EXCEPTION = "Tab isn't empty";
+    private static final String ASSIGN_TO_OBJECT = " was not assigned correctly";
 
     private SoftAssert softAssert;
     private NewInventoryViewPage newInventoryViewPage;
@@ -166,7 +168,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     public void detachLocation() {
         openTab(LOCATIONS_TAB_LABEL);
         detachLocationFromRegulatoryLicense();
-        Assert.assertTrue(checkIfLocationsTabIsEmpty());
+        Assert.assertTrue(checkIfLocationsTabIsEmpty(), TAB_ISN_T_EMPTY_EXCEPTION);
     }
 
     @Test(priority = 8)
@@ -174,7 +176,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     public void detachMicrowaveAntenna() {
         openTab(MICROWAVE_ANTENNAS_TAB_LABEL);
         detachMicrowaveAntennaFromRegulatoryLicense();
-        Assert.assertTrue(checkIfMicrowaveAntennasTabIsEmpty());
+        Assert.assertTrue(checkIfMicrowaveAntennasTabIsEmpty(), TAB_ISN_T_EMPTY_EXCEPTION);
     }
 
     @Test(priority = 9)
@@ -182,7 +184,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     public void detachMicrowaveLink() {
         openTab(MICROWAVE_LINKS_TAB_LABEL);
         detachMicrowaveLinkFromRegulatoryLicense();
-        Assert.assertTrue(checkIfMicrowaveLinksTabIsEmpty());
+        Assert.assertTrue(checkIfMicrowaveLinksTabIsEmpty(), TAB_ISN_T_EMPTY_EXCEPTION);
     }
 
     @Test(priority = 10)
@@ -190,7 +192,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     public void detachMicrowaveChannel() {
         openTab(MICROWAVE_CHANNELS_TAB_LABEL);
         detachMicrowaveChannelFromRegulatoryLicense();
-        Assert.assertTrue(checkIfMicrowaveChannelsTabIsEmpty());
+        Assert.assertTrue(checkIfMicrowaveChannelsTabIsEmpty(), TAB_ISN_T_EMPTY_EXCEPTION);
     }
 
     @Test(priority = 11)
@@ -293,12 +295,12 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         String type = newInventoryViewPage.getPropertyPanelValue("type");
         String status = newInventoryViewPage.getPropertyPanelValue("status");
 
-        Assert.assertEquals(number, regulatoryLicenseAttributes.number);
-        Assert.assertEquals(startingDate, regulatoryLicenseAttributes.startingDate);
-        Assert.assertEquals(expirationDate, regulatoryLicenseAttributes.expirationDate);
-        Assert.assertEquals(operatingHours, regulatoryLicenseAttributes.operatingHours);
-        Assert.assertEquals(type.toLowerCase(), regulatoryLicenseAttributes.type.toLowerCase());
-        Assert.assertEquals(status.toLowerCase(), regulatoryLicenseAttributes.status.toLowerCase());
+        Assert.assertEquals(number, regulatoryLicenseAttributes.number, "Value of License Number isn't equals with " + regulatoryLicenseAttributes.number);
+        Assert.assertEquals(startingDate, regulatoryLicenseAttributes.startingDate, "Value of Starting Date isn't equals with " + regulatoryLicenseAttributes.startingDate);
+        Assert.assertEquals(expirationDate, regulatoryLicenseAttributes.expirationDate, "Value of Expiration Date isn't equals with " + regulatoryLicenseAttributes.expirationDate);
+        Assert.assertEquals(operatingHours, regulatoryLicenseAttributes.operatingHours,"Value of Operating Hours isn't equals with " +  regulatoryLicenseAttributes.operatingHours);
+        Assert.assertEquals(type.toLowerCase(), regulatoryLicenseAttributes.type.toLowerCase(), "Value of Type isn't equals with " + regulatoryLicenseAttributes.type);
+        Assert.assertEquals(status.toLowerCase(), regulatoryLicenseAttributes.status.toLowerCase(), "Value of Status isn't equals with " + regulatoryLicenseAttributes.status);
     }
 
     private void openTab(String tabLabel) {
@@ -309,25 +311,25 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     private void assertAssignedLocations() {
         String assignedLocation = selectObjectInTab("name", LOCATIONS_TABLE_COMPONENT_ID);
 
-        Assert.assertEquals(assignedLocation, LOCATION);
+        Assert.assertEquals(assignedLocation, LOCATION, LOCATION + ASSIGN_TO_OBJECT);
     }
 
     private void assertAssignedMicrowaveAntennas() {
         String assignedMicrowaveAntenna = selectObjectInTab("name", MICROWAVE_ANTENNAS_TABLE_COMPONENT_ID);
 
-        Assert.assertEquals(assignedMicrowaveAntenna, MICROWAVE_ANTENNA);
+        Assert.assertEquals(assignedMicrowaveAntenna, MICROWAVE_ANTENNA, MICROWAVE_ANTENNA + ASSIGN_TO_OBJECT);
     }
 
     private void assertAssignedMicrowaveLinks() {
         String assignedMicrowaveLink = selectObjectInTab("label", MICROWAVE_LINKS_TABLE_COMPONENT_ID);
 
-        Assert.assertEquals(assignedMicrowaveLink, MICROWAVE_LINK);
+        Assert.assertEquals(assignedMicrowaveLink, MICROWAVE_LINK, MICROWAVE_LINK + ASSIGN_TO_OBJECT);
     }
 
     private void assertAssignedMicrowaveChannels() {
         String assignedMicrowaveChannels = selectObjectInTab("label", MICROWAVE_CHANNELS_TABLE_COMPONENT_ID);
 
-        Assert.assertEquals(assignedMicrowaveChannels, MICROWAVE_CHANNEL);
+        Assert.assertEquals(assignedMicrowaveChannels, MICROWAVE_CHANNEL, MICROWAVE_CHANNEL + ASSIGN_TO_OBJECT);
     }
 
     private void checkRegulatoryLicenseRemoval() {
@@ -348,7 +350,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     private boolean checkIfMicrowaveAntennasTabIsEmpty() {
 
-        if (getMicrowaveAntennasTable().hasNoData()) {
+        if (!getMicrowaveAntennasTable().hasNoData()) {
             while (!getMicrowaveAntennasTable().hasNoData() && timer < 10) {
                 DelayUtils.sleep(1000);
                 timer++;
@@ -360,7 +362,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     private boolean checkIfMicrowaveLinksTabIsEmpty() {
 
-        if (getMicrowaveLinksTable().hasNoData()) {
+        if (!getMicrowaveLinksTable().hasNoData()) {
             while (!getMicrowaveLinksTable().hasNoData() && timer < 10) {
                 DelayUtils.sleep(1000);
                 timer++;
@@ -371,7 +373,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     private boolean checkIfMicrowaveChannelsTabIsEmpty() {
 
-        if (getMicrowaveChannelsTable().hasNoData()) {
+        if (!getMicrowaveChannelsTable().hasNoData()) {
             while (!getMicrowaveChannelsTable().hasNoData() && timer < 10) {
                 DelayUtils.sleep(1000);
                 timer++;
