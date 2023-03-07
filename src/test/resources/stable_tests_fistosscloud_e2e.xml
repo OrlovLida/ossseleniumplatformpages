@@ -1,5 +1,5 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="FistOssCloudE2E" thread-count="2" parallel="tests" verbose="1">
+<suite name="FistOssCloudE2E" thread-count="1" parallel="tests" verbose="1">
     <test name="BucOssPhy005Test">
         <classes>
             <class name="com.oss.E2E.BucOssPhy005Test"/>
