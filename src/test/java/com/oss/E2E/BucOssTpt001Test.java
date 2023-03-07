@@ -18,6 +18,7 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
+import com.oss.framework.wizard.Wizard;
 import com.oss.pages.physical.CardCreateWizardPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.transport.NetworkViewPage;
@@ -803,7 +804,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     public void deleteEthernetLink() {
         openInventoryViewForGivenObjectType(ETHERNET_LINK_TRAIL_TYPE);
         searchAndSelectObjectOnInventoryView(ETHERNET_LINK_NAME);
-        deleteObjectAndRefreshMainTable(DELETE_CONNECTION_ON_IV_ACTION_ID, DELETE_SUBMIT_BUTTON_ID);
+        deleteConnectionAndRefreshMainTable(DELETE_CONNECTION_ON_IV_ACTION_ID, DELETE_SUBMIT_BUTTON_ID);
 
         Assert.assertTrue(isInventoryViewEmpty());
     }
@@ -927,6 +928,17 @@ public class BucOssTpt001Test extends BaseTestCase {
         newInventoryViewPage.callAction(EDIT_GROUP_ID, deleteButtonId);
         waitForPageToLoad();
         getConfirmationBox().clickButtonById(submitButtonId);
+        waitForPageToLoad();
+        newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
+    }
+
+    private void deleteConnectionAndRefreshMainTable(String deleteButtonId, String submitButtonId) {
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.callAction(EDIT_GROUP_ID, deleteButtonId);
+        waitForPageToLoad();
+        Wizard wizard = Wizard.createByComponentId(driver, webDriverWait, CONFIRMATION_WIZARD_ID);
+        wizard.clickButtonById(submitButtonId);
         waitForPageToLoad();
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();

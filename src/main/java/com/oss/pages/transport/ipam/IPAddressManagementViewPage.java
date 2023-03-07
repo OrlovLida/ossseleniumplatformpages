@@ -1,7 +1,9 @@
 package com.oss.pages.transport.ipam;
 
 import java.util.Arrays;
+import java.util.Optional;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -9,6 +11,7 @@ import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
+import com.oss.framework.components.tree.TreeComponent;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.PropertyPanel;
 import com.oss.framework.widgets.propertypanel.PropertyPanelInterface;
@@ -127,7 +130,8 @@ public class IPAddressManagementViewPage extends BasePage {
 
     @Step("Search IP Network")
     public IPAddressManagementViewPage searchIpNetwork(String value) {
-        getTreeView().getNodeByLabelsPath(value);
+        TreeWidgetV2 treeView = getTreeView();
+        treeView.fullTextSearch(value);
         waitForPageToLoad();
         return this;
     }
@@ -140,16 +144,24 @@ public class IPAddressManagementViewPage extends BasePage {
         return new RoleViewPage(driver);
     }
 
-    @Step("Select first object on hierarchy view")
+    @Step("Select first object on IP Address Management view")
     public void selectFirstTreeRow() {
         waitForPageToLoad();
         getTreeView().selectNode(0);
     }
 
-    @Step("Select object with name: {name} on hierarchy view")
+    @Step("Select object with name: {name} on IP Address Management view")
     public void selectTreeRow(String name) {
         waitForPageToLoad();
         getTreeView().selectNodeByLabel(name);
+    }
+
+    @Step("Select object by labels path on IP Address Management view")
+    public void selectNodeByLabelsPath(String name) {
+        TreeComponent.Node node = getTreeView().getNodeByLabelsPath(name);
+        if (!node.isToggled()) {
+            node.toggleNode();
+        }
     }
 
     @Step("Select object with name: {name} on hierarchy view")
@@ -187,8 +199,12 @@ public class IPAddressManagementViewPage extends BasePage {
     @Step("Expand object with name: {name} on hierarchy view")
     public void expandTreeRowContains(String name) {
         waitForPageToLoad();
-        getTreeView().expandNodeWithLabel(name);
-        waitForPageToLoad();
+        Optional<TreeComponent.Node> node = getTreeView().getVisibleNodes().stream().filter(n -> n.getLabel().contains(name)).findFirst();
+        if (node.isPresent()) {
+            node.get().expandNode();
+            return;
+        }
+        throw new NoSuchElementException("Can't find node: " + name);
     }
 
     @Step("Use context action")
@@ -276,7 +292,6 @@ public class IPAddressManagementViewPage extends BasePage {
         useContextAction(ActionsContainer.EDIT_GROUP_ID, SPLIT_IPV6_SUBNET_ACTION);
         return new IPSubnetWizardPage(driver);
     }
-
 
     @Step("Merge IPv4 Subnets")
     public IPSubnetWizardPage mergeIPv4Subnet(String... rowName) {

@@ -1,6 +1,7 @@
 package com.oss.bpm;
 
 import com.google.common.base.Preconditions;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.planning.ObjectIdentifier;
 import com.oss.planning.PlanningContext;
 import com.oss.planning.validationresults.ValidationResult;
@@ -12,10 +13,12 @@ import com.oss.repositories.ValidationResultsRepository;
 import com.oss.services.PhysicalInventoryClient;
 import com.oss.services.ResourceCatalogClient;
 import com.oss.untils.Environment;
+import com.oss.untils.FakeGenerator;
 
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class BpmPhysicalDataCreator {
@@ -31,6 +34,7 @@ public class BpmPhysicalDataCreator {
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
     private static final String CARD_MODEL_TYPE = "CardModel";
 
+    private static final Random RANDOM = new Random();
     private static final Environment env = Environment.getInstance();
     private static final PlanningRepository planningRepository = new PlanningRepository(env);
     private static final AddressRepository addressRepository = new AddressRepository(env);
@@ -40,6 +44,14 @@ public class BpmPhysicalDataCreator {
     private static final PhysicalInventoryClient physicalInventoryClient = new PhysicalInventoryClient(env);
     private static final ValidationResultsRepository validationResultsRepository = new ValidationResultsRepository(env);
     private static final String NOT_IN_PLAN_CONTEXT_EXCEPTION = "Planning Context is not in PLAN context.";
+
+    public static int nextMaxInt() {
+        return RANDOM.nextInt(Integer.MAX_VALUE);
+    }
+
+    public static String nextRandomBuildingName() {
+        return FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
+    }
 
     public static String createProject(String code, LocalDate finishDueDate) {
         return String.valueOf(planningRepository.createProject(code, code, finishDueDate));
@@ -135,6 +147,7 @@ public class BpmPhysicalDataCreator {
         ObjectIdentifier childRouter = ObjectIdentifier.ipDevice(Long.valueOf(routerId));
         ObjectIdentifier childChassis = ObjectIdentifier.chassis(Long.valueOf(chassisId));
         planningRepository.connectRoots(parentRouter, childRouter, planningContext);
+        DelayUtils.sleep(500);
         planningRepository.connectRoots(parentRouter, childChassis, planningContext);
         return routerId;
     }

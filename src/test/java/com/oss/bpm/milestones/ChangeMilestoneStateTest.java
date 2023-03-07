@@ -24,8 +24,8 @@ import org.testng.asserts.SoftAssert;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.util.Optional;
-import java.util.Random;
 
+import static com.oss.bpm.BpmPhysicalDataCreator.nextMaxInt;
 import static com.oss.bpm.milestones.EditMilestoneTest.EDIT_MILESTONE_BUTTON;
 
 /**
@@ -63,7 +63,6 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     private static final String CHANGE_STATE_REASON = "CHANGE STATE SELENIUM TEST";
     private static final String VALIDATION_MESSAGE = "Cannot change states of selected milestones. All selected milestones should have the same state.";
     private static final String LEAD_TIME = "10";
-    private static final Random RANDOM = new Random();
     private static final String INVALID_ATTRIBUTE_PATTERN =
             "Invalid '%1$s' parameter after {%2$s} -> {%3$s} state change operation for '%4$s' Milestone in '%5$s' test.";
     private static final String INVALID_CHANGE_STATE_MESSAGE_PATTERN =
@@ -76,10 +75,10 @@ public class ChangeMilestoneStateTest extends BaseTestCase {
     private static final String TERMINATE_REASON = "Selenium Termination Process After Tests.";
 
     private SoftAssert softAssert;
-    private final String processName = TEST_NAME + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String milestoneName1 = TEST_NAME + "1." + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String milestoneName2 = TEST_NAME + "2." + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String milestoneName3 = TEST_NAME + "3." + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String processName = TEST_NAME + nextMaxInt();
+    private final String milestoneName1 = TEST_NAME + "1." + nextMaxInt();
+    private final String milestoneName2 = TEST_NAME + "2." + nextMaxInt();
+    private final String milestoneName3 = TEST_NAME + "3." + nextMaxInt();
     private final long PLUS_DAYS = 5L;
 
     private MilestoneViewPage milestoneViewPage;

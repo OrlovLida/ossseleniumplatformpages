@@ -5,21 +5,20 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.SearchObjectTypePage;
+import com.comarch.oss.web.pages.toolsmanager.ToolsManagerPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableWidget;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
 import com.oss.pages.bpm.tasks.TasksPageV2;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
-import com.comarch.oss.web.pages.toolsmanager.ToolsManagerPage;
 import com.oss.pages.transport.NetworkViewPage;
 import com.oss.pages.transport.trail.ConnectionWizardPage;
 import com.oss.pages.transport.trail.EthernetLinkWizardPage;
@@ -46,7 +45,6 @@ public class EthernetLinkTest extends BaseTestCase {
     private static final String NETWORK_VIEW_SIDE_MENU = "Network View";
     private static final String ETHERNET_LINK_TRAIL_TYPE = "Ethernet Link";
     private static final String NAME_COLUMN_LABEL = "Name";
-    private static final String OBJECT_TYPE_COLUMN_LABEL = "Object Type";
     private static final String ETHERNET_LINK_DESCRIPTION_UPDATE = "EL_Test_description_update";
     private static final String SPEED_UPDATE = "100M";
     private static final String ROLE_UPDATE = "NNI";
@@ -55,7 +53,6 @@ public class EthernetLinkTest extends BaseTestCase {
     private static final String ASSERT_MESSAGE_PATTERN = "Checking assertion for %s.";
     private static final String DEVICE_1_NAME = "SeleniumTestDeviceEL1";
     private static final String DEVICE_2_NAME = "SeleniumTestDeviceEL2";
-    private static final String OBJECT_TYPE_CONNECTION = "Connection";
     private static final String SEARCH_BY_COMPONENT_NAME_ID = "name";
     private static final String START_TERMINATION_PATH = "1.1_2";
     private static final String END_TERMINATION_PATH = "1.1_1";
@@ -74,15 +71,12 @@ public class EthernetLinkTest extends BaseTestCase {
     private static final String CONNECTION_NAME_COLUMN = "trail.name";
     private static final String ROUTING_1ST_LEVEL_TAB_ID = "RoutingSegmentIndexedWidget";
     private static final String ROUTED_TRAIL_NAME = "SeleniumRoutingConnection";
-    private static final String ELEMENT_ROUTING_TAB_ID = "RoutingElementsWidget";
     private static final String ADD_TO_ROUTING_BUTTON = "EDIT_Add to Routing-null";
     private static final String ELEMENT_ROUTING_WIZARD_ID = "routingElementWizardWidget";
     private static final String CREATE_IP_LINK_CHECKBOX_ID = "EthernetLink.CreateAssociatedIPLinkCombobox";
     private static final String DELETE_ETHERNET_LINK = "DeleteTrailWizardActionId";
     private static final String DELETE_CONFIRMATION_BOX = "wizard-submit-button-deleteWidgetId";
     private static final String DELETE_ETHERNET_LINK_WIZARD_ID = "simple-wizard-component-deleteWidgetId";
-    private static final String TYPE_COLUMN_LABEL = "Type";
-    private static final String DEVICE_TYPE = "IP Device";
     private static final String ROUTED_CONNECTION_NAME = "SeleniumRoutingConnection";
     private static final String LATENCY_ATTRIBUTE_NAME = "Latency";
     private static final String ROLE_ATTRIBUTE_NAME = "Role";
@@ -162,7 +156,7 @@ public class EthernetLinkTest extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.setNonexistentCard();
         connectionWizardPage.terminatePort(START_PORT_TERMINATION);
-        //Terminacja precyzyjna możliwa dopiero po rozwiązaniu błędu - OSSTRAIL-7374
+        //Terminacja precyzyjna możliwa dopiero po rozwiązaniu błędu - OSSTRAIL-7999
         //waitForPageToLoad();
         //connectionWizardPage.terminateTerminationPort(START_TERMINATION_POINT);
         waitForPageToLoad();
@@ -171,7 +165,7 @@ public class EthernetLinkTest extends BaseTestCase {
         networkViewPage.openTerminationsTab();
         assertPresenceOfObjectInTab(0, PHYSICAL_DEVICE_NAME_COLUMN, TERMINATIONS_TAB_ID, PHYSICAL_DEVICE_NAME);
         assertPresenceOfObjectInTab(1, PORT_SHORT_IDENTIFIER_COLUMN, TERMINATIONS_TAB_ID, PORT_SHORT_IDENTIFIER);
-        //Asercja na precyzyjną terminację (zamiast PORT), blokowana przez - OSSTRAIL-7374
+        //Asercja na precyzyjną terminację (zamiast PORT), blokowana przez - OSSTRAIL-7999
         //assertPresenceOfObjectInTab(1, TERMINATION_POINT_NAME_COLUMN, TERMINATIONS_TAB_ID, TERMINATION_POINT_NAME);
     }
 
@@ -212,48 +206,48 @@ public class EthernetLinkTest extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.setNonexistentCard();
         connectionWizardPage.terminatePort(END_PORT_TERMINATION);
-        //Terminowanie precyzyjne blokowane przez - OSSTRAIL-7374
+        //Terminowanie precyzyjne blokowane przez - OSSTRAIL-7999
         //connectionWizardPage.terminateTerminationPort(END_TERMINATION_POINT);
         //connectionWizardPage.setCheckbox(CREATE_IP_LINK_CHECKBOX_ID, true);
         connectionWizardPage.clickAccept();
     }
 
-    @Test(priority = 9, description = "Remove termination", dependsOnMethods = {"terminateEthernetLink"})
-    @Description("Remove terminations")
-    public void removeTerminations() {
-        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.selectObjectInViewContentContains(NAME_COLUMN_LABEL, ETHERNET_LINK_NAME);
-        networkViewPage.openTerminationsTab();
-        selectAndRemoveTermination();
-        selectAndRemoveTermination();
-        assertIfTableIsEmpty(TERMINATIONS_TAB_ID);
-    }
-
-    @Test(priority = 10, description = "Remove ELs routing", dependsOnMethods = {"addSelectedTrailToRouting"})
-    @Description("Remove trails from Ethernet Links routing")
-    public void removeRouting() {
-        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.openRouting1stLevelTab();
-        selectAndRemoveConnectionFromRouting();
-        assertIfTableIsEmpty(ROUTING_1ST_LEVEL_TAB_ID);
-    }
-
-    @Test(priority = 11, description = "Finish NRP and IP task", dependsOnMethods = {"startHLPTask"})
+    @Test(priority = 9, description = "Finish NRP and IP task", dependsOnMethods = {"startHLPTask"})
     @Description("Finish rest of NRP and IP task")
     public void finishProcessesTask() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeNRP(processNRPCode);
     }
 
+    @Test(priority = 10, description = "Remove ELs routing", dependsOnMethods = {"addSelectedTrailToRouting"})
+    @Description("Remove trails from Ethernet Links routing")
+    public void removeRouting() {
+        navigateToELInventoryView();
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.selectTabByLabel("Routing - 1st level");
+        selectAndRemoveConnectionFromRouting();
+        assertIfTableIsEmpty(ROUTING_1ST_LEVEL_TAB_ID);
+    }
+
+    @Test(priority = 11, description = "Remove termination", dependsOnMethods = {"terminateEthernetLink"})
+    @Description("Remove terminations")
+    public void removeTerminations() {
+
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.selectTabByLabel("Termination");
+        selectAndRemoveTermination();
+        selectAndRemoveTermination();
+        assertIfTableIsEmpty(TERMINATIONS_TAB_ID);
+    }
+
     @Test(priority = 12, description = "Delete EL", dependsOnMethods = {"createEthernetLink"})
     @Description("Delete Ethernet Link")
     public void removeEthernetLink() {
-        navigateToELInventoryView();
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_ETHERNET_LINK);
+        newInventoryViewPage.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_ETHERNET_LINK);
         Wizard.createByComponentId(driver, webDriverWait, DELETE_ETHERNET_LINK_WIZARD_ID).clickButtonById(DELETE_CONFIRMATION_BOX);
         newInventoryViewPage.refreshMainTable();
-        newInventoryViewPage.checkIfTableIsEmpty();
+        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty(), "Ethernet Link is not removed");
     }
 
     private void addTerminationDeviceToNetworkView(String deviceName) {
@@ -283,10 +277,6 @@ public class EthernetLinkTest extends BaseTestCase {
         Assert.assertTrue(TableWidget.createById(driver, tabID, webDriverWait).hasNoData(), MESSAGE_NOT_REMOVED);
     }
 
-    private void assertIfOldTableIsEmpty() {
-        Assert.assertTrue(OldTable.createById(driver, webDriverWait, ELEMENT_ROUTING_TAB_ID).hasNoData(), MESSAGE_NOT_REMOVED);
-    }
-
     private void selectAndRemoveTermination() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         TableWidget.createById(driver, TERMINATIONS_TAB_ID, webDriverWait).selectFirstRow();
@@ -299,13 +289,6 @@ public class EthernetLinkTest extends BaseTestCase {
         TableWidget.createById(driver, ROUTING_1ST_LEVEL_TAB_ID, webDriverWait).selectFirstRow();
         networkViewPage.deleteSelectedConnectionsFromRouting();
         networkViewPage.refreshFirstLevelRoutingTab();
-    }
-
-    private void selectAndRemoveElementFromRouting() {
-        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.selectRoutingElement(TYPE_COLUMN_LABEL, DEVICE_TYPE);
-        networkViewPage.deleteSelectedElementsFromRouting();
-        networkViewPage.refreshElementRoutingTab();
     }
 
     private void assertEthernetLinkAttributes(NetworkViewPage networkViewPage, EthernetLinkAttributes ethernetLinkAttributes) {

@@ -27,7 +27,8 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
+
+import static com.oss.bpm.BpmPhysicalDataCreator.nextMaxInt;
 
 /**
  * @author Paweł Rother
@@ -65,11 +66,10 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     private static final String MILESTONE_DESCRIPTION_1 = "Milestone 1 - Selenium Test";
     private static final String FIRST_TASK_NAME = "First Task";
     private static final String MODEL_STILL_VISIBLE_EXCEPTION = "Process model %s is still visible on Process Models View";
-    private static final Random RANDOM = new Random();
     private static final String INVALID_MILESTONES_UPDATE_MESSAGE_PATTERN = "Invalid milestones update system message in '%s' test.";
     private static final String MILESTONES_VISIBLE_INFO = "There are visible some milestones on Milestones Tab.";
     private SoftAssert softAssert;
-    private final String modelKeyword = "Selenium." + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String modelKeyword = "Selenium." + nextMaxInt();
 
     @BeforeClass
     public void importProcessModel() {
@@ -98,8 +98,8 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     @Test(priority = 1, description = "Add new Milestones for Process Model")
     @Description("Add new Milestones for Process Model")
     public void addMilestonesForProcessModel() {
-        String milestoneName1 = MILESTONE_NAME_1 + RANDOM.nextInt(Integer.MAX_VALUE);
-        String milestoneName2 = MILESTONE_NAME_2 + RANDOM.nextInt(Integer.MAX_VALUE);
+        String milestoneName1 = MILESTONE_NAME_1 + nextMaxInt();
+        String milestoneName2 = MILESTONE_NAME_2 + nextMaxInt();
         List<Milestone> milestones = Lists.newArrayList(
                 Milestone.builder()
                         .setLeadTime("10")
@@ -159,8 +159,8 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     @Test(priority = 2, description = "Edit existing Milestones for Process Model", dependsOnMethods = {TC1})
     @Description("Edit existing Milestones for Process Model")
     public void editMilestonesForProcessModel() {
-        String milestoneName1 = MILESTONE_NAME_1 + RANDOM.nextInt(Integer.MAX_VALUE);
-        String milestoneName2 = MILESTONE_NAME_2 + RANDOM.nextInt(Integer.MAX_VALUE);
+        String milestoneName1 = MILESTONE_NAME_1 + nextMaxInt();
+        String milestoneName2 = MILESTONE_NAME_2 + nextMaxInt();
         List<Milestone> milestones = Lists.newArrayList(
                 Milestone.builder()
                         .setLeadTime("")
@@ -238,7 +238,7 @@ public class EditMilestonesForProcessModelTest extends BaseTestCase {
     @Test(priority = 4, description = "Try to add Milestone without name for Process Model")
     @Description("Try to add Milestone without name for Process Model")
     public void addMilestoneWithoutName() {
-        String milestoneName2 = MILESTONE_NAME_2 + RANDOM.nextInt(Integer.MAX_VALUE);
+        String milestoneName2 = MILESTONE_NAME_2 + nextMaxInt();
         List<Milestone> milestones = Lists.newArrayList(
                 Milestone.builder()
                         .setLeadTime("10")

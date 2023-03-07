@@ -1,7 +1,17 @@
 package com.oss.E2E;
 
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.util.List;
+
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
 import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.comarch.oss.web.pages.LogManagerPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.filtermanager.ShareFilterPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -19,7 +29,6 @@ import com.oss.pages.mediation.CLIConfigurationWizardPage;
 import com.oss.pages.mediation.ViewConnectionConfigurationPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HomePage;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
@@ -31,15 +40,8 @@ import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import com.oss.pages.transport.trail.ConnectionWizardPage;
-import io.qameta.allure.Description;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
-import java.util.List;
+import io.qameta.allure.Description;
 
 public class BucOssPla002Test extends BaseTestCase {
     private static final String DEVICE_MODEL = "CISCO1941/K9";
@@ -160,7 +162,7 @@ public class BucOssPla002Test extends BaseTestCase {
     @Description("Select Ethernet Interface in Hierarchy View and open it in New Inventory View")
     public void selectEthernetInterface() {
         HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
-        String labelpath = DEVICE_NAME + ".Ports." + PORT_NAME + ".Termination Points.EthernetInterface_TP." + PORT_NAME;
+        String labelpath = DEVICE_NAME + ".Ports." + PORT_NAME + ".All Termination Points.EthernetInterface_TP." + PORT_NAME;
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         waitForPageToLoad();
         hierarchyViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "InventoryView");
@@ -487,8 +489,12 @@ public class BucOssPla002Test extends BaseTestCase {
         IPAddressManagementViewPage ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
         ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
-        ipAddressManagementViewPage.expandTreeRowContains("%");
+        ipAddressManagementViewPage.expandTreeRow("IP Subnets");
+        ipAddressManagementViewPage.expandTreeRow("IPV4");
+        ipAddressManagementViewPage.expandTreeRowContains("10.10.20.0/24");
+        ipAddressManagementViewPage.expandTreeRow("IP Addresses");
         ipAddressManagementViewPage.deleteIPHost(ADDRESS + "/24");
+        waitForPageToLoad();
     }
 
     @Test(priority = 24, description = "Delete device", dependsOnMethods = {"createDevice"})
