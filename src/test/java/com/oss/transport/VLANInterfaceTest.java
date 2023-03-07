@@ -5,6 +5,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.HierarchyViewPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -12,11 +14,10 @@ import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.table.TableWidget;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
-import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
-import com.comarch.oss.web.pages.HierarchyViewPage;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
+import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.transport.VLANInterfaceWizardPage;
 import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
@@ -45,8 +46,6 @@ public class VLANInterfaceTest extends BaseTestCase {
     private static final String PORT_NAME = "GE 0";
     private static final String CREATE_VLAN_ACTION_ID = "CreateVLANInterfaceContextAction";
     private static final String LABEL_PATH = DEVICE + ".Ports." + PORT_NAME + ".All Termination Points.EthernetInterface_TP." + PORT_NAME;
-    private static final String DELETE_ADDRESS_IP_ID = "DeleteIPHostAddressAssignmentInternalAction";
-    private static final String CONFIRMATION_REMOVAL_IP_BOX_ID = "ConfirmationBox_removeBoxId_action_button";
     private static final String CONFIRMATION_REMOVAL_BOX_ID = "ConfirmationBox_deleteBoxAppId_action_button";
     private NewInventoryViewPage newInventoryViewPage;
     private String processNRPCode;
@@ -141,9 +140,13 @@ public class VLANInterfaceTest extends BaseTestCase {
     @Test(priority = 7)
     @Description("Delete IP Address")
     public void deleteIPAddressAssignment() {
-        searchInInventoryView("IP Host Assignment");
-        newInventoryViewPage.searchObject(IP_ADDRESS).selectFirstRow();
-        newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_ADDRESS_IP_ID).clickConfirmationBox(CONFIRMATION_REMOVAL_IP_BOX_ID);
+        newInventoryViewPage.selectTabByLabel("IP Addresses");
+        TableWidget tableWidget = TableWidget.createById(driver, "IpAddressesWidget", webDriverWait);
+        tableWidget.selectFirstRow();
+        tableWidget.callAction(SHOW_ON_GROUP_ID, "InventoryView");
+        newInventoryViewPage.selectFirstRow().callAction(EDIT_GROUP_ID, "DeleteIPHostAddressAssignmentInternalAction").clickConfirmationBox("ConfirmationBox_removeBoxId_action_button");
+        newInventoryViewPage.refreshMainTable();
+        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty(), "IP address assignment is not removed");
     }
 
     @Test(priority = 8)

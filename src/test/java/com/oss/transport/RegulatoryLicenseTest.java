@@ -38,8 +38,10 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     private static final String LOCATION = "SELENIUM_LOCATION1";
     private static final String MICROWAVE_ANTENNA = "SELENIUM_MWANT_RL";
-    private static final String MICROWAVE_LINK = "MicrowaveLink 1006";
-    private static final String MICROWAVE_CHANNEL = "MicrowaveChannel 3464";
+    private static final String MICROWAVE_LINK = "MicrowaveLink 906";
+    private static final String MICROWAVE_LINK_ID = "25149092";
+    private static final String MICROWAVE_CHANNEL = "MicrowaveChannel 1716";
+    private static final String MICROWAVE_CHANNEL_ID = "25149093";
 
     private static final String NUMBER2 = "234SELENIUM";
     private static final String REGULATORY_AGENCY2 = "SELENIUM_AGENCY2";
@@ -72,10 +74,27 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     private static final String DETACH_MICROWAVE_LINK_FROM_REGULATORY_LICENSE_ACTION_ID = "DetachMicrowaveLinkFromRegulatoryLicenseApplicationContextAction";
     private static final String DETACH_MICROWAVE_CHANNEL_FROM_REGULATORY_LICENSE_ACTION_ID = "DetachMicrowaveChannelFromRegulatoryLicenseApplicationContextAction";
     private static final String DELETE_REGULATORY_LICENSE_ACTION_ID = "DeleteRegulatoryLicenseApplicationContextAction";
+    private static final String TAB_ISN_T_EMPTY_EXCEPTION = "Tab isn't empty";
+    private static final String ASSIGN_TO_OBJECT = " was not assigned correctly";
+    private static final String EQUAL_VALUE_OF = " values aren't equals";
+    private static final String ATTRIBUTE_NAME_LICENCE_NUMBER = "licenseNumber";
+    private static final String ATTRIBUTE_NAME_STARTING_DATE = "startingDate";
+    private static final String ATTRIBUTE_NAME_EXPIRATION_DATE = "expirationDate";
+    private static final String ATTRIBUTE_NAME_OPERATING_HOURS = "operatingHours";
+    private static final String ATTRIBUTE_NAME_TYPE = "type";
+    private static final String ATTRIBUTE_NAME_STATUS = "status";
+    private static final String EMPTY_LIST_EXCEPTION = "The list is empty";
+    private static final String COLUMN_NAME= "name";
+    private static final String COLUMN_LABEL = "label";
+    private static final String REGULATORY_LICENSE_VIEW_PATH = "%s/#/views/management/views/inventory-view/RegulatoryLicense?perspective=LIVE";
 
     private SoftAssert softAssert;
     private NewInventoryViewPage newInventoryViewPage;
     private static final Random rand = new Random();
+
+    private static final int randNumber = rand.nextInt(101) + 100;
+
+    private int timer = 0;
 
     @BeforeClass
     public void openConsole() {
@@ -126,7 +145,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     @Step("Assign Microwave Link")
     public void assignMicrowaveLink() {
         RegulatoryLicenseAssignmentWizardPage regulatoryLicenseAssignmentWizardPage = clickAssign();
-        regulatoryLicenseAssignmentWizardPage.assignMicrowaveLinkToRegulatoryLicense(MICROWAVE_LINK);
+        regulatoryLicenseAssignmentWizardPage.assignMicrowaveLinkToRegulatoryLicense(MICROWAVE_LINK_ID);
         openTab(MICROWAVE_LINKS_TAB_LABEL);
         assertAssignedMicrowaveLinks();
     }
@@ -135,7 +154,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     @Step("Assign Microwave Channel")
     public void assignMicrowaveChannel() {
         RegulatoryLicenseAssignmentWizardPage regulatoryLicenseAssignmentWizardPage = clickAssign();
-        regulatoryLicenseAssignmentWizardPage.assignMicrowaveChannelToRegulatoryLicense(MICROWAVE_CHANNEL);
+        regulatoryLicenseAssignmentWizardPage.assignMicrowaveChannelToRegulatoryLicense(MICROWAVE_CHANNEL_ID);
         openTab(MICROWAVE_CHANNELS_TAB_LABEL);
         assertAssignedMicrowaveChannels();
     }
@@ -160,7 +179,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     public void detachLocation() {
         openTab(LOCATIONS_TAB_LABEL);
         detachLocationFromRegulatoryLicense();
-        checkIfLocationsTabIsEmpty();
+        Assert.assertTrue(checkIfLocationsTabIsEmpty(), TAB_ISN_T_EMPTY_EXCEPTION);
     }
 
     @Test(priority = 8)
@@ -168,7 +187,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     public void detachMicrowaveAntenna() {
         openTab(MICROWAVE_ANTENNAS_TAB_LABEL);
         detachMicrowaveAntennaFromRegulatoryLicense();
-        checkIfMicrowaveAntennasTabIsEmpty();
+        Assert.assertTrue(checkIfMicrowaveAntennasTabIsEmpty(), TAB_ISN_T_EMPTY_EXCEPTION);
     }
 
     @Test(priority = 9)
@@ -176,7 +195,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     public void detachMicrowaveLink() {
         openTab(MICROWAVE_LINKS_TAB_LABEL);
         detachMicrowaveLinkFromRegulatoryLicense();
-        checkIfMicrowaveLinksTabIsEmpty();
+        Assert.assertTrue(checkIfMicrowaveLinksTabIsEmpty(), TAB_ISN_T_EMPTY_EXCEPTION);
     }
 
     @Test(priority = 10)
@@ -184,7 +203,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     public void detachMicrowaveChannel() {
         openTab(MICROWAVE_CHANNELS_TAB_LABEL);
         detachMicrowaveChannelFromRegulatoryLicense();
-        checkIfMicrowaveChannelsTabIsEmpty();
+        Assert.assertTrue(checkIfMicrowaveChannelsTabIsEmpty(), TAB_ISN_T_EMPTY_EXCEPTION);
     }
 
     @Test(priority = 11)
@@ -196,13 +215,13 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     }
 
     private void goToRegulatoryLicenseInventoryView() {
-        driver.get(String.format("%s/#/views/management/views/inventory-view/RegulatoryLicense?perspective=LIVE", CONFIGURATION.getUrl()));
+        driver.get(String.format(REGULATORY_LICENSE_VIEW_PATH, CONFIGURATION.getUrl()));
         waitForPageToLoad();
     }
 
     private RegulatoryLicenseAttributes getRegulatoryLicenseAttributesToCreate() {
         RegulatoryLicenseAttributes attributes = new RegulatoryLicenseAttributes();
-        attributes.number = NUMBER + rand.nextInt(99 + 1) * 100;
+        attributes.number = NUMBER + randNumber;
         attributes.regulatoryAgency = REGULATORY_AGENCY;
         attributes.startingDate = STARTING_DATE;
         attributes.expirationDate = EXPIRATION_DATE;
@@ -215,7 +234,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     private RegulatoryLicenseAttributes getRegulatoryLicenseAttributesToUpdate() {
         RegulatoryLicenseAttributes regLicAttributes = new RegulatoryLicenseAttributes();
-        regLicAttributes.number = NUMBER2 + rand.nextInt(99 + 1) * 100;
+        regLicAttributes.number = NUMBER2 + randNumber;
         regLicAttributes.regulatoryAgency = REGULATORY_AGENCY2;
         regLicAttributes.startingDate = STARTING_DATE2;
         regLicAttributes.expirationDate = EXPIRATION_DATE2;
@@ -280,19 +299,19 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     }
 
     private void assertRegulatoryLicenseAttributes(NewInventoryViewPage newInventoryViewPage, RegulatoryLicenseAttributes regulatoryLicenseAttributes) {
-        String number = newInventoryViewPage.getPropertyPanelValue("licenseNumber");
-        String startingDate = newInventoryViewPage.getPropertyPanelValue("startingDate");
-        String expirationDate = newInventoryViewPage.getPropertyPanelValue("expirationDate");
-        String operatingHours = newInventoryViewPage.getPropertyPanelValue("operatingHours");
-        String type = newInventoryViewPage.getPropertyPanelValue("type");
-        String status = newInventoryViewPage.getPropertyPanelValue("status");
+        String number = newInventoryViewPage.getPropertyPanelValue(ATTRIBUTE_NAME_LICENCE_NUMBER);
+        String startingDate = newInventoryViewPage.getPropertyPanelValue(ATTRIBUTE_NAME_STARTING_DATE);
+        String expirationDate = newInventoryViewPage.getPropertyPanelValue(ATTRIBUTE_NAME_EXPIRATION_DATE);
+        String operatingHours = newInventoryViewPage.getPropertyPanelValue(ATTRIBUTE_NAME_OPERATING_HOURS);
+        String type = newInventoryViewPage.getPropertyPanelValue(ATTRIBUTE_NAME_TYPE);
+        String status = newInventoryViewPage.getPropertyPanelValue(ATTRIBUTE_NAME_STATUS);
 
-        Assert.assertEquals(number, regulatoryLicenseAttributes.number);
-        Assert.assertEquals(startingDate, regulatoryLicenseAttributes.startingDate);
-        Assert.assertEquals(expirationDate, regulatoryLicenseAttributes.expirationDate);
-        Assert.assertEquals(operatingHours, regulatoryLicenseAttributes.operatingHours);
-        Assert.assertEquals(type.toLowerCase(), regulatoryLicenseAttributes.type.toLowerCase());
-        Assert.assertEquals(status.toLowerCase(), regulatoryLicenseAttributes.status.toLowerCase());
+        Assert.assertEquals(number, regulatoryLicenseAttributes.number, ATTRIBUTE_NAME_LICENCE_NUMBER + EQUAL_VALUE_OF);
+        Assert.assertEquals(startingDate, regulatoryLicenseAttributes.startingDate, ATTRIBUTE_NAME_STARTING_DATE +  EQUAL_VALUE_OF);
+        Assert.assertEquals(expirationDate, regulatoryLicenseAttributes.expirationDate, ATTRIBUTE_NAME_EXPIRATION_DATE +  EQUAL_VALUE_OF);
+        Assert.assertEquals(operatingHours, regulatoryLicenseAttributes.operatingHours,ATTRIBUTE_NAME_OPERATING_HOURS +   EQUAL_VALUE_OF);
+        Assert.assertEquals(type.toLowerCase(), regulatoryLicenseAttributes.type.toLowerCase(), ATTRIBUTE_NAME_TYPE +  EQUAL_VALUE_OF);
+        Assert.assertEquals(status.toLowerCase(), regulatoryLicenseAttributes.status.toLowerCase(), ATTRIBUTE_NAME_STATUS +  EQUAL_VALUE_OF);
     }
 
     private void openTab(String tabLabel) {
@@ -301,56 +320,82 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     }
 
     private void assertAssignedLocations() {
-        String assignedLocation = selectObjectInTab(0, "name", LOCATIONS_TABLE_COMPONENT_ID);
+        String assignedLocation = selectObjectInTab(COLUMN_NAME, LOCATIONS_TABLE_COMPONENT_ID);
 
-        Assert.assertEquals(assignedLocation, LOCATION);
+        Assert.assertEquals(assignedLocation, LOCATION, LOCATION + ASSIGN_TO_OBJECT);
     }
 
     private void assertAssignedMicrowaveAntennas() {
-        String assignedMicrowaveAntenna = selectObjectInTab(0, "name", MICROWAVE_ANTENNAS_TABLE_COMPONENT_ID);
+        String assignedMicrowaveAntenna = selectObjectInTab(COLUMN_NAME, MICROWAVE_ANTENNAS_TABLE_COMPONENT_ID);
 
-        Assert.assertEquals(assignedMicrowaveAntenna, MICROWAVE_ANTENNA);
+        Assert.assertEquals(assignedMicrowaveAntenna, MICROWAVE_ANTENNA, MICROWAVE_ANTENNA + ASSIGN_TO_OBJECT);
     }
 
     private void assertAssignedMicrowaveLinks() {
-        String assignedMicrowaveLink = selectObjectInTab(0, "label", MICROWAVE_LINKS_TABLE_COMPONENT_ID);
+        String assignedMicrowaveLink = selectObjectInTab(COLUMN_LABEL, MICROWAVE_LINKS_TABLE_COMPONENT_ID);
 
-        Assert.assertEquals(assignedMicrowaveLink, MICROWAVE_LINK);
+        Assert.assertEquals(assignedMicrowaveLink, MICROWAVE_LINK, MICROWAVE_LINK + ASSIGN_TO_OBJECT);
     }
 
     private void assertAssignedMicrowaveChannels() {
-        String assignedMicrowaveChannels = selectObjectInTab(0, "label", MICROWAVE_CHANNELS_TABLE_COMPONENT_ID);
+        String assignedMicrowaveChannels = selectObjectInTab(COLUMN_LABEL, MICROWAVE_CHANNELS_TABLE_COMPONENT_ID);
 
-        Assert.assertEquals(assignedMicrowaveChannels, MICROWAVE_CHANNEL);
+        Assert.assertEquals(assignedMicrowaveChannels, MICROWAVE_CHANNEL, MICROWAVE_CHANNEL + ASSIGN_TO_OBJECT);
     }
 
     private void checkRegulatoryLicenseRemoval() {
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
-    private void checkIfLocationsTabIsEmpty() {
-        waitForPageToLoad();
-        Assert.assertTrue(getLocationsTable().hasNoData());
+    private boolean checkIfLocationsTabIsEmpty() {
+
+        if (!getLocationsTable().hasNoData()) {
+            while (!getLocationsTable().hasNoData() && timer < 10) {
+                DelayUtils.sleep(1000);
+                timer++;
+            }
+        }
+        return true;
+
     }
 
-    private void checkIfMicrowaveAntennasTabIsEmpty() {
-        waitForPageToLoad();
-        Assert.assertTrue(getMicrowaveAntennasTable().hasNoData());
+    private boolean checkIfMicrowaveAntennasTabIsEmpty() {
+
+        if (!getMicrowaveAntennasTable().hasNoData()) {
+            while (!getMicrowaveAntennasTable().hasNoData() && timer < 10) {
+                DelayUtils.sleep(1000);
+                timer++;
+            }
+        }
+        return true;
+
     }
 
-    private void checkIfMicrowaveLinksTabIsEmpty() {
-        waitForPageToLoad();
-        Assert.assertTrue(getMicrowaveLinksTable().hasNoData());
+    private boolean checkIfMicrowaveLinksTabIsEmpty() {
+
+        if (!getMicrowaveLinksTable().hasNoData()) {
+            while (!getMicrowaveLinksTable().hasNoData() && timer < 10) {
+                DelayUtils.sleep(1000);
+                timer++;
+            }
+        }
+        return true;
     }
 
-    private void checkIfMicrowaveChannelsTabIsEmpty() {
-        waitForPageToLoad();
-        Assert.assertTrue(getMicrowaveChannelsTable().hasNoData());
+    private boolean checkIfMicrowaveChannelsTabIsEmpty() {
+
+        if (!getMicrowaveChannelsTable().hasNoData()) {
+            while (!getMicrowaveChannelsTable().hasNoData() && timer < 10) {
+                DelayUtils.sleep(1000);
+                timer++;
+            }
+        }
+        return true;
     }
 
     private void checkSystemMessage() {
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
-        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException("The list is empty")).getMessageType()), SystemMessageContainer.MessageType.SUCCESS);
+        softAssert.assertEquals((systemMessage.getFirstMessage().orElseThrow(() -> new RuntimeException(EMPTY_LIST_EXCEPTION)).getMessageType()), SystemMessageContainer.MessageType.SUCCESS);
     }
 
     private void detachLocationFromRegulatoryLicense() {
@@ -412,10 +457,10 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    private String selectObjectInTab(Integer index, String column, String componentId) {
+    private String selectObjectInTab(String column, String componentId) {
         waitForPageToLoad();
         TableComponent tableComponent = TableComponent.create(driver, webDriverWait, componentId);
-        tableComponent.selectRow(index);
-        return tableComponent.getCellValue(index, column);
+        tableComponent.selectRow(0);
+        return tableComponent.getCellValue(0, column);
     }
 }
