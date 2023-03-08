@@ -63,6 +63,7 @@ public class CleanOldProcessesVFKDHDTest extends BaseTestCase {
             SystemMessageContainer systemMessage = SystemMessageContainer.create(driver, webDriverWait);
             systemMessage.close();
             softAssert.assertTrue(isPageEmpty(plannersViewPage));
+            softAssert.assertAll();
         }
     }
 

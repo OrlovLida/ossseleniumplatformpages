@@ -7,6 +7,7 @@ import java.util.Random;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
@@ -19,14 +20,13 @@ import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.pages.bpm.processinstances.PlannersViewPage;
-import com.oss.pages.bpm.tasks.TasksPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessRolesStepWizardPage;
+import com.oss.pages.bpm.tasks.TasksPage;
 import com.oss.pages.logical.LogicalLocationWizard;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationOverviewPage;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.physical.SublocationWizardPage;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 
 import io.qameta.allure.Description;
 
@@ -70,14 +70,13 @@ public class TestProcessesVFKDHD extends BaseTestCase {
     private static final String PLANNERS_ID = "Planner";
     private static final String CREATE_LOCATION = "Create Location";
     private static final String INVENTORY_VIEW = "Inventory View";
-    private static final String INVENTORY_VIEW_PATH = "Resource Inventory ";
+    private static final String INVENTORY_VIEW_PATH = "Resource Inventory";
     private static final String OPENING_BRACKED_BEFORE_PROCES_CODE = "(";
     private static final String PLANNER = RESOURCE_OWNER;
     private static final String OLD_PROPERTY_PANEL_ID = "propertyPanelAppAttributesId";
     private static final String EXPECTED_STATUS_AFTER_FINISHING_TASK = "Completed";
     private static final String PROCESS_CREATED_SUCCESSFULLY_FIRST_STATIC_PART_OF_MASSAGE = "Process Selenium Test";
     private static final String[] PROCESS_CREATED_SUCCESSFULLY_REST_STATIC_PARTS_OF_MASSAGE = new String[]{"(DCP-", ") was created"};
-    private final SoftAssert softAssert = new SoftAssert();
     private String processDCPCode;
     private SystemMessageInterface systemMessage;
     private LocationOverviewPage locationOverviewPage;
@@ -131,6 +130,7 @@ public class TestProcessesVFKDHD extends BaseTestCase {
     @Test(priority = 3, description = "Find location in new Inventory View and open location in Location Overview view", dependsOnMethods = {"startDCP", "createNewProcess", "createNewLocation"})
     @Description("Find location in new Inventory View and open location in Location Overview view")
     public void findLocation() {
+        SoftAssert softAssert = new SoftAssert();
         homePage.chooseFromLeftSideMenu(INVENTORY_VIEW, INVENTORY_VIEW_PATH);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
@@ -151,6 +151,7 @@ public class TestProcessesVFKDHD extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         OldPropertyPanel oldPropertyPanel = OldPropertyPanel.createById(driver, webDriverWait, OLD_PROPERTY_PANEL_ID);
         softAssert.assertEquals(oldPropertyPanel.getPropertyValue(NAME_ATTRIBUTE_LABEL), LOCATION_NAME);
+        softAssert.assertAll();
     }
 
     @Test(priority = 4, description = "Change Location Street Number", dependsOnMethods = {"startDCP", "createNewProcess", "findLocation", "createNewLocation"})
@@ -200,6 +201,7 @@ public class TestProcessesVFKDHD extends BaseTestCase {
     @Test(priority = 8, description = "Finish DCP", dependsOnMethods = {"startDCP", "createNewProcess", "findLocation", "changeStreetNumber", "createNewLocation", "CreateLogicalLocation", "CreateSubLocation", "CreateDevice"})
     @Description("Finish Data Correction Process")
     public void finnishDCP() {
+        SoftAssert softAssert = new SoftAssert();
         TasksPage tasksPage = getTasksPage();
         tasksPage.completeTask(processDCPCode, TASK_NAME);
         checkPopup(TASK_PROPERLY_COMPLETED_MASSAGE);
@@ -209,6 +211,7 @@ public class TestProcessesVFKDHD extends BaseTestCase {
         PlannersViewPage plannersViewPage = new PlannersViewPage(driver, webDriverWait);
         plannersViewPage.searchByAttributesValue(FILTERS_USED_TO_CHECK_IF_PROCESS_IS_COMPLETED);
         softAssert.assertEquals(plannersViewPage.getProcessState(processDCPCode), EXPECTED_STATUS_AFTER_FINISHING_TASK);
+        softAssert.assertAll();
     }
 
     private void createLocation() {
@@ -289,6 +292,7 @@ public class TestProcessesVFKDHD extends BaseTestCase {
     }
 
     private void checkPopup(String text, String... moreTexts) {
+        SoftAssert softAssert = new SoftAssert();
         List<SystemMessageContainer.Message> messages = getPopupMassages();
         softAssert.assertEquals(messages.size(), 1);
         softAssert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS);
@@ -297,6 +301,7 @@ public class TestProcessesVFKDHD extends BaseTestCase {
         for (String nextText : moreTexts) {
             softAssert.assertTrue(massage.contains(nextText));
         }
+        softAssert.assertAll();
     }
 
 }
