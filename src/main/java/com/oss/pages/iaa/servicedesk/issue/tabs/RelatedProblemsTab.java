@@ -59,6 +59,13 @@ public class RelatedProblemsTab extends RelatedTab {
         return getRelatedIssuesTable().getCellValue(problemIndex, RELATED_PROBLEMS_TABLE_ASSIGNEE_ATTRIBUTE_ID);
     }
 
+    @Step("Check if Related Problem tab is empty")
+    public boolean isRelatedProblemsTabEmpty() {
+        DelayUtils.sleep(2000);
+        log.info("Check if Related Problems Tab is Empty");
+        return getRelatedIssuesTable().hasNoData();
+    }
+
     @Override
     public String getTableId() {
         return RELATED_PROBLEMS_TABLE_ID;
