@@ -1,7 +1,5 @@
 package com.oss;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
-
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +33,8 @@ import com.oss.pages.platform.LoginPage;
 import com.oss.serviceClient.Environment;
 import com.oss.serviceClient.EnvironmentRequestClient;
 import com.oss.utils.TestListener;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
@@ -124,6 +124,7 @@ public class BaseTestCase implements IHookable {
         options.addArguments("--disable-infobars");
         options.addArguments("--disable-browser-side-navigation");
         options.addArguments("--disable-gpu");
+        options.addArguments("--remote-allow-origins=*");
         options.setExperimentalOption("prefs", getPreferences());
         return options;
     }
