@@ -90,7 +90,6 @@ public class CreateTicketTest extends BaseTestCase {
     @Description("Open ticket and go through all necessary steps to close it")
     public void closeTicket(
     ) {
-        String ticketID = "32918";
         issueDetailsPage = ticketDashboardPage.openIssueDetailsView(ticketID, BASIC_URL, TROUBLE_TICKET_ISSUE_TYPE);
         ticketOverviewTab = (TicketOverviewTab) issueDetailsPage.selectOverviewTab(TROUBLE_TICKET_ISSUE_TYPE);
         ticketOverviewTab.allowEditingTicket();
