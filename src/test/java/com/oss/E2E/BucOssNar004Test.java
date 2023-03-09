@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -63,20 +64,14 @@ public class BucOssNar004Test extends BaseTestCase {
 
     @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Sample Management View and upload reconciliation samples")
-    public void uploadSamples() throws URISyntaxException {
+    public void uploadSamples() throws URISyntaxException, IOException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         waitForPageToLoad();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_running-config");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_sh_inventory_raw");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_sh_version");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_004");
     }
 
     @Test(priority = 3, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})
@@ -136,7 +131,7 @@ public class BucOssNar004Test extends BaseTestCase {
 
     @Test(priority = 6, description = "Change reconciliation samples to empty ones", dependsOnMethods = {"createCmDomain"})
     @Description("Move to Samples Management from Network Discovery Control View, delete old reconciliation samples and upload empty samples")
-    public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
+    public void deleteOldSamplesAndPutNewOne() throws URISyntaxException, IOException {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
@@ -145,13 +140,7 @@ public class BucOssNar004Test extends BaseTestCase {
         samplesManagementPage.selectPath();
         waitForPageToLoad();
         samplesManagementPage.deleteDirectoryContent();
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_running-config");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_sh_inventory_raw");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_sh_version");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/ciscoIOS/empty");
     }
 
     @Test(priority = 7, description = "Run reconciliation and check results", dependsOnMethods = {"deleteOldSamplesAndPutNewOne"})

@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -387,7 +388,7 @@ public class BucOssPla002Test extends BaseTestCase {
 
     @Test(priority = 17, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Samples Management View and upload reconciliation samples")
-    public void uploadSamples() throws URISyntaxException {
+    public void uploadSamples() throws URISyntaxException, IOException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
         networkDiscoveryControlViewPage.moveToSamplesManagement();
@@ -395,11 +396,7 @@ public class BucOssPla002Test extends BaseTestCase {
         samplesManagementPage.selectPath();
         waitForPageToLoad();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_inventory_raw.cli");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_version.cli");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/ciscoE2E");
     }
 
     @Test(priority = 18, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})

@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.List;
@@ -67,21 +68,13 @@ public class BucOssNar001Test extends BaseTestCase {
 
     @Test(priority = 2, description = "Upload basic samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Samples Management view and upload basic samples")
-    public void uploadBasicSamples() throws URISyntaxException {
+    public void uploadBasicSamples() throws URISyntaxException, IOException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/create/KRK-SSE1-3_10.166.10.1_20181107_1306_ip_interfaces");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/create/KRK-SSE1-3_10.166.10.1_20181107_1306_running-config");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/create/KRK-SSE1-3_10.166.10.1_20181107_1306_sh_inventory_raw");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/create/KRK-SSE1-3_10.166.10.1_20181107_1306_sh_version");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_001/create");
     }
 
     @Test(priority = 3, description = "Run reconciliation with basic samples", dependsOnMethods = {"uploadBasicSamples"})
@@ -137,22 +130,14 @@ public class BucOssNar001Test extends BaseTestCase {
 
     @Test(priority = 5, description = "Replace samples", dependsOnMethods = {"applyInconsistencies"})
     @Description("Open Network Discovery Control View, move to Samples Management View and replace old samples")
-    public void replaceOldSamples() throws URISyntaxException {
+    public void replaceOldSamples() throws URISyntaxException, IOException {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         samplesManagementPage.deleteDirectoryContent();
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/modify/KRK-SSE1-3_10.166.10.1_20181107_1306_ip_interfaces");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/modify/KRK-SSE1-3_10.166.10.1_20181107_1306_running-config");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/modify/KRK-SSE1-3_10.166.10.1_20181107_1306_sh_inventory_raw");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/modify/KRK-SSE1-3_10.166.10.1_20181107_1306_sh_version");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_001/modify");
     }
 
     @Test(priority = 6, description = "Search router and open it in New Inventory View", dependsOnMethods = {"applyInconsistencies"})
@@ -201,20 +186,14 @@ public class BucOssNar001Test extends BaseTestCase {
 
     @Test(priority = 9, description = "Replace samples", dependsOnMethods = {"createCmDomain"})
     @Description("Open Network Discovery Control View, move to Samples Management View and replace old samples")
-    public void uploadEmptySamples() throws URISyntaxException {
+    public void uploadEmptySamples() throws URISyntaxException, IOException {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         samplesManagementPage.deleteDirectoryContent();
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/empty/Selenium1_10.252.255.201_20170707_1324_sh_version");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/empty/Selenium1_10.252.255.201_20170707_1324_sh_inventory_raw");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/empty/Selenium1_10.252.255.201_20170707_1324_running-config");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_001/empty");
     }
 
     @Test(priority = 10, description = "Run reconciliation and check results", dependsOnMethods = {"uploadEmptySamples"})
