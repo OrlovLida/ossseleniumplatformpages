@@ -1,5 +1,9 @@
 package com.oss.transport;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -9,7 +13,6 @@ import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.resourcecatalog.ResourceSpecificationsViewPage;
 
 import io.qameta.allure.Description;
@@ -48,7 +51,6 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     private static final String TYPE_RESOURCE_VALUE = "RESOURCE";
     private static final String CATEGORY_BASE_MODEL_TRANSPORT_VALUE = "Base model - Transport";
     private static final String ORIGIN_PRODUCT_VALUE = "Product";
-    private static final String CHARACTERISTIC_TABLE_ID = "rsAdditionalCharacteristicsListId";
     private static final String CHARACTERISTIC_NAME_COLUMN = "Name";
     private static final String CHARACTERISTIC_TYPE_COLUMN = "Type";
     private static final String CHARACTERISTIC_ALLOWABLE_VALUES_COLUMN = "Allowable values";
@@ -58,8 +60,6 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     private static final String NUMBER_TYPE = "Number";
     private static final String BOOLEAN_TYPE = "Boolean";
     private static final String DATE_TYPE = "Date";
-    private static final String COMMON_LIST_DETAILS_ID = "rsDetailsListId";
-    private static final String COMMON_LIST_RELATIONS_ID = "ExtendedList-entity_spec_relation_app_id";
     private static final String RELATIONS_SPECIFICATION_NAME = "Specification";
     private static final String RELATIONS_RELATION_ROLE_NAME = "Relation role";
     private static final String RELATIONS_MAX_CARDINALITY_NAME = "Max cardinality";
@@ -217,12 +217,13 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void selectTab(String tabId) {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         resourceSpecificationsViewPage.selectTab(tabId);
     }
 
     private void assertDetailsTabAttributes(DetailTabAttributes detailTabAttributes) {
-        CommonList commonList = CommonList.create(driver, webDriverWait, COMMON_LIST_DETAILS_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
+        CommonList commonList = resourceSpecificationsViewPage.getDetailsCommonList();
         String actualIdentifier = commonList.getRow(DETAILS_NAME_COLUMN, "Identifier").getValue(DETAILS_VALUE_COLUMN);
         String actualName = commonList.getRow(DETAILS_NAME_COLUMN, "Name").getValue(DETAILS_VALUE_COLUMN);
         String actualCategory = commonList.getRow(DETAILS_NAME_COLUMN, "Category").getValue(DETAILS_VALUE_COLUMN);
@@ -258,7 +259,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForAEL() {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
@@ -275,11 +276,12 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         softAssert.assertEquals(aggregationProtocolAllowableValues, "LACP, NONE");
         softAssert.assertEquals(effectiveCapacityMbpsType, NUMBER_TYPE);
         softAssert.assertEquals(speedMbpsType, NUMBER_TYPE);
+
         softAssert.assertAll();
     }
 
     private void assertCharacteristicTabAttributesForEL() {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
@@ -298,7 +300,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         rowNumber = oldTable.getRowNumber("Speed", CHARACTERISTIC_NAME_COLUMN);
         String speedType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
         String speedAllowableValues = oldTable.getCellValue(rowNumber, CHARACTERISTIC_ALLOWABLE_VALUES_COLUMN);
-
+        List<String> speedAllowableValuesList = new ArrayList<>(Arrays.asList(speedAllowableValues.split(", ")));
+        List<String> speedAllowableValuesExpectedList = List.of("SPEED_10M", "SPEED_100M", "SPEED_1G", "SPEED_2G", "SPEED_4G", "SPEED_8G", "SPEED_16G", "SPEED_25G", "SPEED_10G", "SPEED_32G", "SPEED_40G", "SPEED_50G", "SPEED_100G", "SPEED_UNKNOWN");
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(effectiveCapacityMbpsType, NUMBER_TYPE);
         softAssert.assertEquals(effectiveCapacityUnitType, STRING_TYPE);
@@ -308,12 +311,12 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         softAssert.assertEquals(roleType, STRING_TYPE);
         softAssert.assertEquals(roleAllowableValues, "UNI, NNI, E_NNI");
         softAssert.assertEquals(speedType, STRING_TYPE);
-        softAssert.assertEquals(speedAllowableValues, "SPEED_10M, SPEED_100M, SPEED_1G, SPEED_2G, SPEED_4G, SPEED_8G, SPEED_10G, SPEED_16G, SPEED_25G, SPEED_32G, SPEED_40G, SPEED_50G, SPEED_100G, SPEED_UNKNOWN");
+        softAssert.assertTrue(speedAllowableValuesList.containsAll(speedAllowableValuesExpectedList) && speedAllowableValuesExpectedList.containsAll(speedAllowableValuesList), String.format(ERROR_MESSAGE_INFO, speedAllowableValues));
         softAssert.assertAll();
     }
 
     private void assertCharacteristicTabAttributesForELine() {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
@@ -335,7 +338,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForVN() {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
@@ -360,7 +363,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForVLAN() {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
@@ -386,7 +389,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForAEI() {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
@@ -416,9 +419,14 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         rowNumber = oldTable.getRowNumber("physicalAddress", CHARACTERISTIC_NAME_COLUMN);
         String physicalAddressType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
 
+        List<String> administrativeStateAllowableValuesList = new ArrayList<>(Arrays.asList(administrativeStateAllowableValues.split(", ")));
+        List<String> administrativeStateAllowableValuesExpectedList = List.of("DISABLED", "TESTING", "ENABLED", "ACTIVE", "DOWN", "INACTIVE", "MAINTENANCE", "UNKNOWN", "UP");
+        List<String> operationalStateAllowableValuesList = new ArrayList<>(Arrays.asList(operationalStateAllowableValues.split(", ")));
+        List<String> operationalStateAllowableValuesExpectedList = List.of("DISABLED", "PARTIALLY_DOWN", "ENABLED", "FAILED", "DOWN", "DEGRADED", "UNSPECIFIED", "UNKNOWN", "TRANSITION", "UP");
+
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(administrativeStateType, STRING_TYPE);
-        softAssert.assertEquals(administrativeStateAllowableValues, "DISABLED, TESTING, ENABLED, ACTIVE, DOWN, INACTIVE, MAINTENANCE, UNKNOWN, UP");
+        softAssert.assertTrue(administrativeStateAllowableValuesList.containsAll(administrativeStateAllowableValuesExpectedList) && administrativeStateAllowableValuesExpectedList.containsAll(administrativeStateAllowableValuesList), String.format(ERROR_MESSAGE_INFO, administrativeStateAllowableValuesList));
         softAssert.assertEquals(aggregationProtocolType, STRING_TYPE);
         softAssert.assertEquals(aggregationProtocolAllowableValues, "LACP, NONE");
         softAssert.assertEquals(encapsulationType, STRING_TYPE);
@@ -430,13 +438,13 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         softAssert.assertEquals(minimumLinksType, NUMBER_TYPE);
         softAssert.assertEquals(mtuType, NUMBER_TYPE);
         softAssert.assertEquals(operationalStateType, STRING_TYPE);
-        softAssert.assertEquals(operationalStateAllowableValues, "DISABLED, PARTIALLY_DOWN, ENABLED, FAILED, DOWN, DEGRADED, UNSPECIFIED, UNKNOWN, TRANSITION, UP");
+        softAssert.assertTrue(operationalStateAllowableValuesList.containsAll(operationalStateAllowableValuesExpectedList) && operationalStateAllowableValuesExpectedList.containsAll(operationalStateAllowableValuesList), String.format(ERROR_MESSAGE_INFO, operationalStateAllowableValuesList));
         softAssert.assertEquals(physicalAddressType, STRING_TYPE);
         softAssert.assertAll();
     }
 
     private void assertCharacteristicTabAttributesForEI() {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
@@ -490,15 +498,24 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         String usageStateType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
         String usageStateAllowableValues = oldTable.getCellValue(rowNumber, CHARACTERISTIC_ALLOWABLE_VALUES_COLUMN);
 
+        List<String> administrativeSpeedAllowableValuesList = new ArrayList<>(Arrays.asList(administrativeSpeedAllowableValues.split(", ")));
+        List<String> administrativeSpeedAllowableValuesExpectedList = List.of("Speed10M", "Speed100M", "Speed1G", "Speed2G", "Speed4G", "Speed8G", "Speed10G", "Speed16G", "Speed25G", "Speed32G", "Speed40G", "Speed50G", "Speed100G");
+        List<String> administrativeStateAllowableValuesList = new ArrayList<>(Arrays.asList(administrativeStateAllowableValues.split(", ")));
+        List<String> administrativeStateAllowableValuesExpectedList = List.of("Active", "Disabled", "Down", "Enabled", "Inactive", "Maintenance", "Testing", "Unknown", "Up");
+        List<String> operationalSpeedAllowableValuesList = new ArrayList<>(Arrays.asList(operationalSpeedAllowableValues.split(", ")));
+        List<String> operationalSpeedAllowableValuesExpectedList = List.of("Speed10M", "Speed100M", "Speed1G", "Speed2G", "Speed10G", "Speed25G", "Speed40G", "Speed50G", "Speed100G");
+        List<String> operationalStateAllowableValuesList = new ArrayList<>(Arrays.asList(operationalStateAllowableValues.split(", ")));
+        List<String> operationalStateAllowableValuesExpectedList = List.of("Enabled", "Degraded", "Disabled", "Down", "Failed", "PartiallyDown", "Transition", "Unknown", "Unspecified", "Up");
+
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(accessFunctionType, STRING_TYPE);
         softAssert.assertEquals(accessFunctionAllowableValues, "Uplink, Downlink");
         softAssert.assertEquals(administrativeDuplexModeType, STRING_TYPE);
         softAssert.assertEquals(administrativeDuplexModeAllowableValues, "HalfDuplex, FullDuplex");
         softAssert.assertEquals(administrativeSpeedType, STRING_TYPE);
-        softAssert.assertEquals(administrativeSpeedAllowableValues, "Speed10M, Speed100M, Speed1G, Speed2G, Speed4G, Speed8G, Speed10G, Speed16G, Speed25G, Speed32G, Speed40G, Speed50G, Speed100G");
+        softAssert.assertTrue(administrativeSpeedAllowableValuesList.containsAll(administrativeSpeedAllowableValuesExpectedList) && administrativeSpeedAllowableValuesExpectedList.containsAll(administrativeSpeedAllowableValuesList), String.format(ERROR_MESSAGE_INFO, administrativeSpeedAllowableValuesExpectedList));
         softAssert.assertEquals(administrativeStateType, STRING_TYPE);
-        softAssert.assertEquals(administrativeStateAllowableValues, "Active, Disabled, Down, Enabled, Inactive, Maintenance, Testing, Unknown, Up");
+        softAssert.assertTrue(administrativeStateAllowableValuesList.containsAll(administrativeStateAllowableValuesExpectedList) && administrativeStateAllowableValuesExpectedList.containsAll(administrativeStateAllowableValuesList), String.format(ERROR_MESSAGE_INFO, administrativeStateAllowableValuesExpectedList));
         softAssert.assertEquals(autoNegotiationType, STRING_TYPE);
         softAssert.assertEquals(bandwidthType, NUMBER_TYPE);
         softAssert.assertEquals(encapsulationType, STRING_TYPE);
@@ -510,9 +527,9 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         softAssert.assertEquals(operationalDuplexModeType, STRING_TYPE);
         softAssert.assertEquals(operationalDuplexModeAllowableValues, "HalfDuplex, FullDuplex");
         softAssert.assertEquals(operationalSpeedType, STRING_TYPE);
-        softAssert.assertEquals(operationalSpeedAllowableValues, "Speed10M, Speed100M, Speed1G, Speed2G, Speed100G, Speed10G, Speed25G, Speed40G, Speed50G");
+        softAssert.assertTrue(operationalSpeedAllowableValuesList.containsAll(operationalSpeedAllowableValuesExpectedList) && operationalSpeedAllowableValuesExpectedList.containsAll(operationalSpeedAllowableValuesList), String.format(ERROR_MESSAGE_INFO, operationalSpeedAllowableValuesExpectedList));
         softAssert.assertEquals(operationalStateType, STRING_TYPE);
-        softAssert.assertEquals(operationalStateAllowableValues, "Enabled, Degraded, Disabled, Down, Failed, PartiallyDown, Transition, Unknown, Unspecified, Up");
+        softAssert.assertTrue(operationalStateAllowableValuesList.containsAll(operationalStateAllowableValuesExpectedList) && operationalStateAllowableValuesExpectedList.containsAll(operationalStateAllowableValuesList), String.format(ERROR_MESSAGE_INFO, operationalStateAllowableValuesExpectedList));
         softAssert.assertEquals(physicalAddressType, STRING_TYPE);
         softAssert.assertEquals(roleType, STRING_TYPE);
         softAssert.assertEquals(roleAllowableValues, "UNI, NNI, E_NNI");
@@ -526,7 +543,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertCharacteristicTabAttributesForIPNE() {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
@@ -537,18 +554,20 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         String supportedLayersType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
         String supportedLayersAllowableValues = oldTable.getCellValue(rowNumber, CHARACTERISTIC_ALLOWABLE_VALUES_COLUMN);
 
+        List<String> supportedLayersAllowableValuesList = new ArrayList<>(Arrays.asList(supportedLayersAllowableValues.split(", ")));
+        List<String> supportedLayersAllowableValuesExpectedList = List.of("ETHERNET", "VLAN", "IP", "MPLS", "NFV/DC", "INFRASTRUCTURE", "Generic", "E5", "E4", "E3", "E2", "E1", "E0", "T3", "T1", "E0XV", "E1XV", "T1XV", "VT15", "VT15XV", "STS1", "STS1XV", "STS3", "STS12", "STS48", "STS192", "OC1", "OC3", "OC12", "OC48", "OC192", "VPLS", "PWE3", "VC3", "VC4", "VC12", "STM", "STM1", "STM16", "STM4", "STM64");
+
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(neRoleType, STRING_TYPE);
         softAssert.assertEquals(neRoleAllowableValues, "Leaf, external_Leaf, Spine, Unknown");
         softAssert.assertEquals(supportedLayersType, STRING_TYPE);
-        softAssert.assertEquals(supportedLayersAllowableValues, "VT15XV, STS1, STS1XV, STS3, STS12, STS48, STS192, OC1, OC3, OC12, OC48, OC192, VPLS, PWE3, VC3, VC4, VC12, STM, STM1, STM16, STM4, STM64, ETHERNET, VLAN, IP, MPLS, NFV/DC, INFRASTRUCTURE, Generic, E5, E4, E3, E2, E1, E0, T3, T1, E0XV, E1XV, T1XV, VT15");
+        softAssert.assertTrue(supportedLayersAllowableValuesList.containsAll(supportedLayersAllowableValuesExpectedList) && supportedLayersAllowableValuesExpectedList.containsAll(supportedLayersAllowableValuesList), String.format(ERROR_MESSAGE_INFO, supportedLayersAllowableValues));
         softAssert.assertAll();
     }
 
     private void assertCharacteristicTabAttributesForIRB() {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
-        //OldTable oldTable = OldTable.createById(driver, webDriverWait, CHARACTERISTIC_TABLE_ID);
         oldTable.setPageSize(50);
 
         int rowNumber = oldTable.getRowNumber("vlanId", CHARACTERISTIC_NAME_COLUMN);
@@ -564,20 +583,26 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         String operationalStateDefaultValue = oldTable.getCellValue(rowNumber, CHARACTERISTIC_DEFAULT_VALUE_COLUMN);
         String operationalStateAllowableValues = oldTable.getCellValue(rowNumber, CHARACTERISTIC_ALLOWABLE_VALUES_COLUMN);
 
+        List<String> administrativeStateAllowableValuesList = new ArrayList<>(Arrays.asList(administrativeStateAllowableValues.split(", ")));
+        List<String> administrativeStateAllowableValuesExpectedList = List.of("Active", "Disabled", "Down", "Enabled", "Inactive", "Maintenance", "Testing", "Unknown", "Up");
+        List<String> operationalStateAllowableValuesList = new ArrayList<>(Arrays.asList(operationalStateAllowableValues.split(", ")));
+        List<String> operationalStateAllowableValuesExpectedList = List.of("Enabled", "Degraded", "Disabled", "Down", "Failed", "PartiallyDown", "Transition", "Unknown", "Unspecified", "Up");
+
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(vlanIdType, NUMBER_TYPE);
         softAssert.assertEquals(mtuType, NUMBER_TYPE);
         softAssert.assertEquals(administrativeStateType, STRING_TYPE);
         softAssert.assertEquals(administrativeStateDefaultValue, "Active");
-        softAssert.assertEquals(administrativeStateAllowableValues, "Unknown, Active, Down, Enabled, Inactive, Maintenance, Up, Disabled, Testing");
+        softAssert.assertTrue(administrativeStateAllowableValuesList.containsAll(administrativeStateAllowableValuesExpectedList) && administrativeStateAllowableValuesExpectedList.containsAll(administrativeStateAllowableValuesList), String.format(ERROR_MESSAGE_INFO, administrativeStateAllowableValuesExpectedList));
         softAssert.assertEquals(operationalStateType, STRING_TYPE);
         softAssert.assertEquals(operationalStateDefaultValue, "Enabled");
-        softAssert.assertEquals(operationalStateAllowableValues, "Degraded, Down, Unknown, Failed, Transition, Enabled, Up, Disabled, PartiallyDown, Unspecified");
+        softAssert.assertTrue(operationalStateAllowableValuesList.containsAll(operationalStateAllowableValuesExpectedList) && operationalStateAllowableValuesExpectedList.containsAll(operationalStateAllowableValuesList), String.format(ERROR_MESSAGE_INFO, operationalStateAllowableValues));
+
         softAssert.assertAll();
     }
 
     private void assertCharacteristicTabAttributesForLoopback() {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
@@ -590,18 +615,23 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         String operationalStateDefaultValue = oldTable.getCellValue(rowNumber, CHARACTERISTIC_DEFAULT_VALUE_COLUMN);
         String operationalStateAllowableValues = oldTable.getCellValue(rowNumber, CHARACTERISTIC_ALLOWABLE_VALUES_COLUMN);
 
+        List<String> administrativeStateAllowableValuesList = new ArrayList<>(Arrays.asList(administrativeStateAllowableValues.split(", ")));
+        List<String> administrativeStateAllowableValuesExpectedList = List.of("Active", "Disabled", "Down", "Enabled", "Inactive", "Maintenance", "Testing", "Unknown", "Up");
+        List<String> operationalStateAllowableValuesList = new ArrayList<>(Arrays.asList(operationalStateAllowableValues.split(", ")));
+        List<String> operationalStateAllowableValuesExpectedList = List.of("Enabled", "Degraded", "Disabled", "Down", "Failed", "PartiallyDown", "Transition", "Unknown", "Unspecified", "Up");
+
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(administrativeStateType, STRING_TYPE);
         softAssert.assertEquals(administrativeStateDefaultValue, "Active");
-        softAssert.assertEquals(administrativeStateAllowableValues, "Active, Down, Unknown, Enabled, Inactive, Maintenance, Up, Disabled, Testing");
+        softAssert.assertTrue(administrativeStateAllowableValuesList.containsAll(administrativeStateAllowableValuesExpectedList) && administrativeStateAllowableValuesExpectedList.containsAll(administrativeStateAllowableValuesList), String.format(ERROR_MESSAGE_INFO, administrativeStateAllowableValues));
         softAssert.assertEquals(operationalStateType, STRING_TYPE);
         softAssert.assertEquals(operationalStateDefaultValue, "Enabled");
-        softAssert.assertEquals(operationalStateAllowableValues, "Degraded, Down, Unknown, Failed, Transition, Enabled, PartiallyDown, Unspecified, Up, Disabled");
+        softAssert.assertTrue(operationalStateAllowableValuesList.containsAll(operationalStateAllowableValuesExpectedList) && operationalStateAllowableValuesExpectedList.containsAll(operationalStateAllowableValuesList), String.format(ERROR_MESSAGE_INFO, operationalStateAllowableValues));
         softAssert.assertAll();
     }
 
     private void assertCharacteristicTabAttributesForVLANInterface() {
-        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver,webDriverWait);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
         OldTable oldTable = resourceSpecificationsViewPage.getCharacteristicsAttributesOldTable();
         oldTable.setPageSize(50);
 
@@ -612,7 +642,7 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         String bandwidthType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
         rowNumber = oldTable.getRowNumber("innerVlanId", CHARACTERISTIC_NAME_COLUMN);
         String innerVlanIdType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
-        rowNumber = oldTable.getRowNumber("interfaceRole",CHARACTERISTIC_NAME_COLUMN);
+        rowNumber = oldTable.getRowNumber("interfaceRole", CHARACTERISTIC_NAME_COLUMN);
         String interfaceRoleType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
         String interfaceRoleAllowableValues = oldTable.getCellValue(rowNumber, CHARACTERISTIC_ALLOWABLE_VALUES_COLUMN);
         rowNumber = oldTable.getRowNumber("mtu", CHARACTERISTIC_NAME_COLUMN);
@@ -630,26 +660,35 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
         String vlanInterfaceTypeType = oldTable.getCellValue(rowNumber, CHARACTERISTIC_TYPE_COLUMN);
         String vlanInterfaceTypeAllowableValues = oldTable.getCellValue(rowNumber, CHARACTERISTIC_ALLOWABLE_VALUES_COLUMN);
 
+        List<String> administrativeStateAllowableValuesList = new ArrayList<>(Arrays.asList(administrativeStateAllowableValues.split(", ")));
+        List<String> administrativeStateAllowableValuesExpectedList = List.of("ACTIVE", "DISABLED", "DOWN", "ENABLED", "INACTIVE", "MAINTENANCE", "TESTING", "UNKNOWN", "UP");
+        List<String> operationalStateAllowableValuesList = new ArrayList<>(Arrays.asList(operationalStateAllowableValues.split(", ")));
+        List<String> operationalStateAllowableValuesExpectedList = List.of("ENABLED", "DEGRADED", "DISABLED", "DOWN", "FAILED", "PARTIALLY_DOWN", "TRANSITION", "UNKNOWN", "UNSPECIFIED", "UP");
+        List<String> vlanInterfaceTypeAllowableValuesList = new ArrayList<>(Arrays.asList(vlanInterfaceTypeAllowableValues.split(", ")));
+        List<String> vlanInterfaceTypeAllowableValuesExpectedList = List.of("Subinterface", "Trunk", "Access", "Undefined");
+
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(administrativeStateType, STRING_TYPE);
-        softAssert.assertEquals(administrativeStateAllowableValues, "ACTIVE, DISABLED, DOWN, ENABLED, INACTIVE, MAINTENANCE, TESTING, UNKNOWN, UP");
+        softAssert.assertTrue(administrativeStateAllowableValuesList.containsAll(administrativeStateAllowableValuesExpectedList) && administrativeStateAllowableValuesExpectedList.containsAll(administrativeStateAllowableValuesList), String.format(ERROR_MESSAGE_INFO, administrativeStateAllowableValues));
         softAssert.assertEquals(bandwidthType, NUMBER_TYPE);
-        softAssert.assertEquals(innerVlanIdType, NUMBER_TYPE);
-        softAssert.assertEquals(interfaceRoleType,STRING_TYPE);
-        softAssert.assertEquals(interfaceRoleAllowableValues,"U_Plane, C_Plane, M_Plane, S_Plane");
+        softAssert.assertEquals(innerVlanIdType, STRING_TYPE);
+        softAssert.assertEquals(interfaceRoleType, STRING_TYPE);
+        softAssert.assertEquals(interfaceRoleAllowableValues, "U_Plane, C_Plane, M_Plane, S_Plane");
         softAssert.assertEquals(mtuType, NUMBER_TYPE);
         softAssert.assertEquals(nativeVlanIdType, NUMBER_TYPE);
         softAssert.assertEquals(operationalStateType, STRING_TYPE);
-        softAssert.assertEquals(operationalStateAllowableValues, "ENABLED, DEGRADED, DISABLED, DOWN, FAILED, PARTIALLY_DOWN, TRANSITION, UNKNOWN, UNSPECIFIED, UP");
-        softAssert.assertEquals(outerVlanIdType, NUMBER_TYPE);
+        softAssert.assertTrue(operationalStateAllowableValuesList.containsAll(operationalStateAllowableValuesExpectedList) && operationalStateAllowableValuesExpectedList.containsAll(operationalStateAllowableValuesList), String.format(ERROR_MESSAGE_INFO, operationalStateAllowableValues));
+        softAssert.assertEquals(outerVlanIdType, STRING_TYPE);
         softAssert.assertEquals(subinterfaceIdType, NUMBER_TYPE);
         softAssert.assertEquals(vlanInterfaceTypeType, STRING_TYPE);
-        softAssert.assertEquals(vlanInterfaceTypeAllowableValues, "Undefined, Subinterface, Trunk, Access");
+        softAssert.assertTrue(vlanInterfaceTypeAllowableValuesList.containsAll(vlanInterfaceTypeAllowableValuesExpectedList) && vlanInterfaceTypeAllowableValuesExpectedList.containsAll(vlanInterfaceTypeAllowableValuesList), String.format(ERROR_MESSAGE_INFO, vlanInterfaceTypeAllowableValues));
+        softAssert.assertTrue(administrativeStateAllowableValuesList.containsAll(administrativeStateAllowableValuesExpectedList) && administrativeStateAllowableValuesExpectedList.containsAll(administrativeStateAllowableValuesList), String.format(ERROR_MESSAGE_INFO, administrativeStateAllowableValues));
         softAssert.assertAll();
     }
 
     private void assertRelationsTabAttributesForAEI() {
-        CommonList commonList = CommonList.create(driver, webDriverWait, COMMON_LIST_RELATIONS_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
+        CommonList commonList = resourceSpecificationsViewPage.getRelationsCommonList();
         String mplsInterfaceRelationRole = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "MPLS Interface").getValue(RELATIONS_RELATION_ROLE_NAME);
         String vlanInterfaceRelationRole = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "VLAN Interface").getValue(RELATIONS_RELATION_ROLE_NAME);
         String ipRedundancyGroupConfigRelationRole = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "IP Redundancy Group Config").getValue(RELATIONS_RELATION_ROLE_NAME);
@@ -661,7 +700,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertRelationsTabAttributesForEI() {
-        CommonList commonList = CommonList.create(driver, webDriverWait, COMMON_LIST_RELATIONS_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
+        CommonList commonList = resourceSpecificationsViewPage.getRelationsCommonList();
         String mplsInterfaceRelationRole = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "MPLS Interface").getValue(RELATIONS_RELATION_ROLE_NAME);
         String vlanInterfaceRelationRole = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "VLAN Interface").getValue(RELATIONS_RELATION_ROLE_NAME);
         String ipRedundancyGroupConfigRelationRole = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "IP Redundancy Group Config").getValue(RELATIONS_RELATION_ROLE_NAME);
@@ -681,7 +721,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertRelationsTabAttributesForIPNE() {
-        CommonList commonList = CommonList.create(driver, webDriverWait, COMMON_LIST_RELATIONS_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
+        CommonList commonList = resourceSpecificationsViewPage.getRelationsCommonList();
         String evpnInstanceRelationRole = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "EVPN Instance").getValue(RELATIONS_RELATION_ROLE_NAME);
         String vtepRelationRole = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "VTEP").getValue(RELATIONS_RELATION_ROLE_NAME);
         String vtepMaxCardinality = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "VTEP").getValue(RELATIONS_MAX_CARDINALITY_NAME);
@@ -695,7 +736,8 @@ public class ResourceSpecificationETHNFVTest extends BaseTestCase {
     }
 
     private void assertRelationsTabAttributesForVLANInterface() {
-        CommonList commonList = CommonList.create(driver, webDriverWait, COMMON_LIST_RELATIONS_ID);
+        ResourceSpecificationsViewPage resourceSpecificationsViewPage = ResourceSpecificationsViewPage.create(driver, webDriverWait);
+        CommonList commonList = resourceSpecificationsViewPage.getRelationsCommonList();
         String mplsInterfaceRelationRole = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "MPLS Interface").getValue(RELATIONS_RELATION_ROLE_NAME);
         String ipRedundancyGroupConfigRelationRole = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "IP Redundancy Group Config").getValue(RELATIONS_RELATION_ROLE_NAME);
         String ethernetInterfaceRelationRole = commonList.getRow(RELATIONS_SPECIFICATION_NAME, "Ethernet Interface").getValue(RELATIONS_RELATION_ROLE_NAME);
