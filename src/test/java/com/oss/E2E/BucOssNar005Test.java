@@ -129,16 +129,16 @@ public class BucOssNar005Test extends BaseTestCase {
     public void assignLocationAndApplyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
-        networkInconsistenciesViewPage.expandTree();
+        networkInconsistenciesViewPage.expandTwoLastTreeRows();
         waitForPageToLoad();
         networkInconsistenciesViewPage.assignLocation(OBJECT_NAME, "1");
         checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Assign location and apply inconsistencies", "assigning location"));
         waitForPageToLoad();
-        networkInconsistenciesViewPage.clearOldNotification();
-        networkInconsistenciesViewPage.applyInconsistencies();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
+        networkInconsistenciesViewPage.applyFirstInconsistenciesGroup();
         DelayUtils.sleep(3000);
         waitForPageToLoad();
-        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + OBJECT_NAME + " finished");
+        Assert.assertEquals(Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage(), String.format(NetworkInconsistenciesViewPage.ACCEPT_DISCREPANCIES_PATTERN, OBJECT_NAME));
     }
 
     @Test(priority = 5, description = "Change reconciliation samples", dependsOnMethods = {"assignLocationAndApplyInconsistencies"})
@@ -251,11 +251,11 @@ public class BucOssNar005Test extends BaseTestCase {
         waitForPageToLoad();
         networkDiscoveryControlViewPage.cancelWithSubsequents();
         waitForPageToLoad();
-        networkDiscoveryControlViewPage.clearOldNotifications();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkMessageType(MessageType.INFO, String.format(SYSTEM_MESSAGE_PATTERN, "Delete CM Domain", "CM Domain delete"));
         waitForPageToLoad();
-        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+        Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
     @Test(priority = 12, description = "Checking system message summary")

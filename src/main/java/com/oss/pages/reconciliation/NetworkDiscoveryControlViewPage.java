@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
-import com.oss.framework.components.mainheader.Notifications;
-import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -34,6 +32,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     private static final String CREATE_CM_DOMAIN_ACTION_ID = "narComponent_CmDomainActionCreateId";
     private static final String DELETE_CM_DOMAIN_ACTION_ID = "narComponent_CmDomainActionDeleteCmDomainId";
     private static final String CANCEL_WITH_SUBSEQUENT_ACTION_ID = "narComponent_CmDomainActionCancelSubsequentDiscrepanciesId";
+    private static final String ACCEPT_WITH_PREREQUISITES_ACTION_ID = "narComponent_CmDomainActionAcceptPrerequisitesDiscrepanciesId";
     private static final String CONFIRM_CANCEL_WITH_SUBSEQUENT_BUTTON_ID = "ConfirmationBox_narComponent_networkInconsistenciesViewIdcancelDiscrepanciesConfirmationBoxId_action_button";
     private static final String SHOW_INCONCISTENCIES_ACTION_ID = "narComponent_CmDomainActionShowInconsistenciesId";
     private static final String SHOW_SAMPLES_MANAGEMENT_ACTION_ID = "narComponent_CmDomainActionCmSamplesManagementId";
@@ -157,15 +156,11 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         prompt.clickButtonById(CONFIRM_CANCEL_WITH_SUBSEQUENT_BUTTON_ID);
     }
 
-    @Step("Check notification after deleting CM Domain")
-    public String checkDeleteCmDomainNotification() {
-        return Notifications.create(driver, wait).getNotificationMessage();
-    }
-
-    @Step("Clear old notifications")
-    public void clearOldNotifications() {
-        NotificationsInterface notifications = Notifications.create(driver, wait);
-        notifications.clearAllNotification();
+    @Step("Accept all inconsistencies with prerequisites")
+    public void acceptWithPrerequisites() {
+        TabsInterface tabs = getTabsInterface();
+        tabs.selectTabById(RECONCILIATION_TREE_TAB_ID);
+        tabs.callActionById(ActionsContainer.OTHER_GROUP_ID, ACCEPT_WITH_PREREQUISITES_ACTION_ID);
     }
 
     @Step("Count reconciliation states")
@@ -235,15 +230,15 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
         return cmDomainId;
     }
 
+    public List<String> getTabsLabels() {
+        return TabsWidget.createById(driver, wait, RECONCILIATION_TAB_ID).getTabLabels();
+    }
+
     @Step("Get Reconciliation start event")
     private String getRecoStartEvent() {
         getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, RECONCILIATION_WITH_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         return getIssuesTable().getCellValue(0, REASON);
-    }
-
-    public List<String> getTabsLabels() {
-        return TabsWidget.createById(driver, wait, RECONCILIATION_TAB_ID).getTabLabels();
     }
 
     private void logIssues(String type) {

@@ -76,7 +76,6 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         globalAttachmentManagerPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_DIRECTORY_ACTION_ID);
         createNewDirectory();
         checkPopup();
-        closeMessage();
         assertDirectoryAttributes(DIRECTORY_NAME, TAG_FOLDER);
         waitForPageToLoad();
     }
@@ -90,7 +89,6 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         updateDirectory();
         assertDirectoryAttributes(UPDATED_DIRECTORY_NAME, EXPECTED_TAGS_LIST);
         checkPopup();
-        closeMessage();
     }
 
     @Test(priority = 5, description = "Attach File", dependsOnMethods = {"createDirectory"})
@@ -101,12 +99,10 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         globalAttachmentManagerPage.callAction(ActionsContainer.CREATE_GROUP_ID, ATTACH_FILE_ACTION_ID);
         attachNewFile();
         checkPopup();
-        closeMessage();
         globalAttachmentManagerPage.clickDirectoryLinkInPath(UPDATED_DIRECTORY_NAME);
-
     }
 
-    @Test(priority = 6, description = "Check nd delete attached file", dependsOnMethods = {"attachFile"})
+    @Test(priority = 6, description = "Check and delete attached file", dependsOnMethods = {"attachFile"})
     @Description("Check and delete attached file")
     public void checkAndDeleteAttachedFile() {
         assertFilePresenceInDirectory();
@@ -115,19 +111,17 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
 
         GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
         Assert.assertTrue(globalAttachmentManagerPage.isListEmpty(), LIST_MESSAGE_EXCEPTION);
-
-        globalAttachmentManagerPage.clickLinkInList(HOME_DIRECTORY);
     }
 
     @Test(priority = 7, description = "Delete Directory", dependsOnMethods = {"createDirectory"})
     @Description("Delete Directory")
     public void deleteDirectory() {
         GlobalAttachmentManagerPage globalAttachmentManagerPage = new GlobalAttachmentManagerPage(driver);
+        globalAttachmentManagerPage.clickLinkInList(HOME_DIRECTORY);
         globalAttachmentManagerPage.selectRow(UPDATED_DIRECTORY_NAME);
         globalAttachmentManagerPage.callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_DIRECTORY_ACTION_ID);
         confirmDeletion();
         checkPopup();
-        closeMessage();
     }
 
     @Step("Waiting for page to load")
@@ -163,6 +157,7 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         List<SystemMessageContainer.Message> messages = systemMessage.getMessages();
         Assert.assertEquals(messages.size(), 1);
         Assert.assertEquals(messages.get(0).getMessageType(), SystemMessageContainer.MessageType.SUCCESS, "The list is empty");
+        systemMessage.close();
     }
 
     @Step("Assert Directory Attributes")
@@ -216,11 +211,6 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
         ConfirmationBoxInterface prompt = ConfirmationBox.create(driver, webDriverWait);
         prompt.clickButtonByLabel(DELETE_BUTTON_LABEL);
         waitForPageToLoad();
-    }
-
-    @Step("Close Message")
-    private void closeMessage() {
-        SystemMessageContainer.create(driver, webDriverWait).close();
     }
 
     @Step("Attach File")
