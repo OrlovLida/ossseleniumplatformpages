@@ -1,16 +1,18 @@
 package com.oss.repositories;
 
+import java.util.List;
+import java.util.Optional;
+
 import com.comarch.oss.locationinventory.api.dto.AttributeDTO;
 import com.comarch.oss.locationinventory.api.dto.PhysicalLocationDTO;
 import com.comarch.oss.locationinventory.api.dto.ResourceDTO;
 import com.comarch.oss.locationinventory.api.dto.SearchResultDTO;
 import com.comarch.oss.locationinventory.api.dto.SublocationDTO;
+import com.oss.repositories.entities.Sublocation;
+import com.oss.repositories.mappers.SublocationDTOMapper;
 import com.oss.services.LocationInventoryClient;
 import com.oss.untils.Constants;
 import com.oss.untils.Environment;
-
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Milena Miętkiewicz
@@ -65,6 +67,14 @@ public class LocationInventoryRepository {
         ResourceDTO resourceDTO = client.createSubLocation(subLocation);
         String subLocationId = resourceDTO.getUri().toString();
         return Long.valueOf(subLocationId.substring(subLocationId.lastIndexOf("/") + 1, subLocationId.indexOf("?")));
+    }
+
+    public Long createSubLocation(Sublocation sublocation) {
+        SublocationDTO subLocation = SublocationDTOMapper.from(sublocation);
+        ResourceDTO resourceDTO = client.createSubLocation(subLocation);
+        String subLocationId = resourceDTO.getUri().toString();
+        Long sublocationIdValue = Long.valueOf(subLocationId.substring(subLocationId.lastIndexOf("/") + 1, subLocationId.indexOf("?")));
+        return sublocationIdValue;
     }
 
     public void updateLocation(String locationName, String locationType, String locationId, Long addressId, String description,

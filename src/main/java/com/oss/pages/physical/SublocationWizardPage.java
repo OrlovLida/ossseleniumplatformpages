@@ -82,6 +82,11 @@ public class SublocationWizardPage extends BasePage {
         getWizard().setComponentValue(DEPTH, depth, ComponentType.NUMBER_FIELD);
     }
 
+    @Step("Set Height")
+    public void setHeight(String height) {
+        getWizard().setComponentValue(HEIGHT, height, ComponentType.NUMBER_FIELD);
+    }
+
     @Step("Set Quantity")
     public void setQuantity(String quantity) {
         getWizard().setComponentValue(QUANTITY, quantity, ComponentType.NUMBER_FIELD);
