@@ -75,6 +75,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     private static final String DETACH_MICROWAVE_CHANNEL_FROM_REGULATORY_LICENSE_ACTION_ID = "DetachMicrowaveChannelFromRegulatoryLicenseApplicationContextAction";
     private static final String DELETE_REGULATORY_LICENSE_ACTION_ID = "DeleteRegulatoryLicenseApplicationContextAction";
     private static final String TAB_ISN_T_EMPTY_EXCEPTION = "Tab isn't empty";
+    private static final String REGULATORY_LICENSE_REMOVED = "Regulatory License has not been removed";
     private static final String ASSIGN_TO_OBJECT = " was not assigned correctly";
     private static final String EQUAL_VALUE_OF = " values aren't equals";
     private static final String ATTRIBUTE_NAME_LICENCE_NUMBER = "licenseNumber";
@@ -94,7 +95,11 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     private static final int randNumber = rand.nextInt(101) + 100;
 
-    private int timer = 0;
+    private int REMOVAL_TIMER = 0;
+    private int DETACH_LOCATION_TIMER = 0;
+    private int DETACH_MWANT_TIMER = 0;
+    private int DETACH_MWL_TIMER = 0;
+    private int DETACJ_MWCH_TIMER = 0;
 
     @BeforeClass
     public void openConsole() {
@@ -211,7 +216,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     public void removeRegulatoryLicense() {
         deleteRegulatoryLicense();
         waitForPageToLoad();
-        checkRegulatoryLicenseRemoval();
+        Assert.assertTrue(checkRegulatoryLicenseRemoval(), REGULATORY_LICENSE_REMOVED);
     }
 
     private void goToRegulatoryLicenseInventoryView() {
@@ -343,18 +348,29 @@ public class RegulatoryLicenseTest extends BaseTestCase {
         Assert.assertEquals(assignedMicrowaveChannels, MICROWAVE_CHANNEL, MICROWAVE_CHANNEL + ASSIGN_TO_OBJECT);
     }
 
-    private void checkRegulatoryLicenseRemoval() {
-        Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
+    private boolean checkRegulatoryLicenseRemoval() {
+
+        if (!newInventoryViewPage.checkIfTableIsEmpty()) {
+            while (!newInventoryViewPage.checkIfTableIsEmpty() && REMOVAL_TIMER < 10) {
+                DelayUtils.sleep(1000);
+                REMOVAL_TIMER++;
+            }
+        } else if (!newInventoryViewPage.checkIfTableIsEmpty() && REMOVAL_TIMER > 9) return false;
+        else return true;
+
+        return true;
     }
 
     private boolean checkIfLocationsTabIsEmpty() {
 
         if (!getLocationsTable().hasNoData()) {
-            while (!getLocationsTable().hasNoData() && timer < 10) {
+            while (!getLocationsTable().hasNoData() && DETACH_LOCATION_TIMER < 10) {
                 DelayUtils.sleep(1000);
-                timer++;
+                DETACH_LOCATION_TIMER++;
             }
-        }
+        } else if (!getLocationsTable().hasNoData() && DETACH_LOCATION_TIMER > 9) return false;
+        else return true;
+
         return true;
 
     }
@@ -362,34 +378,39 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     private boolean checkIfMicrowaveAntennasTabIsEmpty() {
 
         if (!getMicrowaveAntennasTable().hasNoData()) {
-            while (!getMicrowaveAntennasTable().hasNoData() && timer < 10) {
+            while (!getMicrowaveAntennasTable().hasNoData() && DETACH_MWANT_TIMER < 10) {
                 DelayUtils.sleep(1000);
-                timer++;
+                DETACH_MWANT_TIMER++;
             }
-        }
-        return true;
+        } else if (!getMicrowaveAntennasTable().hasNoData() && DETACH_MWANT_TIMER > 9) return false;
+        else return true;
 
+        return true;
     }
 
     private boolean checkIfMicrowaveLinksTabIsEmpty() {
 
         if (!getMicrowaveLinksTable().hasNoData()) {
-            while (!getMicrowaveLinksTable().hasNoData() && timer < 10) {
+            while (!getMicrowaveLinksTable().hasNoData() && DETACH_MWL_TIMER < 10) {
                 DelayUtils.sleep(1000);
-                timer++;
+                DETACH_MWL_TIMER++;
             }
-        }
+        } else if (!getMicrowaveLinksTable().hasNoData() && DETACH_MWL_TIMER > 9) return false;
+        else return true;
+
         return true;
     }
 
     private boolean checkIfMicrowaveChannelsTabIsEmpty() {
 
         if (!getMicrowaveChannelsTable().hasNoData()) {
-            while (!getMicrowaveChannelsTable().hasNoData() && timer < 10) {
+            while (!getMicrowaveChannelsTable().hasNoData() && DETACJ_MWCH_TIMER < 10) {
                 DelayUtils.sleep(1000);
-                timer++;
+                DETACJ_MWCH_TIMER++;
             }
-        }
+        } else if (!getMicrowaveChannelsTable().hasNoData() && DETACJ_MWCH_TIMER > 9) return false;
+        else return true;
+
         return true;
     }
 
