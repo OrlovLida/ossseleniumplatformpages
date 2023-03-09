@@ -93,7 +93,7 @@ public class RegulatoryLicenseTest extends BaseTestCase {
     private NewInventoryViewPage newInventoryViewPage;
     private static final Random rand = new Random();
 
-    private static final int randNumber = rand.nextInt(101) + 100;
+    private static final int randNumber = rand.nextInt(101) + 1000;
 
     private int REMOVAL_TIMER = 0;
     private int DETACH_LOCATION_TIMER = 0;
@@ -350,67 +350,64 @@ public class RegulatoryLicenseTest extends BaseTestCase {
 
     private boolean checkRegulatoryLicenseRemoval() {
 
-        if (!newInventoryViewPage.checkIfTableIsEmpty()) {
-            while (!newInventoryViewPage.checkIfTableIsEmpty() && REMOVAL_TIMER < 10) {
-                DelayUtils.sleep(1000);
-                REMOVAL_TIMER++;
+        do {
+            DelayUtils.sleep(1000);
+            REMOVAL_TIMER++;
+            if (REMOVAL_TIMER == 10) {
+                return false;
             }
-        } else if (!newInventoryViewPage.checkIfTableIsEmpty() && REMOVAL_TIMER > 9) return false;
-        else return true;
-
+        } while (!newInventoryViewPage.checkIfTableIsEmpty());
         return true;
     }
 
     private boolean checkIfLocationsTabIsEmpty() {
 
-        if (!getLocationsTable().hasNoData()) {
-            while (!getLocationsTable().hasNoData() && DETACH_LOCATION_TIMER < 10) {
-                DelayUtils.sleep(1000);
-                DETACH_LOCATION_TIMER++;
-            }
-        } else if (!getLocationsTable().hasNoData() && DETACH_LOCATION_TIMER > 9) return false;
-        else return true;
 
+        do {
+            DelayUtils.sleep(1000);
+            DETACH_LOCATION_TIMER++;
+            if (DETACH_LOCATION_TIMER == 10) {
+                return false;
+            }
+        } while (!getLocationsTable().hasNoData());
         return true;
 
     }
 
     private boolean checkIfMicrowaveAntennasTabIsEmpty() {
 
-        if (!getMicrowaveAntennasTable().hasNoData()) {
-            while (!getMicrowaveAntennasTable().hasNoData() && DETACH_MWANT_TIMER < 10) {
-                DelayUtils.sleep(1000);
-                DETACH_MWANT_TIMER++;
+        do {
+            DelayUtils.sleep(1000);
+            DETACH_MWANT_TIMER++;
+            if (DETACH_MWANT_TIMER == 10) {
+                return false;
             }
-        } else if (!getMicrowaveAntennasTable().hasNoData() && DETACH_MWANT_TIMER > 9) return false;
-        else return true;
-
+        } while (!getMicrowaveAntennasTable().hasNoData());
         return true;
+
     }
 
     private boolean checkIfMicrowaveLinksTabIsEmpty() {
 
-        if (!getMicrowaveLinksTable().hasNoData()) {
-            while (!getMicrowaveLinksTable().hasNoData() && DETACH_MWL_TIMER < 10) {
-                DelayUtils.sleep(1000);
-                DETACH_MWL_TIMER++;
+        do {
+            DelayUtils.sleep(1000);
+            DETACH_MWL_TIMER++;
+            if (DETACH_MWL_TIMER == 10) {
+                return false;
             }
-        } else if (!getMicrowaveLinksTable().hasNoData() && DETACH_MWL_TIMER > 9) return false;
-        else return true;
-
+        } while (!getMicrowaveLinksTable().hasNoData());
         return true;
     }
 
     private boolean checkIfMicrowaveChannelsTabIsEmpty() {
 
-        if (!getMicrowaveChannelsTable().hasNoData()) {
-            while (!getMicrowaveChannelsTable().hasNoData() && DETACJ_MWCH_TIMER < 10) {
-                DelayUtils.sleep(1000);
-                DETACJ_MWCH_TIMER++;
+        do {
+            DelayUtils.sleep(1000);
+            DETACJ_MWCH_TIMER++;
+            if (DETACJ_MWCH_TIMER == 10) {
+                return false;
             }
-        } else if (!getMicrowaveChannelsTable().hasNoData() && DETACJ_MWCH_TIMER > 9) return false;
-        else return true;
-
+        } while (!getMicrowaveChannelsTable().hasNoData());
         return true;
     }
 
