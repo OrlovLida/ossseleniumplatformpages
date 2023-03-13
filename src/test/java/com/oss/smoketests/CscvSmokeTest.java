@@ -19,6 +19,8 @@ import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -100,12 +102,15 @@ public class CscvSmokeTest extends BaseTestCase {
     }
 
     @Test(priority = 4, description = "Check if Canvas object is present", dependsOnMethods = {"openCSCV"})
+    @Parameters({"changeMap"})
     @Description("Check if Canvas object is present")
-    public void isCanvasObjectPresent() {
+    public void isCanvasObjectPresent(@Optional("true") boolean changeMap) {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         checkErrorPage();
         checkGlobalNotificationContainer();
-        cellSiteConfigurationPage.setMap(MAP_NAME);
+        if (changeMap) {
+            cellSiteConfigurationPage.setMap(MAP_NAME);
+        }
         waitForPageToLoad();
         Assert.assertTrue(cellSiteConfigurationPage.isCanvasPresent(), CANVAS_PRESENT_EXCEPTION);
     }
