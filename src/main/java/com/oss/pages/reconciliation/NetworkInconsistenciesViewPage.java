@@ -7,6 +7,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input;
+import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
@@ -47,6 +48,14 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     public TreeWidget getTreeView() {
         return TreeWidget.createById(driver, wait, TREE_ID);
+    }
+
+    @Deprecated
+    /**
+     * @Depracated - replace by expandTwoLastTreeRows, will be removed in 4.0.x
+     */
+    public void expandTree() {
+        expandTwoLastTreeRows();
     }
 
     @Step("Expand two tree levels of Inconsistencies")
@@ -108,6 +117,14 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         applySelectedInconsistenciesGroup();
     }
 
+    @Deprecated
+    /**
+     * @Depracated - replace by applyFirstInconsistenciesGroup, will be removed in 4.0.x
+     */
+    public void applyInconsistencies() {
+        applyFirstInconsistenciesGroup();
+    }
+
     @Step("Select first group of Inconsistencies and apply discrepancies with prerequisites to Live perspective")
     public void applyFirstInconsistenciesGroupWithPrerequsites() {
         selectTreeObjectByRowOrder(2);
@@ -157,6 +174,24 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     @Step("Get inconsistency NETWORK name")
     public String getNetworkName() {
         return getOldTreeTableWidget().getCellValue(0, NETWORK);
+    }
+
+    @Deprecated
+    /**
+     * @Depracated - not related to NetworkInconsistenciesViewPage, use the Notifications class directly
+     */
+    @Step("Clear old notifications")
+    public void clearOldNotification() {
+        Notifications.create(driver, wait).clearAllNotification();
+    }
+
+    @Deprecated
+    /**
+     * @Depracated - not related to NetworkInconsistenciesViewPage, use the Notifications class directly
+     */
+    @Step("Check notification about accepting inconsistencies")
+    public String checkNotificationAfterApplyInconsistencies() {
+        return Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage();
     }
 
     private void applyInconsistencies(String actionId) {

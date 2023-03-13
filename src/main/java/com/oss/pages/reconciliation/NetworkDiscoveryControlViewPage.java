@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.components.inputs.Input.ComponentType;
+import com.oss.framework.components.mainheader.Notifications;
+import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
@@ -232,6 +234,25 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     public List<String> getTabsLabels() {
         return TabsWidget.createById(driver, wait, RECONCILIATION_TAB_ID).getTabLabels();
+    }
+
+    @Deprecated
+    /**
+     * @Depracated - not related to NetworkDiscoveryControlViewPage, use the Notifications class directly
+     */
+    @Step("Check notification after deleting CM Domain")
+    public String checkDeleteCmDomainNotification() {
+        return Notifications.create(driver, wait).getNotificationMessage();
+    }
+
+    @Deprecated
+    /**
+     * @Depracated - not related to NetworkDiscoveryControlViewPage, use the Notifications class directly
+     */
+    @Step("Clear old notifications")
+    public void clearOldNotifications() {
+        NotificationsInterface notifications = Notifications.create(driver, wait);
+        notifications.clearAllNotification();
     }
 
     @Step("Get Reconciliation start event")
