@@ -1,16 +1,28 @@
 package com.oss.iaa.servicedesk.P450Connect;
 
+import java.time.Duration;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.jayway.restassured.RestAssured;
 import com.oss.BaseTestCase;
+import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.iaa.servicedesk.infomanagement.ConfigurationPanelPage;
+import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
+import com.oss.serviceClient.Environment;
+import com.oss.serviceClient.EnvironmentRequestClient;
 
 import io.qameta.allure.Description;
 
-public class InfoManagementConfigurationsTest extends BaseTestCase {
+import static com.oss.configuration.Configuration.CONFIGURATION;
+
+public class InfoManagementConfigurationsTestIoT extends BaseTestCase {
 
     private static final String WIZARD_NAME_FIELD_ID = "mailbox-wizard-name";
     private static final String MAILBOX_NAME = "Test Mailbox";
@@ -35,6 +47,28 @@ public class InfoManagementConfigurationsTest extends BaseTestCase {
     private static final String SWITCHER_ID = "mailbox-wizard-active";
     private ConfigurationPanelPage configurationPanelPage;
     private SDWizardPage sdWizardPage;
+
+    @BeforeClass
+    public void openBrowser() {
+        RestAssured.config = prepareRestAssureConfig();
+        Environment environment = Environment.createEnvironmentFromConfiguration();
+        environmentRequestClient = new EnvironmentRequestClient(environment);
+        if (CONFIGURATION.getDriver().equals("chrome")) {
+            startChromeDriver();
+        } else {
+            startFirefoxDriver();
+        }
+        webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(50));
+        driver.navigate().to("https://vendor.test.iot-450c.swan.comarch");
+        driver.findElement(By.cssSelector("[id='username']")).sendKeys("kinga.balcar-mazur@comarch.com");
+        driver.findElement(By.cssSelector("[id='password']")).sendKeys("Dziczyzna_2424");
+        DelayUtils.sleep(1000);
+        driver.findElement(By.cssSelector("[class='mdc-button__ripple']")).click();
+        DelayUtils.sleep(2000);
+        driver.findElement(By.cssSelector("[name='accept']")).click();
+        configurationPanelPage = new ConfigurationPanelPage(driver, webDriverWait).goToConfigurationPanelPage(BASIC_URL);
+        addCookies(driver);
+    }
 
     @BeforeMethod
     public void goToConfigurationPanelPage() {
