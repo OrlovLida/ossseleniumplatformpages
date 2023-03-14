@@ -3,6 +3,7 @@ package com.oss.physical.locations;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -54,6 +55,7 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
     private static final String DUCT_ENTRY_TYPE = "DuctEntry";
     private static final String RACK_TYPE = "Rack";
     private static final String RACK_MODEL_TYPE = "RackModel";
+    private static final String RACK_MODEL_NAME = "LiSA FA 600";
     private static final String INDOOR_CABINET_MODEL_TYPE = "IndoorCabinetModel";
     private static final String OBJECT_TYPE = "Physical Location";
 
@@ -85,6 +87,9 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
     private static final String SUBLOCATION_UPDATED_MESSAGE = "Sublocation has been updated successfully, click here to open Hierarchy View.";
     private static final String DIFFERENT_DESCRIPTION_MESSAGE = "There is a different value of description than edited value: ";
     private static final String DIFFERENT_REMARKS_MESSAGE = "There is a different value of remarks than edited value: ";
+    private static final String INCORRECT_HEIGHT_VALUES_MESSAGE = "Compared height values are equal.";
+    private static final String INCORRECT_DEPTH_VALUES_MESSAGE = "Compared depht values are equal.";
+    private static final String INCORRECT_WIDTH_VALUES_MESSAGE = "Compared width values are equal.";
     private static final String DIFFERENT_HEIGHT_MESSAGE = "There is a different value of height than edited value: ";
     private static final String DIFFERENT_DEPTH_MESSAGE = "There is a different value of depth than edited value: ";
     private static final String DIFFERENT_WIDTH_MESSAGE = "There is a different value of width than edited value: ";
@@ -96,6 +101,7 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
     private static final String NO_SUCCESSFUL_MESSAGE = "There is no successful message";
     private static final String DIFFERENT_CONTENT_MESSAGE = "Returned message contains different content.";
     private static final String SUBLOCATION_NODE_NOT_VISIBLE_ON_HIERARCHY_VIEW_MESSAGE = "Sublocation node is not visible on Hierarchy View";
+    private static final String SUBLOCATION_MODEL_NOT_FOUND_MESSAGE = "Model was not found: %s";
 
     private Long geographicalAddressId;
     private Long locationId;
@@ -225,7 +231,8 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
 
     @Step("Get First Id of Rack Model")
     private void getRackModelId() {
-        rackModelId = planningRepository.getFirstObjectWithType(RACK_MODEL_TYPE);
+        rackModelId = planningRepository.getObjectIdByTypeAndName(RACK_MODEL_TYPE, RACK_MODEL_NAME)
+                .orElseThrow(() -> new NoSuchElementException(String.format(SUBLOCATION_MODEL_NOT_FOUND_MESSAGE, RACK_MODEL_NAME)));
     }
 
     @Step("Create IndoorCabinet by API")
@@ -288,6 +295,8 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
 
     @Step("Open Edit Sublocation Wizard and update some attributes of them")
     private void updateSublocationsAttributesByWizard() {
+        softAssert = new SoftAssert();
+
         Long[] sublocationIds = {ductEntryId, indoorCabinetId, rackId};
 
         for (Long id : sublocationIds) {
@@ -301,13 +310,26 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
 
             sublocation.setDescription(DESCRIPTION_VALUE);
             sublocation.setRemarks(REMARKS_VALUE);
-            sublocation.setWidth(DIMENSION_VALUE);
-            sublocation.setDepth(DIMENSION_VALUE);
-            sublocation.setHeight(DIMENSION_VALUE);
+
+            if (!id.equals(rackId)) {
+                sublocation.setWidth(DIMENSION_VALUE);
+                sublocation.setDepth(DIMENSION_VALUE);
+                sublocation.setHeight(DIMENSION_VALUE);
+            }
 
             if (id.equals(rackId)) {
+                String heightValue = sublocation.getHeight();
+                String widthValue = sublocation.getWidth();
+                String depthValue = sublocation.getDepth();
                 sublocation.setSublocationModel(RACK_MODEL_VALUE);
                 sublocation.setSublocationName(SUBLOCATION_NAME + DIMENSION_VALUE);
+                String editedHeightValue = sublocation.getHeight();
+                String editedWidthValue = sublocation.getWidth();
+                String editedDepthValue = sublocation.getDepth();
+
+                softAssert.assertNotEquals(heightValue, editedHeightValue, INCORRECT_HEIGHT_VALUES_MESSAGE);
+                softAssert.assertNotEquals(widthValue, editedWidthValue, INCORRECT_WIDTH_VALUES_MESSAGE);
+                softAssert.assertNotEquals(depthValue, editedDepthValue, INCORRECT_DEPTH_VALUES_MESSAGE);
             }
             sublocation.clickAccept();
 
@@ -315,6 +337,8 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
 
             hierarchyViewPage.unselectNodeByPath(getSublocationsPath(id));
         }
+
+        softAssert.assertAll();
     }
 
     @Step("Check Attributes of edited Sublocation on Property Panel of HV")
@@ -328,9 +352,13 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
 
             checkSublocationAttributeByValue(DESCRIPTION_VALUE, DESCRIPTION_ID, DIFFERENT_DESCRIPTION_MESSAGE);
             checkSublocationAttributeByValue(REMARKS_VALUE, REMARKS_ID, DIFFERENT_REMARKS_MESSAGE);
-            checkSublocationAttributeByValue(DIMENSION_VALUE, HEIGHT_ID, DIFFERENT_HEIGHT_MESSAGE);
-            checkSublocationAttributeByValue(DIMENSION_VALUE, WIDTH_ID, DIFFERENT_WIDTH_MESSAGE);
-            checkSublocationAttributeByValue(DIMENSION_VALUE, DEPTH_ID, DIFFERENT_DEPTH_MESSAGE);
+
+            if (!id.equals(rackId)) {
+                checkSublocationAttributeByValue(DIMENSION_VALUE, HEIGHT_ID, DIFFERENT_HEIGHT_MESSAGE);
+                checkSublocationAttributeByValue(DIMENSION_VALUE, WIDTH_ID, DIFFERENT_WIDTH_MESSAGE);
+                checkSublocationAttributeByValue(DIMENSION_VALUE, DEPTH_ID, DIFFERENT_DEPTH_MESSAGE);
+            }
+
 
             if (id.equals(rackId)) {
                 checkSublocationAttributeByValue(RACK_MODEL_MANUFACTURER_MODEL_NAME, MODEL_MANUFACTURER_ID, DIFFERENT_MANUFACTURER_MODEL_NAME_MESSAGE);
@@ -364,9 +392,12 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
 
             checkSublocationAttributeByValue(DESCRIPTION_VALUE, DESCRIPTION_ID, DIFFERENT_DESCRIPTION_MESSAGE);
             checkSublocationAttributeByValue(REMARKS_VALUE, REMARKS_ID, DIFFERENT_REMARKS_MESSAGE);
-            checkSublocationAttributeByValue(DIMENSION_VALUE, HEIGHT_ID, DIFFERENT_HEIGHT_MESSAGE);
-            checkSublocationAttributeByValue(DIMENSION_VALUE, WIDTH_ID, DIFFERENT_WIDTH_MESSAGE);
-            checkSublocationAttributeByValue(DIMENSION_VALUE, DEPTH_ID, DIFFERENT_DEPTH_MESSAGE);
+
+            if (!id.equals(rackId)) {
+                checkSublocationAttributeByValue(DIMENSION_VALUE, HEIGHT_ID, DIFFERENT_HEIGHT_MESSAGE);
+                checkSublocationAttributeByValue(DIMENSION_VALUE, WIDTH_ID, DIFFERENT_WIDTH_MESSAGE);
+                checkSublocationAttributeByValue(DIMENSION_VALUE, DEPTH_ID, DIFFERENT_DEPTH_MESSAGE);
+            }
 
             if (id.equals(rackId)) {
                 checkSublocationAttributeByValue(RACK_MODEL_MANUFACTURER_MODEL_NAME, MODEL_MANUFACTURER_ID, DIFFERENT_MANUFACTURER_MODEL_NAME_MESSAGE);
