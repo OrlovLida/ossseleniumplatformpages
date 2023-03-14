@@ -26,6 +26,8 @@ public class BpmPhysicalDataCreator {
     public static final String BPM_USER_PASSWORD = "Webtests123!";
     public static final String BPM_ADMIN_USER_LOGIN = "bpm_admin_webselenium";
     public static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
+    public static final String BPM_BASIC_USER_LOGIN = "bpm_basic_webselenium";
+    public static final String BPM_BASIC_USER_PASSWORD = "Webtests123!";
     public static final String CHASSIS_NAME = "Chassis";
     public static final String CARD_NAME = "Card";
     public static final String IP_DEVICE_NAME = "IPDevice";

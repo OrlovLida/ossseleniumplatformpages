@@ -5,4 +5,9 @@
             <class name="com.oss.bpm.BPMServicesCheckTest"/>
         </classes>
     </test>
+    <test name="TasksView">
+        <classes>
+            <class name="com.oss.smoketests.TasksSmokeTest"/>
+        </classes>
+    </test>
 </suite>
