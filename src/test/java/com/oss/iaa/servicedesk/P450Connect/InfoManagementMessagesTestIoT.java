@@ -8,15 +8,15 @@ import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.oss.BaseTestCase;
 import com.oss.pages.iaa.servicedesk.infomanagement.MessagesPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
+import com.oss.web.BaseTestCaseIoT;
 
 import io.qameta.allure.Description;
 
 import static com.oss.pages.iaa.servicedesk.BaseSDPage.DATE_TIME_FORMATTER;
 
-public class InfoManagementMessagesTest extends BaseTestCase {
+public class InfoManagementMessagesTestIoT extends BaseTestCaseIoT {
 
     private static final String E_MAIL_MESSAGE = "Selenium test Message in Messages page";
     private static final String E_MAIL_MESSAGE_REPLY = "Selenium test Reply Message in Messages page";
@@ -42,7 +42,7 @@ public class InfoManagementMessagesTest extends BaseTestCase {
     @Description("Create New Message")
     public void createMessage(
             @Optional("kinga.balcar-mazur@comarch.com") String emailTo,
-            @Optional("noreply@sftp.dev.450c") String emailFrom
+            @Optional("noreply@sftp.dev.450c") String emailFrom //TODO: change e-mailbox
     ) {
         sdWizardPage = messagesPage.clickCreateMessage();
         sdWizardPage.createEmailNotification(emailTo, emailFrom, E_MAIL_MESSAGE);
@@ -147,4 +147,5 @@ public class InfoManagementMessagesTest extends BaseTestCase {
         Assert.assertEquals(messagesPage.getMessageStatus(), E_MAIL_STATUS);
     }
 }
+
 

@@ -98,7 +98,7 @@ public class BaseTestCase implements IHookable {
         return new Cookie("i18nCurrentLocale", "en", BASIC_URL.split("//")[1].split(":")[0], "/", null, false, false);
     }
 
-    private void addCookies(WebDriver driver) {
+    public void addCookies(WebDriver driver) {
         boolean isWebRunner = Boolean.parseBoolean(CONFIGURATION.getValue("webRunner"));
         if (!isWebRunner) {
             driver.manage().addCookie(createCookie());
@@ -138,13 +138,13 @@ public class BaseTestCase implements IHookable {
         }
     }
 
-    private void startChromeDriver() {
+    public void startChromeDriver() {
         ChromeOptions options = getAdditionalOptions();
         setWebDriver(options);
         driver = WebDriverManager.chromedriver().capabilities(options).create();
     }
 
-    private void startFirefoxDriver() {
+    public void startFirefoxDriver() {
         FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");

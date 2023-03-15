@@ -7,10 +7,11 @@ import org.testng.annotations.Test;
 import com.oss.BaseTestCase;
 import com.oss.pages.iaa.servicedesk.infomanagement.ConfigurationPanelPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
+import com.oss.web.BaseTestCaseIoT;
 
 import io.qameta.allure.Description;
 
-public class InfoManagementConfigurationsTest extends BaseTestCase {
+public class InfoManagementConfigurationsTestIoT extends BaseTestCaseIoT {
 
     private static final String WIZARD_NAME_FIELD_ID = "mailbox-wizard-name";
     private static final String MAILBOX_NAME = "Test Mailbox";

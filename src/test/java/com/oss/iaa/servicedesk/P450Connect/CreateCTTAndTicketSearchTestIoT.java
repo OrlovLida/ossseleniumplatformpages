@@ -7,7 +7,6 @@ import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.comarch.oss.web.pages.NotificationWrapperPage;
-import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.ClosedTicketsPage;
@@ -17,6 +16,7 @@ import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketSearchPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
+import com.oss.web.BaseTestCaseIoT;
 
 import io.qameta.allure.Description;
 
@@ -25,7 +25,7 @@ import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.EXPORT_WIZARD_I
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 
-public class CreateCTTAndTicketSearchTest extends BaseTestCase {
+public class CreateCTTAndTicketSearchTestIoT extends BaseTestCaseIoT {
 
     private static final String PRIORITY = "P1 - Critical Priority";
     private static final String SEVERITY = "Warning";
@@ -68,12 +68,13 @@ public class CreateCTTAndTicketSearchTest extends BaseTestCase {
         ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
     }
 
-    @Parameters({"MOIdentifier", "Domain"})
+    @Parameters({"MOIdentifier", "Domain", "Assignee"})
     @Test(priority = 1, testName = "Create CTT Ticket", description = "Create CTT Ticket")
     @Description("Create CTT Ticket")
     public void createIncidentTicket(
-            @Optional("TEST_MO") String MOIdentifier,
-            @Optional("Nokia") String Domain
+            @Optional("testBuilding-MSAN-1/ChassisID/TEST_LM_SLOT_20220207/Horizontal Card MDF") String MOIdentifier,
+            @Optional("Nokia") String Domain,
+            @Optional("Kinga Balcar-Mazur") String Assignee
     ) {
         sdWizardPage = ticketDashboardPage.openCreateTicketWizard(FLOW_TYPE);
         sdWizardPage.getMoStep().enterTextIntoMOIdentifierField(MOIdentifier);
@@ -86,7 +87,7 @@ public class CreateCTTAndTicketSearchTest extends BaseTestCase {
         sdWizardPage.insertValueToComponent(SERVICE_TYPE, SERVICE_TYPE_ID);
         sdWizardPage.insertValueToComponent(COMMUNICATION_CHANNEL, COMMUNICATION_CHANNEL_ID);
         sdWizardPage.enterDescription(INCIDENT_DESCRIPTION);
-        sdWizardPage.insertValueToComponent(ASSIGNEE, TT_WIZARD_ASSIGNEE);
+        sdWizardPage.insertValueToComponent(Assignee, TT_WIZARD_ASSIGNEE);
 //        sdWizardPage.insertValueToComponent(DOMAIN, DOMAIN_ID); //TODO: usunąć zakomentowanie gdy domeny bedą już gotowe w tym projekcie
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickNextButtonInWizard();
