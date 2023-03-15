@@ -51,7 +51,7 @@ public class BaseTestCaseIoT extends BaseTestCase implements IHookable {
 
     ServiceDeskMenuPage serviceDeskMenuPage;
 
-@ BeforeClass
+    @BeforeClass
     public void openBrowser() {
         RestAssured.config = prepareRestAssureConfig();
         Environment environment = Environment.createEnvironmentFromConfiguration();
