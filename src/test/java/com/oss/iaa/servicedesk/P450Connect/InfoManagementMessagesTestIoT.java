@@ -1,32 +1,22 @@
 package com.oss.iaa.servicedesk.P450Connect;
 
-import java.time.Duration;
 import java.time.LocalDateTime;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
-import com.jayway.restassured.RestAssured;
-import com.oss.BaseTestCase;
-import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.iaa.servicedesk.infomanagement.MessagesPage;
-import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
-import com.oss.serviceClient.Environment;
-import com.oss.serviceClient.EnvironmentRequestClient;
+import com.oss.web.BaseTestCaseIoT;
 
 import io.qameta.allure.Description;
 
-import static com.oss.configuration.Configuration.CONFIGURATION;
 import static com.oss.pages.iaa.servicedesk.BaseSDPage.DATE_TIME_FORMATTER;
 
-public class InfoManagementMessagesTestIoT extends BaseTestCase {
+public class InfoManagementMessagesTestIoT extends BaseTestCaseIoT {
 
     private static final String E_MAIL_MESSAGE = "Selenium test Message in Messages page";
     private static final String E_MAIL_MESSAGE_REPLY = "Selenium test Reply Message in Messages page";
@@ -41,28 +31,6 @@ public class InfoManagementMessagesTestIoT extends BaseTestCase {
     private static final String MESSAGE_CHANNEL = "E-mail";
     private MessagesPage messagesPage;
     private SDWizardPage sdWizardPage;
-
-    @BeforeClass
-    public void openBrowser() {
-        RestAssured.config = prepareRestAssureConfig();
-        Environment environment = Environment.createEnvironmentFromConfiguration();
-        environmentRequestClient = new EnvironmentRequestClient(environment);
-        if (CONFIGURATION.getDriver().equals("chrome")) {
-            startChromeDriver();
-        } else {
-            startFirefoxDriver();
-        }
-        webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(50));
-        driver.navigate().to("https://vendor.test.iot-450c.swan.comarch");
-        driver.findElement(By.cssSelector("[id='username']")).sendKeys("kinga.balcar-mazur@comarch.com");
-        driver.findElement(By.cssSelector("[id='password']")).sendKeys("Dziczyzna_2424");
-        DelayUtils.sleep(1000);
-        driver.findElement(By.cssSelector("[class='mdc-button__ripple']")).click();
-        DelayUtils.sleep(2000);
-        driver.findElement(By.cssSelector("[name='accept']")).click();
-        messagesPage = new MessagesPage(driver, webDriverWait).openView(driver, BASIC_URL);
-        addCookies(driver);
-    }
 
     @BeforeMethod
     public void goToMessagesPage() {

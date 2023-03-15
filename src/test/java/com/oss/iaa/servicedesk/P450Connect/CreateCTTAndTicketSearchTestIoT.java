@@ -1,21 +1,12 @@
 package com.oss.iaa.servicedesk.P450Connect;
 
-import java.time.Duration;
-
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Optional;
 import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 
 import com.comarch.oss.web.pages.NotificationWrapperPage;
-import com.jayway.restassured.RestAssured;
-import com.oss.BaseTestCase;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.iaa.servicedesk.issue.IssueDetailsPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.ClosedTicketsPage;
@@ -25,19 +16,16 @@ import com.oss.pages.iaa.servicedesk.issue.ticket.TicketDashboardPage;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketOverviewTab;
 import com.oss.pages.iaa.servicedesk.issue.ticket.TicketSearchPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
-import com.oss.pages.platform.LoginPage;
-import com.oss.serviceClient.Environment;
-import com.oss.serviceClient.EnvironmentRequestClient;
+import com.oss.web.BaseTestCaseIoT;
 
 import io.qameta.allure.Description;
 
-import static com.oss.configuration.Configuration.CONFIGURATION;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.DOWNLOAD_FILE;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.EXPORT_WIZARD_ID;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.ID_ATTRIBUTE;
 import static com.oss.pages.iaa.servicedesk.ServiceDeskConstants.TROUBLE_TICKET_ISSUE_TYPE;
 
-public class CreateCTTAndTicketSearchTestIoT extends BaseTestCase {
+public class CreateCTTAndTicketSearchTestIoT extends BaseTestCaseIoT {
 
     private static final String PRIORITY = "P1 - Critical Priority";
     private static final String SEVERITY = "Warning";
@@ -74,30 +62,6 @@ public class CreateCTTAndTicketSearchTestIoT extends BaseTestCase {
     private ClosedTicketsPage closedTicketsPage;
     private String ticketID;
     private SDWizardPage sdWizardPage;
-
-    public WebDriverWait webDriverWait;
-
-    @BeforeClass
-    public void openBrowser() {
-        RestAssured.config = prepareRestAssureConfig();
-        Environment environment = Environment.createEnvironmentFromConfiguration();
-        environmentRequestClient = new EnvironmentRequestClient(environment);
-        if (CONFIGURATION.getDriver().equals("chrome")) {
-            startChromeDriver();
-        } else {
-            startFirefoxDriver();
-        }
-        webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(50));
-        driver.navigate().to("https://vendor.test.iot-450c.swan.comarch");
-        driver.findElement(By.cssSelector("[id='username']")).sendKeys("kinga.balcar-mazur@comarch.com");
-        driver.findElement(By.cssSelector("[id='password']")).sendKeys("Dziczyzna_2424");
-        DelayUtils.sleep(1000);
-        driver.findElement(By.cssSelector("[class='mdc-button__ripple']")).click();
-        DelayUtils.sleep(2000);
-        driver.findElement(By.cssSelector("[name='accept']")).click();
-        ticketDashboardPage = new TicketDashboardPage(driver, webDriverWait).goToPage(driver, BASIC_URL);
-        addCookies(driver);
-    }
 
     @BeforeMethod
     public void goToTicketDashboardPage() {
