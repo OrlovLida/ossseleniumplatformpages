@@ -96,7 +96,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     private static final String CARD_IDENTIFIER1 = CARD_NAME + " (%s )";
     private static final String CHASSIS_IDENTIFIER = CHASSIS_NAME + " (%s)";
     private static final String CARD_IDENTIFIER = CARD_NAME + " (%s)";
-    private static final String DEVICE_IDENTIFIER = IP_DEVICE_NAME + " (%s)";
+    private static final String DEVICE_IDENTIFIER = "IP Device (%s)";
     private static final String BUILDING_IDENTIFIER = LOCATION_TYPE_BUILDING + " (%s)";
     private static final String CHECKING_PLANNED_OBJECTS_PRESENCE_PATTERN =
             "Object %1$s is not present on Planned Objects Table in %2$s.";
@@ -112,7 +112,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     private static final String DEVICE_NOT_FOUND_IN_LIVE_LOG_PATTERN = "Device %1$s is not found in LIVE perspective in %2$s.";
     private static final String WIZARD_OPENED_LOG_PATTERN = "Partial integration wizard is opened for %s.";
     private static final String UNABLE_ACTIVATE_OBJECTS_MESSAGE = "Unable to accept objects to LIVE perspective due to\n" +
-            "Exist blocking vr related with objects:\n" +
+            "Exist blocking validation results related with objects:\n" +
             "{%1$s-%2$s(%3$s)}\n" +
             "See them on Process Details";
     private static final String SUPPRESSION_REASON = "Selenium suppression reason";
@@ -120,6 +120,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     private static final String INVALID_PROCESS_STATUS_LOG_PATTERN = "Invalid Process Status for %s.";
     private static final String DEVICE_MODEL = "7705 SAR-8";
     private static final String DEVICE_SLOT_NAME = "MDA 1";
+    private static final String DEVICE_IDENTIFIER1 = IP_DEVICE_NAME + " (%s)";
     private final Logger log = LoggerFactory.getLogger(PartialIntegrationTest.class);
     private SoftAssert softAssert;
     private String nrp_Code_TC_MAIN;
@@ -175,7 +176,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     @BeforeClass
     public void prepareObjectsAndProcesses() {
         softAssert = new SoftAssert();
-        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
+        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
 
         //create NRP,DCP processes
         nrp_Code_TC_MAIN = plannersViewPage.createProcessIPD(NRP_TC_MAIN_NAME, 5L, NRP);
@@ -192,7 +193,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         dcp_TC5_2_plan = PlanningContext.plan(plannersViewPage.getProjectId(dcp_Code_TC5_2));
         log.info("TC5_2 DCP project ID: " + dcp_TC5_2_plan.getProjectId());
 
-        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL).clearFilters();
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         buildingId_TC_MAIN = createBuilding(BUILDING_NAME_TC_MAIN, LIVE);
         log.info("Main Building id: " + buildingId_TC_MAIN);
         tasksPage.startTask(nrp_Code_TC_MAIN, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
@@ -335,7 +336,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         log.info(String.format("TC5_3 DRP Code: %s", drp_Code_TC5_3));
         tasksPage.startTask(drp_Code_TC5_3, TasksPageV2.PLANNING_TASK);
         waitForPageToLoad();
-        plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
+        plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         drp_TC5_3_plan = PlanningContext.plan(plannersViewPage.getProjectId(drp_Code_TC5_3));
         //D3 plan create in drp
         createIPDevice(ROUTER_TC5_3_NAME, DEVICE_MODEL, buildingId_TC_MAIN, drp_TC5_3_plan);
@@ -369,7 +370,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 - Building 1_2 UPDATE
                 - Building 1_3 DELETE
          */
-        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
+        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         PartialIntegrationWizardPage partialIntegrationWizardPage =
                 plannersViewPage.selectProcess(ip_Code_TC1).openIntegratePlannedChangesWizard();
 
@@ -393,7 +394,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, TC1));
 
         //check Object statuses
-        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL).clearFilters();
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(ip_Code_TC1, TasksPageV2.SCOPE_DEFINITION_TASK);
         ProcessDetailsPage processDetailsPage =
                 tasksPage.findTask(ip_Code_TC1, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton();
@@ -419,7 +420,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 - Chassis 2_3 DELETE
                     ROUTER 2_3 DELETE
          */
-        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
+        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         PartialIntegrationWizardPage partialIntegrationWizardPage = plannersViewPage.selectProcess(ip_Code_TC2).openIntegratePlannedChangesWizard();
 
         partialIntegrationWizardPage.moveObjectToIntegration(cardId_TC2_1);
@@ -467,7 +468,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, TC2));
 
         //check Object statuses
-        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL).clearFilters();
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(ip_Code_TC2, TasksPageV2.SCOPE_DEFINITION_TASK);
         ProcessDetailsPage processDetailsPage =
                 tasksPage.findTask(ip_Code_TC2, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton();
@@ -498,7 +499,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 - Card 3_2 CREATE
                 - Router 3_3 DELETE (chassis 3_3 subsequent)
          */
-        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
+        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
 
         // check if subsequents: chassis 3_1 and router 3_3 are not present in wizard
         PartialIntegrationWizardPage partialIntegrationWizardPage = plannersViewPage.selectProcess(ip_Code_TC3_2).openIntegratePlannedChangesWizard();
@@ -539,7 +540,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         assertPlannedObjectPresence(plannedObjectsIdentifiers, deviceId_TC3_3, DEVICE_IDENTIFIER, TC3);
 
         //activate objects from IP2
-        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(deviceId_TC3_1, deviceId_TC3_2, chassisId_TC3_3));
+        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(chassisId_TC3_1, cardId_TC3_2, deviceId_TC3_3));
         objectsToIntegrateIdentifiers = partialIntegrationWizardPage.getObjectsToIntegrationIdentifiers();
         Assert.assertEquals(objectsToIntegrateIdentifiers.size(), 3,
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, TC3));
@@ -551,7 +552,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, TC3));
 
         //check Object statuses and complete IP1
-        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL).clearFilters();
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(ip_Code_TC3_1, TasksPageV2.SCOPE_DEFINITION_TASK);
         ProcessDetailsPage processDetailsPage =
                 tasksPage.findTask(ip_Code_TC3_1, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton();
@@ -564,7 +565,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         //check Object statuses and complete IP2
         tasksPage.startTask(ip_Code_TC3_2, TasksPageV2.SCOPE_DEFINITION_TASK);
         processDetailsPage =
-                tasksPage.findTask(ip_Code_TC3_2, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton();
+                tasksPage.findTask(ip_Code_TC3_2, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton().clearAllColumnFilters();
         assertActivatedObjectStatus(chassisId_TC3_1, CHASSIS_IDENTIFIER, TC3);
         assertActivatedObjectStatus(cardId_TC3_2, CARD_IDENTIFIER, TC3);
         assertActivatedObjectStatus(deviceId_TC3_3, DEVICE_IDENTIFIER, TC3);
@@ -582,7 +583,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 - Router 2_2 CREATE (hidden, as TechnicalPA of Router 2_1)
                     - Chassis 2_1 CREATE (hidden, as TechnicalPA of Router 2_1)
          */
-        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
+        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         PartialIntegrationWizardPage partialIntegrationWizardPage = plannersViewPage.selectProcess(ip_Code_TC4).openIntegratePlannedChangesWizard();
 
         //check if technical PAs are not visible in Planned Objects table
@@ -604,7 +605,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, TC4));
 
         //check objects status
-        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL).clearFilters();
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(ip_Code_TC4, TasksPageV2.SCOPE_DEFINITION_TASK);
         ProcessDetailsPage processDetailsPage =
                 tasksPage.findTask(ip_Code_TC4, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton();
@@ -622,7 +623,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     @Test(priority = 5, description = " Try to Integrate objects to LIVE from NRP, DRP, DCP processes.")
     @Description("User is not able to integrate to LIVE objects which are processing in NRP, DRP, DCP process.")
     public void TryToIntegrateObjectsFromDRP_NRP_DCP() {
-        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
+        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         softAssert.assertFalse(plannersViewPage.selectProcess(drp_Code_TC5_3).isIntegratePlannedChangesActionVisible(),
                 String.format(WIZARD_OPENED_LOG_PATTERN, drp_Code_TC5_3));
         softAssert.assertFalse(plannersViewPage.selectProcess(nrp_Code_TC5_1).isIntegratePlannedChangesActionVisible(),
@@ -641,7 +642,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 - Router 6_2 UPDATE (VR LOW)
                 - Card 6_2 CREATE
          */
-        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
+        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         PartialIntegrationWizardPage partialIntegrationWizardPage = plannersViewPage.selectProcess(ip_Code_TC6).openIntegratePlannedChangesWizard();
 
         //try to activate Router 6_1 (Error message should appear)
@@ -652,7 +653,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC6_1, DEVICE_IDENTIFIER, TC6);
         partialIntegrationWizardPage.clickApplyButton();
 
-        assertSystemMessage(String.format(UNABLE_ACTIVATE_OBJECTS_MESSAGE, String.format(DEVICE_IDENTIFIER, deviceId_TC6_1),
+        assertSystemMessage(String.format(UNABLE_ACTIVATE_OBJECTS_MESSAGE, String.format(DEVICE_IDENTIFIER1, deviceId_TC6_1),
                         vr_TC6_1.getType(), vr_TC6_1.getDescription()),
                 SystemMessageContainer.MessageType.DANGER, String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, TC6));
 
@@ -676,7 +677,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, TC6));
 
         //check objects status and complete IP
-        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL).clearFilters();
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(ip_Code_TC6, TasksPageV2.SCOPE_DEFINITION_TASK);
         ProcessDetailsPage processDetailsPage =
                 tasksPage.findTask(ip_Code_TC6, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton();
@@ -694,7 +695,7 @@ public class PartialIntegrationTest extends BaseTestCase {
             "integrateObjectsWithValidationResults"})
     @Description("User is able to complete NRP Process without any planned objects.")
     public void completeNRP() {
-        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL).clearFilters();
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(nrp_Code_TC_MAIN, TasksPageV2.VERIFICATION_TASK);
 
         //check if activated objects planned actions stayed in IP processes
@@ -706,7 +707,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 String.format(INVALID_TASK_COMPLETE_SYSTEM_MESSAGE_LOG_PATTERN, nrp_Code_TC_MAIN));
 
         //Assert NRP main complete Status
-        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
+        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         Assert.assertEquals(plannersViewPage.selectProcess(NRP_TC_MAIN_NAME).getProcessState(NRP_TC_MAIN_NAME),
                 COMPLETED_STATUS, String.format(INVALID_PROCESS_STATUS_LOG_PATTERN, NRP_TC_MAIN_NAME));
     }
@@ -719,7 +720,7 @@ public class PartialIntegrationTest extends BaseTestCase {
 
     @AfterClass
     public void clean() {
-        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL).clearFilters();
+        PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
 
         //TC1 clean
         deleteBuilding(buildingId_TC1_1, LIVE);
@@ -771,14 +772,10 @@ public class PartialIntegrationTest extends BaseTestCase {
     }
 
     private void assertActivatedObjectStatus(String objectId, String identifier, String tcName) {
-        String objectStatus = getObjectStatus(String.format(identifier, objectId));
+        ProcessDetailsPage processDetailsPage = new ProcessDetailsPage(driver);
+        String objectStatus = processDetailsPage.selectObject(OBJECT_TYPE_ATTRIBUTE_NAME, String.format(identifier, objectId)).getObjectStatus();
         softAssert.assertEquals(objectStatus, ACTIVATED_STATUS,
                 String.format(INVALID_OBJECT_STATUS_LOG_PATTERN, String.format(identifier, objectId), tcName));
-    }
-
-    private String getObjectStatus(String objectIdentifier) {
-        ProcessDetailsPage processDetailsPage = new ProcessDetailsPage(driver);
-        return processDetailsPage.clearAllColumnFilters().selectObject(OBJECT_TYPE_ATTRIBUTE_NAME, objectIdentifier).getObjectStatus();
     }
 
     private void assertSystemMessage(String messageContent, SystemMessageContainer.MessageType messageType, String systemMessageLog) {

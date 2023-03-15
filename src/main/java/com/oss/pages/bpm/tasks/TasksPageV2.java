@@ -1,6 +1,7 @@
 package com.oss.pages.bpm.tasks;
 
 import com.oss.framework.components.attributechooser.AttributesChooser;
+import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.table.TableWidget;
@@ -84,7 +85,7 @@ public class TasksPageV2 extends BasePage {
 
     public TasksPageV2 clearFilters() {
         TableWidget tasksTable = getTableWidget();
-        tasksTable.clearAllFilters();
+        tasksTable.getAdvancedSearch().clearAllFilters();
         return this;
     }
 
@@ -100,10 +101,12 @@ public class TasksPageV2 extends BasePage {
         getTableWidget().unselectAllRows();
         DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
-        table.clearAllFilters();
-        table.searchByAttribute(PROCESS_CODE_INPUT_ID, processCode);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        table.searchByAttribute(TASK_NAME_INPUT_ID, taskName);
+        AdvancedSearch advancedSearch = table.getAdvancedSearch();
+        advancedSearch.clearAllFilters();
+        advancedSearch.openSearchPanel();
+        advancedSearch.setFilter(PROCESS_CODE_INPUT_ID, processCode);
+        advancedSearch.setFilter(TASK_NAME_INPUT_ID, taskName);
+        advancedSearch.clickApply();
         DelayUtils.waitForPageToLoad(driver, wait);
         table.selectFirstRow();
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -168,7 +171,7 @@ public class TasksPageV2 extends BasePage {
     public TasksPageV2 showCompletedTasks() {
         DelayUtils.waitForPageToLoad(driver, wait);
         TableWidget table = getTableWidget();
-        table.clearAllFilters();
+        table.getAdvancedSearch().clearAllFilters();
         table.searchByAttribute(STATUS_INPUT_ID, FINISHED_STATUS);
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
