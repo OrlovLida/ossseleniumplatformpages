@@ -17,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -111,7 +112,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     private static final String TASK_COMPLETED_MESSAGE = "Task properly completed.";
     private static final String DEVICE_NOT_FOUND_IN_LIVE_LOG_PATTERN = "Device %1$s is not found in LIVE perspective in %2$s.";
     private static final String WIZARD_OPENED_LOG_PATTERN = "Partial integration wizard is opened for %s.";
-    private static final String UNABLE_ACTIVATE_OBJECTS_MESSAGE = "Unable to accept objects to LIVE perspective due to\n" +
+    private static final String UNABLE_ACTIVATE_OBJECTS_MESSAGE = "Unable to accept objects to LIVE perspective due to:\n" +
             "Exist blocking validation results related with objects:\n" +
             "{%1$s-%2$s(%3$s)}\n" +
             "See them on Process Details";
@@ -120,7 +121,8 @@ public class PartialIntegrationTest extends BaseTestCase {
     private static final String INVALID_PROCESS_STATUS_LOG_PATTERN = "Invalid Process Status for %s.";
     private static final String DEVICE_MODEL = "7705 SAR-8";
     private static final String DEVICE_SLOT_NAME = "MDA 1";
-    private static final String DEVICE_IDENTIFIER1 = IP_DEVICE_NAME + " (%s)";
+    private static final String DEVICE_IDENTIFIER1 = IP_DEVICE_NAME + "(%s)";
+    private static final String PARTIAL_INTEGRATION_WIZARD_OPEN = "Partial Integration wizard is still opened after test. It will be closed now.";
     private final Logger log = LoggerFactory.getLogger(PartialIntegrationTest.class);
     private SoftAssert softAssert;
     private String nrp_Code_TC_MAIN;
@@ -716,6 +718,14 @@ public class PartialIntegrationTest extends BaseTestCase {
     @Description("Checking asserts")
     public void checkSoftAsserts() {
         softAssert.assertAll();
+    }
+
+    @AfterMethod
+    public void closeWizard() {
+        if (PartialIntegrationWizardPage.isWizardVisible(driver)) {
+            new PartialIntegrationWizardPage(driver).clickCancelButton();
+            log.warn(PARTIAL_INTEGRATION_WIZARD_OPEN);
+        }
     }
 
     @AfterClass

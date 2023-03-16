@@ -59,6 +59,10 @@ public class TasksPageV2 extends BasePage {
     private static final String WRONG_TASK_NAME_EXCEPTION =
             "Illegal Task Name provided. Create Design Request Process wizard can be opened only for tasks: " +
                     HIGH_LEVEL_PLANNING_TASK + ", " + LOW_LEVEL_PLANNING_TASK;
+    private static final String TASK_STARTED_PATTERN = "Task {} from process {} is started.";
+    private static final String TASK_COMPLETED_PATTERN = "Task {} from process {} is completed.";
+    private static final String PROCESS_DRP_CREATED = "Process DRP with code: {} is created.";
+
 
     public TasksPageV2(WebDriver driver) {
         super(driver);
@@ -92,7 +96,6 @@ public class TasksPageV2 extends BasePage {
     @Step("Checking is task started")
     public boolean isTaskStarted(String processCode, String taskName) {
         findTask(processCode, taskName);
-        DelayUtils.waitForPageToLoad(driver, wait);
         return !getTableWidget().getCellValue(0, ASSIGNEE).isEmpty();
     }
 
@@ -128,11 +131,13 @@ public class TasksPageV2 extends BasePage {
     public void startTask(String processCode, String taskName) {
         findTask(processCode, taskName);
         getIPDTaskForm().startTask();
+        log.info(TASK_STARTED_PATTERN, taskName, processCode);
     }
 
     public void completeTask(String processCode, String taskName) {
         findTask(processCode, taskName);
         getIPDTaskForm().completeTask();
+        log.info(TASK_COMPLETED_PATTERN, taskName, processCode);
     }
 
     public SetupIntegrationWizardPage openSetupIntegrationWizard(String processCode) {
@@ -142,9 +147,12 @@ public class TasksPageV2 extends BasePage {
 
     public String startTaskByUsernameAndTaskName(String username, String taskName) {
         TableWidget table = getTableWidget();
-        table.searchByAttribute(ASSIGNEE_INPUT_ID, username);
-        DelayUtils.waitForPageToLoad(driver, wait);
-        table.searchByAttribute(TASK_NAME_INPUT_ID, taskName);
+        AdvancedSearch advancedSearch = table.getAdvancedSearch();
+        advancedSearch.clearAllFilters();
+        advancedSearch.openSearchPanel();
+        advancedSearch.setFilter(ASSIGNEE_INPUT_ID, username);
+        advancedSearch.setFilter(TASK_NAME_INPUT_ID, taskName);
+        advancedSearch.clickApply();
         DelayUtils.waitForPageToLoad(driver, wait);
         if (table.hasNoData()) {
             return NON_EXISTING_TASK_EXCEPTION;
@@ -157,6 +165,7 @@ public class TasksPageV2 extends BasePage {
         findTask(processCode, taskName);
         getIPDTaskForm().setTransition(transition);
         getIPDTaskForm().completeTask();
+        log.info(TASK_COMPLETED_PATTERN, taskName, processCode);
     }
 
     public void addFile(String processCode, String taskName, String filePath) {
@@ -184,7 +193,9 @@ public class TasksPageV2 extends BasePage {
             Wizard wizard = processWizardPage.getSecondStepWizard();
             wizard.setComponentValue(ProcessWizardPage.PROCESS_NAME_ATTRIBUTE_ID, drpProcessName);
             processWizardPage.clickAcceptButton();
-            return processWizardPage.extractProcessCode();
+            String drpCode = processWizardPage.extractProcessCode();
+            log.info(PROCESS_DRP_CREATED, drpCode);
+            return drpCode;
         } else {
             throw new IllegalArgumentException(WRONG_TASK_NAME_EXCEPTION);
         }

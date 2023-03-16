@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.table.TableComponent;
+import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -167,6 +168,10 @@ public class PartialIntegrationWizardPage extends BasePage {
 
     public PartialIntegrationWizardPage moveBackObjectToPlanned(String objectName) {
         return moveBackObjectsToPlanned(Collections.singletonList(objectName));
+    }
+
+    public static boolean isWizardVisible(WebDriver driver) {
+        return CSSUtils.isElementPresent(driver, WIZARD_ID);
     }
 
 
