@@ -363,7 +363,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         log.info("TC6_2 VR uuid: " + vrId_TC6_2);
     }
 
-    @Test(priority = 1, description = "Integrate Object without prerequisites")
+    @Test(priority = 2, description = "Integrate Object without prerequisites", dependsOnMethods = {"prepareObjectsAndProcesses"})
     @Description("User is able to integrate to LIVE objects without any prerequisites.")
     public void integrateObjectsWithoutAnyPrerequisites() {
         /*
@@ -409,7 +409,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         completeIP(ip_Code_TC1);
     }
 
-    @Test(priority = 2, description = "Integrate Objects with prerequisites in the same project.")
+    @Test(priority = 3, description = "Integrate Objects with prerequisites in the same project.", dependsOnMethods = {"prepareObjectsAndProcesses"})
     @Description("User is able to integrate to LIVE objects with their subsequents/prerequisites in the same project.")
     public void integrateObjectsWithInternalPrerequisites() {
         /*
@@ -487,7 +487,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         completeIP(ip_Code_TC2);
     }
 
-    @Test(priority = 3, description = "Integrate objects with prerequisites/subsequents in other project.")
+    @Test(priority = 4, description = "Integrate objects with prerequisites/subsequents in other project.", dependsOnMethods = {"prepareObjectsAndProcesses"})
     @Description("User is not able to integrate to LIVE objects which have prerequisites in the other planning project, but user can integrate objects which have subsequents in the other project.")
     public void integrateObjectsWithExternalPrerequisites() {
         /*
@@ -575,7 +575,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         completeIP(ip_Code_TC3_2);
     }
 
-    @Test(priority = 4, description = "Integrate objects with technical Planned Actions.")
+    @Test(priority = 5, description = "Integrate objects with technical Planned Actions.", dependsOnMethods = {"prepareObjectsAndProcesses"})
     @Description("User is able to integrate to LIVE objects which have technical PAs.")
     public void integrateObjectsWithTechnicalPlannedActions() {
         /*
@@ -622,7 +622,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         completeIP(ip_Code_TC4);
     }
 
-    @Test(priority = 5, description = " Try to Integrate objects to LIVE from NRP, DRP, DCP processes.")
+    @Test(priority = 6, description = " Try to Integrate objects to LIVE from NRP, DRP, DCP processes.", dependsOnMethods = {"prepareObjectsAndProcesses"})
     @Description("User is not able to integrate to LIVE objects which are processing in NRP, DRP, DCP process.")
     public void TryToIntegrateObjectsFromDRP_NRP_DCP() {
         PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
@@ -634,7 +634,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 String.format(WIZARD_OPENED_LOG_PATTERN, dcp_Code_TC5_2));
     }
 
-    @Test(priority = 6, description = "Integrate objects with Validation Results.")
+    @Test(priority = 7, description = "Integrate objects with Validation Results.", dependsOnMethods = {"prepareObjectsAndProcesses"})
     @Description("User is not able to integrate to LIVE objects which have unresolved Validation Results.")
     public void integrateObjectsWithValidationResults() {
         /*
@@ -691,7 +691,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         completeIP(ip_Code_TC6);
     }
 
-    @Test(priority = 7, description = "Complete NRP Process", dependsOnMethods = {
+    @Test(priority = 8, description = "Complete NRP Process", dependsOnMethods = {
             "integrateObjectsWithoutAnyPrerequisites", "integrateObjectsWithInternalPrerequisites",
             "integrateObjectsWithExternalPrerequisites", "integrateObjectsWithTechnicalPlannedActions",
             "integrateObjectsWithValidationResults"})
@@ -714,7 +714,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 COMPLETED_STATUS, String.format(INVALID_PROCESS_STATUS_LOG_PATTERN, NRP_TC_MAIN_NAME));
     }
 
-    @Test(priority = 8, description = "Checking asserts")
+    @Test(priority = 9, description = "Checking asserts")
     @Description("Checking asserts")
     public void checkSoftAsserts() {
         softAssert.assertAll();
