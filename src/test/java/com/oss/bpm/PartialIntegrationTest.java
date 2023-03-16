@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -175,7 +174,8 @@ public class PartialIntegrationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @BeforeClass
+    @Test(priority = 1, description = "Prepare processes and objects")
+    @Description("Prepare processes and objects")
     public void prepareObjectsAndProcesses() {
         softAssert = new SoftAssert();
         PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
