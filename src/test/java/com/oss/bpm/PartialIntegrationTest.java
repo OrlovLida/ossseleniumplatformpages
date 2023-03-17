@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -122,6 +123,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     private static final String DEVICE_SLOT_NAME = "MDA 1";
     private static final String DEVICE_IDENTIFIER1 = IP_DEVICE_NAME + "(%s)";
     private static final String PARTIAL_INTEGRATION_WIZARD_OPEN = "Partial Integration wizard is still opened after test. It will be closed now.";
+    private static final String OBJECTS_NOT_MOVED_TO_IP_MESSAGE = "Some objects are not moved from %s to IPs.";
     private final Logger log = LoggerFactory.getLogger(PartialIntegrationTest.class);
     private SoftAssert softAssert;
     private String nrp_Code_TC_MAIN;
@@ -174,19 +176,20 @@ public class PartialIntegrationTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
 
-    @Test(priority = 1, description = "Prepare processes and objects")
-    @Description("Prepare processes and objects")
+    @BeforeClass
     public void prepareObjectsAndProcesses() {
         softAssert = new SoftAssert();
         PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
-
         //create NRP,DCP processes
         nrp_Code_TC_MAIN = plannersViewPage.createProcessIPD(NRP_TC_MAIN_NAME, 5L, NRP);
         log.info("Main NRP Code: " + nrp_Code_TC_MAIN);
+        PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         nrp_Code_TC5_1 = plannersViewPage.createProcessIPD(NRP_TC5_NAME, 5L, NRP);
         log.info("TC5_1 NRP Code: " + nrp_Code_TC5_1);
+        PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         dcp_Code_TC5_2 = plannersViewPage.createProcessIPD(DCP_TC5_NAME, 5L, DCP);
         log.info("TC5_2 DCP Code: " + dcp_Code_TC5_2);
+        PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
 
         PlanningContext nrp_TC_MAIN_plan = PlanningContext.plan(plannersViewPage.getProjectId(nrp_Code_TC_MAIN));
         log.info("Main NRP project ID: " + nrp_TC_MAIN_plan.getProjectId());
@@ -199,6 +202,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         buildingId_TC_MAIN = createBuilding(BUILDING_NAME_TC_MAIN, LIVE);
         log.info("Main Building id: " + buildingId_TC_MAIN);
         tasksPage.startTask(nrp_Code_TC_MAIN, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
+        homePage.goToHomePage(driver, BASIC_URL);
 
         //FOR TC1
         waitForPageToLoad();
@@ -253,6 +257,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         cardId_TC6_2 = createCardForDevice(deviceId_TC6_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
         log.info(String.format("TC6_2 Device ID: %1$s, Card ID: %2$s", deviceId_TC6_2, cardId_TC6_2));
 
+        TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.proceedNRPToReadyForIntegrationTask(nrp_Code_TC_MAIN);
 
         SetupIntegrationProperties setupIntegrationProperties_IP_TC1 = SetupIntegrationProperties.builder()
@@ -323,6 +328,9 @@ public class PartialIntegrationTest extends BaseTestCase {
         ip_Code_TC3_2 = ipCodes.get(3);
         ip_Code_TC4 = ipCodes.get(4);
         ip_Code_TC6 = ipCodes.get(5);
+        ProcessDetailsPage processDetailsPage = tasksPage.clickPlanViewButton();
+        Assert.assertEquals(processDetailsPage.getObjectsAmount(), 0, String.format(OBJECTS_NOT_MOVED_TO_IP_MESSAGE, nrp_Code_TC_MAIN));
+        processDetailsPage.closeProcessDetailsPromt();
         tasksPage.completeTask(nrp_Code_TC_MAIN, TasksPageV2.READY_FOR_INTEGRATION_TASK);
 
         //FOR TC5
@@ -363,7 +371,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         log.info("TC6_2 VR uuid: " + vrId_TC6_2);
     }
 
-    @Test(priority = 2, description = "Integrate Object without prerequisites", dependsOnMethods = {"prepareObjectsAndProcesses"})
+    @Test(priority = 1, description = "Integrate Object without prerequisites")
     @Description("User is able to integrate to LIVE objects without any prerequisites.")
     public void integrateObjectsWithoutAnyPrerequisites() {
         /*
@@ -409,7 +417,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         completeIP(ip_Code_TC1);
     }
 
-    @Test(priority = 3, description = "Integrate Objects with prerequisites in the same project.", dependsOnMethods = {"prepareObjectsAndProcesses"})
+    @Test(priority = 2, description = "Integrate Objects with prerequisites in the same project.")
     @Description("User is able to integrate to LIVE objects with their subsequents/prerequisites in the same project.")
     public void integrateObjectsWithInternalPrerequisites() {
         /*
@@ -487,7 +495,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         completeIP(ip_Code_TC2);
     }
 
-    @Test(priority = 4, description = "Integrate objects with prerequisites/subsequents in other project.", dependsOnMethods = {"prepareObjectsAndProcesses"})
+    @Test(priority = 3, description = "Integrate objects with prerequisites/subsequents in other project.")
     @Description("User is not able to integrate to LIVE objects which have prerequisites in the other planning project, but user can integrate objects which have subsequents in the other project.")
     public void integrateObjectsWithExternalPrerequisites() {
         /*
@@ -575,7 +583,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         completeIP(ip_Code_TC3_2);
     }
 
-    @Test(priority = 5, description = "Integrate objects with technical Planned Actions.", dependsOnMethods = {"prepareObjectsAndProcesses"})
+    @Test(priority = 4, description = "Integrate objects with technical Planned Actions.")
     @Description("User is able to integrate to LIVE objects which have technical PAs.")
     public void integrateObjectsWithTechnicalPlannedActions() {
         /*
@@ -622,7 +630,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         completeIP(ip_Code_TC4);
     }
 
-    @Test(priority = 6, description = " Try to Integrate objects to LIVE from NRP, DRP, DCP processes.", dependsOnMethods = {"prepareObjectsAndProcesses"})
+    @Test(priority = 5, description = " Try to Integrate objects to LIVE from NRP, DRP, DCP processes.")
     @Description("User is not able to integrate to LIVE objects which are processing in NRP, DRP, DCP process.")
     public void TryToIntegrateObjectsFromDRP_NRP_DCP() {
         PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
@@ -634,7 +642,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 String.format(WIZARD_OPENED_LOG_PATTERN, dcp_Code_TC5_2));
     }
 
-    @Test(priority = 7, description = "Integrate objects with Validation Results.", dependsOnMethods = {"prepareObjectsAndProcesses"})
+    @Test(priority = 6, description = "Integrate objects with Validation Results.")
     @Description("User is not able to integrate to LIVE objects which have unresolved Validation Results.")
     public void integrateObjectsWithValidationResults() {
         /*
@@ -691,7 +699,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         completeIP(ip_Code_TC6);
     }
 
-    @Test(priority = 8, description = "Complete NRP Process", dependsOnMethods = {
+    @Test(priority = 7, description = "Complete NRP Process", dependsOnMethods = {
             "integrateObjectsWithoutAnyPrerequisites", "integrateObjectsWithInternalPrerequisites",
             "integrateObjectsWithExternalPrerequisites", "integrateObjectsWithTechnicalPlannedActions",
             "integrateObjectsWithValidationResults"})
@@ -714,7 +722,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 COMPLETED_STATUS, String.format(INVALID_PROCESS_STATUS_LOG_PATTERN, NRP_TC_MAIN_NAME));
     }
 
-    @Test(priority = 9, description = "Checking asserts")
+    @Test(priority = 8, description = "Checking asserts")
     @Description("Checking asserts")
     public void checkSoftAsserts() {
         softAssert.assertAll();
