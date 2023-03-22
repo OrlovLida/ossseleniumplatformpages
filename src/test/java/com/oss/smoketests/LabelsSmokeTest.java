@@ -159,7 +159,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 2, description = "Check Inventory View for Site", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"}, enabled = false)
+    @Test(priority = 2, description = "Check Inventory View for Site", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
     @Description("Check Inventory View for Site")
     public void checkInventoryViewForSite() {
         openInventoryViewForGivenObjectType(SITE_OBJECT_TYPE);
@@ -171,7 +171,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkSiteContextActions();
     }
 
-    @Test(priority = 3, description = "Check Inventory View for Router", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"}, enabled = false)
+    @Test(priority = 3, description = "Check Inventory View for Router", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
     @Description("Check Inventory View for Router")
     public void checkInventoryViewForRouter() {
         openInventoryViewForGivenObjectType(ROUTER_OBJECT_TYPE);
@@ -195,7 +195,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkENodeBContextActions();
     }
 
-    @Test(priority = 5, description = "Check Inventory View for Ethernet Interface", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"}, enabled = false)
+    @Test(priority = 5, description = "Check Inventory View for Ethernet Interface", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
     @Description("Check Inventory View for Ethernet Interface")
     public void checkInventoryViewForEthernetInterface() {
         openInventoryViewForGivenObjectType(ETHERNET_INTERFACE_OBJECT_TYPE);
