@@ -24,6 +24,7 @@ import com.oss.pages.dms.CreateDirectoryWizardPage;
 import com.oss.pages.dms.GlobalAttachmentManagerPage;
 import com.oss.pages.dms.UpdateDirectoryWizardPage;
 import com.oss.pages.platform.HomePage;
+import com.oss.untils.FakeGenerator;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
@@ -41,8 +42,8 @@ public class GlobalAttachmentManagerSmokeTest extends BaseTestCase {
     private static final String RESOURCE_INVENTORY_CATEGORY_NAME = "Resource Inventory";
     private static final String GLOBAL_ATTACHMENT_MANAGER_APPLICATION_NAME = "Global Attachment Manager";
     private static final String FILE_NAME = "GamTest.txt";
-    private static final String DIRECTORY_NAME = "01SmokeTestDirectory";
-    private static final String UPDATED_DIRECTORY_NAME = "02SmokeTestUpdatedFolder";
+    private static final String DIRECTORY_NAME = "01SmokeTestDirectory " + FakeGenerator.getIdNumber();
+    private static final String UPDATED_DIRECTORY_NAME = "02SmokeTestUpdatedFolder " + FakeGenerator.getIdNumber();
     private static final String UPDATED_TAG_FOLDER = "tagtest";
     private static final String EXPECTED_TAGS_LIST = "tagtest, tagsmoke";
     private static final String TAG_FOLDER = "tagsmoke";
