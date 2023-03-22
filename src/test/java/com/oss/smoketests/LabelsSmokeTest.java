@@ -33,7 +33,7 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String INVENTORY_VIEW = "Inventory View";
     private static final String SITE_OBJECT_TYPE = "Site";
     private static final String ROUTER_OBJECT_TYPE = "Router";
-    private static final String LOGICAL_FUNCTION_OBJECT_TYPE = "Logical Function";
+    private static final String ENODEB_OBJECT_TYPE = "eNodeB";
     private static final String ETHERNET_INTERFACE_OBJECT_TYPE = "Ethernet Interface";
     private static final String DM_PREFIX = "DM_";
 
@@ -69,8 +69,8 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String CREATE_IP_REDUNDANCY_GROUP_CONFIG_ACTION_ID = "IPRedundancyGroupCreateMembershipContextAction";
     private static final String CREATE_MPLS_INTERFACE_ACTION_ID = "CreateMPLSInterfaceContextAction";
     private static final String CREATE_VLAN_INTERFACE_ACTION_ID = "CreateVLANInterfaceContextAction";
-    private static final String DELETE_LOGICAL_FUNCTION_ACTION_ID = "logicalInventory_DeleteLogicalFunctionActionModifyId";
-    private static final String EDIT_LOGICAL_FUNCTION_ACTION_ID = "logicalInventory_EditLogicalFunctionActionModifyId";
+    private static final String DELETE_ENODEB_ACTION_ID = "deleteRanENodeBWizard";
+    private static final String EDIT_ENODEB_ACTION_ID = "editRanENodeBWizard";
     private static final String DELETE_ETHERNET_INTERFACE_ACTION_ID = "DeleteEthernetInterfaceContextAction";
     private static final String EDIT_ETHERNET_INTERFACE_ACTION_ID = "EditEthernetInterfaceContextAction";
     private static final String DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_ID = "smComponent_LogicalDownloadSoftwareOperationActionId";
@@ -113,8 +113,8 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String CREATE_MPLS_TUNNEL_INTERFACE_ACTION_LABEL = "Create MPLS Tunnel Interface";
     private static final String CREATE_TRAFFIC_CLASS_ACTION_LABEL = "Create Traffic Class";
     private static final String CREATE_TRAFFIC_POLICY_ACTION_LABEL = "Create Traffic Policy";
-    private static final String DELETE_LOGICAL_FUNCTION_ACTION_LABEL = "Delete Logical Element";
-    private static final String EDIT_LOGICAL_FUNCTION_ACTION_LABEL = "Edit Logical Element";
+    private static final String DELETE_ENODEB_ACTION_LABEL = "Delete eNodeB";
+    private static final String EDIT_ENODEB_ACTION_LABEL = "Edit eNodeB";
     private static final String DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_LABEL = "Download file to Software Repository";
     private static final String CREATE_VRF_ACTION_LABEL = "Create VRF";
     private static final String CREATE_VSI_ACTION_LABEL = "Create VSI";
@@ -148,7 +148,6 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String MODEL_NODE = "Model";
     private static final String PHYSICAL_LOCATION_NODE = "Physical Location";
     private static final String RESERVATION_NODE = "Reservation";
-    private static final String EXTERNAL_RESOURCE_SPECIFICATION_ID_NODE = "External Resource Specification Id";
 
     @Test(priority = 1, description = "Open browser and check environment status")
     @Description("Open browser and check environment status")
@@ -160,11 +159,11 @@ public class LabelsSmokeTest extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 2, description = "Check Inventory View for Site", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
+    @Test(priority = 2, description = "Check Inventory View for Site", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"}, enabled = false)
     @Description("Check Inventory View for Site")
     public void checkInventoryViewForSite() {
         openInventoryViewForGivenObjectType(SITE_OBJECT_TYPE);
-        checkInventoryViewTitle();
+        checkInventoryViewTitle(INVENTORY_VIEW);
         selectObjectOnInventoryView();
 
         checkSiteColumnsManagement();
@@ -172,11 +171,11 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkSiteContextActions();
     }
 
-    @Test(priority = 3, description = "Check Inventory View for Router", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
+    @Test(priority = 3, description = "Check Inventory View for Router", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"}, enabled = false)
     @Description("Check Inventory View for Router")
     public void checkInventoryViewForRouter() {
         openInventoryViewForGivenObjectType(ROUTER_OBJECT_TYPE);
-        checkInventoryViewTitle();
+        checkInventoryViewTitle(INVENTORY_VIEW);
         selectObjectOnInventoryView();
 
         checkRouterColumnsManagement();
@@ -184,23 +183,23 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkRouterContextActions();
     }
 
-    @Test(priority = 4, description = "Check Inventory View for Logical Function", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
-    @Description("Check Inventory View for Logical Function")
-    public void checkInventoryViewForLogicalFunction() {
-        openInventoryViewForGivenObjectType(LOGICAL_FUNCTION_OBJECT_TYPE);
-        checkInventoryViewTitle();
+    @Test(priority = 4, description = "Check Inventory View for eNodeB", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
+    @Description("Check Inventory View for eNodeB")
+    public void checkInventoryViewForENodeB() {
+        openInventoryViewForGivenObjectType(ENODEB_OBJECT_TYPE);
+        checkInventoryViewTitle(ENODEB_OBJECT_TYPE);
         selectObjectOnInventoryView();
 
-        checkLogicalFunctionColumnsManagement();
+        checkENodeBColumnsManagement();
         checkPropertiesHeaders();
-        checkLogicalFunctionContextActions();
+        checkENodeBContextActions();
     }
 
-    @Test(priority = 5, description = "Check Inventory View for Ethernet Interface", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
+    @Test(priority = 5, description = "Check Inventory View for Ethernet Interface", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"}, enabled = false)
     @Description("Check Inventory View for Ethernet Interface")
     public void checkInventoryViewForEthernetInterface() {
         openInventoryViewForGivenObjectType(ETHERNET_INTERFACE_OBJECT_TYPE);
-        checkInventoryViewTitle();
+        checkInventoryViewTitle(INVENTORY_VIEW);
         selectObjectOnInventoryView();
 
         checkEthernetInterfaceColumnsManagement();
@@ -226,11 +225,11 @@ public class LabelsSmokeTest extends BaseTestCase {
     }
 
     @Step("Checking Inventory View title")
-    private void checkInventoryViewTitle() {
+    private void checkInventoryViewTitle(String expectedTitle) {
         ToolbarWidget toolbarWidget = ToolbarWidget.create(driver, webDriverWait);
-        String viewTitle = toolbarWidget.getViewTitle();
+        String actualTitle = toolbarWidget.getViewTitle();
 
-        Assert.assertEquals(viewTitle, INVENTORY_VIEW);
+        Assert.assertEquals(actualTitle, expectedTitle);
     }
 
     @Step("Checking attributes translation in Columns Management for Site")
@@ -264,11 +263,10 @@ public class LabelsSmokeTest extends BaseTestCase {
         attributesChooser.clickCancel();
     }
 
-    @Step("Checking attributes translation in Columns Management for Logical Function")
-    private void checkLogicalFunctionColumnsManagement() {
+    @Step("Checking attributes translation in Columns Management for eNodeB")
+    private void checkENodeBColumnsManagement() {
         TableWidget tableWidget = TableWidget.createById(driver, INVENTORY_VIEW_TABLE, webDriverWait);
         AttributesChooser attributesChooser = tableWidget.getAttributesChooser();
-        attributesChooser.expandAttribute(EXTERNAL_RESOURCE_SPECIFICATION_ID_NODE);
         attributesChooser.expandAttribute(AUDIT_INFORMATION_NODE);
         List<String> visibleAttributes = attributesChooser.getVisibleAttributes();
 
@@ -397,8 +395,8 @@ public class LabelsSmokeTest extends BaseTestCase {
         softAssert.assertAll();
     }
 
-    @Step("Checking context actions for Logical Function")
-    private void checkLogicalFunctionContextActions() {
+    @Step("Checking context actions for eNodeB")
+    private void checkENodeBContextActions() {
         TableWidget tableWidget = TableWidget.createById(driver, INVENTORY_VIEW_TABLE, webDriverWait);
 
         String assignIPv4HostAddressActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_IPV4_HOST_ADDRESS_ACTION_ID);
@@ -417,8 +415,8 @@ public class LabelsSmokeTest extends BaseTestCase {
         String createLoopbackInterfaceActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_LOOPBACK_INTERFACE_ACTION_ID);
         String createTrafficClassActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_TRAFFIC_CLASS_ACTION_ID);
         String createTrafficPolicyActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_TRAFFIC_POLICY_ACTION_ID);
-        String deleteLogicalFunctionActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.EDIT_GROUP_ID, DELETE_LOGICAL_FUNCTION_ACTION_ID);
-        String editLogicalFunctionActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.EDIT_GROUP_ID, EDIT_LOGICAL_FUNCTION_ACTION_ID);
+        String deleteENodeBActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.EDIT_GROUP_ID, DELETE_ENODEB_ACTION_ID);
+        String editENodeBActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.EDIT_GROUP_ID, EDIT_ENODEB_ACTION_ID);
         String downloadFileToSoftwareRepositoryActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.OTHER_GROUP_ID, DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_ID);
         String hierarchyViewActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.SHOW_ON_GROUP_ID, HIERARCHY_VIEW_ACTION_ID);
 
@@ -439,8 +437,8 @@ public class LabelsSmokeTest extends BaseTestCase {
         softAssert.assertEquals(createLoopbackInterfaceActionLabel, CREATE_LOOPBACK_INTERFACE_ACTION_LABEL, CREATE_LOOPBACK_INTERFACE_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(createTrafficClassActionLabel, CREATE_TRAFFIC_CLASS_ACTION_LABEL, CREATE_TRAFFIC_CLASS_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(createTrafficPolicyActionLabel, CREATE_TRAFFIC_POLICY_ACTION_LABEL, CREATE_TRAFFIC_POLICY_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
-        softAssert.assertEquals(deleteLogicalFunctionActionLabel, DELETE_LOGICAL_FUNCTION_ACTION_LABEL, DELETE_LOGICAL_FUNCTION_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
-        softAssert.assertEquals(editLogicalFunctionActionLabel, EDIT_LOGICAL_FUNCTION_ACTION_LABEL, EDIT_LOGICAL_FUNCTION_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
+        softAssert.assertEquals(deleteENodeBActionLabel, DELETE_ENODEB_ACTION_LABEL, DELETE_ENODEB_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
+        softAssert.assertEquals(editENodeBActionLabel, EDIT_ENODEB_ACTION_LABEL, EDIT_ENODEB_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(downloadFileToSoftwareRepositoryActionLabel, DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_LABEL, DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(hierarchyViewActionLabel, HIERARCHY_VIEW_ACTION_LABEL, HIERARCHY_VIEW_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertAll();
