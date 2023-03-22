@@ -143,7 +143,6 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String LOCATION_NODE = "Location";
     private static final String PHYSICAL_DEVICE_NODE = "Physical Device";
     private static final String LOGICAL_FUNCTION_NODE = "Logical Function";
-    private static final String CAPACITY_NODE = "Capacity";
     private static final String AUDIT_INFORMATION_NODE = "Audit Information";
     private static final String BLOCKADE_NODE = "Blockade";
     private static final String MODEL_NODE = "Model";
