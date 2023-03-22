@@ -63,6 +63,9 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
     private static final String REMARKS_VALUE = "remarks";
     private static final String DIMENSION_VALUE = "2.0447";
     private static final String RACK_MODEL_VALUE = "19\" 46U 1000x1000 (Bottom-Up)";
+    private static final String RACK_MODEL_HEIGHT_VALUE = "2.0447";
+    private static final String RACK_MODEL_WIDTH_VALUE = "1";
+    private static final String RACK_MODEL_DEPTH_VALUE = "1";
 
     private static final String ADVANCED_SEARCH_ID = "advancedSearch";
     private static final String INVENTORY_VIEW_ID = "InventoryView";
@@ -321,8 +324,9 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
                 String heightValue = sublocation.getHeight();
                 String widthValue = sublocation.getWidth();
                 String depthValue = sublocation.getDepth();
-                sublocation.setSublocationModel(RACK_MODEL_VALUE);
                 sublocation.setSublocationName(SUBLOCATION_NAME + DIMENSION_VALUE);
+                sublocation.setSublocationModel(RACK_MODEL_VALUE);
+                DelayUtils.waitForPageToLoad(driver, webDriverWait);
                 String editedHeightValue = sublocation.getHeight();
                 String editedWidthValue = sublocation.getWidth();
                 String editedDepthValue = sublocation.getDepth();
@@ -361,6 +365,9 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
 
 
             if (id.equals(rackId)) {
+                checkSublocationAttributeByValue(RACK_MODEL_HEIGHT_VALUE, HEIGHT_ID, DIFFERENT_HEIGHT_MESSAGE);
+                checkSublocationAttributeByValue(RACK_MODEL_WIDTH_VALUE, WIDTH_ID, DIFFERENT_WIDTH_MESSAGE);
+                checkSublocationAttributeByValue(RACK_MODEL_DEPTH_VALUE, DEPTH_ID, DIFFERENT_DEPTH_MESSAGE);
                 checkSublocationAttributeByValue(RACK_MODEL_MANUFACTURER_MODEL_NAME, MODEL_MANUFACTURER_ID, DIFFERENT_MANUFACTURER_MODEL_NAME_MESSAGE);
                 checkSublocationAttributeByValue(RACK_MODEL_VALUE, MODEL_NAME_ID, DIFFERENT_MODEL_NAME_MESSAGE);
                 checkSublocationAttributeByValue(SUBLOCATION_NAME + DIMENSION_VALUE, NAME_ID, DIFFERENT_NAME_MESSAGE);
@@ -400,6 +407,9 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
             }
 
             if (id.equals(rackId)) {
+                checkSublocationAttributeByValue(RACK_MODEL_HEIGHT_VALUE, HEIGHT_ID, DIFFERENT_HEIGHT_MESSAGE);
+                checkSublocationAttributeByValue(RACK_MODEL_WIDTH_VALUE, WIDTH_ID, DIFFERENT_WIDTH_MESSAGE);
+                checkSublocationAttributeByValue(RACK_MODEL_DEPTH_VALUE, DEPTH_ID, DIFFERENT_DEPTH_MESSAGE);
                 checkSublocationAttributeByValue(RACK_MODEL_MANUFACTURER_MODEL_NAME, MODEL_MANUFACTURER_ID, DIFFERENT_MANUFACTURER_MODEL_NAME_MESSAGE);
                 checkSublocationAttributeByValue(RACK_MODEL_VALUE, MODEL_NAME_ID, DIFFERENT_MODEL_NAME_MESSAGE);
                 checkSublocationAttributeByValue(SUBLOCATION_NAME + DIMENSION_VALUE, NAME_ID, DIFFERENT_NAME_MESSAGE);
