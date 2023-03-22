@@ -51,10 +51,7 @@ public class Environment {
     private static final String KEYCLOAK_USERNAME_PROP = "keycloak.username";
     private static final String FIXED_ACCESS_CORE = "fixed-access";
     private static final String TRAIL_CORE = "trail-core";
-
     private static final Integer CURRENT_TOKEN_IDENTIFIER = 1;
-    private static final Configuration CONFIGURATION = new Configuration();
-
     private static Environment env;
     private final String keycloakUserName;
     private final String keycloakUserPassword;
@@ -73,9 +70,10 @@ public class Environment {
                     });
 
     private Environment() {
-        this.basePath = CONFIGURATION.getUrl();
-        this.keycloakUserName = System.getProperty(KEYCLOAK_USERNAME_PROP, CONFIGURATION.getLogin());
-        this.keycloakUserPassword = System.getProperty(KEYCLOAK_PASS_PROP, CONFIGURATION.getPassword());
+        Configuration configuration = new Configuration();
+        this.basePath = configuration.getUrl();
+        this.keycloakUserName = System.getProperty(KEYCLOAK_USERNAME_PROP, configuration.getLogin());
+        this.keycloakUserPassword = System.getProperty(KEYCLOAK_PASS_PROP, configuration.getPassword());
 
         Preconditions.checkNotNull(keycloakUserName, "Provide keycloak.username java parameter");
         Preconditions.checkNotNull(keycloakUserPassword, "Provide keycloak.pass java parameter");
