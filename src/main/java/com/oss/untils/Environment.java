@@ -95,10 +95,7 @@ public class Environment {
     }
 
     public static synchronized Environment getInstance(String baseUrl, String userName, String password) {
-        if (env == null) {
-            env = new Environment(baseUrl, userName, password);
-        }
-        return env;
+        return new Environment(baseUrl, userName, password);
     }
 
     public String getKeycloackToken() {
