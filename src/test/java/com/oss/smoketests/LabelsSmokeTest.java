@@ -26,14 +26,12 @@ import io.qameta.allure.Step;
 
 public class LabelsSmokeTest extends BaseTestCase {
 
-    private static final String INVENTORY_VIEW_TABLE = "MainTableWidget";
-    public static final String PROPERTY_PANEL_WIDGET = "PropertyPanelWidget";
     private static final Logger LOGGER = LoggerFactory.getLogger(LabelsSmokeTest.class);
     private static final String RESOURCE_INVENTORY_CATEGORY = "Resource Inventory";
     private static final String INVENTORY_VIEW = "Inventory View";
     private static final String SITE_OBJECT_TYPE = "Site";
     private static final String ROUTER_OBJECT_TYPE = "Router";
-    private static final String ENODEB_OBJECT_TYPE = "eNodeB";
+    private static final String E_NODE_B_OBJECT_TYPE = "eNodeB";
     private static final String ETHERNET_INTERFACE_OBJECT_TYPE = "Ethernet Interface";
     private static final String DM_PREFIX = "DM_";
 
@@ -69,8 +67,8 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String CREATE_IP_REDUNDANCY_GROUP_CONFIG_ACTION_ID = "IPRedundancyGroupCreateMembershipContextAction";
     private static final String CREATE_MPLS_INTERFACE_ACTION_ID = "CreateMPLSInterfaceContextAction";
     private static final String CREATE_VLAN_INTERFACE_ACTION_ID = "CreateVLANInterfaceContextAction";
-    private static final String DELETE_ENODEB_ACTION_ID = "deleteRanENodeBWizard";
-    private static final String EDIT_ENODEB_ACTION_ID = "editRanENodeBWizard";
+    private static final String DELETE_E_NODE_B_ACTION_ID = "deleteRanENodeBWizard";
+    private static final String EDIT_E_NODE_B_ACTION_ID = "editRanENodeBWizard";
     private static final String DELETE_ETHERNET_INTERFACE_ACTION_ID = "DeleteEthernetInterfaceContextAction";
     private static final String EDIT_ETHERNET_INTERFACE_ACTION_ID = "EditEthernetInterfaceContextAction";
     private static final String DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_ID = "smComponent_LogicalDownloadSoftwareOperationActionId";
@@ -80,7 +78,7 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String CREATE_PORTS_ACTION_ID = "CreatePortInDeviceAction";
     private static final String CREATE_SLOT_ACTION_ID = "CreateSlotAction";
     private static final String CREATE_PHYSICAL_DEVICE_ACTION_ID = "CreateDeviceOnLocationWizardAction";
-    private static final String CREATE_ENODEB_ACTION_ID = "createRanENodeBOnLocationWizard";
+    private static final String CREATE_E_NODE_B_ACTION_ID = "createRanENodeBOnLocationWizard";
     private static final String DELETE_LOCATION_ACTION_ID = "RemoveLocationWizardAction";
     private static final String EDIT_LOCATION_ACTION_ID = "UpdateLocationWizardAction";
     private static final String CHANGE_LOCATION_ACTION_ID = "DeviceChangeLocationAction";
@@ -113,8 +111,8 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String CREATE_MPLS_TUNNEL_INTERFACE_ACTION_LABEL = "Create MPLS Tunnel Interface";
     private static final String CREATE_TRAFFIC_CLASS_ACTION_LABEL = "Create Traffic Class";
     private static final String CREATE_TRAFFIC_POLICY_ACTION_LABEL = "Create Traffic Policy";
-    private static final String DELETE_ENODEB_ACTION_LABEL = "Delete eNodeB";
-    private static final String EDIT_ENODEB_ACTION_LABEL = "Edit eNodeB";
+    private static final String DELETE_E_NODE_B_ACTION_LABEL = "Delete eNodeB";
+    private static final String EDIT_E_NODE_B_ACTION_LABEL = "Edit eNodeB";
     private static final String DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_LABEL = "Download file to Software Repository";
     private static final String CREATE_VRF_ACTION_LABEL = "Create VRF";
     private static final String CREATE_VSI_ACTION_LABEL = "Create VSI";
@@ -122,7 +120,7 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String CREATE_PORTS_ACTION_LABEL = "Ports";
     private static final String CREATE_SLOT_ACTION_LABEL = "Slot";
     private static final String CREATE_PHYSICAL_DEVICE_ACTION_LABEL = "Create Physical Device";
-    private static final String CREATE_ENODEB_ACTION_LABEL = "eNodeB";
+    private static final String CREATE_E_NODE_B_ACTION_LABEL = "eNodeB";
     private static final String CREATE_IP_REDUNDANCY_GROUP_CONFIG_ACTION_LABEL = "Create IP Redundancy Group Config";
     private static final String CREATE_MPLS_INTERFACE_ACTION_LABEL = "Create MPLS Interface";
     private static final String CREATE_VLAN_INTERFACE_ACTION_LABEL = "Create VLAN Interface";
@@ -186,8 +184,8 @@ public class LabelsSmokeTest extends BaseTestCase {
     @Test(priority = 4, description = "Check Inventory View for eNodeB", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
     @Description("Check Inventory View for eNodeB")
     public void checkInventoryViewForENodeB() {
-        openInventoryViewForGivenObjectType(ENODEB_OBJECT_TYPE);
-        checkInventoryViewTitle(ENODEB_OBJECT_TYPE);
+        openInventoryViewForGivenObjectType(E_NODE_B_OBJECT_TYPE);
+        checkInventoryViewTitle(E_NODE_B_OBJECT_TYPE);
         selectObjectOnInventoryView();
 
         checkENodeBColumnsManagement();
@@ -234,8 +232,8 @@ public class LabelsSmokeTest extends BaseTestCase {
 
     @Step("Checking attributes translation in Columns Management for Site")
     private void checkSiteColumnsManagement() {
-        TableWidget tableWidget = TableWidget.createById(driver, INVENTORY_VIEW_TABLE, webDriverWait);
-        AttributesChooser attributesChooser = tableWidget.getAttributesChooser();
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        AttributesChooser attributesChooser = newInventoryViewPage.getMainTable().getAttributesChooser();
         attributesChooser.expandAttribute(LOCATION_NODE);
         attributesChooser.expandAttribute(AUDIT_INFORMATION_NODE);
         attributesChooser.expandAttribute(BLOCKADE_NODE);
@@ -250,8 +248,8 @@ public class LabelsSmokeTest extends BaseTestCase {
 
     @Step("Checking attributes translation in Columns Management for Router")
     private void checkRouterColumnsManagement() {
-        TableWidget tableWidget = TableWidget.createById(driver, INVENTORY_VIEW_TABLE, webDriverWait);
-        AttributesChooser attributesChooser = tableWidget.getAttributesChooser();
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        AttributesChooser attributesChooser = newInventoryViewPage.getMainTable().getAttributesChooser();
         attributesChooser.expandAttribute(MODEL_NODE);
         attributesChooser.expandAttribute(LOCATION_NODE);
         attributesChooser.expandAttribute(AUDIT_INFORMATION_NODE);
@@ -265,8 +263,8 @@ public class LabelsSmokeTest extends BaseTestCase {
 
     @Step("Checking attributes translation in Columns Management for eNodeB")
     private void checkENodeBColumnsManagement() {
-        TableWidget tableWidget = TableWidget.createById(driver, INVENTORY_VIEW_TABLE, webDriverWait);
-        AttributesChooser attributesChooser = tableWidget.getAttributesChooser();
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        AttributesChooser attributesChooser = newInventoryViewPage.getMainTable().getAttributesChooser();
         attributesChooser.expandAttribute(AUDIT_INFORMATION_NODE);
         List<String> visibleAttributes = attributesChooser.getVisibleAttributes();
 
@@ -276,8 +274,8 @@ public class LabelsSmokeTest extends BaseTestCase {
 
     @Step("Checking attributes translation in Columns Management for Ethernet Interface")
     private void checkEthernetInterfaceColumnsManagement() {
-        TableWidget tableWidget = TableWidget.createById(driver, INVENTORY_VIEW_TABLE, webDriverWait);
-        AttributesChooser attributesChooser = tableWidget.getAttributesChooser();
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        AttributesChooser attributesChooser = newInventoryViewPage.getMainTable().getAttributesChooser();
         attributesChooser.expandAttribute(PHYSICAL_DEVICE_NODE);
         attributesChooser.expandAttribute(LOGICAL_FUNCTION_NODE);
         attributesChooser.expandAttribute(AUDIT_INFORMATION_NODE);
@@ -291,7 +289,8 @@ public class LabelsSmokeTest extends BaseTestCase {
 
     @Step("Checking attributes in Property Panel")
     private void checkPropertiesHeaders() {
-        PropertyPanel propertyPanel = PropertyPanel.createById(driver, webDriverWait, PROPERTY_PANEL_WIDGET);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        PropertyPanel propertyPanel = newInventoryViewPage.getPropertyPanel();
         List<String> propertiesLabels = propertyPanel.getPropertyLabels();
 
         Assert.assertFalse(propertiesLabels.stream().anyMatch(label -> label.contains(DM_PREFIX)), PROPERTIES_TRANSLATIONS_ERROR_MESSAGE);
@@ -299,7 +298,8 @@ public class LabelsSmokeTest extends BaseTestCase {
 
     @Step("Checking context actions for Site")
     private void checkSiteContextActions() {
-        TableWidget tableWidget = TableWidget.createById(driver, INVENTORY_VIEW_TABLE, webDriverWait);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        TableWidget tableWidget = newInventoryViewPage.getMainTable();
 
         String assignExistingRegulatoryLicenseActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_EXISTING_REGULATORY_LICENSE_ACTION_ID);
         String assignIpv4SubnetActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_IPV4_SUBNET_TO_SITE_ACTION_ID);
@@ -307,7 +307,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         String assignNewRegulatoryLicenseActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_NEW_REGULATORY_LICENSE_ACTION_ID);
         String createConnectionActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_CONNECTION_ACTION_ID);
         String createPhysicalDeviceActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_PHYSICAL_DEVICE_ACTION_ID);
-        String createENodeBActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_ENODEB_ACTION_ID);
+        String createENodeBActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_E_NODE_B_ACTION_ID);
         String deleteLocationActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.EDIT_GROUP_ID, DELETE_LOCATION_ACTION_ID);
         String editLocationActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.EDIT_GROUP_ID, EDIT_LOCATION_ACTION_ID);
         String reserveLocationActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.OTHER_GROUP_ID, RESERVE_LOCATION_ACTION_ID);
@@ -320,7 +320,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         softAssert.assertEquals(assignNewRegulatoryLicenseActionLabel, ASSIGN_NEW_REGULATORY_LICENSE_ACTION_LABEL, ASSIGN_NEW_REGULATORY_LICENSE_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(createConnectionActionLabel, CREATE_CONNECTION_ACTION_LABEL, CREATE_CONNECTION_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(createPhysicalDeviceActionLabel, CREATE_PHYSICAL_DEVICE_ACTION_LABEL, CREATE_PHYSICAL_DEVICE_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
-        softAssert.assertEquals(createENodeBActionLabel, CREATE_ENODEB_ACTION_LABEL, CREATE_ENODEB_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
+        softAssert.assertEquals(createENodeBActionLabel, CREATE_E_NODE_B_ACTION_LABEL, CREATE_E_NODE_B_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(deleteLocationActionLabel, DELETE_LOCATION_ACTION_LABEL, DELETE_LOCATION_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(editLocationActionLabel, EDIT_LOCATION_ACTION_LABEL, EDIT_LOCATION_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(reserveLocationActionLabel, RESERVE_LOCATION_ACTION_LABEL, RESERVE_LOCATION_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
@@ -330,7 +330,8 @@ public class LabelsSmokeTest extends BaseTestCase {
 
     @Step("Checking context actions for Router")
     private void checkRouterContextActions() {
-        TableWidget tableWidget = TableWidget.createById(driver, INVENTORY_VIEW_TABLE, webDriverWait);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        TableWidget tableWidget = newInventoryViewPage.getMainTable();
 
         String assignIPv4HostAddressActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_IPV4_HOST_ADDRESS_ACTION_ID);
         String assignIPv4LoopbackAddressActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_IPV4_LOOPBACK_ADDRESS_ACTION_ID);
@@ -397,7 +398,8 @@ public class LabelsSmokeTest extends BaseTestCase {
 
     @Step("Checking context actions for eNodeB")
     private void checkENodeBContextActions() {
-        TableWidget tableWidget = TableWidget.createById(driver, INVENTORY_VIEW_TABLE, webDriverWait);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        TableWidget tableWidget = newInventoryViewPage.getMainTable();
 
         String assignIPv4HostAddressActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_IPV4_HOST_ADDRESS_ACTION_ID);
         String assignIPv4LoopbackAddressActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_IPV4_LOOPBACK_ADDRESS_ACTION_ID);
@@ -415,8 +417,8 @@ public class LabelsSmokeTest extends BaseTestCase {
         String createLoopbackInterfaceActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_LOOPBACK_INTERFACE_ACTION_ID);
         String createTrafficClassActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_TRAFFIC_CLASS_ACTION_ID);
         String createTrafficPolicyActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.CREATE_GROUP_ID, CREATE_TRAFFIC_POLICY_ACTION_ID);
-        String deleteENodeBActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.EDIT_GROUP_ID, DELETE_ENODEB_ACTION_ID);
-        String editENodeBActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.EDIT_GROUP_ID, EDIT_ENODEB_ACTION_ID);
+        String deleteENodeBActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.EDIT_GROUP_ID, DELETE_E_NODE_B_ACTION_ID);
+        String editENodeBActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.EDIT_GROUP_ID, EDIT_E_NODE_B_ACTION_ID);
         String downloadFileToSoftwareRepositoryActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.OTHER_GROUP_ID, DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_ID);
         String hierarchyViewActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.SHOW_ON_GROUP_ID, HIERARCHY_VIEW_ACTION_ID);
 
@@ -437,8 +439,8 @@ public class LabelsSmokeTest extends BaseTestCase {
         softAssert.assertEquals(createLoopbackInterfaceActionLabel, CREATE_LOOPBACK_INTERFACE_ACTION_LABEL, CREATE_LOOPBACK_INTERFACE_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(createTrafficClassActionLabel, CREATE_TRAFFIC_CLASS_ACTION_LABEL, CREATE_TRAFFIC_CLASS_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(createTrafficPolicyActionLabel, CREATE_TRAFFIC_POLICY_ACTION_LABEL, CREATE_TRAFFIC_POLICY_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
-        softAssert.assertEquals(deleteENodeBActionLabel, DELETE_ENODEB_ACTION_LABEL, DELETE_ENODEB_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
-        softAssert.assertEquals(editENodeBActionLabel, EDIT_ENODEB_ACTION_LABEL, EDIT_ENODEB_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
+        softAssert.assertEquals(deleteENodeBActionLabel, DELETE_E_NODE_B_ACTION_LABEL, DELETE_E_NODE_B_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
+        softAssert.assertEquals(editENodeBActionLabel, EDIT_E_NODE_B_ACTION_LABEL, EDIT_E_NODE_B_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(downloadFileToSoftwareRepositoryActionLabel, DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_LABEL, DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(hierarchyViewActionLabel, HIERARCHY_VIEW_ACTION_LABEL, HIERARCHY_VIEW_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertAll();
@@ -446,7 +448,8 @@ public class LabelsSmokeTest extends BaseTestCase {
 
     @Step("Checking context actions for Ethernet Interface")
     private void checkEthernetInterfaceContextActions() {
-        TableWidget tableWidget = TableWidget.createById(driver, INVENTORY_VIEW_TABLE, webDriverWait);
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        TableWidget tableWidget = newInventoryViewPage.getMainTable();
 
         String assignIPv4HostAddressActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_IPV4_HOST_ADDRESS_ACTION_ID);
         String assignIPv4LoopbackAddressActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.ASSIGN_GROUP_ID, ASSIGN_IPV4_LOOPBACK_ADDRESS_ACTION_ID);
