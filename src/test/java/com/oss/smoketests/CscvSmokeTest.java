@@ -214,10 +214,12 @@ public class CscvSmokeTest extends BaseTestCase {
     private void setScale() {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         String scale = cellSiteConfigurationPage.getMapScale();
-        while (!scale.contains("km") || Long.parseLong(scale.split(" ")[0]) < 100) {
+        int i = 0;
+        while ((!scale.contains("km") || Long.parseLong(scale.split(" ")[0]) < 100) && i < 10) {
             cellSiteConfigurationPage.zoomOutMap();
             waitForPageToLoad();
             scale = cellSiteConfigurationPage.getMapScale();
+            i++;
         }
     }
 
