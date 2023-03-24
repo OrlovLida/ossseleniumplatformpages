@@ -50,4 +50,14 @@
             <class name="com.oss.smoketests.PrivilegesSmokeTest"/>
         </classes>
     </test>
+    <test name="CMDomainWizardSmokeTest">
+        <classes>
+            <class name="com.oss.smoketests.CMDomainWizardSmokeTest"/>
+        </classes>
+    </test>
+    <test name="ResourceCatalogSmokeTest">
+        <classes>
+            <class name="com.oss.smoketests.ResourceCatalogSmokeTest"/>
+        </classes>
+    </test>
 </suite>
