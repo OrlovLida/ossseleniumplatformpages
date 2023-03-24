@@ -25,7 +25,7 @@ public class CreateDirectoryWizardPage extends BasePage {
 
     @Step("Set tag folder = {tagFolder}")
     public void setTagFolder(String tagFolder) {
-        getCreateDirectoryWizard().setComponentValue(TAG_FOLDER_FIELD_ID, tagFolder);
+        getCreateDirectoryWizard().getComponent(TAG_FOLDER_FIELD_ID).setSingleStringValueContains(tagFolder);
     }
 
     @Step("Click Accept")
