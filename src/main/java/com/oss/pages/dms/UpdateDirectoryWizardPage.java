@@ -25,7 +25,7 @@ public class UpdateDirectoryWizardPage extends CreateDirectoryWizardPage {
     @Override
     @Step("Set tag folder = {tagFolder}")
     public void setTagFolder(String tagFolder) {
-        getUpdateDirectoryWizard().setComponentValue(TAG_FOLDER_FIELD_ID, tagFolder);
+        getUpdateDirectoryWizard().getComponent(TAG_FOLDER_FIELD_ID).setSingleStringValueContains(tagFolder);
     }
 
     @Step("Click Accept")
