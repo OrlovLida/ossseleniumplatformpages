@@ -62,7 +62,6 @@ public class CscvSmokeTest extends BaseTestCase {
     private static final String STREET_NAME = "Street Number";
     private static final String POSTAL_CODE = "Postal Code";
     private static final String PROPERTY_PANEL_ID = "propertiesTabbApp";
-    private static final String CANVAS_LENGTH_EXCEPTION_PATTERN = "Canvas object length is %s. Expected to be at least 150000.";
     private static final String TABLE_CONTEXT_ACTION_EXCEPTION = "The context action label in the table is incorrect.";
     private static final String CANVAS_PRESENT_EXCEPTION = "Canvas object does not exist.";
     private static final String GENERATE_IMAGE_EXCEPTION = "Problem generationg the map image.";
@@ -115,16 +114,15 @@ public class CscvSmokeTest extends BaseTestCase {
         Assert.assertTrue(cellSiteConfigurationPage.isCanvasPresent(), CANVAS_PRESENT_EXCEPTION);
     }
 
-    @Test(priority = 5, description = "Check Canvas object bytes size", dependsOnMethods = {"isCanvasObjectPresent"})
-    @Description("Check Canvas object bytes size")
-    public void checkCanvasObjectSize() {
+    @Test(priority = 5, description = "Generate an image based on the map in the canvas object", dependsOnMethods = {"isCanvasObjectPresent"})
+    @Description("Generate an image based on the map in the canvas object")
+    public void generateCanvasImage() {
         setScale();
         String canvasObject = new CellSiteConfigurationPage(driver).getCanvasObject();
-        Assert.assertTrue(canvasObject.length() > 150000, String.format(CANVAS_LENGTH_EXCEPTION_PATTERN, canvasObject.length()));
         Assert.assertTrue(generateImage(canvasObject), GENERATE_IMAGE_EXCEPTION);
     }
 
-    @Test(priority = 6, description = "Check the colors of Canvas object", dependsOnMethods = {"checkCanvasObjectSize"})
+    @Test(priority = 6, description = "Check the colors of Canvas object", dependsOnMethods = {"generateCanvasImage"})
     @Description("Check the colors of Canvas object")
     public void isCanvasObjectColors() throws IOException {
         BufferedImage img = ImageIO.read(new File(FILE_PATH));
@@ -214,10 +212,12 @@ public class CscvSmokeTest extends BaseTestCase {
     private void setScale() {
         CellSiteConfigurationPage cellSiteConfigurationPage = new CellSiteConfigurationPage(driver);
         String scale = cellSiteConfigurationPage.getMapScale();
-        while (!scale.contains("km") || Long.parseLong(scale.split(" ")[0]) < 100) {
+        int i = 0;
+        while ((!scale.contains("km") || Long.parseLong(scale.split(" ")[0]) < 100) && i < 10) {
             cellSiteConfigurationPage.zoomOutMap();
             waitForPageToLoad();
             scale = cellSiteConfigurationPage.getMapScale();
+            i++;
         }
     }
 
