@@ -26,6 +26,7 @@ import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
+import com.oss.reconciliation.infrastructure.recoConfig.RecoConfigClient;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
@@ -39,6 +40,13 @@ public class BucOssNar004Test extends BaseTestCase {
     private static final String EQUIPMENT_TYPE = "Physical Device";
     private static final String ROUTER_NAME = "KRK-SSE8-45";
     private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
+    private static final String RECO_CONFIG_BODY = "{\n" +
+            "  \"adaptation-cisco-cli-ios15\": {\n" +
+            "    \"mappingDomainName\": \"CiscoCLI\",\n" +
+            "    \"assignGenericModels\": \"true\",\n" +
+            "    \"createBlackboxModels\": \"false\"\n" +
+            "  }\n" +
+            "}";
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SoftAssert softAssert;
 
@@ -62,9 +70,11 @@ public class BucOssNar004Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
-    @Description("Go to Sample Management View and upload reconciliation samples")
+    @Test(priority = 2, description = "Set properties for CM Domain and upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
+    @Description("Set the properties for the CM Domain using appropriate endpoint. Go to Sample Management View and upload reconciliation samples")
     public void uploadSamples() throws URISyntaxException, IOException {
+        RecoConfigClient recoConfigClient = RecoConfigClient.getInstance(environmentRequestClient);
+        recoConfigClient.createRecoConfig(RECO_CONFIG_BODY, CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
