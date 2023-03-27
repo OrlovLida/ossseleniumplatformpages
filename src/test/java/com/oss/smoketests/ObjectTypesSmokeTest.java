@@ -31,6 +31,7 @@ public class ObjectTypesSmokeTest extends BaseTestCase {
     private static final String DM_PREFIX = "DM_";
     private static final String SEARCH_FIELD_COMPONENT = "type-chooser";
     private static final String OBJECT_TYPE_TRANSLATION_ERROR_MESSAGE = " Object Type is not translated";
+    private static final String OBJECT_TYPE_NOT_FOUND_EXCEPTION = "Object Type is not found";
     private static final String[] OBJECT_TYPES = {"eNodeB", "Logical Function", "Router", "Physical Device", "Location", "Site", "Building", "IP Host Address", "Connection"};
 
     @Test(priority = 1, description = "Open browser and check environment status")
@@ -68,10 +69,9 @@ public class ObjectTypesSmokeTest extends BaseTestCase {
     @Description("Checking if all available options on list for {objectType} object type are translated")
     private void checkObjectTypeTranslation(String objectType) {
         Set<String> availableObjectTypes = getObjectType(objectType);
+        softAssert.assertTrue(availableObjectTypes.contains(objectType), OBJECT_TYPE_NOT_FOUND_EXCEPTION);
         for (String availableObjectType : availableObjectTypes) {
             softAssert.assertFalse(availableObjectType.contains(DM_PREFIX), availableObjectType + OBJECT_TYPE_TRANSLATION_ERROR_MESSAGE);
-            ComponentFactory.create(SEARCH_FIELD_COMPONENT, SEARCH_FIELD, driver, webDriverWait).clear();
-            waitForPageToLoad();
         }
     }
 
@@ -79,6 +79,7 @@ public class ObjectTypesSmokeTest extends BaseTestCase {
     private void checkObjectTypesTranslations() {
         for (String objectType : OBJECT_TYPES) {
             checkObjectTypeTranslation(objectType);
+            ComponentFactory.create(SEARCH_FIELD_COMPONENT, SEARCH_FIELD, driver, webDriverWait).clear();
         }
         softAssert.assertAll();
     }
