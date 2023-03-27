@@ -44,8 +44,8 @@ public class ObjectTypesSmokeTest extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 2, description = "Check Inventory View for Site", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
-    @Description("Check Inventory View for Site")
+    @Test(priority = 2, description = "Check object types labels translation on Search Page", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
+    @Description("Check object types labels translation on Search Page")
     public void checkLabelsForObjectTypes() {
         openSearchPage();
         checkObjectTypesTranslations();
