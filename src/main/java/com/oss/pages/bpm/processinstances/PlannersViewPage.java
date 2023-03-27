@@ -35,6 +35,7 @@ import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NETWORK_PLA
 
 public class PlannersViewPage extends BasePage {
     public static final String INTEGRATE_PLANNED_CHANGES_CONTEXT_ACTION_ID = "ipd_inventory_view_action_partial_activation";
+    private static final String CHANGE_FDD_CONTEXT_ACTION_ID = "ipd_inventory_view_action_change_finished_due_date";
     public static final String PLANNERS_VIEW = "Planners View";
     public static final String CREATE_GROUP_ACTION_ID = "CREATE";
     public static final String EDIT_GROUP_ID = "EDIT";
@@ -56,7 +57,9 @@ public class PlannersViewPage extends BasePage {
                     new AbstractMap.SimpleEntry<>("Connections", "process_instance_top_tabs_connections_widget"))
             .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
     private static final String CANCEL_PROCESS_BUTTON_ID = "bpm_inventory_view_action_terminate_process";
-    private static final String CANCELABLE_PROCESS_STATE = "In Progress";
+    public static final String IN_PROGRESS_STATUS = "In Progress";
+    public static final String COMPLETED_STATUS = "Completed";
+    public static final String CANCELED_STATUS = "Canceled";
     private static final String CODE_ATTRIBUTE_ID = "code";
     private static final String STATE_COLUMN_ID = "state";
 
@@ -228,7 +231,7 @@ public class PlannersViewPage extends BasePage {
 
     @Step("Checking if process is not cancellable")
     public boolean isProcessTerminable(String processCode) {
-        if (!getProcessState(processCode).equalsIgnoreCase(CANCELABLE_PROCESS_STATE)) {
+        if (!getProcessState(processCode).equalsIgnoreCase(IN_PROGRESS_STATUS)) {
             return false;
         }
         selectObjectByAttributeValue(CODE_ATTRIBUTE_ID, processCode);
@@ -246,9 +249,7 @@ public class PlannersViewPage extends BasePage {
 
     @Step("Getting state of process")
     public String getProcessState(String processCode) {
-        TreeTableWidget treeTable = getTreeTable();
-        int rowNumber = treeTable.getRowNumber(processCode, CODE_ATTRIBUTE_ID);
-        return treeTable.getCellValue(rowNumber, STATE_COLUMN_ID);
+        return selectProcess(processCode).getTreeTable().getCellValue(0, STATE_COLUMN_ID);
     }
 
     @Step("Terminate process")
@@ -359,6 +360,10 @@ public class PlannersViewPage extends BasePage {
 
     public boolean isIntegratePlannedChangesActionVisible() {
         return isActionVisible(EDIT_GROUP_ID, INTEGRATE_PLANNED_CHANGES_CONTEXT_ACTION_ID);
+    }
+
+    public boolean isChangeFDDActionVisible() {
+        return isActionVisible(EDIT_GROUP_ID, CHANGE_FDD_CONTEXT_ACTION_ID);
     }
 
     public ProcessWizardPage openProcessCreationWizard() {

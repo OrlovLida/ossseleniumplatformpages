@@ -52,6 +52,7 @@ import static com.oss.bpm.BpmPhysicalDataCreator.updateBuildingInPlan;
 import static com.oss.bpm.BpmPhysicalDataCreator.updateIPDeviceSerialNumberInPlan;
 import static com.oss.pages.bpm.planning.ProcessDetailsPage.ACTIVATED_STATUS;
 import static com.oss.pages.bpm.planning.ProcessDetailsPage.OBJECT_TYPE_ATTRIBUTE_NAME;
+import static com.oss.pages.bpm.processinstances.PlannersViewPage.COMPLETED_STATUS;
 import static com.oss.pages.bpm.processinstances.creation.ProcessWizardPage.DCP;
 import static com.oss.pages.bpm.processinstances.creation.ProcessWizardPage.NRP;
 
@@ -114,7 +115,6 @@ public class PartialIntegrationTest extends BaseTestCase {
             "{%1$s-%2$s(%3$s)}\n" +
             "See them on Process Details";
     private static final String SUPPRESSION_REASON = "Selenium suppression reason";
-    private static final String COMPLETED_STATUS = "Completed";
     private static final String INVALID_PROCESS_STATUS_LOG_PATTERN = "Invalid Process Status for %s.";
     private static final String DEVICE_MODEL = "7705 SAR-8";
     private static final String DEVICE_SLOT_NAME = "MDA 1";
@@ -735,8 +735,8 @@ public class PartialIntegrationTest extends BaseTestCase {
 
         //Assert NRP main complete Status
         PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
-        Assert.assertEquals(plannersViewPage.selectProcess(NRP_TC_MAIN_NAME).getProcessState(NRP_TC_MAIN_NAME),
-                COMPLETED_STATUS, String.format(INVALID_PROCESS_STATUS_LOG_PATTERN, NRP_TC_MAIN_NAME));
+        Assert.assertEquals(plannersViewPage.getProcessState(nrp_Code_TC_MAIN), COMPLETED_STATUS,
+                String.format(INVALID_PROCESS_STATUS_LOG_PATTERN, nrp_Code_TC_MAIN));
     }
 
     @Test(priority = 8, description = "Checking asserts")
@@ -788,10 +788,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     }
 
     private void completeIP(String ipCode) {
-        TasksPageV2 tasksPage = new TasksPageV2(driver);
-        tasksPage.completeTask(ipCode, TasksPageV2.SCOPE_DEFINITION_TASK);
-        tasksPage.startAndCompleteTask(ipCode, TasksPageV2.IMPLEMENTATION_TASK);
-        tasksPage.startAndCompleteTask(ipCode, TasksPageV2.ACCEPTANCE_TASK);
+        new TasksPageV2(driver).completeIP(ipCode);
         assertSystemMessage(TASK_COMPLETED_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_TASK_COMPLETE_SYSTEM_MESSAGE_LOG_PATTERN, ipCode));
     }
