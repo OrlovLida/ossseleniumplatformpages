@@ -35,8 +35,9 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String ETHERNET_INTERFACE_OBJECT_TYPE = "Ethernet Interface";
     private static final String DM_PREFIX = "DM_";
 
-    private static final String ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE = "Not translated attribute label";
-    private static final String PROPERTIES_TRANSLATIONS_ERROR_MESSAGE = "Not translated property label";
+    private static final String ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE = " column label is not translated";
+    private static final String PROPERTIES_TRANSLATIONS_ERROR_MESSAGE = " property label is not translated ";
+    private static final String HEADERS_TRANSLATIONS_ERROR_MESSAGE = " column header is not translated ";
     private static final String ACTION_TRANSLATION_ERROR_MESSAGE = " context Action not translated";
 
     private static final String ASSIGN_EXISTING_REGULATORY_LICENSE_ACTION_ID = "AssignLocationToRegulatoryLicenseApplicationContextAction";
@@ -139,17 +140,36 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String INVENTORY_VIEW_ACTION_LABEL = "Inventory View";
 
     private static final String LOCATION_NODE = "Location";
+    private static final String PRECISE_LOCATION_NODE = "Precise Location";
+    private static final String LOGICAL_LOCATION_NODE = "Logical Location";
+    private static final String MASTER_POSITION_ELEMENT_NODE = "Master Position Element";
+    private static final String MANAGEMENT_SYSTEM_NODE = "Management System";
+    private static final String ADDRESS_NODE = "Address";
     private static final String PHYSICAL_DEVICE_NODE = "Physical Device";
+    private static final String PORT_NODE = "Port";
+    private static final String PLUGGABLE_MODULE_NODE = "Pluggable Module";
     private static final String LOGICAL_FUNCTION_NODE = "Logical Function";
+    private static final String NETWORK_DOMAIN_NODE = "Network Domain";
+    private static final String CAPACITY_NODE = "Capacity";
     private static final String AUDIT_INFORMATION_NODE = "Audit Information";
+    private static final String ASSIGNED_TO_LOGICAL_FUNCTIONS_NODE = "Assigned To Logical Functions";
+    private static final String MASTER_ELEMENT_NODE = "Master Element";
+    private static final String COOLING_ZONE_NODE = "Cooling Zone";
+    private static final String DEVICE_CATEGORY_NODE = "Device Category";
     private static final String BLOCKADE_NODE = "Blockade";
+    private static final String MASTER_LOGICAL_FUNCTION_NODE = "Master Logical Function";
     private static final String MODEL_NODE = "Model";
     private static final String PHYSICAL_LOCATION_NODE = "Physical Location";
     private static final String RESERVATION_NODE = "Reservation";
+    private static final String RESOURCE_SPECIFICATION_NODE = "Resource Specification";
+    private static final String TEMPLATE_NODE = "Template";
+    private static final String ROOT_RESOURCE_SPECIFICATION_NODE = "Root Resource Specification";
+    private SoftAssert softAssert;
 
     @Test(priority = 1, description = "Open browser and check environment status")
     @Description("Open browser and check environment status")
     public void openBrowserAndCheckEnvironmentStatus() {
+        softAssert = new SoftAssert();
         waitForPageToLoad();
         checkErrorPage();
         checkGlobalNotificationContainer();
@@ -164,6 +184,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkInventoryViewTitle(INVENTORY_VIEW);
         selectObjectOnInventoryView();
 
+        checkColumnsHeaders();
         checkSiteColumnsManagement();
         checkPropertiesHeaders();
         checkSiteContextActions();
@@ -176,6 +197,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkInventoryViewTitle(INVENTORY_VIEW);
         selectObjectOnInventoryView();
 
+        checkColumnsHeaders();
         checkRouterColumnsManagement();
         checkPropertiesHeaders();
         checkRouterContextActions();
@@ -188,6 +210,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkInventoryViewTitle(E_NODE_B_OBJECT_TYPE);
         selectObjectOnInventoryView();
 
+        checkColumnsHeaders();
         checkENodeBColumnsManagement();
         checkPropertiesHeaders();
         checkENodeBContextActions();
@@ -200,6 +223,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkInventoryViewTitle(INVENTORY_VIEW);
         selectObjectOnInventoryView();
 
+        checkColumnsHeaders();
         checkEthernetInterfaceColumnsManagement();
         checkPropertiesHeaders();
         checkEthernetInterfaceContextActions();
@@ -235,6 +259,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         AttributesChooser attributesChooser = newInventoryViewPage.getMainTable().getAttributesChooser();
         attributesChooser.expandAttribute(LOCATION_NODE);
+        attributesChooser.expandAttribute(ADDRESS_NODE);
         attributesChooser.expandAttribute(AUDIT_INFORMATION_NODE);
         attributesChooser.expandAttribute(BLOCKADE_NODE);
         attributesChooser.expandAttribute(MODEL_NODE);
@@ -242,8 +267,12 @@ public class LabelsSmokeTest extends BaseTestCase {
         attributesChooser.expandAttribute(RESERVATION_NODE);
         List<String> visibleAttributes = attributesChooser.getVisibleAttributes();
 
-        Assert.assertFalse(visibleAttributes.stream().anyMatch(label -> label.contains(DM_PREFIX)), ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
+        for (String visibleAttribute : visibleAttributes) {
+            softAssert.assertFalse(visibleAttribute.contains(DM_PREFIX), visibleAttribute + ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
+        }
+        softAssert.assertAll();
         attributesChooser.clickCancel();
+        waitForPageToLoad();
     }
 
     @Step("Checking attributes translation in Columns Management for Router")
@@ -252,24 +281,47 @@ public class LabelsSmokeTest extends BaseTestCase {
         AttributesChooser attributesChooser = newInventoryViewPage.getMainTable().getAttributesChooser();
         attributesChooser.expandAttribute(MODEL_NODE);
         attributesChooser.expandAttribute(LOCATION_NODE);
+        attributesChooser.expandAttribute(PRECISE_LOCATION_NODE);
+        attributesChooser.expandAttribute(LOGICAL_LOCATION_NODE);
+        attributesChooser.expandAttribute(MANAGEMENT_SYSTEM_NODE);
         attributesChooser.expandAttribute(AUDIT_INFORMATION_NODE);
         attributesChooser.expandAttribute(BLOCKADE_NODE);
+        attributesChooser.expandAttribute(COOLING_ZONE_NODE);
+        attributesChooser.expandAttribute(DEVICE_CATEGORY_NODE);
+        attributesChooser.expandAttribute(LOGICAL_FUNCTION_NODE);
+        attributesChooser.expandAttribute(NETWORK_DOMAIN_NODE);
         attributesChooser.expandAttribute(RESERVATION_NODE);
         List<String> visibleAttributes = attributesChooser.getVisibleAttributes();
 
-        Assert.assertFalse(visibleAttributes.stream().anyMatch(label -> label.contains(DM_PREFIX)), ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
+        for (String visibleAttribute : visibleAttributes) {
+            softAssert.assertFalse(visibleAttribute.contains(DM_PREFIX), visibleAttribute + ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
+        }
+        softAssert.assertAll();
         attributesChooser.clickCancel();
+        waitForPageToLoad();
     }
 
     @Step("Checking attributes translation in Columns Management for eNodeB")
     private void checkENodeBColumnsManagement() {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         AttributesChooser attributesChooser = newInventoryViewPage.getMainTable().getAttributesChooser();
+        attributesChooser.expandAttribute(LOCATION_NODE);
+        attributesChooser.expandAttribute(MANAGEMENT_SYSTEM_NODE);
         attributesChooser.expandAttribute(AUDIT_INFORMATION_NODE);
+        attributesChooser.expandAttribute(MASTER_ELEMENT_NODE);
+        attributesChooser.expandAttribute(LOGICAL_LOCATION_NODE);
+        attributesChooser.expandAttribute(MASTER_POSITION_ELEMENT_NODE);
+        attributesChooser.expandAttribute(MODEL_NODE);
+        attributesChooser.expandAttribute(RESOURCE_SPECIFICATION_NODE);
+        attributesChooser.expandAttribute(ROOT_RESOURCE_SPECIFICATION_NODE);
         List<String> visibleAttributes = attributesChooser.getVisibleAttributes();
 
-        Assert.assertFalse(visibleAttributes.stream().anyMatch(label -> label.contains(DM_PREFIX)), ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
+        for (String visibleAttribute : visibleAttributes) {
+            softAssert.assertFalse(visibleAttribute.contains(DM_PREFIX), visibleAttribute + ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
+        }
+        softAssert.assertAll();
         attributesChooser.clickCancel();
+        waitForPageToLoad();
     }
 
     @Step("Checking attributes translation in Columns Management for Ethernet Interface")
@@ -277,14 +329,36 @@ public class LabelsSmokeTest extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         AttributesChooser attributesChooser = newInventoryViewPage.getMainTable().getAttributesChooser();
         attributesChooser.expandAttribute(PHYSICAL_DEVICE_NODE);
+        attributesChooser.expandAttribute(PORT_NODE);
+        attributesChooser.expandAttribute(PLUGGABLE_MODULE_NODE);
         attributesChooser.expandAttribute(LOGICAL_FUNCTION_NODE);
+        attributesChooser.expandAttribute(CAPACITY_NODE);
         attributesChooser.expandAttribute(AUDIT_INFORMATION_NODE);
+        attributesChooser.expandAttribute(ASSIGNED_TO_LOGICAL_FUNCTIONS_NODE);
         attributesChooser.expandAttribute(BLOCKADE_NODE);
+        attributesChooser.expandAttribute(MASTER_LOGICAL_FUNCTION_NODE);
         attributesChooser.expandAttribute(RESERVATION_NODE);
+        attributesChooser.expandAttribute(RESOURCE_SPECIFICATION_NODE);
+        attributesChooser.expandAttribute(TEMPLATE_NODE);
         List<String> visibleAttributes = attributesChooser.getVisibleAttributes();
 
-        Assert.assertFalse(visibleAttributes.stream().anyMatch(label -> label.contains(DM_PREFIX)), ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
+        for (String visibleAttribute : visibleAttributes) {
+            softAssert.assertFalse(visibleAttribute.contains(DM_PREFIX), visibleAttribute + ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
+        }
+        softAssert.assertAll();
         attributesChooser.clickCancel();
+        waitForPageToLoad();
+    }
+
+    @Step("Checking columns headers translation")
+    private void checkColumnsHeaders() {
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        List<String> columnsHeaders = newInventoryViewPage.getActiveColumnsHeaders();
+
+        for (String columnsHeader : columnsHeaders) {
+            softAssert.assertFalse(columnsHeader.contains(DM_PREFIX), columnsHeader + HEADERS_TRANSLATIONS_ERROR_MESSAGE);
+        }
+        softAssert.assertAll();
     }
 
     @Step("Checking attributes in Property Panel")
@@ -293,7 +367,10 @@ public class LabelsSmokeTest extends BaseTestCase {
         PropertyPanel propertyPanel = newInventoryViewPage.getPropertyPanel();
         List<String> propertiesLabels = propertyPanel.getPropertyLabels();
 
-        Assert.assertFalse(propertiesLabels.stream().anyMatch(label -> label.contains(DM_PREFIX)), PROPERTIES_TRANSLATIONS_ERROR_MESSAGE);
+        for (String propertiesLabel : propertiesLabels) {
+            softAssert.assertFalse(propertiesLabel.contains(DM_PREFIX), propertiesLabel + PROPERTIES_TRANSLATIONS_ERROR_MESSAGE);
+        }
+        softAssert.assertAll();
     }
 
     @Step("Checking context actions for Site")
