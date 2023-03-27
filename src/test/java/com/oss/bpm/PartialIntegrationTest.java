@@ -636,7 +636,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         softAssert.assertEquals(processDetailsPage.getObjectsAmount(), 2,
                 String.format(INVALID_OBJECTS_AMOUNT, ip_Code_TC4, testName));
         assertActivatedObjectStatus(deviceId_TC4_1, DEVICE_IDENTIFIER);
-        assertActivatedObjectStatus(chassisId_TC4_1, CHASSIS_IDENTIFIER1);
+        assertActivatedObjectStatus(chassisId_TC4_1, CHASSIS_IDENTIFIER);
         processDetailsPage.closeProcessDetailsPromt();
 
         //check if Technical router 2_2 is activated too
