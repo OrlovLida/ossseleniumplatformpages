@@ -337,7 +337,9 @@ public class DeviceWizardPage extends BasePage {
         if (isNextStepPresent()) {
             next();
         }
-        getDeviceWizard().clickAccept();
+        Wizard deviceWizard = getDeviceWizard();
+        deviceWizard.clickAccept();
+        deviceWizard.waitToClose();
     }
 
     @Step("Click Accept button in Update Device Wizard")
@@ -345,7 +347,9 @@ public class DeviceWizardPage extends BasePage {
         if (isNextStepPresent()) {
             nextUpdateWizard();
         }
-        getDeviceWizard().clickButtonById(ACCEPT_UPDATE_WIZARD_BUTTON_DATA_ATTRIBUTE_NAME);
+        Wizard deviceWizard = getDeviceWizard();
+        deviceWizard.clickButtonById(ACCEPT_UPDATE_WIZARD_BUTTON_DATA_ATTRIBUTE_NAME);
+        deviceWizard.waitToClose();
     }
 
     private Wizard getDeviceWizard() {
