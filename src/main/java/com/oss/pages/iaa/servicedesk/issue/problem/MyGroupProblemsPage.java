@@ -25,6 +25,12 @@ public class MyGroupProblemsPage extends BaseSearchPage {
         return this;
     }
 
+    @Step("Search fullText: {fullText}")
+    public void searchFullText(String fullText) {
+        getIssueTable().fullTextSearch(fullText);
+        log.info("Searching text: {}", fullText);
+    }
+
     public String getSearchPageUrl() {
         return MY_GROUP_PROBLEMS;
     }

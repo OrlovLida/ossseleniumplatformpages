@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 
 import com.comarch.oss.web.pages.NotificationWrapperPage;
 import com.oss.BaseTestCase;
+import com.oss.pages.iaa.servicedesk.issue.problem.MyGroupProblemsPage;
 import com.oss.pages.iaa.servicedesk.issue.task.MyTasksPage;
 import com.oss.pages.iaa.servicedesk.issue.task.TaskDashboardPage;
 import com.oss.pages.iaa.servicedesk.issue.wizard.SDWizardPage;
@@ -41,19 +42,23 @@ public class TasksTest extends BaseTestCase {
     private NotificationWrapperPage notificationWrapperPage;
     private SDWizardPage sdWizardPage;
     private String taskID;
+    private MyGroupProblemsPage myGroupProblemsPage;
 
     @BeforeMethod
     public void goToTaskDashboardPage() {
         taskDashboardPage = TaskDashboardPage.goToPage(driver, BASIC_URL);
     }
 
-    @Parameters({"parentProblem", "taskAssignee"})
+    @Parameters({"taskAssignee"})
     @Test(priority = 1, testName = "Create Task", description = "Create Task")
     @Description("Create Task")
     public void createTask(
-            @Optional("58") String parentProblem,
             @Optional("sd_seleniumtest") String taskAssignee
     ) {
+        myGroupProblemsPage = new MyGroupProblemsPage(driver, webDriverWait).openView(driver, BASIC_URL);
+        myGroupProblemsPage.searchFullText(TASK_ASSIGNEE);
+        String parentProblem = myGroupProblemsPage.getIdForNthTicketInTable(0);
+        taskDashboardPage = TaskDashboardPage.goToPage(driver, BASIC_URL);
         sdWizardPage = taskDashboardPage.openCreateTaskWizard();
         sdWizardPage.insertValueContainsToComponent(parentProblem, TASK_WIZARD_PARENT_PROBLEM);
         sdWizardPage.insertValueContainsToComponent(TASK_NAME, TASK_WIZARD_NAME);
