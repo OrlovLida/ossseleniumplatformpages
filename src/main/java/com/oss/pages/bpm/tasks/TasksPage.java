@@ -6,22 +6,19 @@
  */
 package com.oss.pages.bpm.tasks;
 
-import java.util.List;
-
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.tasks.taskforms.IPDTaskFormPage;
 import com.oss.pages.bpm.tasks.taskforms.KDTaskFormPage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * @author Gabriela Kasza
@@ -67,9 +64,9 @@ public class TasksPage extends BasePage {
     public void findTask(String processCode, String taskName) {
         OldTable table = getOldTable();
         table.clearColumnValue(ASSIGNEE);
-        table.searchByAttributeWithLabel(PROCESS_CODE, Input.ComponentType.TEXT_FIELD, processCode);
+        table.searchByColumn(PROCESS_CODE, processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
-        table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, taskName);
+        table.searchByColumn(NAME, taskName);
         table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
         table.selectRowByAttributeValueWithLabel(PROCESS_CODE, processCode);
         DelayUtils.waitForPageToLoad(driver, wait);
@@ -77,9 +74,9 @@ public class TasksPage extends BasePage {
 
     public String startTaskByUsernameAndTaskName(String username, String taskName) {
         OldTable table = getOldTable();
-        table.searchByAttributeWithLabel(ASSIGNEE, Input.ComponentType.TEXT_FIELD, username);
+        table.searchByColumn(ASSIGNEE, username);
         DelayUtils.waitForPageToLoad(driver, wait);
-        table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, taskName);
+        table.searchByColumn(NAME, taskName);
         DelayUtils.waitForPageToLoad(driver, wait);
         if (table.hasNoData()) {
             return NON_EXISTING_TASK_EXCEPTION;

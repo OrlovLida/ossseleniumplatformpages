@@ -1,14 +1,13 @@
 package com.oss.pages.bpm.milestones;
 
-import java.time.LocalDate;
-
-import org.openqa.selenium.WebDriver;
-
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.inputs.TextField;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
+import org.openqa.selenium.WebDriver;
+
+import java.time.LocalDate;
 
 /**
  * @author Paweł Rother
@@ -21,6 +20,7 @@ public class ChangeStateMilestoneWizardPage extends BasePage {
     private static final String COMMENT_ATTRIBUTE_ID = "milestones-state-change_comment-component-id";
     private static final String APPROVAL_DATE_ATTRIBUTE_ID = "milestones-state-change_approval-date-component-id";
     private static final String STATE_CHANGE_WIZARD_ID = "milestones-state-change_wizard-app";
+
     public ChangeStateMilestoneWizardPage(WebDriver driver) {
         super(driver);
     }
@@ -28,11 +28,13 @@ public class ChangeStateMilestoneWizardPage extends BasePage {
     public void cancel() {
         Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, STATE_CHANGE_WIZARD_ID);
         changeStateWizard.clickButtonById(CANCEL_BUTTON);
+        changeStateWizard.waitToClose();
     }
 
     public void accept() {
         Wizard changeStateWizard = Wizard.createByComponentId(driver, wait, STATE_CHANGE_WIZARD_ID);
         changeStateWizard.clickButtonById(ACCEPT_BUTTON);
+        changeStateWizard.waitToClose();
     }
 
     public void changeState(String newState, String reason, long plusDays) {

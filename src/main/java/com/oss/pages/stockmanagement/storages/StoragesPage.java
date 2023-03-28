@@ -1,6 +1,5 @@
 package com.oss.pages.stockmanagement.storages;
 
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.wizard.Wizard;
@@ -71,7 +70,7 @@ public class StoragesPage extends BasePage {
     public StoragesPage selectStorage(String storageName) {
         OldTable table = getStoragesTable();
         waitForPageToLoad();
-        table.searchByAttributeWithLabel(NAME_ATTRIBUTE_LABEL, Input.ComponentType.TEXT_FIELD, storageName);
+        table.searchByColumn(NAME_ATTRIBUTE_LABEL, storageName);
         table.selectFirstRow();
         waitForPageToLoad();
         return this;

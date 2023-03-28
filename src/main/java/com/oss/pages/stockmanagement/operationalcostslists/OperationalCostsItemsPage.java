@@ -2,7 +2,6 @@ package com.oss.pages.stockmanagement.operationalcostslists;
 
 import com.comarch.oss.web.pages.BasePage;
 import com.google.common.base.Preconditions;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.wizard.Wizard;
@@ -53,7 +52,7 @@ public class OperationalCostsItemsPage extends BasePage {
     public OperationalCostsItemsPage selectOperationalCostsItem(String operationalCostsItemName) {
         OldTable table = getOperationalCostsItemsTable();
         waitForPageToLoad();
-        table.searchByAttributeWithLabel(NAME_COLUMN_LABEL, Input.ComponentType.TEXT_FIELD, operationalCostsItemName);
+        table.searchByColumn(NAME_COLUMN_LABEL, operationalCostsItemName);
         table.selectFirstRow();
         waitForPageToLoad();
         return this;

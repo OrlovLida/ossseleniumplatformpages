@@ -2,12 +2,10 @@ package com.oss.pages.bpm.planning;
 
 import com.google.common.collect.Maps;
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
@@ -104,13 +102,13 @@ public class ProcessDetailsPage extends BasePage {
         return CommonList.create(driver, wait, PROJECT_DESCRIPTION_TABLE_ID);
     }
 
-    public ProcessDetailsPage selectObject(String attributeName, String value) {
+    public ProcessDetailsPage selectObject(String columnLabel, String value) {
         waitForPageToLoad();
-        TableInterface table = getObjectsTable();
-        table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, value);
+        OldTable table = getObjectsTable();
+        table.searchByColumn(columnLabel, value);
         waitForPageToLoad();
         table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
-        table.selectRowByAttributeValueWithLabel(attributeName, value);
+        table.selectRowByAttributeValueWithLabel(columnLabel, value);
         waitForPageToLoad();
         return this;
     }

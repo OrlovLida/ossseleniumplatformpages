@@ -94,16 +94,18 @@ public class ProcessModelsPage extends BasePage {
     }
 
     public ProcessModelsPage selectModelByName(String name) {
-        getModelsTable().searchByAttributeWithLabel(NAME_LABEL, Input.ComponentType.TEXT_FIELD, name);
-        getModelsTable().selectRow(0);
+        OldTable modelsTable = getModelsTable();
+        modelsTable.searchByColumn(NAME_LABEL, name);
+        modelsTable.selectRow(0);
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
 
     public ProcessModelsPage selectModel(String modelName, String modelKeyword) {
-        getModelsTable().searchByAttributeWithLabel(NAME_LABEL, Input.ComponentType.TEXT_FIELD, modelName);
-        getModelsTable().searchByAttributeWithLabel(KEYWORDS_LABEL, Input.ComponentType.TEXT_FIELD, modelKeyword);
-        getModelsTable().selectRow(0);
+        OldTable modelsTable = getModelsTable();
+        modelsTable.searchByColumn(NAME_LABEL, modelName);
+        modelsTable.searchByColumn(KEYWORDS_LABEL, modelKeyword);
+        modelsTable.selectRow(0);
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }
@@ -192,8 +194,7 @@ public class ProcessModelsPage extends BasePage {
         callAction(MODEL_OPERATIONS_GROUPING_ACTION_BUTTON_ID, EXPORT_AS_XML_ACTION_BUTTON_ID);
     }
 
-    private TableInterface getModelsTable() {
-        DelayUtils.waitForPageToLoad(driver, wait);
+    private OldTable getModelsTable() {
         return OldTable.createById(driver, wait, MODEL_LIST_TABLE_ID);
     }
 

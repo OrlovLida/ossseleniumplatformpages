@@ -2,7 +2,6 @@ package com.oss.pages.stockmanagement.assets;
 
 import com.google.common.base.Preconditions;
 import com.oss.framework.components.contextactions.OldActionsContainer;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.widgets.table.OldTable;
@@ -120,10 +119,10 @@ public class AssetsPage extends BasePage {
         return this;
     }
 
-    public AssetsPage selectAsset(String attributeName, String attributeValue) {
+    public AssetsPage selectAsset(String columnLabel, String attributeValue) {
         OldTable table = getAssetsTable();
         waitForPageToLoad();
-        table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, attributeValue);
+        table.searchByColumn(columnLabel, attributeValue);
         table.selectFirstRow();
         waitForPageToLoad();
         return this;
