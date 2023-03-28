@@ -41,7 +41,9 @@ public class CreatePluggableModuleWizardPage extends BasePage {
 
     @Step("Click Accept button")
     public void accept() {
-        getPluggableModuleWizard().clickButtonById(PLUGGABLE_MODULE_ACCEPT_BUTTON_DATA_NAME);
+        Wizard pluggableModuleWizard = getPluggableModuleWizard();
+        pluggableModuleWizard.clickButtonById(PLUGGABLE_MODULE_ACCEPT_BUTTON_DATA_NAME);
+        pluggableModuleWizard.waitToClose();
     }
 
     @Step("Get wizard name")

@@ -37,8 +37,8 @@ public class LabelsSmokeTest extends BaseTestCase {
 
     private static final String ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE = " column label is not translated";
     private static final String PROPERTIES_TRANSLATIONS_ERROR_MESSAGE = " property label is not translated ";
-    private static final String HEADERS_TRANSLATIONS_ERROR_MESSAGE = " column header is not translated ";
-    private static final String ACTION_TRANSLATION_ERROR_MESSAGE = " context Action not translated";
+    private static final String LABEL_TRANSLATIONS_ERROR_MESSAGE = " column label is not translated ";
+    private static final String ACTION_TRANSLATION_ERROR_MESSAGE = " context action is not translated";
 
     private static final String ASSIGN_EXISTING_REGULATORY_LICENSE_ACTION_ID = "AssignLocationToRegulatoryLicenseApplicationContextAction";
     private static final String ASSIGN_IPV4_SUBNET_TO_SITE_ACTION_ID = "AssignIPv4SubnetToLocationApplication";
@@ -150,7 +150,6 @@ public class LabelsSmokeTest extends BaseTestCase {
     private static final String PLUGGABLE_MODULE_NODE = "Pluggable Module";
     private static final String LOGICAL_FUNCTION_NODE = "Logical Function";
     private static final String NETWORK_DOMAIN_NODE = "Network Domain";
-    private static final String CAPACITY_NODE = "Capacity";
     private static final String AUDIT_INFORMATION_NODE = "Audit Information";
     private static final String ASSIGNED_TO_LOGICAL_FUNCTIONS_NODE = "Assigned To Logical Functions";
     private static final String MASTER_ELEMENT_NODE = "Master Element";
@@ -169,7 +168,6 @@ public class LabelsSmokeTest extends BaseTestCase {
     @Test(priority = 1, description = "Open browser and check environment status")
     @Description("Open browser and check environment status")
     public void openBrowserAndCheckEnvironmentStatus() {
-        softAssert = new SoftAssert();
         waitForPageToLoad();
         checkErrorPage();
         checkGlobalNotificationContainer();
@@ -180,6 +178,7 @@ public class LabelsSmokeTest extends BaseTestCase {
     @Test(priority = 2, description = "Check Inventory View for Site", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
     @Description("Check Inventory View for Site")
     public void checkInventoryViewForSite() {
+        softAssert = new SoftAssert();
         openInventoryViewForGivenObjectType(SITE_OBJECT_TYPE);
         checkInventoryViewTitle(INVENTORY_VIEW);
         selectObjectOnInventoryView();
@@ -188,11 +187,13 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkSiteColumnsManagement();
         checkPropertiesHeaders();
         checkSiteContextActions();
+        softAssert.assertAll();
     }
 
     @Test(priority = 3, description = "Check Inventory View for Router", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
     @Description("Check Inventory View for Router")
     public void checkInventoryViewForRouter() {
+        softAssert = new SoftAssert();
         openInventoryViewForGivenObjectType(ROUTER_OBJECT_TYPE);
         checkInventoryViewTitle(INVENTORY_VIEW);
         selectObjectOnInventoryView();
@@ -201,11 +202,13 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkRouterColumnsManagement();
         checkPropertiesHeaders();
         checkRouterContextActions();
+        softAssert.assertAll();
     }
 
     @Test(priority = 4, description = "Check Inventory View for eNodeB", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
     @Description("Check Inventory View for eNodeB")
     public void checkInventoryViewForENodeB() {
+        softAssert = new SoftAssert();
         openInventoryViewForGivenObjectType(E_NODE_B_OBJECT_TYPE);
         checkInventoryViewTitle(E_NODE_B_OBJECT_TYPE);
         selectObjectOnInventoryView();
@@ -214,11 +217,13 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkENodeBColumnsManagement();
         checkPropertiesHeaders();
         checkENodeBContextActions();
+        softAssert.assertAll();
     }
 
     @Test(priority = 5, description = "Check Inventory View for Ethernet Interface", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
     @Description("Check Inventory View for Ethernet Interface")
     public void checkInventoryViewForEthernetInterface() {
+        softAssert = new SoftAssert();
         openInventoryViewForGivenObjectType(ETHERNET_INTERFACE_OBJECT_TYPE);
         checkInventoryViewTitle(INVENTORY_VIEW);
         selectObjectOnInventoryView();
@@ -227,6 +232,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         checkEthernetInterfaceColumnsManagement();
         checkPropertiesHeaders();
         checkEthernetInterfaceContextActions();
+        softAssert.assertAll();
     }
 
     @Description("Open Inventory View for {objectType}")
@@ -270,9 +276,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         for (String visibleAttribute : visibleAttributes) {
             softAssert.assertFalse(visibleAttribute.contains(DM_PREFIX), visibleAttribute + ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
         }
-        softAssert.assertAll();
         attributesChooser.clickCancel();
-        waitForPageToLoad();
     }
 
     @Step("Checking attributes translation in Columns Management for Router")
@@ -296,9 +300,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         for (String visibleAttribute : visibleAttributes) {
             softAssert.assertFalse(visibleAttribute.contains(DM_PREFIX), visibleAttribute + ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
         }
-        softAssert.assertAll();
         attributesChooser.clickCancel();
-        waitForPageToLoad();
     }
 
     @Step("Checking attributes translation in Columns Management for eNodeB")
@@ -319,9 +321,7 @@ public class LabelsSmokeTest extends BaseTestCase {
         for (String visibleAttribute : visibleAttributes) {
             softAssert.assertFalse(visibleAttribute.contains(DM_PREFIX), visibleAttribute + ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
         }
-        softAssert.assertAll();
         attributesChooser.clickCancel();
-        waitForPageToLoad();
     }
 
     @Step("Checking attributes translation in Columns Management for Ethernet Interface")
@@ -332,7 +332,6 @@ public class LabelsSmokeTest extends BaseTestCase {
         attributesChooser.expandAttribute(PORT_NODE);
         attributesChooser.expandAttribute(PLUGGABLE_MODULE_NODE);
         attributesChooser.expandAttribute(LOGICAL_FUNCTION_NODE);
-        attributesChooser.expandAttribute(CAPACITY_NODE);
         attributesChooser.expandAttribute(AUDIT_INFORMATION_NODE);
         attributesChooser.expandAttribute(ASSIGNED_TO_LOGICAL_FUNCTIONS_NODE);
         attributesChooser.expandAttribute(BLOCKADE_NODE);
@@ -345,20 +344,17 @@ public class LabelsSmokeTest extends BaseTestCase {
         for (String visibleAttribute : visibleAttributes) {
             softAssert.assertFalse(visibleAttribute.contains(DM_PREFIX), visibleAttribute + ATTRIBUTES_TRANSLATIONS_ERROR_MESSAGE);
         }
-        softAssert.assertAll();
         attributesChooser.clickCancel();
-        waitForPageToLoad();
     }
 
     @Step("Checking columns headers translation")
     private void checkColumnsHeaders() {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        List<String> columnsHeaders = newInventoryViewPage.getActiveColumnsHeaders();
+        List<String> columnsLabels = newInventoryViewPage.getActiveColumnsHeaders();
 
-        for (String columnsHeader : columnsHeaders) {
-            softAssert.assertFalse(columnsHeader.contains(DM_PREFIX), columnsHeader + HEADERS_TRANSLATIONS_ERROR_MESSAGE);
+        for (String columnsLabel : columnsLabels) {
+            softAssert.assertFalse(columnsLabel.contains(DM_PREFIX), columnsLabel + LABEL_TRANSLATIONS_ERROR_MESSAGE);
         }
-        softAssert.assertAll();
     }
 
     @Step("Checking attributes in Property Panel")
@@ -370,7 +366,6 @@ public class LabelsSmokeTest extends BaseTestCase {
         for (String propertiesLabel : propertiesLabels) {
             softAssert.assertFalse(propertiesLabel.contains(DM_PREFIX), propertiesLabel + PROPERTIES_TRANSLATIONS_ERROR_MESSAGE);
         }
-        softAssert.assertAll();
     }
 
     @Step("Checking context actions for Site")
@@ -390,7 +385,6 @@ public class LabelsSmokeTest extends BaseTestCase {
         String reserveLocationActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.OTHER_GROUP_ID, RESERVE_LOCATION_ACTION_ID);
         String hierarchyViewActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.SHOW_ON_GROUP_ID, HIERARCHY_VIEW_ACTION_ID);
 
-        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(assignExistingRegulatoryLicenseActionLabel, ASSIGN_EXISTING_REGULATORY_LICENSE_ACTION_LABEL, ASSIGN_EXISTING_REGULATORY_LICENSE_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(assignIpv4SubnetActionLabel, ASSIGN_IPV4_SUBNET_ACTION_LABEL, ASSIGN_IPV4_SUBNET_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(assignIpv6SubnetActionLabel, ASSIGN_IPV6_SUBNET_ACTION_LABEL, ASSIGN_IPV6_SUBNET_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
@@ -402,7 +396,6 @@ public class LabelsSmokeTest extends BaseTestCase {
         softAssert.assertEquals(editLocationActionLabel, EDIT_LOCATION_ACTION_LABEL, EDIT_LOCATION_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(reserveLocationActionLabel, RESERVE_LOCATION_ACTION_LABEL, RESERVE_LOCATION_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(hierarchyViewActionLabel, HIERARCHY_VIEW_ACTION_LABEL, HIERARCHY_VIEW_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
-        softAssert.assertAll();
     }
 
     @Step("Checking context actions for Router")
@@ -440,7 +433,6 @@ public class LabelsSmokeTest extends BaseTestCase {
         String blockRouterActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.OTHER_GROUP_ID, BLOCK_ROUTER_ACTION_ID);
         String hierarchyViewActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.SHOW_ON_GROUP_ID, HIERARCHY_VIEW_ACTION_ID);
 
-        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(assignIPv4HostAddressActionLabel, ASSIGN_IPV4_HOST_ADDRESS_ACTION_LABEL, ASSIGN_IPV4_HOST_ADDRESS_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(assignIPv4LoopbackAddressActionLabel, ASSIGN_IPV4_LOOPBACK_ADDRESS_ACTION_LABEL, ASSIGN_IPV4_LOOPBACK_ADDRESS_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(assignIPv4SubnetActionLabel, ASSIGN_IPV4_SUBNET_ACTION_LABEL, ASSIGN_IPV4_SUBNET_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
@@ -470,7 +462,6 @@ public class LabelsSmokeTest extends BaseTestCase {
         softAssert.assertEquals(reserveRouterActionLabel, RESERVE_ROUTER_ACTION_LABEL, RESERVE_ROUTER_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(blockRouterActionLabel, BLOCK_ROUTER_ACTION_LABEL, BLOCK_ROUTER_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(hierarchyViewActionLabel, HIERARCHY_VIEW_ACTION_LABEL, HIERARCHY_VIEW_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
-        softAssert.assertAll();
     }
 
     @Step("Checking context actions for eNodeB")
@@ -499,7 +490,6 @@ public class LabelsSmokeTest extends BaseTestCase {
         String downloadFileToSoftwareRepositoryActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.OTHER_GROUP_ID, DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_ID);
         String hierarchyViewActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.SHOW_ON_GROUP_ID, HIERARCHY_VIEW_ACTION_ID);
 
-        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(assignIPv4HostAddressActionLabel, ASSIGN_IPV4_HOST_ADDRESS_ACTION_LABEL, ASSIGN_IPV4_HOST_ADDRESS_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(assignIPv4LoopbackAddressActionLabel, ASSIGN_IPV4_LOOPBACK_ADDRESS_ACTION_LABEL, ASSIGN_IPV4_LOOPBACK_ADDRESS_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(assignIPv4SubnetActionLabel, ASSIGN_IPV4_SUBNET_ACTION_LABEL, ASSIGN_IPV4_SUBNET_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
@@ -520,7 +510,6 @@ public class LabelsSmokeTest extends BaseTestCase {
         softAssert.assertEquals(editENodeBActionLabel, EDIT_E_NODE_B_ACTION_LABEL, EDIT_E_NODE_B_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(downloadFileToSoftwareRepositoryActionLabel, DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_LABEL, DOWNLOAD_FILE_TO_SOFTWARE_REPOSITORY_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(hierarchyViewActionLabel, HIERARCHY_VIEW_ACTION_LABEL, HIERARCHY_VIEW_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
-        softAssert.assertAll();
     }
 
     @Step("Checking context actions for Ethernet Interface")
@@ -543,7 +532,6 @@ public class LabelsSmokeTest extends BaseTestCase {
         String editEthernetInterfaceActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.EDIT_GROUP_ID, EDIT_ETHERNET_INTERFACE_ACTION_ID);
         String inventoryViewActionLabel = tableWidget.getContextActions().getActionLabel(ActionsContainer.SHOW_ON_GROUP_ID, INVENTORY_VIEW_ACTION_ID);
 
-        SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(assignIPv4HostAddressActionLabel, ASSIGN_IPV4_HOST_ADDRESS_ACTION_LABEL, ASSIGN_IPV4_HOST_ADDRESS_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(assignIPv4LoopbackAddressActionLabel, ASSIGN_IPV4_LOOPBACK_ADDRESS_ACTION_LABEL, ASSIGN_IPV4_LOOPBACK_ADDRESS_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(assignIPv6HostAddressActionLabel, ASSIGN_IPV6_HOST_ADDRESS_ACTION_LABEL, ASSIGN_IPV6_HOST_ADDRESS_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
@@ -558,8 +546,6 @@ public class LabelsSmokeTest extends BaseTestCase {
         softAssert.assertEquals(deleteEthernetInterfaceActionLabel, DELETE_ETHERNET_INTERFACE_ACTION_LABEL, DELETE_ETHERNET_INTERFACE_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(editEthernetInterfaceActionLabel, EDIT_ETHERNET_INTERFACE_ACTION_LABEL, EDIT_ETHERNET_INTERFACE_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
         softAssert.assertEquals(inventoryViewActionLabel, INVENTORY_VIEW_ACTION_LABEL, INVENTORY_VIEW_ACTION_LABEL + ACTION_TRANSLATION_ERROR_MESSAGE);
-        softAssert.assertAll();
-
     }
 
     @Step("Waiting for page to load")

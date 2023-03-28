@@ -36,7 +36,10 @@ public class TasksPageV2 extends BasePage {
     public static final String LOW_LEVEL_PLANNING_TASK = "Low Level Planning";
     public static final String HIGH_LEVEL_PLANNING_TASK = "High Level Planning";
     public static final String CORRECT_DATA_TASK = "Correct data";
-    public static final String UPDATE_REQUIREMENTS_TASK = "Update Requirements";
+    public static final String UPDATE_REQUIREMENTS_TASK = "Update requirements";
+
+    public static final String CANCEL_TRANSITION = "Cancel";
+    public static final String NEEDS_CLARIFICATION_TRANSITION = "Needs clarification";
     public static final String TABS_TASKS_VIEW_ID = "bpm_task_graphql_view_tasksTabsCard";
     private static final Logger log = LoggerFactory.getLogger(TasksPageV2.class);
     private static final String TABLE_TASKS_ID = "bpm_task_graphql_view_tasksTableWidget";
@@ -214,6 +217,12 @@ public class TasksPageV2 extends BasePage {
         startAndCompleteTask(ipCode, ACCEPTANCE_TASK);
         DelayUtils.waitForPageToLoad(driver, wait);
         startAndCompleteTask(processCode, VERIFICATION_TASK);
+    }
+
+    public void completeIP(String ipCode) {
+        completeTask(ipCode, SCOPE_DEFINITION_TASK);
+        startAndCompleteTask(ipCode, IMPLEMENTATION_TASK);
+        startAndCompleteTask(ipCode, ACCEPTANCE_TASK);
     }
 
     public List<String> setupIntegration(String nrpCode, String nrpName,
