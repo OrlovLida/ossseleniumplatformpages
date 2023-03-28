@@ -22,10 +22,10 @@ import io.qameta.allure.Step;
 
 import static com.oss.framework.components.inputs.Input.ComponentType.SEARCH_FIELD;
 
-public class ObjectTypesSmokeTest extends BaseTestCase {
+public class BasicObjectTypePresenceTest extends BaseTestCase {
 
     private SoftAssert softAssert;
-    private static final Logger LOGGER = LoggerFactory.getLogger(ObjectTypesSmokeTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(BasicObjectTypePresenceTest.class);
     private static final String RESOURCE_INVENTORY_CATEGORY = "Resource Inventory";
     private static final String INVENTORY_VIEW = "Inventory View";
     private static final String DM_PREFIX = "DM_";

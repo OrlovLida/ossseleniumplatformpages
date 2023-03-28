@@ -24,9 +24,9 @@ import com.oss.framework.widgets.table.TableWidget;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 
-public class LabelsSmokeTest extends BaseTestCase {
+public class LabelsInInventoryViewTest extends BaseTestCase {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LabelsSmokeTest.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LabelsInInventoryViewTest.class);
     private static final String RESOURCE_INVENTORY_CATEGORY = "Resource Inventory";
     private static final String INVENTORY_VIEW = "Inventory View";
     private static final String SITE_OBJECT_TYPE = "Site";
