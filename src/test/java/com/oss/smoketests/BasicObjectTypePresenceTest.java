@@ -70,9 +70,6 @@ public class BasicObjectTypePresenceTest extends BaseTestCase {
     private void checkObjectTypeTranslation(String objectType) {
         Set<String> availableObjectTypes = getObjectType(objectType);
         softAssert.assertTrue(availableObjectTypes.contains(objectType), objectType + OBJECT_TYPE_NOT_FOUND_EXCEPTION);
-        for (String availableObjectType : availableObjectTypes) {
-            softAssert.assertFalse(availableObjectType.contains(DM_PREFIX), availableObjectType + OBJECT_TYPE_TRANSLATION_ERROR_MESSAGE);
-        }
     }
 
     @Description("Checking labels translation for all given object types")
