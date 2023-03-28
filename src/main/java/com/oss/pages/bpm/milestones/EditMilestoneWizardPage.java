@@ -22,25 +22,31 @@ public class EditMilestoneWizardPage extends BasePage {
     private static final String MILESTONE_EDIT_WIZARD_ID = "milestones-edit_wizard-app";
     private static final String DELAY_REASON_ID = "milestones-edit_delay-reason";
     private static final String DELAY_REASON_TEXT = "Selenium Test - Delay reason";
+    private final Wizard wizard;
 
     public EditMilestoneWizardPage(WebDriver driver) {
         super(driver);
+        wizard = Wizard.createByComponentId(driver, wait, MILESTONE_EDIT_WIZARD_ID);
     }
 
     public Milestone editMilestone(Milestone milestone) throws NoSuchElementException {
-        Wizard editWizard = Wizard.createByComponentId(driver, wait, MILESTONE_EDIT_WIZARD_ID);
         MilestoneWizardPage milestoneWizardPage = new MilestoneWizardPage(driver, EDIT_MILESTONE_LIST);
         Milestone editedMilestone = milestoneWizardPage.editMilestoneRow(milestone, 1);
         if (driver.getPageSource().contains(DELAY_REASON_ID)) {
-            editWizard.setComponentValue(DELAY_REASON_ID, DELAY_REASON_TEXT,
+            wizard.setComponentValue(DELAY_REASON_ID, DELAY_REASON_TEXT,
                     Input.ComponentType.TEXT_FIELD);
         }
-        editWizard.clickButtonById(ACCEPT_BUTTON);
+        accept();
         return editedMilestone;
     }
 
+    public void accept() {
+        wizard.clickButtonById(ACCEPT_BUTTON);
+        wizard.waitToClose();
+    }
+
     public void cancel() {
-        Wizard editWizard = Wizard.createByComponentId(driver, wait, MILESTONE_EDIT_WIZARD_ID);
-        editWizard.clickButtonById(CANCEL_BUTTON);
+        wizard.clickButtonById(CANCEL_BUTTON);
+        wizard.waitToClose();
     }
 }

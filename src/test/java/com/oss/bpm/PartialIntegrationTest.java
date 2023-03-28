@@ -532,7 +532,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         Assert.assertEquals(plannedObjectsIdentifiers.size(), 1,
                 String.format(INVALID_PLANNED_OBJECTS_SIZE_PATTERN, testName));
         assertPlannedObjectPresence(plannedObjectsIdentifiers, cardId_TC3_2, CARD_IDENTIFIER);
-        partialIntegrationWizardPage.clickCancelButton();
+        partialIntegrationWizardPage.closePrompt();
 
         //check if prerequisites: router 3_1 and chassis 3_3 are visible in wizard
         partialIntegrationWizardPage = plannersViewPage.selectProcess(ip_Code_TC3_1).openIntegratePlannedChangesWizard();
@@ -748,7 +748,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     @AfterMethod
     public void closeWizard() {
         if (PartialIntegrationWizardPage.isWizardVisible(driver)) {
-            new PartialIntegrationWizardPage(driver).clickCancelButton();
+            new PartialIntegrationWizardPage(driver).closePrompt();
             log.warn(String.format(PARTIAL_INTEGRATION_WIZARD_OPEN, testName));
         }
     }

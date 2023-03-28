@@ -24,7 +24,7 @@ public class PartialIntegrationWizardPage extends BasePage {
     private static final String OBJECTS_TO_INTEGRATION_TABLE_ID = "table-RootsToActivateCompId";
     private static final String PLANNED_OBJECTS_SEARCH_INPUT_ID = "RootsInProjectSearchCompId";
     private static final String OBJECTS_TO_INTEGRATION_SEARCH_INPUT_ID = "RootsToActivateSearchCompId";
-    private static final String CANCEL_BUTTON_ID = "wizard-cancel-button-plaPartialActivationWizard_appId";
+    private static final String CLOSE_BUTTON_ID = "plaPartialActivationWizard_prompt-card_close-prompt";
     private static final String APPLY_BUTTON_ID = "wizard-submit-button-plaPartialActivationWizard_appId";
     private static final String CHOOSE_TO_INTEGRATION_BUTTON_ID = "ChooseToActivationBtnCompId";
     private static final String BACK_TO_PLANNED_OBJECTS_BUTTON_ID = "BackToPlannedBtnCompId";
@@ -57,10 +57,12 @@ public class PartialIntegrationWizardPage extends BasePage {
 
     public void clickApplyButton() {
         partialIntegrationWizard.clickButtonById(APPLY_BUTTON_ID);
+        partialIntegrationWizard.waitToClose();
     }
 
-    public void clickCancelButton() {
-        partialIntegrationWizard.clickButtonById(CANCEL_BUTTON_ID);
+    public void closePrompt() {
+        partialIntegrationWizard.clickButtonById(CLOSE_BUTTON_ID);
+        partialIntegrationWizard.waitToClose();
     }
 
     private List<Map<String, String>> getObjectsAttributes(boolean isForPlannedObjectsTable) {

@@ -36,6 +36,7 @@ public class ImportModelWizardPage extends BasePage {
 
     public void importButton() {
         importModelWizard.clickButtonById(IMPORT_BUTTON_ID);
+        importModelWizard.waitToClose();
     }
 
     public String getImportStatus() {
