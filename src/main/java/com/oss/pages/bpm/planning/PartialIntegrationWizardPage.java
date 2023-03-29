@@ -69,7 +69,7 @@ public class PartialIntegrationWizardPage extends BasePage {
     /**
      * @deprecated - use {@link #apply()} method
      */
-    @Deprecated(since = "4.1.x", forRemoval = true)
+    @Deprecated(since = "4.0.x", forRemoval = true)
     public void clickApplyButton() {
         partialIntegrationWizard.clickButtonById(APPLY_BUTTON_ID);
     }
@@ -77,7 +77,7 @@ public class PartialIntegrationWizardPage extends BasePage {
     /**
      * @deprecated -  use {@link #cancel()} method
      */
-    @Deprecated(since = "4.1.x", forRemoval = true)
+    @Deprecated(since = "4.0.x", forRemoval = true)
     public void clickCancelButton() {
         partialIntegrationWizard.clickButtonById(CANCEL_BUTTON_ID);
     }
