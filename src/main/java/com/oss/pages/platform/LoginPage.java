@@ -1,15 +1,17 @@
 package com.oss.pages.platform;
 
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.BasePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.BasePage;
-
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
-@Deprecated
+/**
+ * @deprecated use {@link com.comarch.oss.web.pages.LoginPage}
+ */
+@Deprecated(since = "4.0.x")
 public class LoginPage extends BasePage {
 
     private final String url;

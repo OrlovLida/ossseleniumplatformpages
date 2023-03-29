@@ -1,15 +1,5 @@
 package com.oss.pages.platform;
 
-import java.time.Duration;
-
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.comarch.oss.web.pages.FormAppPage;
 import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.comarch.oss.web.pages.InputsWizardPage;
@@ -25,9 +15,21 @@ import com.oss.pages.BasePage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.physical.LocationWizardPage;
 import com.oss.pages.schedulerservice.SchedulerServicePage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.time.Duration;
+
+/**
+ * @deprecated use {@link com.comarch.oss.web.pages.HomePage}
+ */
+@Deprecated(since = "4.0.x")
 public class HomePage extends BasePage {
 
     private static final Logger log = LoggerFactory.getLogger(HomePage.class);
