@@ -1,23 +1,22 @@
 package com.oss.pages.iaa.faultmanagement;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.oss.framework.components.list.DraggableList;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.EditableList;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-
 import io.qameta.allure.Step;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class FMCreateWAMVPage extends BasePage {
     private static final Logger log = LoggerFactory.getLogger(FMCreateWAMVPage.class);
     private static final String WIZARD_ID = "UserViewWizardModal";
     private static final String NAME_TEXT_FIELD_ID = "UserViewNameInput";
     private static final String DESCRIPTION_TEXT_FIELD_ID = "UserViewDescriptionInput";
+    private static final String BOOKMARK_CATEGORY_FIELD_ID = "UserViewFolderInput";
     private static final String DROPDOWNLIST_AVAILABLE_ID = "Available";
     private static final String DROPDOWNLIST_SELECTED_ID = "Selected";
     private static final String WIZARD_MODAL_ID = "card-content_UserViewWizardModal";
@@ -40,15 +39,24 @@ public class FMCreateWAMVPage extends BasePage {
         log.info("Add following description {} to WAMV", description);
     }
 
+    @Step("I choose Bookmark Category (folder) for WAMV")
+    public void chooseBookmarkCategory(String bookmarkCategory) {
+        folderWizard.setComponentValue(BOOKMARK_CATEGORY_FIELD_ID, bookmarkCategory);
+        log.info("Choose Bookmark Category {} for WAMV", bookmarkCategory);
+    }
+
     @Step("I drag and drop filter by name")
     public void dragAndDropFilterByName(String filterName) {
         DelayUtils.waitForPageToLoad(driver, wait);
+        // Moving folders triggers filter reloads, we need to wait for loading to finish.
+        folderWizard.waitForWizardToLoad();
         getDraggableListSelected().drop(getDraggableListAvailable().getDraggableElement(filterName));
         log.info("Drag filter {} and drop it", filterName);
     }
 
     @Step("I select N-th filter from filter list")
     public void selectFilterFromList(int row) {
+        folderWizard.waitForWizardToLoad();
         EditableList filters = EditableList.createById(driver, wait, WIZARD_MODAL_ID);
         filters.getRow(row).click();
         log.info("Selecting {}. filter from the list", row);
@@ -63,6 +71,8 @@ public class FMCreateWAMVPage extends BasePage {
     @Step("I click Next button")
     public void clickNextButton() {
         folderWizard.clickNext();
+        // Moving folders triggers filter reloads, we need to wait for loading to finish.
+        folderWizard.waitForWizardToLoad();
         log.info("Clicking Next button");
     }
 

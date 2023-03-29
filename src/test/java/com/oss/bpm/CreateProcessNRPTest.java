@@ -17,7 +17,6 @@ import com.oss.pages.bpm.tasks.SetupIntegrationProperties;
 import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.dms.AttachFileWizardPage;
 import com.oss.planning.PlanningContext;
-import com.oss.untils.FakeGenerator;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -39,7 +38,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Random;
 
 import static com.oss.bpm.BpmPhysicalDataCreator.CHASSIS_NAME;
 import static com.oss.bpm.BpmPhysicalDataCreator.createBuilding;
@@ -47,6 +45,8 @@ import static com.oss.bpm.BpmPhysicalDataCreator.createIPDevice;
 import static com.oss.bpm.BpmPhysicalDataCreator.deleteBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.deleteIPDevice;
 import static com.oss.bpm.BpmPhysicalDataCreator.getDeviceChassisId;
+import static com.oss.bpm.BpmPhysicalDataCreator.nextMaxInt;
+import static com.oss.bpm.BpmPhysicalDataCreator.nextRandomBuildingName;
 import static com.oss.pages.bpm.tasks.TasksPageV2.ACCEPTANCE_TASK;
 import static com.oss.pages.bpm.tasks.TasksPageV2.HIGH_LEVEL_PLANNING_TASK;
 import static com.oss.pages.bpm.tasks.TasksPageV2.IMPLEMENTATION_TASK;
@@ -85,18 +85,18 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private static final String ATTACHMENT_ADDED_MESSAGE = "Attachment has been added";
     private static final String PERSPECTIVE_QUERY = "perspective=%s";
 
-    private static final Random RANDOM = new Random();
     private static final LocalDate TODAY = LocalDate.now();
     private static final PlanningContext LIVE = PlanningContext.live();
     private static final String FILE_NOT_VISIBLE = "Uploaded file is not visible on Attachments tab.";
     private static final String INVALID_NRP_PROCESS_STATUS = "Invalid NRP Process status.";
+    private static final String WIZARD_STILL_OPENED = "Attach file wizard is still open after trying to upload file.";
     private final Logger log = LoggerFactory.getLogger(CreateProcessNRPTest.class);
-    private final String BUILDING_NAME = FakeGenerator.getCity() + "-BU" + FakeGenerator.getRandomInt();
-    private final String ROUTER_1_NAME = "Create NRP Selenium Test 1." + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String ROUTER_2_NAME = "Create NRP Selenium Test 2." + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String processIPName1 = "Create NRP Selenium Test IP 1." + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String processIPName2 = "Create NRP Selenium Test IP 2." + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String processNRPName = "Create NRP Selenium Test NRP " + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String BUILDING_NAME = nextRandomBuildingName();
+    private final String ROUTER_1_NAME = "Create NRP Selenium Test 1." + nextMaxInt();
+    private final String ROUTER_2_NAME = "Create NRP Selenium Test 2." + nextMaxInt();
+    private final String processIPName1 = "Create NRP Selenium Test IP 1." + nextMaxInt();
+    private final String processIPName2 = "Create NRP Selenium Test IP 2." + nextMaxInt();
+    private final String processNRPName = "Create NRP Selenium Test NRP " + nextMaxInt();
     private SoftAssert softAssert;
     private String processNRPCode;
     private PlanningContext processNRPContext;
@@ -205,6 +205,7 @@ public class CreateProcessNRPTest extends BaseTestCase {
         DelayUtils.sleep(2000);
         if (AttachFileWizardPage.isWizardVisible(driver)) {
             new AttachFileWizardPage(driver).cancelButton();
+            Assert.fail(WIZARD_STILL_OPENED);
         }
         List<String> files = tasksPage.getListOfAttachments();
         if (files.isEmpty()) {

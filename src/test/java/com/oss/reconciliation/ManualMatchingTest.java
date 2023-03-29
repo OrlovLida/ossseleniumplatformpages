@@ -16,6 +16,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.physical.DeviceWizardPage;
@@ -79,10 +80,10 @@ public class ManualMatchingTest extends BaseTestCase {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         if (networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME)) {
             networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
-            networkDiscoveryControlViewPage.clearOldNotifications();
+            Notifications.create(driver, webDriverWait).clearAllNotification();
             networkDiscoveryControlViewPage.deleteCmDomain();
             checkPopupMessageType();
-            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+            Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
         } else {
             log.info("CMDomain with name: " + CM_DOMAIN_NAME + " doesn't exist");
         }

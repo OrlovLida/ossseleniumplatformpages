@@ -58,7 +58,6 @@ public class BookmarksSmokeTest extends BaseTestCase {
         checkErrorPage(BOOKMARKS_PAGE);
         checkGlobalNotificationContainer(BOOKMARKS_PAGE);
         Assert.assertTrue(bookmarksPage.isObjectPresent(CATEGORY_NAME));
-        DelayUtils.waitForPageToLoad(driver, webDriverWait);
         Assert.assertEquals(bookmarksPage.getDescription(CATEGORY_NAME), DESCRIPTION_CATEGORY);
     }
 

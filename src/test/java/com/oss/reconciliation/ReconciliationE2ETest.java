@@ -1,8 +1,10 @@
 package com.oss.reconciliation;
 
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.util.List;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
@@ -13,6 +15,7 @@ import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
@@ -24,7 +27,8 @@ import com.oss.utils.TestListener;
 @Listeners({TestListener.class})
 public class ReconciliationE2ETest extends BaseTestCase {
 
-    private static final String cmDomainName = "SeleniumTestDomain";
+    private static final String CM_DOMAIN_NAME = "SeleniumTestDomain";
+    private static final String CISCO_SELENIUM_TEST = "CiscoSeleniumTest";
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
 
     @BeforeClass
@@ -36,7 +40,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
     public void createCmDomain() {
         networkDiscoveryControlViewPage.openCmDomainWizard();
         CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
-        wizard.setName(cmDomainName);
+        wizard.setName(CM_DOMAIN_NAME);
         wizard.setInterface("CISCO IOS 12/15/XE without mediation");
         wizard.setDomain("IP");
         wizard.save();
@@ -46,11 +50,11 @@ public class ReconciliationE2ETest extends BaseTestCase {
     @Test(priority = 2)
     public void uploadSamples() throws URISyntaxException {
         DelayUtils.sleep(1000);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
-        samplesManagementPage.createDirectory(cmDomainName);
+        samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
         DelayUtils.sleep(1000);
         samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/full/CiscoSeleniumTest_10.20.0.50_20170707_1300_running-config");
         DelayUtils.sleep(1000);
@@ -63,7 +67,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
     public void runReconciliationWithFullSample() {
         openNetworkDiscoveryControlView();
         DelayUtils.sleep(100);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType(MessageType.INFO);
         Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
@@ -78,20 +82,20 @@ public class ReconciliationE2ETest extends BaseTestCase {
     public void assignLocationAndApplyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
-        networkInconsistenciesViewPage.expandTree();
-        networkInconsistenciesViewPage.assignLocation("CiscoSeleniumTest", "a");
+        networkInconsistenciesViewPage.expandTwoLastTreeRows();
+        networkInconsistenciesViewPage.assignLocation(CISCO_SELENIUM_TEST, "a");
         checkPopupMessageType(MessageType.SUCCESS);
-        networkInconsistenciesViewPage.clearOldNotification();
-        networkInconsistenciesViewPage.applyInconsistencies();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
+        networkInconsistenciesViewPage.applyFirstInconsistenciesGroup();
         DelayUtils.sleep(5000);
-        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to CiscoSeleniumTest finished");
+        Assert.assertEquals(Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage(), String.format(NetworkInconsistenciesViewPage.ACCEPT_DISCREPANCIES_PATTERN, CISCO_SELENIUM_TEST));
 
     }
 
     @Test(priority = 5)
     public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
         openNetworkDiscoveryControlView();
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
@@ -108,7 +112,7 @@ public class ReconciliationE2ETest extends BaseTestCase {
     public void runReconciliationWithEmptySample() {
         openNetworkDiscoveryControlView();
         DelayUtils.sleep(100);
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.runReconciliation();
         checkPopupMessageType(MessageType.INFO);
         Assert.assertEquals(networkDiscoveryControlViewPage.waitForEndOfReco(), "SUCCESS");
@@ -123,21 +127,21 @@ public class ReconciliationE2ETest extends BaseTestCase {
     public void applyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
-        networkInconsistenciesViewPage.expandTree();
-        networkInconsistenciesViewPage.clearOldNotification();
-        networkInconsistenciesViewPage.applyInconsistencies();
+        networkInconsistenciesViewPage.expandTwoLastTreeRows();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
+        networkInconsistenciesViewPage.applyFirstInconsistenciesGroup();
         DelayUtils.sleep(1000);
-        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to CiscoSeleniumTest finished");
+        Assert.assertEquals(Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage(), String.format(NetworkInconsistenciesViewPage.ACCEPT_DISCREPANCIES_PATTERN, CISCO_SELENIUM_TEST));
     }
 
     @Test(priority = 8)
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
-        networkDiscoveryControlViewPage.queryAndSelectCmDomain(cmDomainName);
-        networkDiscoveryControlViewPage.clearOldNotifications();
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        Notifications.create(driver, webDriverWait).clearAllNotification();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType(MessageType.INFO);
-        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + cmDomainName + " finished");
+        Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
     private void checkPopupMessageType(MessageType messageType) {

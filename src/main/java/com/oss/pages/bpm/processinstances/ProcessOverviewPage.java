@@ -1,7 +1,6 @@
 package com.oss.pages.bpm.processinstances;
 
 import com.oss.framework.components.contextactions.OldActionsContainer;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.propertypanel.OldPropertyPanel;
@@ -37,9 +36,7 @@ public class ProcessOverviewPage extends BasePage {
     private static final String MILESTONE_LIST = "bpm_processes_view_process-milestones-list";
     private static final String ADD_MILESTONES_LIST_ID = "CREATE_MILESTONES_EDITABLE_LIST_ID";
     private static final String CREATE_MILESTONES_ACTION_ID = "create-milestones";
-    private static final String CHANGE_FDD_ACTION_ID = "inventory-processes_change_finished_due_date";
     private static final String TERMINATE_PROCESS_ACTION_ID = "kill-process";
-    private static final String EDIT_PROCESS_ATTRIBUTES_ACTION_ID = "edit-processes";
     private static final String CREATE_GROUP_ACTION_ID = "create";
     private static final String START_PROCESS_ACTION_ID = "start-process";
     private static final String ADD_MILESTONES_WIZARD_ID = "WIZARD_APP_ID";
@@ -118,7 +115,7 @@ public class ProcessOverviewPage extends BasePage {
     public String getProcessCode(String processName) {
         DelayUtils.waitForPageToLoad(driver, wait);
         OldTable processTable = getProcessesTable();
-        processTable.searchByAttributeWithLabel(NAME_LABEL, Input.ComponentType.TEXT_FIELD, processName);
+        processTable.searchByColumn(NAME_LABEL, processName);
         processTable.doRefreshWhileNoData(1000, REFRESH_TABLE_ID);
         int index = processTable.getRowNumber(processName, NAME_LABEL);
         return processTable.getCellValue(index, CODE_LABEL);
@@ -128,13 +125,13 @@ public class ProcessOverviewPage extends BasePage {
         return selectProcess(CODE_LABEL, processCode);
     }
 
-    public ProcessOverviewPage selectProcess(String attributeName, String value) {
-        TableInterface table = getProcessesTable();
+    public ProcessOverviewPage selectProcess(String columnLabel, String value) {
+        OldTable table = getProcessesTable();
         DelayUtils.waitForPageToLoad(driver, wait);
-        table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, value);
+        table.searchByColumn(columnLabel, value);
         DelayUtils.waitForPageToLoad(driver, wait);
         table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
-        table.selectRowByAttributeValueWithLabel(attributeName, value);
+        table.selectRowByAttributeValueWithLabel(columnLabel, value);
         DelayUtils.waitForPageToLoad(driver, wait);
         return this;
     }

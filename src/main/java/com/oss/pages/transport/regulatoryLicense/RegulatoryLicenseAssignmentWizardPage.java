@@ -12,10 +12,10 @@ import io.qameta.allure.Step;
 public class RegulatoryLicenseAssignmentWizardPage extends BasePage {
     private static final String OBJECT_TYPE_FIELD_ID = "assign-regulatory-license-assignment-type-field";
 
-    private static final String LOCATION_NAME_FIELD_ID = "assign-regulatory-license-location-field_OSF";
-    private static final String MICROWAVE_ANTENNA_NAME_FIELD_ID = "assign-regulatory-license-antenna-field_OSF";
-    private static final String MICROWAVE_LINK_NAME_FIELD_ID = "assign-regulatory-license-microwave-link-field_OSF";
-    private static final String MICROWAVE_CHANNEL_NAME_FIELD_ID = "assign-regulatory-license-microwave-channel-field_OSF";
+    private static final String LOCATION_NAME_FIELD_ID = "assign-regulatory-license-location-field";
+    private static final String MICROWAVE_ANTENNA_NAME_FIELD_ID = "assign-regulatory-license-antenna-field";
+    private static final String MICROWAVE_LINK_NAME_FIELD_ID = "assign-regulatory-license-microwave-link-field";
+    private static final String MICROWAVE_CHANNEL_NAME_FIELD_ID = "assign-regulatory-license-microwave-channel-field";
 
     private static final String COMPONENT_ID = "assign-regulatory-license-view_prompt-card";
 
@@ -66,7 +66,7 @@ public class RegulatoryLicenseAssignmentWizardPage extends BasePage {
 
     @Step("Set object name to {objectName}")
     private void setObjectName(String objectName, String objectNameFieldId) {
-        getWizard().setComponentValue(objectNameFieldId, objectName, Input.ComponentType.OBJECT_SEARCH_FIELD);
+        getWizard().getComponent(objectNameFieldId).setSingleStringValueContains(objectName);
     }
 
     @Step("Click accept button")

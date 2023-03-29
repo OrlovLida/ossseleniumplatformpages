@@ -1,7 +1,6 @@
 package com.oss.pages.stockmanagement.operationalcostslists;
 
 import com.comarch.oss.web.pages.BasePage;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.wizard.Wizard;
@@ -66,7 +65,7 @@ public class OperationalCostsListsPage extends BasePage {
     public OperationalCostsListsPage selectOperationalCostsList(String operationalCostsListName) {
         OldTable table = getOperationalCostsListsTable();
         waitForPageToLoad();
-        table.searchByAttributeWithLabel(NAME_ATTRIBUTE_LABEL, Input.ComponentType.TEXT_FIELD, operationalCostsListName);
+        table.searchByColumn(NAME_ATTRIBUTE_LABEL, operationalCostsListName);
         table.selectFirstRow();
         waitForPageToLoad();
         return this;

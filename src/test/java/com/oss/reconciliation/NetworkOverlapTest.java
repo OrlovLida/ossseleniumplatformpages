@@ -12,13 +12,14 @@ import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
 import com.comarch.oss.web.pages.GlobalSearchPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.DelayUtils;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkOverlapPage;
 import com.oss.pages.reconciliation.ResolveConflictWizardPage;
@@ -63,10 +64,10 @@ public class NetworkOverlapTest extends BaseTestCase {
         if (networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME);
-            networkDiscoveryControlViewPage.clearOldNotifications();
+            Notifications.create(driver, webDriverWait).clearAllNotification();
             networkDiscoveryControlViewPage.deleteCmDomain();
             checkPopupMessageType();
-            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+            Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
         } else {
             log.info("CMDomain with name: " + CM_DOMAIN_NAME + " doesn't exist");
         }
@@ -81,10 +82,10 @@ public class NetworkOverlapTest extends BaseTestCase {
         if (networkDiscoveryControlViewPage.isCmDomainPresent(CM_DOMAIN_NAME_2)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             networkDiscoveryControlViewPage.selectCmDomain(CM_DOMAIN_NAME_2);
-            networkDiscoveryControlViewPage.clearOldNotifications();
+            Notifications.create(driver, webDriverWait).clearAllNotification();
             networkDiscoveryControlViewPage.deleteCmDomain();
             checkPopupMessageType();
-            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME_2 + " finished");
+            Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME_2 + " finished");
         } else {
             log.info("CMDomain with name: " + CM_DOMAIN_NAME_2 + " doesn't exist");
         }
@@ -271,10 +272,10 @@ public class NetworkOverlapTest extends BaseTestCase {
     public void deleteCmDomain1() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
-        networkDiscoveryControlViewPage.clearOldNotifications();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType();
-        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+        Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
     @Test(priority = 17, description = "Check if conflict is open", dependsOnMethods = {"resolveConflict", "deleteCmDomain1"})
@@ -306,10 +307,10 @@ public class NetworkOverlapTest extends BaseTestCase {
     public void deleteCmDomain2() {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME_2);
-        networkDiscoveryControlViewPage.clearOldNotifications();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType();
-        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME_2 + " finished");
+        Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME_2 + " finished");
     }
 
     @Test(priority = 19, description = "Check if conflict is terminated", dependsOnMethods = {"deleteCmDomain2"})

@@ -467,7 +467,7 @@ public class NetworkViewPage extends BasePage {
     }
 
     public void clearColumnSearchFieldInContentTab(String columnName) {
-        getOldTable(CONTENT_VIEW_TABLE_APP_ID).clearColumnValue(columnName);
+        clearColumnSearchFieldInDetailTab(columnName, CONTENT_VIEW_TABLE_APP_ID);
     }
 
     private void clearColumnSearchFieldInDetailTab(String columnName, String tabId) {

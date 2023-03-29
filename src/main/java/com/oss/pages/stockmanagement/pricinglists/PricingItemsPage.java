@@ -2,7 +2,6 @@ package com.oss.pages.stockmanagement.pricinglists;
 
 import com.comarch.oss.web.pages.BasePage;
 import com.google.common.base.Preconditions;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.wizard.Wizard;
@@ -59,7 +58,7 @@ public class PricingItemsPage extends BasePage {
     public PricingItemsPage selectPricingItem(String pricingItemName) {
         OldTable table = getPricingItemsTable();
         waitForPageToLoad();
-        table.searchByAttributeWithLabel(NAME_COLUMN_LABEL, Input.ComponentType.TEXT_FIELD, pricingItemName);
+        table.searchByColumn(NAME_COLUMN_LABEL, pricingItemName);
         table.selectFirstRow();
         waitForPageToLoad();
         return this;

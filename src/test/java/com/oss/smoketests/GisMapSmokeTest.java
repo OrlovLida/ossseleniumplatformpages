@@ -17,6 +17,8 @@ import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.Optional;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -56,12 +58,15 @@ public class GisMapSmokeTest extends BaseTestCase {
     }
 
     @Test(priority = 2, description = "Check if Canvas object is present", dependsOnMethods = {"openGisView"})
+    @Parameters({"changeMap"})
     @Description("Check if Canvas object is present")
-    public void isCanvasObjectPresent() {
+    public void isCanvasObjectPresent(@Optional("true") boolean changeMap) {
         GisViewPage gisViewPage = GisViewPage.getGisViewPage(driver, webDriverWait);
         checkErrorPage();
         checkGlobalNotificationContainer();
-        gisViewPage.setMap(MAP_NAME);
+        if (changeMap) {
+            gisViewPage.setMap(MAP_NAME);
+        }
         waitForPageToLoad();
         Assert.assertTrue(gisViewPage.isCanvasPresent(), CANVAS_PRESENT_EXCEPTION);
     }

@@ -1,0 +1,54 @@
+show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol 
+GigabitEthernet4/1     unassigned      YES NVRAM  administratively down down    
+GigabitEthernet4/2     unassigned      YES NVRAM  administratively down down    
+GigabitEthernet4/3     unassigned      YES NVRAM  administratively down down    
+GigabitEthernet4/4     unassigned      YES NVRAM  administratively down down    
+GigabitEthernet4/5     unassigned      YES NVRAM  administratively down down    
+GigabitEthernet4/6     unassigned      YES unset  down                  down    
+GigabitEthernet4/7     unassigned      YES manual up                    up      
+Gi4/7.3251             172.22.234.1    YES manual up                    up      
+Gi4/7.3303             unassigned      YES unset  up                    up      
+GigabitEthernet4/8     unassigned      YES manual up                    up      
+Gi4/8.1301             unassigned      YES unset  up                    up      
+Gi4/8.3516             10.41.128.1     YES TFTP   up                    up      
+GigabitEthernet4/9     unassigned      YES manual up                    up      
+GigabitEthernet4/9.892 unassigned      YES unset  up                    up      
+GigabitEthernet4/9.893 unassigned      YES unset  up                    up      
+GigabitEthernet4/10    unassigned      YES manual up                    up      
+Gi4/10.1326            unassigned      YES unset  up                    up      
+Gi4/10.1327            unassigned      YES unset  up                    up      
+Gi4/10.1328            unassigned      YES unset  up                    up      
+Gi4/10.3517            10.41.128.1     YES TFTP   up                    up      
+Gi4/10.3808            172.18.184.1    YES TFTP   up                    up      
+Gi4/10.3809            172.18.184.1    YES TFTP   up                    up      
+GigabitEthernet4/11    unassigned      YES NVRAM  up                    up      
+Gi4/11.1325            unassigned      YES unset  up                    up      
+Gi4/11.3514            10.41.128.1     YES TFTP   up                    up      
+GigabitEthernet4/12    unassigned      YES NVRAM  up                    up      
+Gi4/12.1324            unassigned      YES unset  up                    up      
+Gi4/12.3250            172.23.244.1    YES NVRAM  up                    up      
+Gi4/12.3314            unassigned      YES unset  up                    up      
+Gi4/12.3515            10.41.128.1     YES TFTP   up                    up      
+GigabitEthernet4/13    unassigned      YES NVRAM  administratively down down    
+GigabitEthernet4/14    unassigned      YES NVRAM  up                    up      
+Gi4/14.1322            unassigned      YES unset  up                    up      
+Gi4/14.1323            unassigned      YES unset  up                    up      
+Gi4/14.3512            10.41.128.1     YES TFTP   up                    up      
+Gi4/14.3513            10.41.128.1     YES TFTP   up                    up      
+GigabitEthernet4/15    unassigned      YES NVRAM  up                    up      
+Gi4/15.1321            unassigned      YES unset  up                    up      
+Gi4/15.3511            10.41.128.1     YES TFTP   up                    up      
+GigabitEthernet4/16    unassigned      YES NVRAM  up                    up      
+Gi4/16.1320            unassigned      YES unset  up                    up      
+Gi4/16.3510            10.41.128.1     YES TFTP   up                    up        
+GigabitEthernet6/1     unassigned      YES unset  administratively down down    
+GigabitEthernet6/2     unassigned      YES unset  administratively down down    
+Loopback1              200.63.133.10   YES NVRAM  up                    up      
+Loopback5              172.18.227.26   YES manual up                    up      
+Loopback184            172.18.184.1    YES manual up                    up      
+Loopback1002           10.41.128.1     YES NVRAM  up                    up      
+Vlan1                  unassigned      YES NVRAM  administratively down down    
+Vlan995                200.63.133.234  YES NVRAM  up                    up      
+Vlan996                200.63.133.237  YES NVRAM  up                    up      
+CENCH01#

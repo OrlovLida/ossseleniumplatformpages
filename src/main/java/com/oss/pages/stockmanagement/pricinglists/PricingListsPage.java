@@ -67,7 +67,7 @@ public class PricingListsPage extends BasePage {
     public PricingListsPage selectPricingList(String pricingListName) {
         OldTable table = getPricingListsTable();
         waitForPageToLoad();
-        table.searchByAttributeWithLabel(NAME_ATTRIBUTE_LABEL, Input.ComponentType.TEXT_FIELD, pricingListName);
+        table.searchByColumn(NAME_ATTRIBUTE_LABEL, pricingListName);
         table.selectFirstRow();
         waitForPageToLoad();
         return this;

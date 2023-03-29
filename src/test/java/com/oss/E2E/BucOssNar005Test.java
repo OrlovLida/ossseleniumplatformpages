@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Duration;
 
@@ -82,7 +83,7 @@ public class BucOssNar005Test extends BaseTestCase {
 
     @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Samples Management View and upload reconciliation samples")
-    public void uploadSamples() throws URISyntaxException {
+    public void uploadSamples() throws URISyntaxException, IOException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
         networkDiscoveryControlViewPage.moveToSamplesManagement();
@@ -90,11 +91,7 @@ public class BucOssNar005Test extends BaseTestCase {
         samplesManagementPage.selectPath();
         waitForPageToLoad();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/First/UCNAR05_10.20.0.50_20170707_1300_sh_inventory_raw");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/First/UCNAR05_10.20.0.50_20170707_1300_sh_version");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_005/First");
     }
 
     @Test(priority = 3, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})
@@ -129,21 +126,21 @@ public class BucOssNar005Test extends BaseTestCase {
     public void assignLocationAndApplyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
-        networkInconsistenciesViewPage.expandTree();
+        networkInconsistenciesViewPage.expandTwoLastTreeRows();
         waitForPageToLoad();
         networkInconsistenciesViewPage.assignLocation(OBJECT_NAME, "1");
         checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Assign location and apply inconsistencies", "assigning location"));
         waitForPageToLoad();
-        networkInconsistenciesViewPage.clearOldNotification();
-        networkInconsistenciesViewPage.applyInconsistencies();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
+        networkInconsistenciesViewPage.applyFirstInconsistenciesGroup();
         DelayUtils.sleep(3000);
         waitForPageToLoad();
-        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + OBJECT_NAME + " finished");
+        Assert.assertEquals(Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage(), String.format(NetworkInconsistenciesViewPage.ACCEPT_DISCREPANCIES_PATTERN, OBJECT_NAME));
     }
 
     @Test(priority = 5, description = "Change reconciliation samples", dependsOnMethods = {"assignLocationAndApplyInconsistencies"})
     @Description("Go to Samples Management from Network Discovery Control View, delete old reconciliation samples and upload a new ones")
-    public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
+    public void deleteOldSamplesAndPutNewOne() throws URISyntaxException, IOException {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
@@ -152,11 +149,7 @@ public class BucOssNar005Test extends BaseTestCase {
         samplesManagementPage.selectPath();
         waitForPageToLoad();
         samplesManagementPage.deleteDirectoryContent();
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/Second/UCNAR05_10.20.0.50_20170707_1300_sh_inventory_raw");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_005/Second/UCNAR05_10.20.0.50_20170707_1300_sh_version");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_005/Second");
     }
 
     @Test(priority = 6, description = "Open router in New Inventory View", dependsOnMethods = {"deleteOldSamplesAndPutNewOne"})
@@ -251,11 +244,11 @@ public class BucOssNar005Test extends BaseTestCase {
         waitForPageToLoad();
         networkDiscoveryControlViewPage.cancelWithSubsequents();
         waitForPageToLoad();
-        networkDiscoveryControlViewPage.clearOldNotifications();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkMessageType(MessageType.INFO, String.format(SYSTEM_MESSAGE_PATTERN, "Delete CM Domain", "CM Domain delete"));
         waitForPageToLoad();
-        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+        Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
     @Test(priority = 12, description = "Checking system message summary")

@@ -147,3 +147,4 @@ public class InfoManagementMessagesTest extends BaseTestCase {
         Assert.assertEquals(messagesPage.getMessageStatus(), E_MAIL_STATUS);
     }
 }
+

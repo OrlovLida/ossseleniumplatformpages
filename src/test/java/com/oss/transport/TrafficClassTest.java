@@ -6,6 +6,7 @@ import java.util.Random;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -13,7 +14,6 @@ import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.transport.traffic.classs.TrafficClassCreationWizard;
 import com.oss.pages.transport.traffic.classs.TrafficClassModificationWizardPage;
 import com.oss.pages.transport.traffic.classs.TrafficClassWizardPage;
@@ -79,6 +79,8 @@ public class TrafficClassTest extends BaseTestCase {
         Assert.assertTrue(hasBeenDeleted);
 
         inventoryView.refreshMainTable();
+        TrafficClassAttributes trafficClassAttributes = getTrafficClassAttributesToUpdate();
+        inventoryView.searchObject(trafficClassAttributes.trafficClassName);
         waitForPageToLoad();
         Assert.assertTrue(inventoryView.checkIfTableIsEmpty());
     }
@@ -205,6 +207,7 @@ public class TrafficClassTest extends BaseTestCase {
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
     }
+
     private static class TrafficClassAttributes {
         private String trafficClassName;
         private String description;

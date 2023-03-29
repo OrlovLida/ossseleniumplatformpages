@@ -50,6 +50,7 @@ public class CreateNewAlarmTest extends BaseTestCase {
             @Optional("Test_Selenium") String moIdentifier,
             @Optional("SeleniumTestAlarm:Device_F ") String notificationIdentifier
     ) {
+        driver.navigate().refresh();
         alarmGeneratorWizard = alarmGeneratorPage.clickAddButton();
         alarmGeneratorWizard.setMoIdentifier(moIdentifier);
         String uniqueNotificationIdentifier = notificationIdentifier + date;

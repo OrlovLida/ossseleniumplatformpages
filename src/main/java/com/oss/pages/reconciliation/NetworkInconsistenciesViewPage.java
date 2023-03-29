@@ -23,13 +23,14 @@ import io.qameta.allure.Step;
 
 public class NetworkInconsistenciesViewPage extends BasePage {
 
+    public static final String ACCEPT_DISCREPANCIES_PATTERN = "Accepting discrepancies related to %s finished";
     private static final String ACCEPT_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionAcceptId";
+    private static final String ACCEPT_WITH_PREREQ_GROUP_BUTTON_ID = "narComponent_GroupDiscrepancyActionAcceptPrerequisitesId";
     private static final String ACCEPT_BUTTON_ID = "narComponent_DiscrepancyActionAcceptId";
     private static final String PHYSICAL_INCONSITENCIES_TABLE_ID = "narComponent_networkInconsistenciesViewIddiscrepancyDetailsTreeTableId";
     private static final String PHYSICAL_WIZARD_ID = "optional_prompt-card";
     private static final String RAN_INCONSITENCIES_TABLE_ID = "radioAppId";
     private static final String CHANGE_LOCATION_ACTION_ID = "DeviceChangeLocationAction";
-    private static final String NIV_TREE = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeTabId";
     private static final String ACCEPT_CHANGE_LOCATION_BUTTON_ID = "wizard-submit-button-change-location-wizard";
     private static final String TREE_ID = "narComponent_networkInconsistenciesViewIddiscrepanciesTreeId";
     private static final String RAN_WIZARD_ID = "changeLocationWizardId";
@@ -46,13 +47,25 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     }
 
     public TreeWidget getTreeView() {
-        DelayUtils.waitForPageToLoad(driver, wait);
         return TreeWidget.createById(driver, wait, TREE_ID);
     }
 
-    @Step("Expand two tree levels of Inconsistencies")
+    @Deprecated
+    /**
+     * @Depracated - replace by expandTwoLastTreeRows, will be removed in 4.0.x
+     */
     public void expandTree() {
-        getTreeView().expandLastTreeRow();
+        expandTwoLastTreeRows();
+    }
+
+    @Step("Expand two tree levels of Inconsistencies")
+    public void expandTwoLastTreeRows() {
+        expandLastTreeRow();
+        expandLastTreeRow();
+    }
+
+    @Step("Expand last tree level of Inconsistencies")
+    public void expandLastTreeRow() {
         getTreeView().expandLastTreeRow();
         DelayUtils.waitForPageToLoad(driver, wait);
     }
@@ -64,10 +77,9 @@ public class NetworkInconsistenciesViewPage extends BasePage {
 
     @Step("Select {inconsistencyName} and use Physical Device Update Wizard to assign location")
     public void assignLocation(String inconsistencyName, String preciseLocation) {
-        getTreeView().selectTreeRow(inconsistencyName);
+        selectTreeObjectByName(inconsistencyName);
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createById(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID);
-        table.callAction(ActionsContainer.EDIT_GROUP_ID, CHANGE_LOCATION_ACTION_ID);
+        getOldTreeTableWidget().callActionById(ActionsContainer.EDIT_GROUP_ID, CHANGE_LOCATION_ACTION_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         Wizard wizard = Wizard.createByComponentId(driver, new WebDriverWait(driver, Duration.ofSeconds(90)), PHYSICAL_WIZARD_ID);
         Input input = wizard.getComponent(DeviceWizardPage.DEVICE_PRECISE_LOCATION_TYPE_DATA_ATTRIBUTE_NAME);
@@ -76,14 +88,9 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         wizard.clickButtonById(ACCEPT_CHANGE_LOCATION_BUTTON_ID);
     }
 
-    @Step("Check if inconsistency is present by {inconsistencyName}")
-    public boolean isInconsistencyPresent(String inconsistencyName) {
-        return getTreeView().isRowPresent(inconsistencyName);
-    }
-
     @Step("Select {inconsistencyName} and use assign location option")
     public void assignRanLocation(String inconsistencyName, String location) {
-        getTreeView().selectTreeRow(inconsistencyName);
+        selectTreeObjectByName(inconsistencyName);
         DelayUtils.waitForPageToLoad(driver, wait);
         TableInterface table = OldTable.createById(driver, wait, RAN_INCONSITENCIES_TABLE_ID);
         table.callAction(ASSIGN_LOCATION_ACTION_ID);
@@ -95,56 +102,48 @@ public class NetworkInconsistenciesViewPage extends BasePage {
         wizard.clickAccept();
     }
 
+    @Step("Check if inconsistency is present by {inconsistencyName}")
+    public boolean isInconsistencyPresent(String inconsistencyName) {
+        return getTreeView().isRowPresent(inconsistencyName);
+    }
+
+    public boolean isInconsistencyPresentContains(String inconsistencyName) {
+        return getTreeView().isRowPresentContains(inconsistencyName);
+    }
+
     @Step("Select first group of Inconsistencies and apply discrepancies to Live perspective")
-    public void applyInconsistencies() {
+    public void applyFirstInconsistenciesGroup() {
         selectTreeObjectByRowOrder(2);
-        TabsInterface nivTabs = TabsWidget.createById(driver, wait, TAB_ID);
-        nivTabs.selectTabById(NIV_TREE);
-        DelayUtils.sleep(1000);
-        nivTabs.callActionById(ACCEPT_GROUP_BUTTON_ID);
-        DelayUtils.sleep(1000);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        applySelectedInconsistenciesGroup();
+    }
+
+    @Deprecated
+    /**
+     * @Depracated - replace by applyFirstInconsistenciesGroup, will be removed in 4.0.x
+     */
+    public void applyInconsistencies() {
+        applyFirstInconsistenciesGroup();
+    }
+
+    @Step("Select first group of Inconsistencies and apply discrepancies with prerequisites to Live perspective")
+    public void applyFirstInconsistenciesGroupWithPrerequsites() {
+        selectTreeObjectByRowOrder(2);
+        applyInconsistencies(ACCEPT_WITH_PREREQ_GROUP_BUTTON_ID);
     }
 
     @Step("Apply discrepancies to Live perspective")
     public void applySelectedInconsistencies() {
-        TabsInterface nivTabs = TabsWidget.createById(driver, wait, TAB_ID);
-        nivTabs.selectTabById(NIV_TREE);
-        DelayUtils.sleep(1000);
-        nivTabs.callActionById(ACCEPT_BUTTON_ID);
-        DelayUtils.sleep(1000);
-        DelayUtils.waitForPageToLoad(driver, wait);
+        applyInconsistencies(ACCEPT_BUTTON_ID);
     }
 
-    @Step("Clear old notifications")
-    public void clearOldNotification() {
-        Notifications.create(driver, wait).clearAllNotification();
-    }
-
-    @Step("Check notification about accepting inconsistencies")
-    public String checkNotificationAfterApplyInconsistencies() {
-        return Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage();
+    @Step("Apply discrepancies to Live perspective")
+    public void applySelectedInconsistenciesGroup() {
+        applyInconsistencies(ACCEPT_GROUP_BUTTON_ID);
     }
 
     @Step("Check inconsistencies operation type for first object")
     public String checkInconsistenciesOperationType() {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        return OldTable.createById(driver, wait, PHYSICAL_INCONSITENCIES_TABLE_ID).getCellValue(0, OPERATION_TYPE);
-    }
-
-    @Step("Get inconsistency LIVE name")
-    public String getLiveName() {
-        return getOldTreeTableWidget().getCellValue(0, LIVE);
-    }
-
-    @Step("Get inconsistency NETWORK name")
-    public String getNetworkName() {
-        return getOldTreeTableWidget().getCellValue(0, NETWORK);
-    }
-
-    @Step("Get inconsistency NETWORK info by rowName")
-    public String getNetworkInfoByRowName(String rowName) {
-        return getOldTreeTableWidget().getCellValue(getOldTreeTableWidget().getRowNumber(rowName, ELEMENT), NETWORK);
+        return getOldTreeTableWidget().getCellValue(0, OPERATION_TYPE);
     }
 
     @Step("Select object on inconsistencies tree")
@@ -160,6 +159,45 @@ public class NetworkInconsistenciesViewPage extends BasePage {
     @Step("Expand info about inconsistency by rowName")
     public void expandElementInInconsistenciesTable(String elementName) {
         getOldTreeTableWidget().expandNode(elementName, ELEMENT);
+    }
+
+    @Step("Get inconsistency NETWORK info by rowName")
+    public String getNetworkInfoByRowName(String rowName) {
+        return getOldTreeTableWidget().getCellValue(getOldTreeTableWidget().getRowNumber(rowName, ELEMENT), NETWORK);
+    }
+
+    @Step("Get inconsistency LIVE name")
+    public String getLiveName() {
+        return getOldTreeTableWidget().getCellValue(0, LIVE);
+    }
+
+    @Step("Get inconsistency NETWORK name")
+    public String getNetworkName() {
+        return getOldTreeTableWidget().getCellValue(0, NETWORK);
+    }
+
+    @Deprecated
+    /**
+     * @Depracated - not related to NetworkInconsistenciesViewPage, use the Notifications class directly
+     */
+    @Step("Clear old notifications")
+    public void clearOldNotification() {
+        Notifications.create(driver, wait).clearAllNotification();
+    }
+
+    @Deprecated
+    /**
+     * @Depracated - not related to NetworkInconsistenciesViewPage, use the Notifications class directly
+     */
+    @Step("Check notification about accepting inconsistencies")
+    public String checkNotificationAfterApplyInconsistencies() {
+        return Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage();
+    }
+
+    private void applyInconsistencies(String actionId) {
+        TabsInterface nivTabs = TabsWidget.createById(driver, wait, TAB_ID);
+        nivTabs.callActionById(actionId);
+        DelayUtils.waitForPageToLoad(driver, wait);
     }
 
     private OldTreeTableWidget getOldTreeTableWidget() {

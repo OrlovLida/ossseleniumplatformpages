@@ -1,5 +1,14 @@
 package com.oss.untils;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Preconditions;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -11,14 +20,6 @@ import com.jayway.restassured.path.json.JsonPath;
 import com.jayway.restassured.response.Response;
 import com.jayway.restassured.specification.RequestSpecification;
 import com.oss.configuration.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 public class Environment {
 
@@ -48,19 +49,14 @@ public class Environment {
 
     private static final String KEYCLOAK_PASS_PROP = "keycloak.pass";
     private static final String KEYCLOAK_USERNAME_PROP = "keycloak.username";
-    private static final String DISCOVERY_PORT_PROP = "discovery.port";
-    private static final String DISCOVERY_IP_PROP = "discovery.ip";
     private static final String FIXED_ACCESS_CORE = "fixed-access";
     private static final String TRAIL_CORE = "trail-core";
-
     private static final Integer CURRENT_TOKEN_IDENTIFIER = 1;
-    private static final Configuration CONFIGURATION = new Configuration();
-
     private static Environment env;
-    private final String serviceDiscoveryUri;
-    private final int serviceDiscoveryPort;
     private final String keycloakUserName;
     private final String keycloakUserPassword;
+    private final String basePath;
+
     private final Map<String, LocalService> serviceCache = new HashMap<>();
     private final LoadingCache<Integer, String> keycloakTokenCache = CacheBuilder.newBuilder()
             .maximumSize(1)
@@ -74,18 +70,19 @@ public class Environment {
                     });
 
     private Environment() {
-        serviceDiscoveryUri = "http://" + System.getProperty(DISCOVERY_IP_PROP, new Configuration().getApplicationIp());
-        serviceDiscoveryPort = Integer.parseInt(System.getProperty(DISCOVERY_PORT_PROP, new Configuration().getApplicationPort()));
-
-        LOGGER.info("Prefix URI for service discovery and keycloak: {}:{}", serviceDiscoveryUri, serviceDiscoveryPort);
-        LOGGER.info("It can be changed using java properties: {} and {}", DISCOVERY_IP_PROP, DISCOVERY_PORT_PROP);
-
-        keycloakUserName = System.getProperty(KEYCLOAK_USERNAME_PROP, CONFIGURATION.getLogin());
-        keycloakUserPassword = System.getProperty(KEYCLOAK_PASS_PROP, CONFIGURATION.getPassword());
+        Configuration configuration = new Configuration();
+        this.basePath = configuration.getUrl();
+        this.keycloakUserName = System.getProperty(KEYCLOAK_USERNAME_PROP, configuration.getLogin());
+        this.keycloakUserPassword = System.getProperty(KEYCLOAK_PASS_PROP, configuration.getPassword());
 
         Preconditions.checkNotNull(keycloakUserName, "Provide keycloak.username java parameter");
         Preconditions.checkNotNull(keycloakUserPassword, "Provide keycloak.pass java parameter");
+    }
 
+    private Environment(String baseUrl, String userName, String password) {
+        this.basePath = baseUrl;
+        this.keycloakUserName = userName;
+        this.keycloakUserPassword = password;
     }
 
     public static synchronized Environment getInstance() {
@@ -93,6 +90,10 @@ public class Environment {
             env = new Environment();
         }
         return env;
+    }
+
+    public static synchronized Environment getInstance(String baseUrl, String userName, String password) {
+        return new Environment(baseUrl, userName, password);
     }
 
     public String getKeycloackToken() {
@@ -226,21 +227,16 @@ public class Environment {
     }
 
     private String createNewToken() {
-        String token =
-                RestAssured.given()
-                        .baseUri(serviceDiscoveryUri)
-                        .port(serviceDiscoveryPort)
-                        .basePath("/auth/realms/OSS/protocol/openid-connect/token")
-                        .contentType(ContentType.URLENC)
-                        .content("username=" + keycloakUserName + "&password=" + keycloakUserPassword
-                                + "&client_id=JBossCore&grant_type=password")
-                        .post()
-                        .body()
-                        .jsonPath()
-                        .getString("access_token");
+        Response response = RestAssured.given().relaxedHTTPSValidation()
+                .baseUri(basePath)
+                .contentType(ContentType.URLENC)
+                .content("username=" + keycloakUserName + "&password=" + keycloakUserPassword
+                        + "&client_id=JBossCore&grant_type=password")
+                .post("auth/realms/OSS/protocol/openid-connect/token");
 
-        LOGGER.info("Created session: {}", token);
-        return token;
+        return response.body()
+                .jsonPath()
+                .getString("access_token");
     }
 
     protected RequestSpecification findApplicationBasePath(String applicationName) {
@@ -255,8 +251,8 @@ public class Environment {
     private LocalService getServiceFromSD(String applicationName) {
         LocalService service = new LocalService();
         Response response = RestAssured.given()
-                .baseUri(serviceDiscoveryUri)
-                .port(serviceDiscoveryPort)
+                .baseUri(basePath)
+                .contentType(ContentType.URLENC)
                 .authentication().oauth2(getKeycloackToken(), OAuthSignature.HEADER)
                 .contentType(ContentType.JSON)
                 .get("rest/discovery/v2/service/" + applicationName);

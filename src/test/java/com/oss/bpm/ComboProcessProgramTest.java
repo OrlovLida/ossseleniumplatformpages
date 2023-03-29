@@ -29,9 +29,9 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import static com.oss.bpm.BpmPhysicalDataCreator.nextMaxInt;
 import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NAME_LABEL;
 
 
@@ -88,13 +88,10 @@ public class ComboProcessProgramTest extends BaseTestCase {
 
     private final Logger LOGGER = LoggerFactory.getLogger(ComboProcessProgramTest.class);
     private SoftAssert softAssert;
-    private static final Random RANDOM = new Random();
-
-    private final String processNameTC1 = "Combo Process/Program Test Process TC1." + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String programNameTC3 = "Combo Process/Program Test Program TC3." + RANDOM.nextInt(Integer.MAX_VALUE);
-    private final String programNameTC4 = "Combo Process/Program Test Program TC4." + RANDOM.nextInt(Integer.MAX_VALUE);
-
-    private final String mainProgramName = "Combo Process/Program Test Main Program " + RANDOM.nextInt(Integer.MAX_VALUE);
+    private final String processNameTC1 = "Combo Process/Program Test Process TC1." + nextMaxInt();
+    private final String programNameTC3 = "Combo Process/Program Test Program TC3." + nextMaxInt();
+    private final String programNameTC4 = "Combo Process/Program Test Program TC4." + nextMaxInt();
+    private final String mainProgramName = "Combo Process/Program Test Main Program " + nextMaxInt();
     private final long plus5Days = 5L;
     private final long plus10Days = 10L;
     private final int plusMinutes = 2;
@@ -207,11 +204,11 @@ public class ComboProcessProgramTest extends BaseTestCase {
     @Test(priority = 2, description = "Create Program and Processes with roles, milestones, forecasts")
     @Description("Create Program and Processes with roles, milestones, forecasts")
     public void createComboProgramWithComboProcesses() {
-        String processName = "Combo Process/Program Test Process TC2." + RANDOM.nextInt(Integer.MAX_VALUE);
-        final String programMilestoneName1 = "Combo Test Program TC2.1." + RANDOM.nextInt(Integer.MAX_VALUE);
-        final String programMilestoneName2 = "Combo Test Program TC2.2." + RANDOM.nextInt(Integer.MAX_VALUE);
-        final String processMilestoneName1 = "Combo Test Process TC2.1." + RANDOM.nextInt(Integer.MAX_VALUE);
-        final String processMilestoneName2 = "Combo Test Process TC2.2." + RANDOM.nextInt(Integer.MAX_VALUE);
+        String processName = "Combo Process/Program Test Process TC2." + nextMaxInt();
+        final String programMilestoneName1 = "Combo Test Program TC2.1." + nextMaxInt();
+        final String programMilestoneName2 = "Combo Test Program TC2.2." + nextMaxInt();
+        final String processMilestoneName1 = "Combo Test Process TC2.1." + nextMaxInt();
+        final String processMilestoneName2 = "Combo Test Process TC2.2." + nextMaxInt();
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
 
         final List<Milestone> programMilestones = Lists.newArrayList(
@@ -356,9 +353,9 @@ public class ComboProcessProgramTest extends BaseTestCase {
             dependsOnMethods = {TC2})
     @Description("Create Process with roles, milestones, forecasts linked to Programs")
     public void createComboProcessLinkedToPrograms() {
-        String processName = "Combo Process/Program Test Process TC3." + RANDOM.nextInt(Integer.MAX_VALUE);
-        final String processMilestoneName1 = "Combo Test Process TC3.1." + RANDOM.nextInt(Integer.MAX_VALUE);
-        final String processMilestoneName2 = "Combo Test Process TC3.2." + RANDOM.nextInt(Integer.MAX_VALUE);
+        String processName = "Combo Process/Program Test Process TC3." + nextMaxInt();
+        final String processMilestoneName1 = "Combo Test Process TC3.1." + nextMaxInt();
+        final String processMilestoneName2 = "Combo Test Process TC3.2." + nextMaxInt();
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
 
         final List<Milestone> processMilestones = Lists.newArrayList(
@@ -457,9 +454,9 @@ public class ComboProcessProgramTest extends BaseTestCase {
             dependsOnMethods = {TC2})
     @Description("Create Multiple Process with roles, milestones, forecasts linked to Programs")
     public void createMultipleComboProcessesLinkedToPrograms() {
-        String processName = "Combo Process/Program Test Process TC4." + RANDOM.nextInt(Integer.MAX_VALUE);
-        final String processMilestoneName1 = "Combo Test Process TC4.1." + RANDOM.nextInt(Integer.MAX_VALUE);
-        final String processMilestoneName2 = "Combo Test Process TC4.2." + RANDOM.nextInt(Integer.MAX_VALUE);
+        String processName = "Combo Process/Program Test Process TC4." + nextMaxInt();
+        final String processMilestoneName1 = "Combo Test Process TC4.1." + nextMaxInt();
+        final String processMilestoneName2 = "Combo Test Process TC4.2." + nextMaxInt();
         ProcessOverviewPage processOverviewPage = ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL);
 
         final List<Milestone> processMilestones = Lists.newArrayList(

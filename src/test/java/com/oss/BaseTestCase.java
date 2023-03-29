@@ -1,12 +1,18 @@
 package com.oss;
 
+import com.comarch.oss.services.infrastructure.objectmapper.JDK8ObjectMapper;
+import com.jayway.restassured.RestAssured;
+import com.jayway.restassured.config.ObjectMapperConfig;
+import com.jayway.restassured.config.RestAssuredConfig;
+import com.oss.framework.components.alerts.SystemMessageContainer;
+import com.oss.framework.components.mainheader.LoginPanel;
+import com.oss.framework.utils.DelayUtils;
+import com.oss.pages.platform.HomePage;
+import com.oss.pages.platform.LoginPage;
+import com.oss.serviceClient.Environment;
+import com.oss.serviceClient.EnvironmentRequestClient;
+import com.oss.utils.TestListener;
 import io.github.bonigarcia.wdm.WebDriverManager;
-
-import java.time.Duration;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
@@ -23,18 +29,10 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 
-import com.comarch.oss.services.infrastructure.objectmapper.JDK8ObjectMapper;
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.config.ObjectMapperConfig;
-import com.jayway.restassured.config.RestAssuredConfig;
-import com.oss.framework.components.alerts.SystemMessageContainer;
-import com.oss.framework.components.mainheader.LoginPanel;
-import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.HomePage;
-import com.oss.pages.platform.LoginPage;
-import com.oss.serviceClient.Environment;
-import com.oss.serviceClient.EnvironmentRequestClient;
-import com.oss.utils.TestListener;
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.oss.configuration.Configuration.CONFIGURATION;
 
@@ -98,7 +96,7 @@ public class BaseTestCase implements IHookable {
         return new Cookie("i18nCurrentLocale", "en", BASIC_URL.split("//")[1].split(":")[0], "/", null, false, false);
     }
 
-    private void addCookies(WebDriver driver) {
+    public void addCookies(WebDriver driver) {
         boolean isWebRunner = Boolean.parseBoolean(CONFIGURATION.getValue("webRunner"));
         if (!isWebRunner) {
             driver.manage().addCookie(createCookie());
@@ -124,6 +122,7 @@ public class BaseTestCase implements IHookable {
         options.addArguments("--disable-infobars");
         options.addArguments("--disable-browser-side-navigation");
         options.addArguments("--disable-gpu");
+        options.addArguments("--remote-allow-origins=*");
         options.setExperimentalOption("prefs", getPreferences());
         return options;
     }
@@ -133,17 +132,17 @@ public class BaseTestCase implements IHookable {
 
         if (!isLocally) {
             options.addArguments("--window-size=1920,1080");
-            options.addArguments("--headless");
+            options.addArguments("--headless=new");
         }
     }
 
-    private void startChromeDriver() {
+    public void startChromeDriver() {
         ChromeOptions options = getAdditionalOptions();
         setWebDriver(options);
         driver = WebDriverManager.chromedriver().capabilities(options).create();
     }
 
-    private void startFirefoxDriver() {
+    public void startFirefoxDriver() {
         FirefoxOptions options = new FirefoxOptions();
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");

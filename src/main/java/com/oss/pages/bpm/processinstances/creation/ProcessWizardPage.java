@@ -238,11 +238,15 @@ public class ProcessWizardPage extends BasePage {
     }
 
     public void clickAcceptButton() {
-        getSecondStepWizard().clickButtonById(CREATE_BUTTON);
+        Wizard wizard = getSecondStepWizard();
+        wizard.clickButtonById(CREATE_BUTTON);
+        wizard.waitToClose();
     }
 
     public void clickCancelButton() {
-        getSecondStepWizard().clickButtonById(CANCEL_BUTTON);
+        Wizard wizard = getSecondStepWizard();
+        wizard.clickButtonById(CANCEL_BUTTON);
+        wizard.waitToClose();
     }
 
     public Wizard getSecondStepWizard() {

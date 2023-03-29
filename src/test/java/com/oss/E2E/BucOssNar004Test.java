@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
@@ -24,6 +26,7 @@ import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
+import com.oss.reconciliation.infrastructure.recoConfig.RecoConfigClient;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
@@ -37,6 +40,13 @@ public class BucOssNar004Test extends BaseTestCase {
     private static final String EQUIPMENT_TYPE = "Physical Device";
     private static final String ROUTER_NAME = "KRK-SSE8-45";
     private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
+    private static final String RECO_CONFIG_BODY = "{\n" +
+            "  \"adaptation-cisco-cli-ios15\": {\n" +
+            "    \"mappingDomainName\": \"CiscoCLI\",\n" +
+            "    \"assignGenericModels\": \"true\",\n" +
+            "    \"createBlackboxModels\": \"false\"\n" +
+            "  }\n" +
+            "}";
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SoftAssert softAssert;
 
@@ -60,22 +70,18 @@ public class BucOssNar004Test extends BaseTestCase {
         }
     }
 
-    @Test(priority = 2, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
-    @Description("Go to Sample Management View and upload reconciliation samples")
-    public void uploadSamples() throws URISyntaxException {
+    @Test(priority = 2, description = "Set properties for CM Domain and upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
+    @Description("Set the properties for the CM Domain using appropriate endpoint. Go to Sample Management View and upload reconciliation samples")
+    public void uploadSamples() throws URISyntaxException, IOException {
+        RecoConfigClient recoConfigClient = RecoConfigClient.getInstance(environmentRequestClient);
+        recoConfigClient.createRecoConfig(RECO_CONFIG_BODY, CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         waitForPageToLoad();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_running-config");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_sh_inventory_raw");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_004/KRK-SSE8-45_10.166.10.1_20181107_1306_sh_version");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_004");
     }
 
     @Test(priority = 3, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})
@@ -111,7 +117,7 @@ public class BucOssNar004Test extends BaseTestCase {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         waitForPageToLoad();
-        networkInconsistenciesViewPage.expandTree();
+        networkInconsistenciesViewPage.expandTwoLastTreeRows();
         networkInconsistenciesViewPage.selectTreeObjectByRowOrder(3);
         DelayUtils.sleep(3000);
         waitForPageToLoad();
@@ -135,7 +141,7 @@ public class BucOssNar004Test extends BaseTestCase {
 
     @Test(priority = 6, description = "Change reconciliation samples to empty ones", dependsOnMethods = {"createCmDomain"})
     @Description("Move to Samples Management from Network Discovery Control View, delete old reconciliation samples and upload empty samples")
-    public void deleteOldSamplesAndPutNewOne() throws URISyntaxException {
+    public void deleteOldSamplesAndPutNewOne() throws URISyntaxException, IOException {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
@@ -144,13 +150,7 @@ public class BucOssNar004Test extends BaseTestCase {
         samplesManagementPage.selectPath();
         waitForPageToLoad();
         samplesManagementPage.deleteDirectoryContent();
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_running-config");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_sh_inventory_raw");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/ciscoIOS/empty/Selenium1_10.252.255.201_20170707_1324_sh_version");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/ciscoIOS/empty");
     }
 
     @Test(priority = 7, description = "Run reconciliation and check results", dependsOnMethods = {"deleteOldSamplesAndPutNewOne"})
@@ -187,10 +187,10 @@ public class BucOssNar004Test extends BaseTestCase {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.cancelWithSubsequents();
         waitForPageToLoad();
-        networkDiscoveryControlViewPage.clearOldNotifications();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType(String.format(SYSTEM_MESSAGE_PATTERN, "Delete CM Domain", "CM Domain delete"));
-        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+        Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
     @Test(priority = 9, description = "Checking system message summary")

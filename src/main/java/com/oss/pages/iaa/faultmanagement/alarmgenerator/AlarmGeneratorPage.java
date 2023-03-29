@@ -28,7 +28,7 @@ public class AlarmGeneratorPage extends BasePage {
     private static final String GENERATE_BUTTON_ID = "GENERATE";
     private static final String CREATE_ALARM_BUTTON_ID = "GenerateCreateEditAlarmsAction";
     private static final String TERMINATE_ALARM_BUTTON_ID = "GenerateRemoveAlarmsAction";
-    private static final String ALARMS_GENERATOR_TABLE_ID = "table-alarm-generator-table";
+    private static final String ALARMS_GENERATOR_TABLE_ID = "table-area2-alarm-generator-table";
     private static final String IMPORT_EXPORT_BUTTON_ID = "import-export";
     private static final String IMPORT_ALARMS_BUTTON_ID = "import-configuration";
 
@@ -72,7 +72,6 @@ public class AlarmGeneratorPage extends BasePage {
         getAlarmsGeneratorCard().callActionById(GENERATE_BUTTON_ID, TERMINATE_ALARM_BUTTON_ID);
         log.info("Clicking button 'Generate Terminate Operation'");
     }
-
     public AlarmGeneratorFromFileWizardPage clickImportButton() {
         getAlarmsGeneratorCard().callActionById(IMPORT_EXPORT_BUTTON_ID, IMPORT_ALARMS_BUTTON_ID);
         log.info("Clicking button 'Import Alarms'");
@@ -99,6 +98,7 @@ public class AlarmGeneratorPage extends BasePage {
         ListAttributesChooser listAttributesChooser = getListAttributesChooser();
         listAttributesChooser.enableAttributeById(columnId);
         listAttributesChooser.clickApply();
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Enabling column with id: {}", columnId);
     }
 
@@ -107,6 +107,7 @@ public class AlarmGeneratorPage extends BasePage {
         ListAttributesChooser listAttributesChooser = getListAttributesChooser();
         listAttributesChooser.disableAttributeById(columnId);
         listAttributesChooser.clickApply();
+        DelayUtils.waitForPageToLoad(driver, wait);
         log.info("Disabling column with id: {}", columnId);
     }
 

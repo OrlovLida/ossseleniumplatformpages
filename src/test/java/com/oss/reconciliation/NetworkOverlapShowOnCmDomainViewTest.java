@@ -13,6 +13,7 @@ import org.testng.asserts.SoftAssert;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
+import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkOverlapPage;
@@ -139,10 +140,10 @@ public class NetworkOverlapShowOnCmDomainViewTest extends BaseTestCase {
         if (networkDiscoveryControlViewPage.isCmDomainPresent(cmDomainName)) {
             DelayUtils.waitForPageToLoad(driver, webDriverWait);
             networkDiscoveryControlViewPage.selectCmDomain(cmDomainName);
-            networkDiscoveryControlViewPage.clearOldNotifications();
+            Notifications.create(driver, webDriverWait).clearAllNotification();
             networkDiscoveryControlViewPage.deleteCmDomain();
             checkPopupMessageType();
-            Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), String.format(DELETING_DOMAIN_PATTERN_LOG, cmDomainName));
+            Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), String.format(DELETING_DOMAIN_PATTERN_LOG, cmDomainName));
         } else {
             log.info(String.format(CM_DOMAIN_DOES_NOT_EXIST_PATTERN_LOG, cmDomainName));
         }

@@ -114,3 +114,4 @@ public class InfoManagementConfigurationsTest extends BaseTestCase {
         Assert.assertFalse(configurationPanelPage.isObjectInTable(MAILBOX_NAME));
     }
 }
+

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +13,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.LoginPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.GlobalNotificationContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -33,7 +34,7 @@ public class ViewsSmokeTest extends BaseTestCase {
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewsSmokeTest.class);
     private static final String NOT_RESOLVED_LABEL = "navigation_";
     private List<String> categories;
-    private List<View> viewList = new ArrayList<>();
+    private final List<View> viewList = new ArrayList<>();
 
     @BeforeClass
     public void openWebConsole() {
@@ -43,8 +44,7 @@ public class ViewsSmokeTest extends BaseTestCase {
     @Test(priority = 1, description = "Get Categories from main Page")
     @Description("Get Categories from main Page")
     public void getCategoriesFromToolsManager() {
-        checkErrorPage("Start");
-        checkGlobalNotificationContainer("Start");
+        checkErrors("Start");
         ToolsManagerWindow toolsManagerWindow = ToolsManagerWindow.create(driver, webDriverWait);
         categories = toolsManagerWindow.getCategoriesName();
         for (String category : categories) {
@@ -65,6 +65,8 @@ public class ViewsSmokeTest extends BaseTestCase {
     @Test(dataProvider = "categories", priority = 2, description = "Checking views from category")
     @Description("Checking views from category")
     public void checkForCategory(String viewName) {
+        LoginPage loginPage = new LoginPage(driver, BASIC_URL);
+        Assert.assertFalse(loginPage.isLoginPageDisplayed(), "User has been logged out.");
         if (viewName.startsWith(NOT_RESOLVED_LABEL)) {
             Assert.fail(String.format("Not resolved label for category %s.", viewName));
         }
@@ -80,11 +82,7 @@ public class ViewsSmokeTest extends BaseTestCase {
                 if (application.startsWith(NOT_RESOLVED_LABEL)) {
                     Assert.fail(String.format("Not resolved label for application %s.", application));
                 }
-                try {
-                    checkView(application, viewName, subcategory);
-                } catch (TimeoutException e) {
-                    LOGGER.error("Timeout waiting for {}", viewName);
-                }
+                checkView(application, viewName, subcategory);
             }
         }
     }
@@ -96,9 +94,10 @@ public class ViewsSmokeTest extends BaseTestCase {
             return;
         }
         chooseFromLeftSideMenu(viewName, groupName, path);
-        waitForPageToLoad();
-        checkErrorPage(viewName);
-        checkGlobalNotificationContainer(viewName);
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(DelayUtils.isPageLoaded(driver, webDriverWait, 90000), String.format("View %s not loaded in 90 seconds.", viewName));
+        checkErrors(viewName);
+        softAssert.assertAll();
     }
 
     @DataProvider(name = "categories")
@@ -121,7 +120,7 @@ public class ViewsSmokeTest extends BaseTestCase {
         }
     }
 
-    private void checkErrorPage(String viewName) {
+    private void checkErrors(String viewName) {
         ErrorCard errorCard = ErrorCard.create(driver, webDriverWait);
         if (errorCard.isErrorPagePresent()) {
             ErrorCard.ErrorInformation errorInformation = errorCard.getErrorInformation();
@@ -137,6 +136,9 @@ public class ViewsSmokeTest extends BaseTestCase {
             }
         }
         checkSystemMessage();
+        if (!viewName.equals("Inventory View") && !viewName.equals("Hierarchy View")) {
+            checkGlobalNotificationContainer(viewName);
+        }
     }
 
     private void checkGlobalNotificationContainer(String viewName) {

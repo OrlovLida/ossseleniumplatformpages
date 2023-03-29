@@ -1,0 +1,63 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Smoke_tests" thread-count="1" parallel="tests" verbose="1">
+    <test name="InventoryView">
+        <classes>
+            <class name="com.oss.smoketests.InventoryViewSmokeTest"/>
+        </classes>
+    </test>
+    <test name="HierarchyView">
+        <classes>
+            <class name="com.oss.smoketests.HierarchyViewSmokeTest"/>
+        </classes>
+    </test>
+    <test name="TasksView">
+        <classes>
+            <class name="com.oss.smoketests.TasksSmokeTest"/>
+        </classes>
+    </test>
+    <test name="GisView">
+        <classes>
+            <class name="com.oss.smoketests.GisMapSmokeTest"/>
+        </classes>
+    </test>
+    <test name="NetworkView">
+        <classes>
+            <class name="com.oss.smoketests.NetworkViewSmokeTest"/>
+        </classes>
+    </test>
+    <test name="CSCView">
+        <classes>
+            <class name="com.oss.smoketests.CscvSmokeTest"/>
+        </classes>
+    </test>
+    <test name="Bookmarks">
+        <classes>
+            <class name="com.oss.smoketests.BookmarksSmokeTest"/>
+        </classes>
+    </test>
+    <test name="GlobalAttachmentManagerSmokeTest">
+        <classes>
+            <class name="com.oss.smoketests.GlobalAttachmentManagerSmokeTest"/>
+        </classes>
+    </test>
+    <test name="ViewsSmokeTest">
+        <classes>
+            <class name="com.oss.smoketests.ViewsSmokeTest"/>
+        </classes>
+    </test>
+    <test name="PrivilegesSmokeTest">
+        <classes>
+            <class name="com.oss.smoketests.PrivilegesSmokeTest"/>
+        </classes>
+    </test>
+    <test name="CMDomainWizardSmokeTest">
+        <classes>
+            <class name="com.oss.smoketests.CMDomainWizardSmokeTest"/>
+        </classes>
+    </test>
+    <test name="ResourceCatalogSmokeTest">
+        <classes>
+            <class name="com.oss.smoketests.ResourceCatalogSmokeTest"/>
+        </classes>
+    </test>
+</suite>

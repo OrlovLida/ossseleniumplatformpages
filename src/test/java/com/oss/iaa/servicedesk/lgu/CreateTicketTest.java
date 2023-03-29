@@ -58,7 +58,7 @@ public class CreateTicketTest extends BaseTestCase {
         sdWizardPage.getMoStep().selectObjectInMOTable(MOIdentifier);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.insertValueToComponent(SEVERITY, SEVERITY_ID);
-        sdWizardPage.enterIncidentDescription(INCIDENT_DESCRIPTION);
+        sdWizardPage.enterDescription(INCIDENT_DESCRIPTION);
         sdWizardPage.insertValueToComponent(ttAssignee, TT_WIZARD_ASSIGNEE);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();

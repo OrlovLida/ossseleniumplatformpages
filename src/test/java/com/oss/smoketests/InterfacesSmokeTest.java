@@ -52,6 +52,7 @@ public class InterfacesSmokeTest extends BaseTestCase {
             .add("Name")
             .add("Vendor")
             .add("Mediation adapter name")
+            .add("Uploaders")
             .add("Management System handling mode")
             .add("Management System Resource Specification identifier")
             .add("Mode")

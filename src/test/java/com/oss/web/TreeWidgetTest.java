@@ -215,7 +215,6 @@ public class TreeWidgetTest extends BaseTestCase {
         sublocation.clickNext();
         sublocation.create();
         hierarchyViewPage.unselectFirstObject();
-        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PATH_ROOM_3)).isTrue();
 
     }
@@ -239,7 +238,6 @@ public class TreeWidgetTest extends BaseTestCase {
         hierarchyViewPage.getMainTree().callActionById(ActionsContainer.EDIT_GROUP_ID, REMOVE_SUBLOCATION_ACTION);
         ConfirmationBox.create(driver, webDriverWait).clickButtonByLabel(CONFIRM_DELETE_BUTTON);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
-        hierarchyViewPage.expandNextLevel(LOCATION_NAME);
         Assertions.assertThat(hierarchyViewPage.isNodePresent(PATH_ROOM_3)).isFalse();
     }
 
@@ -306,6 +304,7 @@ public class TreeWidgetTest extends BaseTestCase {
     public void checkAvailabilityOsShowOnInventoryViewActionForDifferentType() {
         hierarchyViewPage.getMainTree().searchByAttribute(NAME_ATTRIBUTE_ID, Input.ComponentType.TEXT_FIELD, LOCATION_NAME);
         hierarchyViewPage.expandNextLevel(LOCATION_NAME);
+        hierarchyViewPage.getMainTree().unselectAllNodes();
         hierarchyViewPage.selectNodeByLabelsPath(LOCATION_NAME);
         hierarchyViewPage.selectNodeByLabelsPath(PATH_ROOM_1);
         hierarchyViewPage.selectNodeByLabelsPath(PATH_DEVICE);

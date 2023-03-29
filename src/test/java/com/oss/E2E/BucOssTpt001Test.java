@@ -15,6 +15,7 @@ import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.wizard.Wizard;
@@ -172,20 +173,20 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String FIRST_OUTDOOR_UNIT_MODEL = "Ericsson RAU2 N 23";
     private static final String SECOND_OUTDOOR_UNIT_MODEL = "Ericsson RAU2 N 38";
     private static final String MICROWAVE_ANTENNA_MODEL = "VHLP200-220";
-    private static final String FIRST_INDOOR_UNIT_NAME = "5SeleniumE2ETestIDU";
-    private static final String SECOND_INDOOR_UNIT_NAME = "6SeleniumE2ETestIDU";
-    private static final String FIRST_MICROWAVE_ANTENNA_NAME = "5SeleniumE2ETestMWANT";
-    private static final String SECOND_MICROWAVE_ANTENNA_NAME = "6SeleniumE2ETestMWANT";
-    private static final String FIRST_OUTDOOR_UNIT_NAME = "5SeleniumE2ETestODU";
-    private static final String SECOND_OUTDOOR_UNIT_NAME = "6SeleniumE2ETestODU";
-    private static final String THIRD_OUTDOOR_UNIT_NAME = "7SeleniumE2ETestODU";
-    private static final String FORTH_OUTDOOR_UNIT_NAME = "8SeleniumE2ETestODU";
+    private static final String FIRST_INDOOR_UNIT_NAME = "5SeleniumE2ETestIDU" + rand.nextInt(10000);
+    private static final String SECOND_INDOOR_UNIT_NAME = "6SeleniumE2ETestIDU" + rand.nextInt(10000);
+    private static final String FIRST_MICROWAVE_ANTENNA_NAME = "5SeleniumE2ETestMWANT" + rand.nextInt(10000);
+    private static final String SECOND_MICROWAVE_ANTENNA_NAME = "6SeleniumE2ETestMWANT" + rand.nextInt(10000);
+    private static final String FIRST_OUTDOOR_UNIT_NAME = "5SeleniumE2ETestODU" + rand.nextInt(10000);
+    private static final String SECOND_OUTDOOR_UNIT_NAME = "6SeleniumE2ETestODU" + rand.nextInt(10000);
+    private static final String THIRD_OUTDOOR_UNIT_NAME = "7SeleniumE2ETestODU" + rand.nextInt(10000);
+    private static final String FORTH_OUTDOOR_UNIT_NAME = "8SeleniumE2ETestODU" + rand.nextInt(10000);
 
     private static final String SLOT_NAME = "AMM 6p D\\02";
     private static final String CARD_MODEL_NAME = "Ericsson MMU2 H";
-    private static final String CARD_NAME = " AMM 6p D\\02\\MMU2 H";
+    private static final String CARD_NAME = "AMM 6p D\\02\\MMU2 H";
     private static final String PORT_NAME = "RAU";
-    private static final String PORT_LABEL = " AMM 6p D\\02\\MMU2 H\\RAU";
+    private static final String PORT_LABEL = "AMM 6p D\\02\\MMU2 H\\RAU";
 
     private static final String START_CARD_FIELD_ID = "terminationCardComponent_1";
     private static final String END_CARD_FIELD_ID = "terminationCardComponent_2";
@@ -202,7 +203,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String CHANNEL_NUMBER = "40";
     private static final String CONFIGURATION = "1 + 2";
     private static final String CHANNEL_NAME = "A001";
-    private static final String MICROWAVE_FREQUENCY_PLAN_NAME = "23_28_A001";
+    private static final String MICROWAVE_FREQUENCY_PLAN_NAME = "ARG_TEF_23_28_A001";
     private static final String LOW_FREQUENCY = "21819";
     private static final String HIGH_FREQUENCY = "23051";
 
@@ -216,7 +217,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String CHANNEL_NUMBER2 = "1";
     private static final String CONFIGURATION2 = "A + B";
     private static final String CHANNEL_NAME2 = "001";
-    private static final String MICROWAVE_FREQUENCY_PLAN2_NAME = "001";
+    private static final String MICROWAVE_FREQUENCY_PLAN2_NAME = "ARG_TEF_38_14_001";
     private static final String LOW_FREQUENCY2 = "37009";
     private static final String HIGH_FREQUENCY2 = "38269";
 
@@ -343,6 +344,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String LINK_ID_IS_NULL_EXCEPTION = "Link ID value is null.";
     private static final String EXPECTED_OBJECT_NOT_PRESENT_EXCEPTION = "Expected object isn't present in current Tab.";
     private static final String EMPTY_LIST_EXCEPTION = "The list is empty";
+    private static final String MFP_EXCEPTION = "Microwave Frequency Plan doesn't exist";
 
     public static final String DELETE_CONNECTION_ON_IV_ACTION_ID = "DeleteTrailWizardActionId";
     public static final String DELETE_DEVICE_ON_IV_ACTION_ID = "DeleteDeviceWizardAction";
@@ -802,7 +804,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     public void deleteEthernetLink() {
         openInventoryViewForGivenObjectType(ETHERNET_LINK_TRAIL_TYPE);
         searchAndSelectObjectOnInventoryView(ETHERNET_LINK_NAME);
-        deleteObjectAndRefreshMainTable(DELETE_CONNECTION_ON_IV_ACTION_ID, DELETE_SUBMIT_BUTTON_ID);
+        deleteConnectionAndRefreshMainTable(DELETE_CONNECTION_ON_IV_ACTION_ID, DELETE_SUBMIT_BUTTON_ID);
 
         Assert.assertTrue(isInventoryViewEmpty());
     }
@@ -925,7 +927,18 @@ public class BucOssTpt001Test extends BaseTestCase {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.callAction(EDIT_GROUP_ID, deleteButtonId);
         waitForPageToLoad();
-        getConfirmationWizard().clickButtonById(submitButtonId);
+        getConfirmationBox().clickButtonById(submitButtonId);
+        waitForPageToLoad();
+        newInventoryViewPage.refreshMainTable();
+        waitForPageToLoad();
+    }
+
+    private void deleteConnectionAndRefreshMainTable(String deleteButtonId, String submitButtonId) {
+        NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
+        newInventoryViewPage.callAction(EDIT_GROUP_ID, deleteButtonId);
+        waitForPageToLoad();
+        Wizard wizard = Wizard.createByComponentId(driver, webDriverWait, CONFIRMATION_WIZARD_ID);
+        wizard.clickButtonById(submitButtonId);
         waitForPageToLoad();
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
@@ -981,8 +994,8 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    private Wizard getConfirmationWizard() {
-        return Wizard.createByComponentId(driver, webDriverWait, CONFIRMATION_WIZARD_ID);
+    private ConfirmationBox getConfirmationBox() {
+        return ConfirmationBox.create(driver, webDriverWait);
     }
 
     private void clickMessage() {
@@ -1709,12 +1722,12 @@ public class BucOssTpt001Test extends BaseTestCase {
         newInventoryViewPage.searchObject(MICROWAVE_FREQUENCY_PLAN_NAME);
         waitForPageToLoad();
         SoftAssert assertions = new SoftAssert();
-        assertions.assertFalse(isInventoryViewEmpty());
+        assertions.assertFalse(isInventoryViewEmpty(), String.format(MICROWAVE_FREQUENCY_PLAN_NAME, MFP_EXCEPTION));
         newInventoryViewPage.clearFilters();
         waitForPageToLoad();
         newInventoryViewPage.searchObject(MICROWAVE_FREQUENCY_PLAN2_NAME);
         waitForPageToLoad();
-        assertions.assertFalse(isInventoryViewEmpty());
+        assertions.assertFalse(isInventoryViewEmpty(), String.format(MICROWAVE_FREQUENCY_PLAN2_NAME, MFP_EXCEPTION));
         assertions.assertAll();
     }
 }

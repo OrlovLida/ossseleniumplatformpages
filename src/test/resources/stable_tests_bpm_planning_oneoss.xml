@@ -1,8 +1,18 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="BPM_Selenium_Tests_Suite" thread-count="1" parallel="tests" verbose="1">
+    <test name="ChangePerspectiveTest">
+        <classes>
+            <class name="com.oss.planning.ChangePerspectiveTest"/>
+        </classes>
+    </test>
     <test name="CreateProcessNRPTest">
         <classes>
             <class name="com.oss.bpm.CreateProcessNRPTest"/>
+        </classes>
+    </test>
+    <test name="PartialIntegrationTest">
+        <classes>
+            <class name="com.oss.bpm.PartialIntegrationTest"/>
         </classes>
     </test>
     <test name="EditMilestonesForProcessModelTest">

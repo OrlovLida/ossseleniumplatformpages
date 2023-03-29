@@ -1,7 +1,20 @@
 package com.oss.E2E;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
+import java.time.Duration;
+import java.util.List;
+
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
 import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.comarch.oss.web.pages.LogManagerPage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.filtermanager.ShareFilterPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -19,7 +32,6 @@ import com.oss.pages.mediation.CLIConfigurationWizardPage;
 import com.oss.pages.mediation.ViewConnectionConfigurationPage;
 import com.oss.pages.physical.DeviceWizardPage;
 import com.oss.pages.platform.HomePage;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
@@ -31,15 +43,8 @@ import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import com.oss.pages.transport.trail.ConnectionWizardPage;
-import io.qameta.allure.Description;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
-import org.testng.asserts.SoftAssert;
 
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
-import java.util.List;
+import io.qameta.allure.Description;
 
 public class BucOssPla002Test extends BaseTestCase {
     private static final String DEVICE_MODEL = "CISCO1941/K9";
@@ -160,7 +165,7 @@ public class BucOssPla002Test extends BaseTestCase {
     @Description("Select Ethernet Interface in Hierarchy View and open it in New Inventory View")
     public void selectEthernetInterface() {
         HierarchyViewPage hierarchyViewPage = HierarchyViewPage.getHierarchyViewPage(driver, webDriverWait);
-        String labelpath = DEVICE_NAME + ".Ports." + PORT_NAME + ".Termination Points.EthernetInterface_TP." + PORT_NAME;
+        String labelpath = DEVICE_NAME + ".Ports." + PORT_NAME + ".All Termination Points.EthernetInterface_TP." + PORT_NAME;
         hierarchyViewPage.selectNodeByLabelsPath(labelpath);
         waitForPageToLoad();
         hierarchyViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, "InventoryView");
@@ -383,7 +388,7 @@ public class BucOssPla002Test extends BaseTestCase {
 
     @Test(priority = 17, description = "Upload reconciliation samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Samples Management View and upload reconciliation samples")
-    public void uploadSamples() throws URISyntaxException {
+    public void uploadSamples() throws URISyntaxException, IOException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
         networkDiscoveryControlViewPage.moveToSamplesManagement();
@@ -391,11 +396,7 @@ public class BucOssPla002Test extends BaseTestCase {
         samplesManagementPage.selectPath();
         waitForPageToLoad();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_inventory_raw.cli");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/ciscoE2E/H3_Lab_100.100.100.100_20181016_1500_sh_version.cli");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/ciscoE2E");
     }
 
     @Test(priority = 18, description = "Run reconciliation and check results", dependsOnMethods = {"uploadSamples"})
@@ -430,12 +431,12 @@ public class BucOssPla002Test extends BaseTestCase {
     public void applyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
-        networkInconsistenciesViewPage.expandTree();
-        networkInconsistenciesViewPage.clearOldNotification();
-        networkInconsistenciesViewPage.applyInconsistencies();
+        networkInconsistenciesViewPage.expandTwoLastTreeRows();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
+        networkInconsistenciesViewPage.applyFirstInconsistenciesGroup();
         DelayUtils.sleep(1000);
         waitForPageToLoad();
-        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + DEVICE_NAME + " finished");
+        Assert.assertEquals(Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage(), String.format(NetworkInconsistenciesViewPage.ACCEPT_DISCREPANCIES_PATTERN, DEVICE_NAME));
     }
 
     @Test(priority = 20, description = "Delete CM Domain", dependsOnMethods = {"createCmDomain"})
@@ -444,11 +445,11 @@ public class BucOssPla002Test extends BaseTestCase {
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         waitForPageToLoad();
-        networkDiscoveryControlViewPage.clearOldNotifications();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkMessageType(MessageType.INFO, String.format(SYSTEM_MESSAGE_PATTERN, "Delete CM Domain", "CM Domain delete"));
         waitForPageToLoad();
-        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
+        Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
     @Test(priority = 21, description = "Delete IP link", dependsOnMethods = {"createIpLink"})
@@ -487,8 +488,12 @@ public class BucOssPla002Test extends BaseTestCase {
         IPAddressManagementViewPage ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
         ipAddressManagementViewPage.searchIpNetwork(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
-        ipAddressManagementViewPage.expandTreeRowContains("%");
+        ipAddressManagementViewPage.expandTreeRow("IP Subnets");
+        ipAddressManagementViewPage.expandTreeRow("IPV4");
+        ipAddressManagementViewPage.expandTreeRowContains("10.10.20.0/24");
+        ipAddressManagementViewPage.expandTreeRow("IP Addresses");
         ipAddressManagementViewPage.deleteIPHost(ADDRESS + "/24");
+        waitForPageToLoad();
     }
 
     @Test(priority = 24, description = "Delete device", dependsOnMethods = {"createDevice"})

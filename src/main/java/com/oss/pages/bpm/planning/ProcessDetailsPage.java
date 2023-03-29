@@ -1,11 +1,11 @@
 package com.oss.pages.bpm.planning;
 
+import com.google.common.collect.Maps;
 import com.oss.framework.components.inputs.Button;
-import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
@@ -15,6 +15,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.util.Map;
 
 import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.BPM_AND_PLANNING;
 import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NETWORK_PLANNING;
@@ -25,6 +26,8 @@ public class ProcessDetailsPage extends BasePage {
     public static final String OBJECT_TYPE_ATTRIBUTE_NAME = "Object type";
     public static final String ACTIVATED_STATUS = "Activated";
     private static final String VALIDATION_TABLE_DATA_ATTRIBUTE_NAME = "plaPlanView_validationTable";
+    private static final String PROJECT_DESCRIPTION_TABLE_ID = "plaPlanView_descriptionApp";
+    private static final String PROJECT_INFORMATION_TABLE_ID = "plaPlanView_informationApp";
     private static final String OBJECT_TABLE_DATA_ATTRIBUTE_NAME = "plaPlanView_objectsApp";
     private static final String PROCEED_WITH_CANCELLATION_ID = "ConfirmationBox_plaCancelObjectsWizard_confirmBox_action_button";
     private static final String CANCEL_ID = "objectsRemoveAction";
@@ -33,7 +36,7 @@ public class ProcessDetailsPage extends BasePage {
     private static final String REFRESH_TABLE_ID = "tableRefreshButton";
     private static final String OBJECT_STATUS_ATTRIBUTE_NAME = "Object status";
     private static final String OBJECT_OPERATION_TYPE_ATTRIBUTE_NAME = "Operation type";
-
+    private static final String DESCRIPTION_COLUMN_ID = "Description";
 
     public ProcessDetailsPage(WebDriver driver) {
         super(driver);
@@ -91,13 +94,21 @@ public class ProcessDetailsPage extends BasePage {
         return OldTable.createById(driver, wait, VALIDATION_TABLE_DATA_ATTRIBUTE_NAME);
     }
 
-    public ProcessDetailsPage selectObject(String attributeName, String value) {
+    private CommonList getProjectInformationTable() {
+        return CommonList.create(driver, wait, PROJECT_INFORMATION_TABLE_ID);
+    }
+
+    private CommonList getProjectDescriptionTable() {
+        return CommonList.create(driver, wait, PROJECT_DESCRIPTION_TABLE_ID);
+    }
+
+    public ProcessDetailsPage selectObject(String columnLabel, String value) {
         waitForPageToLoad();
-        TableInterface table = getObjectsTable();
-        table.searchByAttributeWithLabel(attributeName, Input.ComponentType.TEXT_FIELD, value);
+        OldTable table = getObjectsTable();
+        table.searchByColumn(columnLabel, value);
         waitForPageToLoad();
         table.doRefreshWhileNoData(10000, REFRESH_TABLE_ID);
-        table.selectRowByAttributeValueWithLabel(attributeName, value);
+        table.selectRowByAttributeValueWithLabel(columnLabel, value);
         waitForPageToLoad();
         return this;
     }
@@ -125,6 +136,23 @@ public class ProcessDetailsPage extends BasePage {
 
     public String getObjectOperationType() {
         return getObjectAttribute(OBJECT_OPERATION_TYPE_ATTRIBUTE_NAME);
+    }
+
+    public String getProjectAttribute(String attributeName) {
+        if (attributeName.equals(DESCRIPTION_COLUMN_ID)) {
+            return getProjectDescriptionTable().getRows().get(0).getValue(DESCRIPTION_COLUMN_ID);
+        } else {
+            return getProjectInformationTable().getRows().get(0).getValue(attributeName);
+        }
+    }
+
+    public Map<String, String> getProjectAttributes() {
+        Map<String, String> attributesMap = Maps.newHashMap();
+        CommonList infoTable = getProjectInformationTable();
+        infoTable.getRowHeaders().forEach(attributeName ->
+                attributesMap.put(attributeName, infoTable.getRows().get(0).getValue(attributeName)));
+        attributesMap.put(DESCRIPTION_COLUMN_ID, getProjectAttribute(DESCRIPTION_COLUMN_ID));
+        return attributesMap;
     }
 
     private void waitForPageToLoad() {

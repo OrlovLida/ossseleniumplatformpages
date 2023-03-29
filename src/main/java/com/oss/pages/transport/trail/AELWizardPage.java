@@ -8,7 +8,7 @@ public class AELWizardPage extends ConnectionWizardPage {
 
     private static final String AGGREGATION_PROTOCOL_FIELD_ID = "oss.transport.trail.type.Aggregated Ethernet Link.Aggregation Protocol";
     private static final String SPEED_ID = "oss.transport.trail.type.Aggregated Ethernet Link.Speed [Mbps]";
-    private static final String CAPACITY_ID = "oss.transport.trail.type.Aggregated Ethernet Link.Effective Capacity [Mbps]";
+    private static final String CAPACITY_ID = "trailEffectiveCapacityComponent";
     private static final String CREATE_START_AEI_CHECKBOX_ID = "AEIFormStart_CreateInterface";
     private static final String START_AEI_NAME_ID = "AEIFormStart_Name";
     private static final String START_AEI_NUMBER_ID = "AEIFormStart_Number";

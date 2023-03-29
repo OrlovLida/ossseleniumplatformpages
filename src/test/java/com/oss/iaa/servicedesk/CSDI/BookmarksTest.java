@@ -39,6 +39,7 @@ public class BookmarksTest extends BaseTestCase {
     private static final String MANAGEMENT_VIEW_CONTAINER_TABSCARD = "management-view__container__tabscard";
     private static final String RECIPIENT_TYPE = "Users";
     private static final String SHARE_TO_USER = "sd_seleniumtest2";
+    private static final String USER = "sd_seleniumtest";
     private static final String PASSWORD = "oss";
 
     NewBookmarksPage bookmarksPage;
@@ -144,6 +145,8 @@ public class BookmarksTest extends BaseTestCase {
     @Test(priority = 7, testName = "Delete Category on Bookmarks View", description = "Delete Category on Bookmarks View")
     @Description("Delete Category on Bookmarks View")
     public void deleteCategoryOnBookmarksView() {
+        bookmarksPage.openLoginPanel().changeUser(USER, PASSWORD);
+        bookmarksPage = NewBookmarksPage.goToBookmarksPage(driver, webDriverWait, BASIC_URL);
         bookmarksPage.deleteCategory(CATEGORY_NAME);
         checkErrorPage(BOOKMARKS_PAGE);
     }

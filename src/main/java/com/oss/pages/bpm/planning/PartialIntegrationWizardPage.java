@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.table.TableComponent;
+import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
@@ -19,12 +20,13 @@ public class PartialIntegrationWizardPage extends BasePage {
     public static final String OBJECT_TYPE = "Object Type";
     public static final String OBJECT_NAME = "Object Name";
     public static final String OPERATION_TYPE = "Operation Type";
-    private static final String PLANNED_OBJECTS_TABLE_ID = "table-plaPartialActivationWizard_appId";
-    private static final String OBJECTS_TO_INTEGRATION_TABLE_ID = "table-plaPartialActivationWizard_appId";
+    private static final String PLANNED_OBJECTS_TABLE_ID = "table-RootsInProjectCompId";
+    private static final String OBJECTS_TO_INTEGRATION_TABLE_ID = "table-RootsToActivateCompId";
     private static final String PLANNED_OBJECTS_SEARCH_INPUT_ID = "RootsInProjectSearchCompId";
     private static final String OBJECTS_TO_INTEGRATION_SEARCH_INPUT_ID = "RootsToActivateSearchCompId";
     private static final String CANCEL_BUTTON_ID = "wizard-cancel-button-plaPartialActivationWizard_appId";
-    private static final String APPLY_BUTTON_ID = "wizard-submit-button-plaPartialActivationWizard_appId";
+    private static final String CLOSE_BUTTON_ID = "plaPartialActivationWizard_prompt-card_close-prompt";
+    public static final String APPLY_BUTTON_ID = "wizard-submit-button-plaPartialActivationWizard_appId";
     private static final String CHOOSE_TO_INTEGRATION_BUTTON_ID = "ChooseToActivationBtnCompId";
     private static final String BACK_TO_PLANNED_OBJECTS_BUTTON_ID = "BackToPlannedBtnCompId";
     private static final String WIZARD_ID = "plaPartialActivationWizard_prompt-card";
@@ -32,7 +34,7 @@ public class PartialIntegrationWizardPage extends BasePage {
     private static final String OBJECT_NAME_COLUMN_ID = "objectNameColId";
     private static final String OPERATION_TYPE_COLUMN_ID = "operationTypeColId";
 
-    private final Wizard partialIntegrationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    public final Wizard partialIntegrationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     public PartialIntegrationWizardPage(WebDriver driver) {
         super(driver);
@@ -54,12 +56,35 @@ public class PartialIntegrationWizardPage extends BasePage {
         }
     }
 
+    public void apply() {
+        partialIntegrationWizard.clickButtonById(APPLY_BUTTON_ID);
+        partialIntegrationWizard.waitToClose();
+    }
+
+    public void cancel() {
+        partialIntegrationWizard.clickButtonById(CANCEL_BUTTON_ID);
+        partialIntegrationWizard.waitToClose();
+    }
+
+    /**
+     * @deprecated - use {@link #apply()} method
+     */
+    @Deprecated(since = "4.0.x", forRemoval = true)
     public void clickApplyButton() {
         partialIntegrationWizard.clickButtonById(APPLY_BUTTON_ID);
     }
 
+    /**
+     * @deprecated -  use {@link #cancel()} method
+     */
+    @Deprecated(since = "4.0.x", forRemoval = true)
     public void clickCancelButton() {
         partialIntegrationWizard.clickButtonById(CANCEL_BUTTON_ID);
+    }
+
+    public void closePrompt() {
+        partialIntegrationWizard.clickButtonById(CLOSE_BUTTON_ID);
+        partialIntegrationWizard.waitToClose();
     }
 
     private List<Map<String, String>> getObjectsAttributes(boolean isForPlannedObjectsTable) {
@@ -167,6 +192,15 @@ public class PartialIntegrationWizardPage extends BasePage {
 
     public PartialIntegrationWizardPage moveBackObjectToPlanned(String objectName) {
         return moveBackObjectsToPlanned(Collections.singletonList(objectName));
+    }
+
+    public void integrateObjects(List<String> objectsNames) {
+        moveObjectsToIntegration(objectsNames);
+        apply();
+    }
+
+    public static boolean isWizardVisible(WebDriver driver) {
+        return CSSUtils.isElementPresent(driver, WIZARD_ID);
     }
 
 

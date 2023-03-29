@@ -1,9 +1,15 @@
 package com.oss.pages.reconciliation;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.openqa.selenium.WebDriver;
 
@@ -53,6 +59,32 @@ public class SamplesManagementPage extends BasePage {
             wizard.clickOK();
         } catch (URISyntaxException e) {
             throw new URISyntaxException("Cant load file", e.getReason());
+        }
+    }
+
+    @Step("Upload samples from path for CM Domain")
+    public void uploadSamplesFromPath(String packagePath) throws IOException, URISyntaxException {
+        URL res = getClass().getClassLoader().getResource(packagePath);
+        Stream<Path> stream = null;
+        try {
+            assert res != null;
+            stream = Files.walk(Paths.get(res.toURI()).toRealPath());
+            List<String> fileNames = stream
+                    .map(Path::getFileName)
+                    .map(Path::toString)
+                    .filter(n -> !packagePath.endsWith(n))
+                    .collect(Collectors.toList());
+
+            for (String fileName : fileNames
+            ) {
+                DelayUtils.waitForPageToLoad(driver, wait);
+                uploadSamples(packagePath + "/" + fileName);
+            }
+        } catch (URISyntaxException e) {
+            throw new URISyntaxException("Cant load file", e.getReason());
+        } finally {
+            assert stream != null;
+            stream.close();
         }
     }
 

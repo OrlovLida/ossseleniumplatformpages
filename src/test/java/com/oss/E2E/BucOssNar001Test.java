@@ -1,5 +1,6 @@
 package com.oss.E2E;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.util.List;
@@ -12,7 +13,6 @@ import org.testng.asserts.SoftAssert;
 
 import com.comarch.oss.web.pages.GlobalSearchPage;
 import com.comarch.oss.web.pages.NewInventoryViewPage;
-import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
@@ -23,7 +23,6 @@ import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.mainheader.PerspectiveChooser;
 import com.oss.framework.utils.CSSUtils;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.logicalfunction.LogicalFunctionWizardPreStep;
 import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
@@ -33,17 +32,15 @@ import io.qameta.allure.Description;
 
 public class BucOssNar001Test extends BaseTestCase {
 
-    private static final String OBJECT_NAME = "UCNAR001Router";
-    private static final String CM_DOMAIN_NAME = "UC_NAR_001";
+    private static final String OBJECT_NAME = "KRK-SSE1-3";
+    private static final String CM_DOMAIN_NAME = "KRK-SSE1-3";
     private static final String NARROW_RECO_NOTIFICATION = "Narrow reconciliation for GMOCs IPDevice finished";
-    private static final String INTERFACE_NAME = "CISCO IOS XR without mediation";
+    private static final String INTERFACE_NAME = "CISCO IOS 12/15/XE without mediation";
     private static final String DOMAIN = "IP";
     private static final String DEVICE_TYPE = "Physical Device";
-    private static final String LF_TYPE = "Logical Function";
-    private static final String CONFIRM_ID = "ConfirmationBox_object_delete_wizard_confirmation_box_action_button";
-    private static final String DELETE_LF_BUTTON_ID = "logicalInventory_DeleteLogicalFunctionActionModifyId";
-    private static final String DELETE_DEVICE_BUTTON_ID = "DeleteDeviceWizardAction";
     private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
+    private final static String ROUTE_TARGET = "RouteTarget";
+    private final static String SUCCESS = "SUCCESS";
 
     private SoftAssert softAssert;
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
@@ -71,17 +68,13 @@ public class BucOssNar001Test extends BaseTestCase {
 
     @Test(priority = 2, description = "Upload basic samples", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Samples Management view and upload basic samples")
-    public void uploadBasicSamples() throws URISyntaxException {
+    public void uploadBasicSamples() throws URISyntaxException, IOException {
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/create/UCNAR001Router_10.20.0.88_20170707_1324_sh_inventory_raw");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/create/UCNAR001Router_10.20.0.88_20170707_1324_sh_version");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_001/create");
     }
 
     @Test(priority = 3, description = "Run reconciliation with basic samples", dependsOnMethods = {"uploadBasicSamples"})
@@ -97,7 +90,7 @@ public class BucOssNar001Test extends BaseTestCase {
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         waitForPageToLoad();
         networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.INFO);
-        if (status.equals("SUCCESS")) {
+        if (status.equals(SUCCESS)) {
             waitForPageToLoad();
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
             waitForPageToLoad();
@@ -108,7 +101,7 @@ public class BucOssNar001Test extends BaseTestCase {
             waitForPageToLoad();
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
         }
-        Assert.assertEquals(status, "SUCCESS");
+        Assert.assertEquals(status, SUCCESS);
     }
 
     @Test(priority = 4, description = "Apply inconsistencies", dependsOnMethods = {"runReconciliationWithBasicSample"})
@@ -116,29 +109,35 @@ public class BucOssNar001Test extends BaseTestCase {
     public void applyInconsistencies() {
         networkDiscoveryControlViewPage.moveToNivFromNdcv();
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
-        networkInconsistenciesViewPage.expandTree();
+        if (networkInconsistenciesViewPage.isInconsistencyPresentContains(ROUTE_TARGET)) {
+            networkInconsistenciesViewPage.expandTreeRowContains(ROUTE_TARGET);
+            networkInconsistenciesViewPage.selectTreeObjectByRowOrder(3);
+            Notifications.create(driver, webDriverWait).clearAllNotification();
+            networkInconsistenciesViewPage.applySelectedInconsistenciesGroup();
+            DelayUtils.sleep(5000);
+            Assert.assertEquals(Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage(), String.format(NetworkInconsistenciesViewPage.ACCEPT_DISCREPANCIES_PATTERN, ROUTE_TARGET));
+        }
+        networkInconsistenciesViewPage.expandTreeRowContains("IPDevice");
+        networkInconsistenciesViewPage.expandTreeRowContains(OBJECT_NAME);
+        waitForPageToLoad();
         networkInconsistenciesViewPage.assignLocation(OBJECT_NAME, "1");
         checkPopupMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Apply inconsistencies", "assigning location"));
-        networkInconsistenciesViewPage.clearOldNotification();
-        networkInconsistenciesViewPage.applyInconsistencies();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
+        networkInconsistenciesViewPage.applyFirstInconsistenciesGroupWithPrerequsites();
         DelayUtils.sleep(5000);
-        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + OBJECT_NAME + " finished");
+        Assert.assertEquals(Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage(), String.format(NetworkInconsistenciesViewPage.ACCEPT_DISCREPANCIES_PATTERN, OBJECT_NAME));
     }
 
-    @Test(priority = 5, description = "Replace samples", dependsOnMethods = {"createCmDomain"})
+    @Test(priority = 5, description = "Replace samples", dependsOnMethods = {"applyInconsistencies"})
     @Description("Open Network Discovery Control View, move to Samples Management View and replace old samples")
-    public void replaceOldSamples() throws URISyntaxException {
+    public void replaceOldSamples() throws URISyntaxException, IOException {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         samplesManagementPage.deleteDirectoryContent();
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/modify/UCNAR001Router_10.20.0.88_20170707_1324_sh_inventory_raw");
-        waitForPageToLoad();
-        samplesManagementPage.uploadSamples("recoSamples/UC_NAR_001/modify/UCNAR001Router_10.20.0.88_20170707_1324_sh_version");
-        waitForPageToLoad();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_001/modify");
     }
 
     @Test(priority = 6, description = "Search router and open it in New Inventory View", dependsOnMethods = {"applyInconsistencies"})
@@ -179,60 +178,71 @@ public class BucOssNar001Test extends BaseTestCase {
         NetworkInconsistenciesViewPage networkInconsistenciesViewPage = new NetworkInconsistenciesViewPage(driver);
         waitForPageToLoad();
         Assert.assertTrue(networkInconsistenciesViewPage.checkInconsistenciesOperationType().contentEquals("OBJECT MODIFICATION"));
-        networkInconsistenciesViewPage.clearOldNotification();
-        networkInconsistenciesViewPage.applyInconsistencies();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
+        networkInconsistenciesViewPage.applyFirstInconsistenciesGroupWithPrerequsites();
         waitForPageToLoad();
-        Assert.assertEquals(networkInconsistenciesViewPage.checkNotificationAfterApplyInconsistencies(), "Accepting discrepancies related to " + OBJECT_NAME + " finished");
+        Assert.assertEquals(Notifications.create(driver, new WebDriverWait(driver, Duration.ofSeconds(150))).getNotificationMessage(), String.format(NetworkInconsistenciesViewPage.ACCEPT_DISCREPANCIES_PATTERN, OBJECT_NAME));
     }
 
-    @Test(priority = 9, description = "Delete CM Domain", dependsOnMethods = {"createCmDomain"})
+    @Test(priority = 9, description = "Replace samples", dependsOnMethods = {"createCmDomain"})
+    @Description("Open Network Discovery Control View, move to Samples Management View and replace old samples")
+    public void uploadEmptySamples() throws URISyntaxException, IOException {
+        openNetworkDiscoveryControlView();
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        networkDiscoveryControlViewPage.moveToSamplesManagement();
+        SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
+        samplesManagementPage.selectPath();
+        samplesManagementPage.deleteDirectoryContent();
+        samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_001/empty");
+    }
+
+    @Test(priority = 10, description = "Run reconciliation and check results", dependsOnMethods = {"uploadEmptySamples"})
+    @Description("Go to Network Discovery Control View, run reconciliation and check if it ended without errors")
+    public void runReconciliationWithEmptySample() {
+        networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
+        networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
+        waitForPageToLoad();
+        networkDiscoveryControlViewPage.runReconciliation();
+        checkPopupMessageType(MessageType.INFO, String.format(SYSTEM_MESSAGE_PATTERN, "Run reconciliation with empty sample", "starting reconciliation"));
+        waitForPageToLoad();
+        String status = networkDiscoveryControlViewPage.waitForEndOfReco();
+        networkDiscoveryControlViewPage.selectLatestReconciliationState();
+        waitForPageToLoad();
+        networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.INFO);
+        if (status.equals(SUCCESS)) {
+            waitForPageToLoad();
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
+            waitForPageToLoad();
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.WARNING));
+        } else {
+            waitForPageToLoad();
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.STARTUP_FATAL));
+            waitForPageToLoad();
+            Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
+        }
+        Assert.assertEquals(status, SUCCESS);
+    }
+
+    @Test(priority = 11, description = "Replace samples", dependsOnMethods = {"runReconciliationWithEmptySample"})
+    @Description("Open Network Discovery Control View, move to Samples Management View and replace old samples")
+    public void acceptInconsistencies() {
+        Notifications.create(driver, webDriverWait).clearAllNotification();
+        networkDiscoveryControlViewPage.acceptWithPrerequisites();
+        waitForPageToLoad();
+        Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), String.format(NetworkInconsistenciesViewPage.ACCEPT_DISCREPANCIES_PATTERN, CM_DOMAIN_NAME));
+    }
+
+    @Test(priority = 12, description = "Delete CM Domain", dependsOnMethods = {"createCmDomain"})
     @Description("Go to Network Discovery Control View, Delete CM Domain and check notification")
     public void deleteCmDomain() {
         openNetworkDiscoveryControlView();
         networkDiscoveryControlViewPage.queryAndSelectCmDomain(CM_DOMAIN_NAME);
         networkDiscoveryControlViewPage.cancelWithSubsequents();
         waitForPageToLoad();
-        networkDiscoveryControlViewPage.clearOldNotifications();
+        Notifications.create(driver, webDriverWait).clearAllNotification();
         networkDiscoveryControlViewPage.deleteCmDomain();
         checkPopupMessageType(MessageType.INFO, String.format(SYSTEM_MESSAGE_PATTERN, "Delete CM Domain", "CM Domain delete"));
-        Assert.assertEquals(networkDiscoveryControlViewPage.checkDeleteCmDomainNotification(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
-    }
-
-    @Test(priority = 10, description = "Delete Logical Function", dependsOnMethods = {"applyInconsistencies"})
-    @Description("Set perspective to Live, open new Inventory View, query Logical Function, delete Logical Function and check confirmation system message")
-    public void deleteLogicalFunction() {
-        PerspectiveChooser.create(driver, webDriverWait).setLivePerspective();
-        waitForPageToLoad();
-        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
-        waitForPageToLoad();
-        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
-        searchObjectTypePage.searchType(LF_TYPE);
-        waitForPageToLoad();
-        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-        waitForPageToLoad();
-        newInventoryViewPage.searchObject(OBJECT_NAME);
-        waitForPageToLoad();
-        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_LF_BUTTON_ID);
-        LogicalFunctionWizardPreStep logicalFunctionWizardPreStep = LogicalFunctionWizardPreStep.create(driver, webDriverWait);
-        logicalFunctionWizardPreStep.clickAccept();
-        checkPopupMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Delete logical function", "logical function delete"));
-    }
-
-    @Test(priority = 11, description = "Delete device", dependsOnMethods = {"applyInconsistencies"})
-    @Description("Open new Inventory View, query device, delete device and check confirmation system message")
-    public void deleteDevice() {
-        homePage.chooseFromLeftSideMenu("Inventory View", "Resource Inventory");
-        waitForPageToLoad();
-        SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
-        searchObjectTypePage.searchType(DEVICE_TYPE);
-        waitForPageToLoad();
-        NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-        waitForPageToLoad();
-        newInventoryViewPage.searchObject(OBJECT_NAME);
-        waitForPageToLoad();
-        newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_DEVICE_BUTTON_ID);
-        newInventoryViewPage.clickConfirmationBox(CONFIRM_ID);
-        checkPopupMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Delete device", "device delete"));
+        Assert.assertEquals(Notifications.create(driver, webDriverWait).getNotificationMessage(), "Deleting CM Domain: " + CM_DOMAIN_NAME + " finished");
     }
 
     @Test(priority = 12, description = "Checking system message summary")

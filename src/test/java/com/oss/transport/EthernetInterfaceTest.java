@@ -5,6 +5,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -12,9 +13,8 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.navigation.sidemenu.SideMenu;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
-import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
+import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.transport.ethernetInterface.EIWizardPage;
 
 import io.qameta.allure.Description;
@@ -55,6 +55,7 @@ public class EthernetInterfaceTest extends BaseTestCase {
     private static final String SEARCH_TYPE_ETHERNET_INTERFACE = "Ethernet Interface";
     private static final String SEARCH_TYPE_IP_NETWORK_ELEMENT = "IP Network Element";
     private static final String ASSERT_MESSAGE_PATTERN = "Checking assertion for %s.";
+    private static final String EI_NAME_CREATE = "EthernetInterfaceCreate" + (int) (Math.random() * 100);
     private String processNRPCode;
 
     @BeforeClass
@@ -91,7 +92,7 @@ public class EthernetInterfaceTest extends BaseTestCase {
         EIWizardPage eiWizard = navigateToEICreateWizard();
         fillEIWizardForCreate(eiAttributes, eiWizard);
         eiWizard.clickNext().clickAccept();
-        navigateToEIInventoryView(SEARCH_TYPE_ETHERNET_INTERFACE);
+        navigateToEIInventoryView(SEARCH_TYPE_ETHERNET_INTERFACE, EI_NAME_CREATE);
         NewInventoryViewPage eiInventoryView = new NewInventoryViewPage(driver, webDriverWait);
         assertEIAttributes(eiAttributes, eiInventoryView);
     }
@@ -135,16 +136,17 @@ public class EthernetInterfaceTest extends BaseTestCase {
     @Test(priority = 7)
     @Description("Remove Ethernet Interface")
     public void deleteEI() {
-        navigateToEIInventoryView(SEARCH_TYPE_ETHERNET_INTERFACE);
+        navigateToEIInventoryView(SEARCH_TYPE_ETHERNET_INTERFACE, EI_NAME_CREATE);
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.selectFirstRow().callAction(ActionsContainer.EDIT_GROUP_ID, DELETE_ETHERNET_INTERFACE_ID).clickConfirmationRemovalButton();
         newInventoryViewPage.refreshMainTable();
-        newInventoryViewPage.searchObject(PRE_CREATED_IP_NETWORK_ELEMENT);
+        newInventoryViewPage.searchObject(EI_NAME_CREATE);
         Assert.assertTrue(newInventoryViewPage.checkIfTableIsEmpty());
     }
 
     private EIAttributes getEIAttributesForCreate() {
         EIAttributes eiAttributes = new EIAttributes();
+        eiAttributes.name = EI_NAME_CREATE;
         eiAttributes.autoNegotiation = AUTO_NEGOTIATION_CREATE;
         eiAttributes.autoAdvertisementMaxCapacity = AUTO_ADVERTISEMENT_MAX_CAPACITY_CREATE;
         eiAttributes.maximumFrameSize = MAXIMUM_FRAME_SIZE_CREATE;
@@ -181,28 +183,29 @@ public class EthernetInterfaceTest extends BaseTestCase {
         EIAttributes eiAttributes = new EIAttributes();
         eiAttributes.autoNegotiation = AUTO_NEGOTIATION;
         eiAttributes.flowControl = FLOW_CONTROL_EMPTY_VALUE;
-        eiAttributes.encapsulation = ENCAPSULATION;
 
         return eiAttributes;
     }
 
     private EIWizardPage navigateToEICreateWizard() {
-        navigateToEIInventoryView(SEARCH_TYPE_IP_NETWORK_ELEMENT);
+        navigateToEIInventoryView(SEARCH_TYPE_IP_NETWORK_ELEMENT, PRE_CREATED_IP_NETWORK_ELEMENT);
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         newInventoryViewPage.callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_ETHERNET_INTERFACE);
         return new EIWizardPage(driver);
     }
 
-    private void navigateToEIInventoryView(String searchingType) {
+    private void navigateToEIInventoryView(String searchingType, String searchingObject) {
         SideMenu sidemenu = SideMenu.create(driver, webDriverWait);
         sidemenu.callActionByLabel(INVENTORY_VIEW_SIDE_MENU, RESOURCE_INVENTORY_VIEW_SIDE_MENU);
         SearchObjectTypePage searchObjectTypePage = new SearchObjectTypePage(driver, webDriverWait);
         searchObjectTypePage.searchType(searchingType);
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        newInventoryViewPage.searchObject(PRE_CREATED_IP_NETWORK_ELEMENT).selectFirstRow();
+        newInventoryViewPage.searchObject(searchingObject).selectFirstRow();
     }
 
     private void fillEIWizardForCreate(EIAttributes eiAttributes, EIWizardPage eiWizard) {
+        DelayUtils.waitForPageToLoad(driver, webDriverWait);
+        eiWizard.setName(eiAttributes.name);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
         eiWizard.setAutoNegotiation(eiAttributes.autoNegotiation);
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
@@ -240,8 +243,7 @@ public class EthernetInterfaceTest extends BaseTestCase {
         eiWizard.clearFlowControl();
         eiWizard.clearMTU();
         eiWizard.clearBandwidth();
-        eiWizard.clearSwitchPort();
-        eiWizard.clearSwitchMode();
+        eiWizard.clearEncapsulation();
         eiWizard.clearAccessFunction();
         eiWizard.clearDescription();
     }
@@ -285,6 +287,7 @@ public class EthernetInterfaceTest extends BaseTestCase {
     }
 
     private static class EIAttributes {
+        private String name;
         private String autoNegotiation;
         private String administrativeSpeed;
         private String administrativeDuplexMode;
