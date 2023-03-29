@@ -65,7 +65,7 @@ public class RemovePhysicalDeviceTest extends BaseTestCase {
     private static final String DELETE_TRAIL_ACTION_ID = "DeleteTrailWizardActionId";
     private static final String DELETE_TERMINATION_WIZARD_ID = "deleteWizardId_prompt-card";
 
-    private static final String HIERARCHY_TREE_TRAIL_PATH = "%d.connections.3rd Party Network.%d";
+    private static final String HIERARCHY_TREE_TRAIL_PATH = "%d.connections.3rd party network.%d";
 
     private final PhysicalInventoryRepository physicalInventoryRepository;
     private final PlanningRepository planningRepository;
