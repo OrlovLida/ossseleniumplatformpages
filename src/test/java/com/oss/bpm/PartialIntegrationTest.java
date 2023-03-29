@@ -406,7 +406,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, buildingId_TC1_2, BUILDING_IDENTIFIER);
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, buildingId_TC1_3, BUILDING_IDENTIFIER);
 
-        partialIntegrationWizardPage.clickApplyButton();
+        partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
@@ -459,7 +459,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC2_1, DEVICE_IDENTIFIER);
 
         //activate router, chassis and card 2_1
-        partialIntegrationWizardPage.clickApplyButton();
+        partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
@@ -474,7 +474,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, chassisId_TC2_3, CHASSIS_IDENTIFIER);
 
         //activate router 2_2 and chassis 2_3
-        partialIntegrationWizardPage.clickApplyButton();
+        partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
@@ -488,7 +488,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, cardId_TC2_2, CARD_IDENTIFIER);
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC2_3, DEVICE_IDENTIFIER);
 
-        partialIntegrationWizardPage.clickApplyButton();
+        partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
@@ -551,7 +551,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC3_1, DEVICE_IDENTIFIER);
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC3_2, DEVICE_IDENTIFIER);
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, chassisId_TC3_3, CHASSIS_IDENTIFIER);
-        partialIntegrationWizardPage.clickApplyButton();
+        partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
@@ -572,7 +572,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, chassisId_TC3_1, CHASSIS_IDENTIFIER);
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, cardId_TC3_2, CARD_IDENTIFIER);
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC3_3, DEVICE_IDENTIFIER);
-        partialIntegrationWizardPage.clickApplyButton();
+        partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
@@ -624,7 +624,7 @@ public class PartialIntegrationTest extends BaseTestCase {
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, testName));
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC4_1, DEVICE_IDENTIFIER);
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, chassisId_TC4_1, CHASSIS_IDENTIFIER);
-        partialIntegrationWizardPage.clickApplyButton();
+        partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
@@ -677,7 +677,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         Assert.assertEquals(objectsToIntegrateIdentifiers.size(), 1,
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, testName));
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC6_1, DEVICE_IDENTIFIER);
-        partialIntegrationWizardPage.clickApplyButton();
+        partialIntegrationWizardPage.partialIntegrationWizard.clickButtonById(PartialIntegrationWizardPage.APPLY_BUTTON_ID);
 
         assertSystemMessage(String.format(UNABLE_ACTIVATE_OBJECTS_MESSAGE, String.format(DEVICE_IDENTIFIER1, deviceId_TC6_1),
                         vr_TC6_1.getType(), vr_TC6_1.getDescription()),
@@ -685,7 +685,7 @@ public class PartialIntegrationTest extends BaseTestCase {
 
         //suppress vr 6_1 and try again
         suppressValidationResult(vrId_TC6_1, SUPPRESSION_REASON);
-        partialIntegrationWizardPage.clickApplyButton();
+        partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
@@ -698,7 +698,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, chassisId_TC6_1, CHASSIS_IDENTIFIER);
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC6_2, DEVICE_IDENTIFIER);
         assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, cardId_TC6_2, CARD_IDENTIFIER);
-        partialIntegrationWizardPage.clickApplyButton();
+        partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
