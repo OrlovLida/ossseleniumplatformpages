@@ -26,7 +26,7 @@ public class PartialIntegrationWizardPage extends BasePage {
     private static final String OBJECTS_TO_INTEGRATION_SEARCH_INPUT_ID = "RootsToActivateSearchCompId";
     private static final String CANCEL_BUTTON_ID = "wizard-cancel-button-plaPartialActivationWizard_appId";
     private static final String CLOSE_BUTTON_ID = "plaPartialActivationWizard_prompt-card_close-prompt";
-    private static final String APPLY_BUTTON_ID = "wizard-submit-button-plaPartialActivationWizard_appId";
+    public static final String APPLY_BUTTON_ID = "wizard-submit-button-plaPartialActivationWizard_appId";
     private static final String CHOOSE_TO_INTEGRATION_BUTTON_ID = "ChooseToActivationBtnCompId";
     private static final String BACK_TO_PLANNED_OBJECTS_BUTTON_ID = "BackToPlannedBtnCompId";
     private static final String WIZARD_ID = "plaPartialActivationWizard_prompt-card";
@@ -34,7 +34,7 @@ public class PartialIntegrationWizardPage extends BasePage {
     private static final String OBJECT_NAME_COLUMN_ID = "objectNameColId";
     private static final String OPERATION_TYPE_COLUMN_ID = "operationTypeColId";
 
-    private final Wizard partialIntegrationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
+    public final Wizard partialIntegrationWizard = Wizard.createByComponentId(driver, wait, WIZARD_ID);
 
     public PartialIntegrationWizardPage(WebDriver driver) {
         super(driver);
@@ -56,14 +56,30 @@ public class PartialIntegrationWizardPage extends BasePage {
         }
     }
 
-    public void clickApplyButton() {
+    public void apply() {
         partialIntegrationWizard.clickButtonById(APPLY_BUTTON_ID);
         partialIntegrationWizard.waitToClose();
     }
 
-    public void clickCancelButton() {
+    public void cancel() {
         partialIntegrationWizard.clickButtonById(CANCEL_BUTTON_ID);
         partialIntegrationWizard.waitToClose();
+    }
+
+    /**
+     * @deprecated - use {@link #apply()} method
+     */
+    @Deprecated(since = "4.0.x", forRemoval = true)
+    public void clickApplyButton() {
+        partialIntegrationWizard.clickButtonById(APPLY_BUTTON_ID);
+    }
+
+    /**
+     * @deprecated -  use {@link #cancel()} method
+     */
+    @Deprecated(since = "4.0.x", forRemoval = true)
+    public void clickCancelButton() {
+        partialIntegrationWizard.clickButtonById(CANCEL_BUTTON_ID);
     }
 
     public void closePrompt() {
@@ -176,6 +192,11 @@ public class PartialIntegrationWizardPage extends BasePage {
 
     public PartialIntegrationWizardPage moveBackObjectToPlanned(String objectName) {
         return moveBackObjectsToPlanned(Collections.singletonList(objectName));
+    }
+
+    public void integrateObjects(List<String> objectsNames) {
+        moveObjectsToIntegration(objectsNames);
+        apply();
     }
 
     public static boolean isWizardVisible(WebDriver driver) {
