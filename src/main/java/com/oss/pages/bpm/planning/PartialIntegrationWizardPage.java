@@ -67,20 +67,19 @@ public class PartialIntegrationWizardPage extends BasePage {
     }
 
     /**
-     * @Depracated - use {@link #apply()} method
+     * @deprecated - use {@link #apply()} method
      */
-    @Deprecated
+    @Deprecated(since = "4.1.x", forRemoval = true)
     public void clickApplyButton() {
         partialIntegrationWizard.clickButtonById(APPLY_BUTTON_ID);
     }
 
     /**
-     * @Depracated - use {@link #cancel()} method
+     * @deprecated -  use {@link #cancel()} method
      */
-    @Deprecated
+    @Deprecated(since = "4.1.x", forRemoval = true)
     public void clickCancelButton() {
         partialIntegrationWizard.clickButtonById(CANCEL_BUTTON_ID);
-        partialIntegrationWizard.waitToClose();
     }
 
     public void closePrompt() {
