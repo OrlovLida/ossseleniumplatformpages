@@ -1,6 +1,7 @@
 package com.oss.pages.stockmanagement.valorization;
 
 import com.comarch.oss.web.pages.BasePage;
+import com.comarch.oss.web.pages.HomePage;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Maps;
 import com.oss.framework.components.prompts.ConfirmationBox;
@@ -13,7 +14,6 @@ import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.treetable.OldTreeTableWidget;
 import com.oss.framework.wizard.Wizard;
-import com.oss.pages.platform.HomePage;
 import com.oss.pages.stockmanagement.assets.Asset;
 import com.oss.pages.stockmanagement.pricinglists.PricingItem;
 import com.oss.planning.ObjectIdentifier;

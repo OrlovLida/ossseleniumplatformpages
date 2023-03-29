@@ -1,5 +1,6 @@
 package com.oss.pages.bpm.processinstances;
 
+import com.comarch.oss.web.pages.HomePage;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.attributechooser.AttributesChooser;
@@ -17,7 +18,6 @@ import com.oss.pages.bpm.planning.PartialIntegrationWizardPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessCreationWizardProperties;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
 import com.oss.pages.bpm.processinstances.creation.TerminateProcessWizardPage;
-import com.oss.pages.platform.HomePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;

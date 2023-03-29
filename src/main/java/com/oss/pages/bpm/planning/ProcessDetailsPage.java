@@ -1,5 +1,6 @@
 package com.oss.pages.bpm.planning;
 
+import com.comarch.oss.web.pages.HomePage;
 import com.google.common.collect.Maps;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.prompts.ConfirmationBox;
@@ -9,7 +10,6 @@ import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.HomePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;

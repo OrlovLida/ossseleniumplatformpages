@@ -1,10 +1,10 @@
 package com.oss.pages.stockmanagement.storages;
 
+import com.comarch.oss.web.pages.HomePage;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.HomePage;
 import com.oss.pages.stockmanagement.assets.AssetsPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;

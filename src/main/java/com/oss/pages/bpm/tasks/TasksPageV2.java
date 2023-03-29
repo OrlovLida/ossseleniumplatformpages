@@ -1,5 +1,6 @@
 package com.oss.pages.bpm.tasks;
 
+import com.comarch.oss.web.pages.HomePage;
 import com.oss.framework.components.attributechooser.AttributesChooser;
 import com.oss.framework.components.search.AdvancedSearch;
 import com.oss.framework.utils.DelayUtils;
@@ -11,7 +12,6 @@ import com.oss.pages.bpm.planning.ProcessDetailsPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
 import com.oss.pages.bpm.tasks.taskforms.IPDTaskFormPage;
 import com.oss.pages.bpm.tasks.taskforms.KDTaskFormPage;
-import com.oss.pages.platform.HomePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;

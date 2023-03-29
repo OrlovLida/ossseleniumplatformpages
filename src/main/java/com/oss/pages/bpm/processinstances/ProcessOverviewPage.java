@@ -1,5 +1,6 @@
 package com.oss.pages.bpm.processinstances;
 
+import com.comarch.oss.web.pages.HomePage;
 import com.oss.framework.components.contextactions.OldActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.list.CommonList;
@@ -14,7 +15,6 @@ import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessCreationWizardProperties;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
 import com.oss.pages.bpm.processinstances.creation.TerminateProcessWizardPage;
-import com.oss.pages.platform.HomePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
