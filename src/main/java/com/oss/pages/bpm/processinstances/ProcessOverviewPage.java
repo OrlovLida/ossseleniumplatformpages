@@ -14,11 +14,14 @@ import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessCreationWizardProperties;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
-import com.oss.pages.bpm.processinstances.creation.TerminateProcessWizardPage;
+import com.oss.pages.bpm.processinstances.edition.ChangeFDDWizardPage;
+import com.oss.pages.bpm.processinstances.edition.TerminateProcessWizardPage;
+import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +38,7 @@ public class ProcessOverviewPage extends BasePage {
     private static final String MILESTONE_TAB_ID = "bpm_processes_view_milestones-tab";
     private static final String MILESTONE_LIST = "bpm_processes_view_process-milestones-list";
     private static final String ADD_MILESTONES_LIST_ID = "CREATE_MILESTONES_EDITABLE_LIST_ID";
+    private static final String CHANGE_FDD_ACTION_ID = "inventory-processes_change_finished_due_date";
     private static final String CREATE_MILESTONES_ACTION_ID = "create-milestones";
     private static final String TERMINATE_PROCESS_ACTION_ID = "kill-process";
     private static final String CREATE_GROUP_ACTION_ID = "create";
@@ -231,6 +235,12 @@ public class ProcessOverviewPage extends BasePage {
         return new ProcessWizardPage(driver);
     }
 
+    public ChangeFDDWizardPage openChangeFDDWizard() {
+        callAction(CHANGE_FDD_ACTION_ID);
+        DelayUtils.waitForPageToLoad(driver, wait);
+        return new ChangeFDDWizardPage(driver);
+    }
+
     public void createInstance(ProcessCreationWizardProperties properties) {
         if (properties.isProcessCreation())
             openProcessCreationWizard().createInstance(properties);
@@ -269,5 +279,15 @@ public class ProcessOverviewPage extends BasePage {
 
     public void terminateProcess(String reason) {
         terminateProcess(reason, false);
+    }
+
+    @Step("Change Finished Due Date")
+    public void changeFDD(LocalDate newFDD, String reason) {
+        openChangeFDDWizard().changeFDD(newFDD, reason);
+    }
+
+    @Step("Change Finished Due Date")
+    public void changeFDD(LocalDate newFDD) {
+        openChangeFDDWizard().changeFDD(newFDD);
     }
 }
