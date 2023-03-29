@@ -726,6 +726,7 @@ public class PartialIntegrationTest extends BaseTestCase {
 
         //check if activated objects planned actions stayed in IP processes
         ProcessDetailsPage processDetailsPage = tasksPage.clickPlanViewButton();
+        waitForPageToLoad();
         softAssert.assertEquals(processDetailsPage.getObjectsAmount(), 0,
                 String.format(INVALID_OBJECTS_AMOUNT, nrp_Code_TC_MAIN, testName));
         processDetailsPage.closeProcessDetailsPromt();
