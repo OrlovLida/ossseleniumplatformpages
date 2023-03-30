@@ -1,5 +1,6 @@
 package com.oss.pages.bpm.processmodels;
 
+import com.comarch.oss.web.pages.HomePage;
 import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
@@ -11,7 +12,6 @@ import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;
 import com.oss.pages.bpm.milestones.Milestone;
 import com.oss.pages.bpm.milestones.MilestoneWizardPage;
-import com.oss.pages.platform.HomePage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 

@@ -1,5 +1,6 @@
 package com.oss.pages.bpm.processinstances;
 
+import com.comarch.oss.web.pages.HomePage;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import com.oss.framework.components.attributechooser.AttributesChooser;
@@ -16,13 +17,14 @@ import com.oss.pages.BasePage;
 import com.oss.pages.bpm.planning.PartialIntegrationWizardPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessCreationWizardProperties;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
-import com.oss.pages.bpm.processinstances.creation.TerminateProcessWizardPage;
-import com.oss.pages.platform.HomePage;
+import com.oss.pages.bpm.processinstances.edition.ChangeFDDWizardPage;
+import com.oss.pages.bpm.processinstances.edition.TerminateProcessWizardPage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.util.AbstractMap;
 import java.util.Arrays;
 import java.util.List;
@@ -34,15 +36,21 @@ import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.BPM_AND_PLA
 import static com.oss.pages.bpm.processinstances.ProcessOverviewPage.NETWORK_PLANNING;
 
 public class PlannersViewPage extends BasePage {
-    public static final String INTEGRATE_PLANNED_CHANGES_CONTEXT_ACTION_ID = "ipd_inventory_view_action_partial_activation";
-    private static final String CHANGE_FDD_CONTEXT_ACTION_ID = "ipd_inventory_view_action_change_finished_due_date";
-    public static final String PLANNERS_VIEW = "Planners View";
     public static final String CREATE_GROUP_ACTION_ID = "CREATE";
     public static final String EDIT_GROUP_ID = "EDIT";
-    public static final String START_PROCESS_ACTION_ID = "bpm_inventory_view_action_create_process";
-    public static final String START_PROGRAM_ACTION_ID = "bpm_inventory_view_action_create_program";
+    private static final String INTEGRATE_PLANNED_CHANGES_CONTEXT_ACTION_ID = "ipd_inventory_view_action_partial_activation";
+    private static final String START_PROCESS_CONTEXT_ACTION_ID = "bpm_inventory_view_action_create_process";
+    private static final String START_PROGRAM_CONTEXT_ACTION_ID = "bpm_inventory_view_action_create_program";
+    private static final String TERMINATE_PROCESS_CONTEXT_ACTION_ID = "bpm_inventory_view_action_terminate_process";
+    private static final String CHANGE_FDD_CONTEXT_ACTION_ID = "ipd_inventory_view_action_change_finished_due_date";
+
+    private static final String IPD_FDD_PROPERTY_ID = "ipdAttributes.finishedDueDate";
     private static final String PROJECT_ID_PROPERTY_ID = "bpmPlanningAttributes.projectId";
+    private static final String PROCESS_ID_PROPERTY_ID = "internalDomainId";
+    public static final String PLANNERS_VIEW = "Planners View";
+    private static final String FDD_LABEL = "Finished Due Date";
     private static final String PROJECT_ID_LABEL = "Project ID";
+    private static final String IPD_ATTRIBUTES_LABEL = "Ipd Attributes";
     private static final String PLANNING_ATTRIBUTES_LABEL = "Planning Attributes";
     private static final String PROPERTY_PANEL_ID = "PropertyPanelWidget";
     private static final String TREE_TABLE_ID = "process_instance_hierarchy_table";
@@ -56,7 +64,6 @@ public class PlannersViewPage extends BasePage {
                     new AbstractMap.SimpleEntry<>("Devices", "process_instance_top_tabs_devices_widget"),
                     new AbstractMap.SimpleEntry<>("Connections", "process_instance_top_tabs_connections_widget"))
             .collect(Collectors.toMap(AbstractMap.SimpleEntry::getKey, AbstractMap.SimpleEntry::getValue));
-    private static final String CANCEL_PROCESS_BUTTON_ID = "bpm_inventory_view_action_terminate_process";
     public static final String IN_PROGRESS_STATUS = "In Progress";
     public static final String COMPLETED_STATUS = "Completed";
     public static final String CANCELED_STATUS = "Canceled";
@@ -254,10 +261,28 @@ public class PlannersViewPage extends BasePage {
 
     @Step("Terminate process")
     public void terminateProcess(String reason) {
-        getTreeTable().callAction(EDIT_GROUP_ID, CANCEL_PROCESS_BUTTON_ID);
+        terminateProcess(reason, false);
+    }
+
+    @Step("Terminate process")
+    public void terminateProcess(String reason, boolean childProcessesTerminate) {
+        getTreeTable().callAction(EDIT_GROUP_ID, TERMINATE_PROCESS_CONTEXT_ACTION_ID);
         TerminateProcessWizardPage terminateProcessWizardPage = new TerminateProcessWizardPage(driver);
         terminateProcessWizardPage.setTerminationReason(reason);
+        if (childProcessesTerminate) {
+            terminateProcessWizardPage.enableChildProcessesTerminate();
+        }
         terminateProcessWizardPage.clickAccept();
+    }
+
+    @Step("Change Finished Due Date")
+    public void changeFDD(LocalDate newFDD, String reason) {
+        openChangeFDDWizard().changeFDD(newFDD, reason);
+    }
+
+    @Step("Change Finished Due Date")
+    public void changeFDD(LocalDate newFDD) {
+        openChangeFDDWizard().changeFDD(newFDD);
     }
 
     @Step("Clicking on refresh button")
@@ -276,6 +301,17 @@ public class PlannersViewPage extends BasePage {
         return getPropertyPanel().getPropertyValue(propertyId);
     }
 
+    public LocalDate getFDD(String processCode) {
+        String fdd;
+        try {
+            fdd = selectProcess(processCode).getPropertyValue(IPD_FDD_PROPERTY_ID);
+        } catch (IllegalArgumentException e) {
+            fdd = enablePropertyByLabel(FDD_LABEL, IPD_ATTRIBUTES_LABEL)
+                    .getPropertyValue(IPD_FDD_PROPERTY_ID);
+        }
+        return LocalDate.parse(fdd);
+    }
+
     public Long getProjectId(String processCode) {
         String projectId;
         try {
@@ -285,6 +321,10 @@ public class PlannersViewPage extends BasePage {
                     .getPropertyValue(PROJECT_ID_PROPERTY_ID);
         }
         return Long.valueOf(projectId);
+    }
+
+    public String getProcessId(String processCode) {
+        return selectProcess(processCode).getPropertyValue(PROCESS_ID_PROPERTY_ID);
     }
 
     public PlannersViewPage enablePropertyByLabel(String propertyLabel, String... path) {
@@ -367,13 +407,13 @@ public class PlannersViewPage extends BasePage {
     }
 
     public ProcessWizardPage openProcessCreationWizard() {
-        callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_ACTION_ID);
+        callAction(CREATE_GROUP_ACTION_ID, START_PROCESS_CONTEXT_ACTION_ID);
         waitForPageToLoad();
         return new ProcessWizardPage(driver);
     }
 
     public ProcessWizardPage openProgramCreationWizard() {
-        callAction(CREATE_GROUP_ACTION_ID, START_PROGRAM_ACTION_ID);
+        callAction(CREATE_GROUP_ACTION_ID, START_PROGRAM_CONTEXT_ACTION_ID);
         waitForPageToLoad();
         return new ProcessWizardPage(driver);
     }
@@ -382,6 +422,12 @@ public class PlannersViewPage extends BasePage {
         callAction(EDIT_GROUP_ID, INTEGRATE_PLANNED_CHANGES_CONTEXT_ACTION_ID);
         waitForPageToLoad();
         return new PartialIntegrationWizardPage(driver);
+    }
+
+    public ChangeFDDWizardPage openChangeFDDWizard() {
+        callAction(EDIT_GROUP_ID, CHANGE_FDD_CONTEXT_ACTION_ID);
+        waitForPageToLoad();
+        return new ChangeFDDWizardPage(driver);
     }
 
     public void createInstance(ProcessCreationWizardProperties properties) {

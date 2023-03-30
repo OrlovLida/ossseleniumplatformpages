@@ -1,4 +1,4 @@
-package com.oss.pages.bpm.processinstances.creation;
+package com.oss.pages.bpm.processinstances.edition;
 
 import com.oss.framework.wizard.Wizard;
 import com.oss.pages.BasePage;

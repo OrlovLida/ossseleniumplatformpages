@@ -1,5 +1,6 @@
 package com.oss.pages.bpm.planning;
 
+import com.comarch.oss.web.pages.HomePage;
 import com.google.common.collect.Maps;
 import com.oss.framework.components.inputs.Button;
 import com.oss.framework.components.prompts.ConfirmationBox;
@@ -9,7 +10,6 @@ import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
-import com.oss.pages.platform.HomePage;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -36,7 +36,13 @@ public class ProcessDetailsPage extends BasePage {
     private static final String REFRESH_TABLE_ID = "tableRefreshButton";
     private static final String OBJECT_STATUS_ATTRIBUTE_NAME = "Object status";
     private static final String OBJECT_OPERATION_TYPE_ATTRIBUTE_NAME = "Operation type";
-    private static final String DESCRIPTION_COLUMN_ID = "Description";
+    public static final String DESCRIPTION_ATTRIBUTE_NAME = "Description";
+    public static final String PROCESS_STATUS_ATTRIBUTE_NAME = "Process status";
+    public static final String LOCK_STATUS_ATTRIBUTE_NAME = "Lock status";
+    public static final String CODE_ATTRIBUTE_NAME = "Code";
+    public static final String NAME_ATTRIBUTE_NAME = "Name";
+    public static final String INTEGRATION_DATE_ATTRIBUTE_NAME = "Integration date";
+    public static final String VALIDATION_STATUS_ATTRIBUTE_NAME = "Validation status";
 
     public ProcessDetailsPage(WebDriver driver) {
         super(driver);
@@ -139,8 +145,8 @@ public class ProcessDetailsPage extends BasePage {
     }
 
     public String getProjectAttribute(String attributeName) {
-        if (attributeName.equals(DESCRIPTION_COLUMN_ID)) {
-            return getProjectDescriptionTable().getRows().get(0).getValue(DESCRIPTION_COLUMN_ID);
+        if (attributeName.equals(DESCRIPTION_ATTRIBUTE_NAME)) {
+            return getProjectDescriptionTable().getRows().get(0).getValue(DESCRIPTION_ATTRIBUTE_NAME);
         } else {
             return getProjectInformationTable().getRows().get(0).getValue(attributeName);
         }
@@ -151,7 +157,7 @@ public class ProcessDetailsPage extends BasePage {
         CommonList infoTable = getProjectInformationTable();
         infoTable.getRowHeaders().forEach(attributeName ->
                 attributesMap.put(attributeName, infoTable.getRows().get(0).getValue(attributeName)));
-        attributesMap.put(DESCRIPTION_COLUMN_ID, getProjectAttribute(DESCRIPTION_COLUMN_ID));
+        attributesMap.put(DESCRIPTION_ATTRIBUTE_NAME, getProjectAttribute(DESCRIPTION_ATTRIBUTE_NAME));
         return attributesMap;
     }
 

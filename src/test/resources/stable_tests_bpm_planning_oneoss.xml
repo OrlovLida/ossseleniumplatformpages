@@ -15,6 +15,11 @@
             <class name="com.oss.bpm.PartialIntegrationTest"/>
         </classes>
     </test>
+    <test name="ChangeFDDTest">
+        <classes>
+            <class name="com.oss.bpm.ChangeFDDTest"/>
+        </classes>
+    </test>
     <test name="EditMilestonesForProcessModelTest">
         <classes>
             <class name="com.oss.bpm.milestones.EditMilestonesForProcessModelTest"/>
