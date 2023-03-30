@@ -321,8 +321,6 @@ public class BucOssTpt001Test extends BaseTestCase {
     private static final String MWL_DESCRIPTION = "desc691";
 
     private static final String WORKING_LINE_TYPE = "Working";
-    private static final String FIRST_MWL_SEQUENCE_NUMBER = "seqNumberMwl1";
-    private static final String SECOND_MWL_SEQUENCE_NUMBER = "2MWLSequenceNum";
     private static final String FIRST_MW_ANTENNA_SEQUENCE_NUMBER = "1MicroAntSequenceNum";
     private static final String FIRST_MW_ANTENNA_RELATION_TYPE = "Start Primary Antenna";
     private static final String SECOND_MW_ANTENNA_SEQUENCE_NUMBER = "2MwAntennaSeqNumber";
@@ -510,7 +508,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
 
         networkViewPage.addSelectedObjectsToRouting();
-        fillAddRoutingSegmentWizard(WORKING_LINE_TYPE, FIRST_MWL_SEQUENCE_NUMBER);
+        fillAddRoutingSegmentWizard();
         assertMicrowaveChannelWorkingStatusOnNetworkView(networkViewPage);
 
         networkViewPage.searchObjectInContentTab(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
@@ -548,7 +546,7 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
 
         networkViewPage.addSelectedObjectsToRouting();
-        fillAddRoutingSegmentWizard(WORKING_LINE_TYPE, SECOND_MWL_SEQUENCE_NUMBER);
+        fillAddRoutingSegmentWizard();
         assertMicrowaveChannelWorkingStatusOnNetworkView(networkViewPage);
 
         networkViewPage.searchObjectInContentTab(NAME_COLUMN_NAME, TEXT_FIELD, MICROWAVE_CHANNEL_PARTIAL_NAME);
@@ -762,7 +760,7 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         MicrowaveChannelAttributes firstMicrowaveChannelAttributes = getFirstMicrowaveChannelAttributes();
         assertMicrowaveChannelAttributesOnNewInventoryView(firstMicrowaveChannelAttributes);
-        assertMicrowaveChannelWorkingStatusOnNewInventoryView(WORKING_LINE_TYPE);
+        assertMicrowaveChannelWorkingStatusOnNewInventoryView();
 
         openTab(TERMINATIONS_TAB_LABEL);
         assertPresenceOfObjectInTab(0, PORT_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, PORT_LABEL);
@@ -785,7 +783,7 @@ public class BucOssTpt001Test extends BaseTestCase {
 
         MicrowaveChannelAttributes secondMicrowaveChannelAttributes = getSecondMicrowaveChannelAttributes();
         assertMicrowaveChannelAttributesOnNewInventoryView(secondMicrowaveChannelAttributes);
-        assertMicrowaveChannelWorkingStatusOnNewInventoryView(WORKING_LINE_TYPE);
+        assertMicrowaveChannelWorkingStatusOnNewInventoryView();
 
         openTab(TERMINATIONS_TAB_LABEL);
         assertPresenceOfObjectInTab(0, CARD_SHORT_IDENTIFIER_COLUMN, NIV_TERMINATIONS_TAB_ID, CARD_NAME);
@@ -804,7 +802,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     public void deleteEthernetLink() {
         openInventoryViewForGivenObjectType(ETHERNET_LINK_TRAIL_TYPE);
         searchAndSelectObjectOnInventoryView(ETHERNET_LINK_NAME);
-        deleteConnectionAndRefreshMainTable(DELETE_CONNECTION_ON_IV_ACTION_ID, DELETE_SUBMIT_BUTTON_ID);
+        deleteConnectionAndRefreshMainTable();
 
         Assert.assertTrue(isInventoryViewEmpty());
     }
@@ -933,12 +931,12 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    private void deleteConnectionAndRefreshMainTable(String deleteButtonId, String submitButtonId) {
+    private void deleteConnectionAndRefreshMainTable() {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
-        newInventoryViewPage.callAction(EDIT_GROUP_ID, deleteButtonId);
+        newInventoryViewPage.callAction(EDIT_GROUP_ID, DELETE_CONNECTION_ON_IV_ACTION_ID);
         waitForPageToLoad();
         Wizard wizard = Wizard.createByComponentId(driver, webDriverWait, CONFIRMATION_WIZARD_ID);
-        wizard.clickButtonById(submitButtonId);
+        wizard.clickButtonById(DELETE_SUBMIT_BUTTON_ID);
         waitForPageToLoad();
         newInventoryViewPage.refreshMainTable();
         waitForPageToLoad();
@@ -1310,12 +1308,9 @@ public class BucOssTpt001Test extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    private void fillAddRoutingSegmentWizard(String lineType, String sequenceNumber) {
+    private void fillAddRoutingSegmentWizard() {
         MicrowaveChannelRoutingWizard microwaveChannelRoutingWizard = new MicrowaveChannelRoutingWizard(driver);
         waitForPageToLoad();
-//        TODO: odkomentować po rozwiązaniu OSSTRAIL-7974
-//        microwaveChannelRoutingWizard.setLineType(lineType);
-//        microwaveChannelRoutingWizard.setSequenceNumber(sequenceNumber);
         microwaveChannelRoutingWizard.proceed();
     }
 
@@ -1486,10 +1481,10 @@ public class BucOssTpt001Test extends BaseTestCase {
         Assert.assertEquals(objectValue, objectName, EXPECTED_OBJECT_NOT_PRESENT_EXCEPTION);
     }
 
-    private void assertPresenceOfObjectInElementRoutingTab(Integer index, String name, String relationType) {
+    private void assertPresenceOfObjectInElementRoutingTab(String name, String relationType) {
         OldTable routingElements = OldTable.createById(driver, webDriverWait, ELEMENT_ROUTING_TABLE_APP_ID);
-        String actualNameValue = routingElements.getCellValue(index, NAME_COLUMN_LABEL);
-        String actualRelationTypeValue = routingElements.getCellValue(index, RELATION_TYPE_COLUMN_LABEL);
+        String actualNameValue = routingElements.getCellValue(0, NAME_COLUMN_LABEL);
+        String actualRelationTypeValue = routingElements.getCellValue(0, RELATION_TYPE_COLUMN_LABEL);
 
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertEquals(actualNameValue, name, EXPECTED_OBJECT_NOT_PRESENT_EXCEPTION);
@@ -1509,11 +1504,11 @@ public class BucOssTpt001Test extends BaseTestCase {
         Assert.assertEquals(actualWorkingStatus, WORKING_LINE_TYPE, WORKING_STATUS_ATTRIBUTE_LABEL + VALUES_NOT_EQUAL_EXCEPTION);
     }
 
-    private void assertMicrowaveChannelWorkingStatusOnNewInventoryView(String workingStatus) {
+    private void assertMicrowaveChannelWorkingStatusOnNewInventoryView() {
         NewInventoryViewPage newInventoryViewPage = new NewInventoryViewPage(driver, webDriverWait);
         String actualWorkingStatus = newInventoryViewPage.getPropertyPanelValue(WORKING_STATUS_ATTRIBUTE_LABEL);
 
-        Assert.assertEquals(actualWorkingStatus, workingStatus, WORKING_STATUS_ATTRIBUTE_LABEL + VALUES_NOT_EQUAL_EXCEPTION);
+        Assert.assertEquals(actualWorkingStatus, WORKING_LINE_TYPE, WORKING_STATUS_ATTRIBUTE_LABEL + VALUES_NOT_EQUAL_EXCEPTION);
     }
 
     private void assertMicrowaveLinkAttributesOnNewInventoryView(MicrowaveLinkAttributes microwaveLinkAttributes) {
@@ -1651,7 +1646,7 @@ public class BucOssTpt001Test extends BaseTestCase {
     private void assertObjectPresenceInElementRouting(String objectName, String relationType) {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.searchObjectInElementRoutingTab(NAME_COLUMN_NAME, TEXT_FIELD, objectName);
-        assertPresenceOfObjectInElementRoutingTab(0, objectName, relationType);
+        assertPresenceOfObjectInElementRoutingTab(objectName, relationType);
         networkViewPage.clearColumnSearchFieldInElementRoutingTab(NAME_COLUMN_NAME);
         waitForPageToLoad();
     }
@@ -1722,12 +1717,12 @@ public class BucOssTpt001Test extends BaseTestCase {
         newInventoryViewPage.searchObject(MICROWAVE_FREQUENCY_PLAN_NAME);
         waitForPageToLoad();
         SoftAssert assertions = new SoftAssert();
-        assertions.assertFalse(isInventoryViewEmpty(), String.format(MICROWAVE_FREQUENCY_PLAN_NAME, MFP_EXCEPTION));
+        assertions.assertFalse(isInventoryViewEmpty(), MICROWAVE_FREQUENCY_PLAN_NAME + MFP_EXCEPTION);
         newInventoryViewPage.clearFilters();
         waitForPageToLoad();
         newInventoryViewPage.searchObject(MICROWAVE_FREQUENCY_PLAN2_NAME);
         waitForPageToLoad();
-        assertions.assertFalse(isInventoryViewEmpty(), String.format(MICROWAVE_FREQUENCY_PLAN2_NAME, MFP_EXCEPTION));
+        assertions.assertFalse(isInventoryViewEmpty(), MICROWAVE_FREQUENCY_PLAN2_NAME + MFP_EXCEPTION);
         assertions.assertAll();
     }
 }
