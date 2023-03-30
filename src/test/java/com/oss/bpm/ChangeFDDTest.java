@@ -129,6 +129,7 @@ public class ChangeFDDTest extends BaseTestCase {
     @BeforeClass
     public void prepare() {
         softAssert = new SoftAssert();
+        waitForPageToLoad();
         building_main_ID = createBuilding(BUILDING_NAME_TC_MAIN, LIVE);
     }
 
@@ -164,6 +165,11 @@ public class ChangeFDDTest extends BaseTestCase {
             Current FDDs:
                 - NRP 1: TODAY + 3
          */
+        //start HLP task in NRP1
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.startTask(nrp_1_code, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
+        waitForPageToLoad();
+
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
 
         //create device D1 in NRP 1 plan
@@ -189,8 +195,7 @@ public class ChangeFDDTest extends BaseTestCase {
          */
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
 
-        //start HLP task in NRP1 and create DRP1 and DRP2 processes
-        tasksPage.startTask(nrp_1_code, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
+        //create DRP1 and DRP2 processes in NRP 1 HLP task
         drp_1_code = tasksPage.createDRPProcess(nrp_1_code, TasksPageV2.HIGH_LEVEL_PLANNING_TASK, DRP_1_NAME);
         drp_2_code = tasksPage.createDRPProcess(nrp_1_code, TasksPageV2.HIGH_LEVEL_PLANNING_TASK, DRP_2_NAME);
         tasksPage.startTask(drp_1_code, TasksPageV2.PLANNING_TASK);
@@ -280,6 +285,7 @@ public class ChangeFDDTest extends BaseTestCase {
         //reject DRP2
         tasksPage.changeTransitionAndCompleteTask(drp_2_code, TasksPageV2.PLANNING_TASK, TasksPageV2.NEEDS_CLARIFICATION_TRANSITION);
         tasksPage.startAndCompleteTask(drp_2_code, TasksPageV2.UPDATE_REQUIREMENTS_TASK);
+        waitForPageToLoad();
 
         //check DRP1, DRP2 statuses
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
@@ -309,6 +315,7 @@ public class ChangeFDDTest extends BaseTestCase {
 
         //move NRP 1 to Ready For Integration task
         tasksPage.proceedNRPToReadyForIntegrationTask(nrp_1_code);
+        waitForPageToLoad();
 
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
 
@@ -340,6 +347,7 @@ public class ChangeFDDTest extends BaseTestCase {
         //start DCP 1 Correct Data task
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(dcp_1_code, TasksPageV2.CORRECT_DATA_TASK);
+        waitForPageToLoad();
 
         //edit D1 device in DCP 1 context
         updateIPDeviceSerialNumberInPlan(DEVICE_1_NAME, device_1_ID, DEVICE_MODEL,
@@ -397,6 +405,7 @@ public class ChangeFDDTest extends BaseTestCase {
         //start DCP 2 Correct Data task
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(dcp_2_code, TasksPageV2.CORRECT_DATA_TASK);
+        waitForPageToLoad();
 
         //edit D1 device in DCP 2 context
         updateIPDeviceSerialNumberInPlan(DEVICE_1_NAME, device_1_ID, DEVICE_MODEL,
@@ -448,6 +457,7 @@ public class ChangeFDDTest extends BaseTestCase {
                         String.format(OBJECTS_NOT_MOVED_TO_IP_MESSAGE, nrp_1_code));
         processDetailsPage.closeProcessDetailsPromt();
         tasksPage.completeTask(nrp_1_code, TasksPageV2.READY_FOR_INTEGRATION_TASK);
+        waitForPageToLoad();
 
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         //get IP1, IP2 process ID and projectID
@@ -514,6 +524,7 @@ public class ChangeFDDTest extends BaseTestCase {
         //complete IP2
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeIP(ip_2_code);
+        waitForPageToLoad();
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         Assert.assertEquals(plannersViewPage.getProcessState(ip_2_code), COMPLETED_STATUS,
                 String.format(INVALID_PROCESS_STATUS_LOG_PATTERN, ip_2_code, testName));
@@ -542,6 +553,7 @@ public class ChangeFDDTest extends BaseTestCase {
         //complete IP1
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeIP(ip_1_code);
+        waitForPageToLoad();
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         Assert.assertEquals(plannersViewPage.getProcessState(ip_1_code), COMPLETED_STATUS,
                 String.format(INVALID_PROCESS_STATUS_LOG_PATTERN, ip_1_code, testName));
@@ -549,7 +561,7 @@ public class ChangeFDDTest extends BaseTestCase {
         //start NRP1 Verification task and check D1,D2 devices and chassis "Activated" status
         tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(nrp_1_code, TasksPageV2.VERIFICATION_TASK);
-        ProcessDetailsPage processDetailsPage = tasksPage.clickPlanViewButton();
+        ProcessDetailsPage processDetailsPage = tasksPage.findTask(nrp_1_code, TasksPageV2.VERIFICATION_TASK).clickPlanViewButton();
         Assert.assertEquals(processDetailsPage.getObjectsAmount(), 4,
                 String.format(INVALID_OBJECTS_AMOUNT, nrp_1_code, testName));
         assertActivatedObjectStatus(device_1_ID, DEVICE_IDENTIFIER);
@@ -579,6 +591,7 @@ public class ChangeFDDTest extends BaseTestCase {
         //complete NRP1
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(nrp_1_code, TasksPageV2.VERIFICATION_TASK);
+        waitForPageToLoad();
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         Assert.assertEquals(plannersViewPage.getProcessState(nrp_1_code), COMPLETED_STATUS,
                 String.format(INVALID_PROCESS_STATUS_LOG_PATTERN, nrp_1_code, testName));
@@ -600,6 +613,7 @@ public class ChangeFDDTest extends BaseTestCase {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(dcp_1_code, TasksPageV2.CORRECT_DATA_TASK);
         tasksPage.changeTransitionAndCompleteTask(dcp_2_code, TasksPageV2.CORRECT_DATA_TASK, TasksPageV2.CANCEL_TRANSITION);
+        waitForPageToLoad();
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         softAssert.assertEquals(plannersViewPage.getProcessState(dcp_1_code), COMPLETED_STATUS,
                 String.format(INVALID_PROCESS_STATUS_LOG_PATTERN, dcp_1_code, testName));
