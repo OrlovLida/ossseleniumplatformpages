@@ -117,12 +117,7 @@ public class ProcessOverviewPage extends BasePage {
     }
 
     public String getProcessCode(String processName) {
-        DelayUtils.waitForPageToLoad(driver, wait);
-        OldTable processTable = getProcessesTable();
-        processTable.searchByColumn(NAME_LABEL, processName);
-        processTable.doRefreshWhileNoData(1000, REFRESH_TABLE_ID);
-        int index = processTable.getRowNumber(processName, NAME_LABEL);
-        return processTable.getCellValue(index, CODE_LABEL);
+        return selectProcess(NAME_LABEL, processName).getPropertyValue(CODE_LABEL);
     }
 
     public ProcessOverviewPage selectProcess(String processCode) {
