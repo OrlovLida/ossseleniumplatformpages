@@ -88,10 +88,10 @@ public class CreateProblemAndProblemSearchTest extends BaseTestCase {
     @Description("Create Problem")
     public void createProblem(
             @Optional("TEST_MO") String MOIdentifier,
-            @Optional("ca_kbalcar") String ProblemAssignee
+            @Optional("sd_seleniumtest") String ProblemAssignee
     ) {
         sdWizardPage = problemDashboardPage.clickCreateProblem();
-        sdWizardPage.getMoStep().enterTextIntoSearchComponent(MOIdentifier);
+        sdWizardPage.getMoStep().enterTextIntoMOIdentifierField(MOIdentifier);
         sdWizardPage.getMoStep().selectRowInMOTable("0");
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.insertValueToComponent(PROBLEM_NAME_DESCRIPTION_TXT, PROBLEM_NAME_DESCRIPTION_ID);
@@ -170,8 +170,6 @@ public class CreateProblemAndProblemSearchTest extends BaseTestCase {
         Assert.assertEquals(closedProblemsPage.getIdForNthTicketInTable(0), problemId);
     }
 }
-    //TODO dodać tworzenie taska
-
 
 
 

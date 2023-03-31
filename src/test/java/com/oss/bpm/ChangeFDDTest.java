@@ -186,7 +186,7 @@ public class ChangeFDDTest extends BaseTestCase {
         assertFDD(nrp_1_code, nrp_1_plan, TODAY.plusDays(4));
     }
 
-    @Test(priority = 3, description = "Change FDD of NRP with DRPs", dependsOnMethods = {"shiftSimpleNRP"})
+    @Test(priority = 3, description = "Change FDD of NRP with DRPs", dependsOnMethods = {"shiftNRPWithDevice"})
     @Description("FDD shifted for NRP should change together with another DRPs.")
     public void shiftNRPWithDRPs() {
         /*
