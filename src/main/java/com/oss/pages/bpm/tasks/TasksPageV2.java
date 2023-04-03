@@ -38,8 +38,8 @@ public class TasksPageV2 extends BasePage {
     public static final String CORRECT_DATA_TASK = "Correct data";
     public static final String UPDATE_REQUIREMENTS_TASK = "Update requirements";
 
-    public static final String CANCEL_TRANSITION = "Cancel";
-    public static final String NEEDS_CLARIFICATION_TRANSITION = "Needs clarification";
+    public static final String CANCEL_TRANSITION = "cancel";
+    public static final String NEEDS_CLARIFICATION_TRANSITION = "needsClarification";
     public static final String TABS_TASKS_VIEW_ID = "bpm_task_graphql_view_tasksTabsCard";
     private static final Logger log = LoggerFactory.getLogger(TasksPageV2.class);
     private static final String TABLE_TASKS_ID = "bpm_task_graphql_view_tasksTableWidget";

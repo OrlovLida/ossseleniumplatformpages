@@ -64,8 +64,9 @@ public class ChangeFDDTest extends BaseTestCase {
 
     public static final String CHANGE_FDD_INFO_EARLIER_PATTERN = "Finish Due Date can not be ealier than %s.";
     public static final String CHANGE_FDD_INFO_BETWEEN_PATTERN = "Finish Due Date could be set to dates between %1$s - %2$s.";
-    public static final String CHANGE_FDD_INFO_TOGETHER_PROCESSES_PATTERN = "Together with selected processes following processes Finished Due Dates will be changed to the same value: %s";
-    private static final String INVALID_CHANGE_FDD_WIZARD_INFO = "Invalid change FDD wizard info for %1$s in %2$s test.";
+    public static final String CHANGE_FDD_INFO_TOGETHER_PROCESSES = "Together with selected processes following processes Finished Due Dates will be changed to the same value:";
+    private static final String INVALID_CHANGE_FDD_WIZARD_INFO_DATES = "Invalid change FDD wizard info (shift dates range) for %1$s in %2$s test.";
+    private static final String INVALID_CHANGE_FDD_WIZARD_INFO_TOGETHER_PROCESSES = "Invalid change FDD wizard info (shift together processes) for %1$s in %2$s test.";
     private static final String CHANGE_FDD_REASON = "Selenium change FDD test reason";
     private static final String CHANGE_FDD_MESSAGE_PATTERN = "Finished Due Date successfully changed to %1$s for processes %2$s";
     private static final String INVALID_CHANGE_FDD_MESSAGE = "Invalid system message after change FDD for %1$s in %2$s test.";
@@ -226,11 +227,10 @@ public class ChangeFDDTest extends BaseTestCase {
         List<String> drpIdentifiers = Arrays.asList(
                 String.format(PROCESS_IDENTIFIER_PATTERN, DRP_1_NAME, drp_1_code),
                 String.format(PROCESS_IDENTIFIER_PATTERN, DRP_2_NAME, drp_2_code));
-        assertChangeFDDInfo(String.format(CHANGE_FDD_INFO_EARLIER_PATTERN, TODAY) + " " +
-                String.format(CHANGE_FDD_INFO_TOGETHER_PROCESSES_PATTERN, String.join(", ", drpIdentifiers)), nrp_1_code);
+        assertChangeFDDInfo(String.format(CHANGE_FDD_INFO_EARLIER_PATTERN, TODAY), drpIdentifiers, nrp_1_code);
 
         //shift NRP FDD to TODAY+6
-        changeFDDAndAssertMessage(TODAY.plusDays(6), nrp_1_code, nrp_1_ID, drp_1_ID, drp_2_ID);
+        changeFDDAndAssertMessage(TODAY.plusDays(6), nrp_1_code, drp_1_ID, drp_2_ID, nrp_1_ID);
         //check if together with NRP1 FDD changed for DRP1 and DRP2
         assertFDD(nrp_1_code, nrp_1_plan, TODAY.plusDays(6));
         PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
@@ -253,13 +253,12 @@ public class ChangeFDDTest extends BaseTestCase {
         //check FDD shift wizard info for DRP1 (earlier than TODAY together with NRP1, DRP2)
         openChangeFDDWizard(drp_1_code);
         List<String> identifiers = Arrays.asList(
-                String.format(PROCESS_IDENTIFIER_PATTERN, NRP_1_NAME, nrp_1_code),
-                String.format(PROCESS_IDENTIFIER_PATTERN, DRP_2_NAME, drp_2_code));
-        assertChangeFDDInfo(String.format(CHANGE_FDD_INFO_EARLIER_PATTERN, TODAY) + " " +
-                String.format(CHANGE_FDD_INFO_TOGETHER_PROCESSES_PATTERN, String.join(", ", identifiers)), drp_1_code);
+                String.format(PROCESS_IDENTIFIER_PATTERN, DRP_2_NAME, drp_2_code),
+                String.format(PROCESS_IDENTIFIER_PATTERN, NRP_1_NAME, nrp_1_code));
+        assertChangeFDDInfo(String.format(CHANGE_FDD_INFO_EARLIER_PATTERN, TODAY), identifiers, drp_1_code);
 
         //shift DRP1 FDD to TODAY+8
-        changeFDDAndAssertMessage(TODAY.plusDays(8), drp_1_code, nrp_1_ID, drp_1_ID, drp_2_ID);
+        changeFDDAndAssertMessage(TODAY.plusDays(8), drp_1_code, drp_1_ID, drp_2_ID, nrp_1_ID);
         //check if together with DRP1 FDD changed for NRP1 and DRP2
         assertFDD(nrp_1_code, nrp_1_plan, TODAY.plusDays(8));
         PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
@@ -411,6 +410,7 @@ public class ChangeFDDTest extends BaseTestCase {
         updateIPDeviceSerialNumberInPlan(DEVICE_1_NAME, device_1_ID, DEVICE_MODEL,
                 String.format(UPDATE_SERIAL_NUMBER, dcp_2_code), building_main_ID, dcp_2_plan);
 
+        plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         //check FDD shift wizard info for DCP 1 (between NRP1 and DCP2)
         openChangeFDDWizard(dcp_1_code);
         assertChangeFDDInfo(String.format(CHANGE_FDD_INFO_BETWEEN_PATTERN, TODAY.plusDays(12), TODAY.plusDays(20)), dcp_1_code);
@@ -644,7 +644,7 @@ public class ChangeFDDTest extends BaseTestCase {
         audit1_1_code = plannersViewPage.createProcessIPD(AUDIT_1_PROCESS_NAME, 0L, "audit1");
         ChangeFDDWizardPage wizard = openChangeFDDWizard(audit1_1_code);
         Assert.assertEquals(wizard.getInformation(), SHIFT_UNAVAILABLE_MESSAGE,
-                String.format(INVALID_CHANGE_FDD_WIZARD_INFO, audit1_1_code, testName));
+                String.format(INVALID_CHANGE_FDD_WIZARD_INFO_DATES, audit1_1_code, testName));
         wizard.close();
     }
 
@@ -687,13 +687,25 @@ public class ChangeFDDTest extends BaseTestCase {
         return plannersViewPage.selectProcess(processCode).openChangeFDDWizard();
     }
 
-    private void assertChangeFDDInfo(String info, String processCode) {
-        softAssert.assertEquals(new ChangeFDDWizardPage(driver).getInformation(), info,
-                String.format(INVALID_CHANGE_FDD_WIZARD_INFO, processCode, testName));
+    private void assertChangeFDDInfo(String shiftRangeInfo, String processCode) {
+        softAssert.assertEquals(new ChangeFDDWizardPage(driver).getInformation(), shiftRangeInfo,
+                String.format(INVALID_CHANGE_FDD_WIZARD_INFO_DATES, processCode, testName));
+    }
+
+    private void assertChangeFDDInfo(String shiftRangeInfo, List<String> togetherProcessesList, String processCode) {
+        List<String> wizardInfo = List.of(new ChangeFDDWizardPage(driver).getInformation().split("\\. "));
+        softAssert.assertEquals(wizardInfo.get(0) + ".", shiftRangeInfo,
+                String.format(INVALID_CHANGE_FDD_WIZARD_INFO_DATES, processCode, testName));
+
+        softAssert.assertTrue(wizardInfo.get(1).contains(CHANGE_FDD_INFO_TOGETHER_PROCESSES),
+                String.format(INVALID_CHANGE_FDD_WIZARD_INFO_TOGETHER_PROCESSES, processCode, testName));
+
+        togetherProcessesList.forEach(processIdentifier -> softAssert.assertTrue(wizardInfo.get(1).contains(processIdentifier),
+                String.format(INVALID_CHANGE_FDD_WIZARD_INFO_TOGETHER_PROCESSES, processCode, testName) +
+                        "Expecting: '" + processIdentifier + "', but not found."));
     }
 
     private void changeFDDAndAssertMessage(LocalDate newFDD, String processCode, String... processesIds) {
-        log.info(String.format("Changing FDD for %1$s process to %2$s.", processCode, newFDD));
         new ChangeFDDWizardPage(driver).setNewFDD(newFDD).setReason(CHANGE_FDD_REASON).accept();
         assertSystemMessage(String.format(CHANGE_FDD_MESSAGE_PATTERN, newFDD, String.join(", ", processesIds)),
                 SystemMessageContainer.MessageType.SUCCESS, String.format(INVALID_CHANGE_FDD_MESSAGE, processCode, testName));
