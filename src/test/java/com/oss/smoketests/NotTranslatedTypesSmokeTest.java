@@ -45,8 +45,8 @@ public class NotTranslatedTypesSmokeTest extends BaseTestCase {
         waitForPageToLoad();
     }
 
-    @Test(priority = 2, description = "Check Inventory View for Site", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
-    @Description("Check Inventory View for Site")
+    @Test(priority = 2, description = "Check not translated object types on Search Page", dependsOnMethods = {"openBrowserAndCheckEnvironmentStatus"})
+    @Description("Check not translated object types on Search Page")
     public void checkLabelsForObjectTypes() {
         openSearchPage();
         checkNotTranslatedObjectTypes();
