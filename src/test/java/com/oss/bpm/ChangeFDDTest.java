@@ -9,6 +9,7 @@ import com.oss.pages.bpm.processinstances.PlannersViewPage;
 import com.oss.pages.bpm.processinstances.edition.ChangeFDDWizardPage;
 import com.oss.pages.bpm.tasks.SetupIntegrationProperties;
 import com.oss.pages.bpm.tasks.TasksPageV2;
+import com.oss.pages.bpm.tasks.taskforms.IPDTaskFormPage;
 import com.oss.planning.PlanningContext;
 import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -73,6 +74,7 @@ public class ChangeFDDTest extends BaseTestCase {
     private static final String PROCESS_IDENTIFIER_PATTERN = "%1$s (%2$s)";
     private static final String INVALID_PROCESS_FDD_PATTERN = "Invalid Finished Due Date for %1$s process in %2$s test.";
     private static final String INVALID_PROJECT_FDD_PATTERN = "Invalid Finished Due Date for project with id: %1$s in %2$s test.";
+    private static final String INVALID_TASK_FDD_PATTERN = "Invalid Finished Due Date for '%1$s' task in %2$s process in %3$s test.";
     private static final String UPDATE_SERIAL_NUMBER = "BPM Selenium Update in %s";
     private static final String CHANGE_FDD_WIZARD_OPEN = "Change Finished Due Date wizard is still opened after %s test. It will be closed now.";
     private static final String OBJECTS_NOT_MOVED_TO_IP_MESSAGE = "Some objects are not moved from %s to IPs.";
@@ -157,6 +159,12 @@ public class ChangeFDDTest extends BaseTestCase {
         //shift NRP FDD to TODAY+3
         changeFDDAndAssertMessage(TODAY.plusDays(3), nrp_1_code, nrp_1_ID);
         assertFDD(nrp_1_code, nrp_1_plan, TODAY.plusDays(3));
+
+        //start HLP task in NRP1 and assert FDD in task form
+        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        tasksPage.startTask(nrp_1_code, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
+        waitForPageToLoad();
+        assertTaskFDD(nrp_1_code, TasksPageV2.HIGH_LEVEL_PLANNING_TASK, TODAY.plusDays(3));
     }
 
     @Test(priority = 2, description = "Change FDD of NRP with planned object", dependsOnMethods = {"shiftSimpleNRP"})
@@ -166,11 +174,6 @@ public class ChangeFDDTest extends BaseTestCase {
             Current FDDs:
                 - NRP 1: TODAY + 3
          */
-        //start HLP task in NRP1
-        TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        tasksPage.startTask(nrp_1_code, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
-        waitForPageToLoad();
-
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
 
         //create device D1 in NRP 1 plan
@@ -202,6 +205,10 @@ public class ChangeFDDTest extends BaseTestCase {
         tasksPage.startTask(drp_1_code, TasksPageV2.PLANNING_TASK);
         tasksPage.startTask(drp_2_code, TasksPageV2.PLANNING_TASK);
         waitForPageToLoad();
+
+        //Assert task fdd for DRP1, DRP2 (TODAY+4)
+        assertTaskFDD(drp_1_code, TasksPageV2.PLANNING_TASK, TODAY.plusDays(4));
+        assertTaskFDD(drp_2_code, TasksPageV2.PLANNING_TASK, TODAY.plusDays(4));
 
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
 
@@ -237,6 +244,10 @@ public class ChangeFDDTest extends BaseTestCase {
         assertFDD(drp_1_code, drp_1_plan, TODAY.plusDays(6));
         PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         assertFDD(drp_2_code, drp_2_plan, TODAY.plusDays(6));
+        TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        assertTaskFDD(nrp_1_code, TasksPageV2.HIGH_LEVEL_PLANNING_TASK, TODAY.plusDays(6));
+        assertTaskFDD(drp_1_code, TasksPageV2.PLANNING_TASK, TODAY.plusDays(6));
+        assertTaskFDD(drp_2_code, TasksPageV2.PLANNING_TASK, TODAY.plusDays(6));
     }
 
     @Test(priority = 4, description = "Change FDD of DRP with parent NRP", dependsOnMethods = {"shiftNRPWithDRPs"})
@@ -315,6 +326,7 @@ public class ChangeFDDTest extends BaseTestCase {
         //move NRP 1 to Ready For Integration task
         tasksPage.proceedNRPToReadyForIntegrationTask(nrp_1_code);
         waitForPageToLoad();
+        assertTaskFDD(nrp_1_code, TasksPageV2.READY_FOR_INTEGRATION_TASK, TODAY.plusDays(5));
 
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
 
@@ -359,10 +371,13 @@ public class ChangeFDDTest extends BaseTestCase {
 
         //shift NRP1 FDD to TODAY + 12
         changeFDDAndAssertMessage(TODAY.plusDays(12), nrp_1_code, nrp_1_ID);
+        //check fdd for NRP1 (TODAY+12) and check if DCP 1 FDD is still TODAY + 15
         assertFDD(nrp_1_code, nrp_1_plan, TODAY.plusDays(12));
-        //check if DCP 1 FDD is still TODAY + 15
         PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         assertFDD(dcp_1_code, dcp_1_plan, TODAY.plusDays(15));
+        TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        assertTaskFDD(nrp_1_code, TasksPageV2.READY_FOR_INTEGRATION_TASK, TODAY.plusDays(12));
+        assertTaskFDD(dcp_1_code, TasksPageV2.CORRECT_DATA_TASK, TODAY.plusDays(15));
     }
 
     @Test(priority = 8, description = "Change FDD of DCP with objects which have prerequisites in another plan.",
@@ -383,6 +398,8 @@ public class ChangeFDDTest extends BaseTestCase {
         //shift DCP1 FDD to TODAY + 17
         changeFDDAndAssertMessage(TODAY.plusDays(17), dcp_1_code, dcp_1_ID);
         assertFDD(dcp_1_code, dcp_1_plan, TODAY.plusDays(17));
+        TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        assertTaskFDD(dcp_1_code, TasksPageV2.CORRECT_DATA_TASK, TODAY.plusDays(17));
     }
 
     @Test(priority = 9, description = "Change FDD of DCP with objects which have prerequisites and subsequents in another plans.",
@@ -457,7 +474,11 @@ public class ChangeFDDTest extends BaseTestCase {
                         String.format(OBJECTS_NOT_MOVED_TO_IP_MESSAGE, nrp_1_code));
         processDetailsPage.closeProcessDetailsPromt();
         tasksPage.completeTask(nrp_1_code, TasksPageV2.READY_FOR_INTEGRATION_TASK);
+        tasksPage.startTask(ip_1_code, TasksPageV2.SCOPE_DEFINITION_TASK);
+        tasksPage.startTask(ip_2_code, TasksPageV2.SCOPE_DEFINITION_TASK);
         waitForPageToLoad();
+        assertTaskFDD(ip_1_code, TasksPageV2.SCOPE_DEFINITION_TASK, TODAY.plusDays(5));
+        assertTaskFDD(ip_2_code, TasksPageV2.SCOPE_DEFINITION_TASK, TODAY.plusDays(7));
 
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         //get IP1, IP2 process ID and projectID
@@ -507,6 +528,10 @@ public class ChangeFDDTest extends BaseTestCase {
         assertFDD(nrp_1_code, nrp_1_plan, TODAY.plusDays(10));
         PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         assertFDD(ip_2_code, ip_2_plan, TODAY.plusDays(7));
+        //check IP1, IP2, task FDD
+        TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
+        assertTaskFDD(ip_1_code, TasksPageV2.SCOPE_DEFINITION_TASK, TODAY.plusDays(3));
+        assertTaskFDD(ip_2_code, TasksPageV2.SCOPE_DEFINITION_TASK, TODAY.plusDays(7));
     }
 
     @Test(priority = 11, description = "Change FDD of NRP with one completed IP.",
@@ -561,6 +586,7 @@ public class ChangeFDDTest extends BaseTestCase {
         //start NRP1 Verification task and check D1,D2 devices and chassis "Activated" status
         tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.startTask(nrp_1_code, TasksPageV2.VERIFICATION_TASK);
+        assertTaskFDD(nrp_1_code, TasksPageV2.VERIFICATION_TASK, TODAY.plusDays(8));
         ProcessDetailsPage processDetailsPage = tasksPage.findTask(nrp_1_code, TasksPageV2.VERIFICATION_TASK).clickPlanViewButton();
         Assert.assertEquals(processDetailsPage.getObjectsAmount(), 4,
                 String.format(INVALID_OBJECTS_AMOUNT, nrp_1_code, testName));
@@ -719,9 +745,15 @@ public class ChangeFDDTest extends BaseTestCase {
         Assert.assertEquals(projectFDD, fdd.toString(), String.format(INVALID_PROJECT_FDD_PATTERN, planContext.getProjectId(), testName));
     }
 
+    private void assertTaskFDD(String processCode, String taskName, LocalDate fdd) {
+        softAssert.assertEquals(new TasksPageV2(driver).findTask(processCode, taskName).getIPDTaskForm().
+                        getProcessInfo(IPDTaskFormPage.FINISHED_DUE_DATE_ATTRIBUTE), fdd,
+                String.format(INVALID_TASK_FDD_PATTERN, taskName, processCode, testName));
+    }
+
     private void assertActivatedObjectStatus(String objectId, String identifier) {
-        ProcessDetailsPage processDetailsPage = new ProcessDetailsPage(driver);
-        String objectStatus = processDetailsPage.selectObject(OBJECT_TYPE_ATTRIBUTE_NAME, String.format(identifier, objectId)).getObjectStatus();
+        String objectStatus = new ProcessDetailsPage(driver).selectObject(OBJECT_TYPE_ATTRIBUTE_NAME,
+                String.format(identifier, objectId)).getObjectStatus();
         Assert.assertEquals(objectStatus, ACTIVATED_STATUS,
                 String.format(INVALID_OBJECT_STATUS_LOG_PATTERN, String.format(identifier, objectId), testName));
     }

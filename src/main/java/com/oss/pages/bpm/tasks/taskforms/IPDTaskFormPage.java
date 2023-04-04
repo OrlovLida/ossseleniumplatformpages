@@ -1,5 +1,6 @@
 package com.oss.pages.bpm.tasks.taskforms;
 
+import com.google.common.collect.Maps;
 import com.oss.framework.bpm.bpmpropertypanel.BpmPropertyPanel;
 import com.oss.framework.bpm.bpmrolloutpanel.BpmRolloutPanel;
 import com.oss.framework.components.inputs.Button;
@@ -8,6 +9,7 @@ import com.oss.framework.components.inputs.Input;
 import com.oss.framework.components.prompts.ConfirmationBox;
 import com.oss.framework.components.prompts.ConfirmationBoxInterface;
 import com.oss.framework.utils.DelayUtils;
+import com.oss.framework.widgets.list.CommonList;
 import com.oss.framework.widgets.table.OldTable;
 import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsInterface;
@@ -22,13 +24,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * @author Paweł Rother
  */
 public class IPDTaskFormPage extends BasePage {
+    public static final String PROCESS_NAME_ATTRIBUTE = "Process Name";
+    public static final String PROCESS_DESCRIPTION_ATTRIBUTE = "Process Description";
+    public static final String FINISHED_DUE_DATE_ATTRIBUTE = "Finished Due Date";
     private static final String IP_TABLE_ID = "form.specific.ip_involved_nrp_group.ip_involved_nrp_table";
+    private static final String PROCESS_INFO_LIST = "form.group1.processInfoWidget";
     private static final String ATTACHMENTS_LIST_ID = "attachmentManagerBusinessView_commonTreeTable_BPMTask";
     private static final String ATTACHMENTS_AND_DIRECTORIES = "Attachments and directories";
     private static final String HOME_LABEL = "HOME";
@@ -155,6 +162,20 @@ public class IPDTaskFormPage extends BasePage {
 
     public String getAttributeValue(String propertyName) {
         return BpmPropertyPanel.createById(driver, wait, PROPERTY_PANEL_ID).getPropertyValue(propertyName);
+    }
+
+    public Map<String, String> getProcessInfo() {
+        CommonList processInfoList = CommonList.create(driver, wait, PROCESS_INFO_LIST);
+        Map<String, String> attributes = Maps.newHashMap();
+        processInfoList.getRows().forEach(row -> {
+            List<String> rowValues = row.getValues();
+            attributes.put(rowValues.get(0), rowValues.get(1));
+        });
+        return attributes;
+    }
+
+    public String getProcessInfo(String attributeName) {
+        return getProcessInfo().get(attributeName);
     }
 
 }
