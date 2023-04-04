@@ -21,6 +21,7 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Parameters;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -647,15 +648,18 @@ public class PartialIntegrationTest extends BaseTestCase {
     }
 
     @Test(priority = 5, description = " Try to Integrate objects to LIVE from NRP, DRP, DCP processes.")
+    @Parameters({"isDCPIntegrateEnabled"})
     @Description("User is not able to integrate to LIVE objects which are processing in NRP, DRP, DCP process.")
-    public void TryToIntegrateObjectsFromDRP_NRP_DCP() {
+    public void TryToIntegrateObjectsFromDRP_NRP_DCP(@org.testng.annotations.Optional("true") boolean isDCPIntegrateEnabled) {
         PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         softAssert.assertFalse(plannersViewPage.selectProcess(drp_Code_TC5_3).isIntegratePlannedChangesActionVisible(),
                 String.format(PARTIAL_INTEGRATION_ACTION_VISIBLE_LOG_PATTERN, drp_Code_TC5_3));
         softAssert.assertFalse(plannersViewPage.selectProcess(nrp_Code_TC5_1).isIntegratePlannedChangesActionVisible(),
                 String.format(PARTIAL_INTEGRATION_ACTION_VISIBLE_LOG_PATTERN, nrp_Code_TC5_1));
-        softAssert.assertFalse(plannersViewPage.selectProcess(dcp_Code_TC5_2).isIntegratePlannedChangesActionVisible(),
-                String.format(PARTIAL_INTEGRATION_ACTION_VISIBLE_LOG_PATTERN, dcp_Code_TC5_2));
+        if (isDCPIntegrateEnabled) {
+            softAssert.assertFalse(plannersViewPage.selectProcess(dcp_Code_TC5_2).isIntegratePlannedChangesActionVisible(),
+                    String.format(PARTIAL_INTEGRATION_ACTION_VISIBLE_LOG_PATTERN, dcp_Code_TC5_2));
+        }
     }
 
     @Test(priority = 6, description = "Integrate objects with Validation Results.")
