@@ -69,7 +69,7 @@ public class ChangeFDDTest extends BaseTestCase {
     private static final String INVALID_CHANGE_FDD_WIZARD_INFO_DATES = "Invalid change FDD wizard info (shift dates range) for %1$s in %2$s test.";
     private static final String INVALID_CHANGE_FDD_WIZARD_INFO_TOGETHER_PROCESSES = "Invalid change FDD wizard info (shift together processes) for %1$s in %2$s test.";
     private static final String CHANGE_FDD_REASON = "Selenium change FDD test reason";
-    private static final String CHANGE_FDD_MESSAGE_PATTERN = "Finished Due Date successfully changed to %1$s for processes %2$s";
+    private static final String CHANGE_FDD_MESSAGE_PATTERN = "Finished Due Date successfully changed to %1$s";
     private static final String INVALID_CHANGE_FDD_MESSAGE = "Invalid system message after change FDD for %1$s in %2$s test.";
     private static final String PROCESS_IDENTIFIER_PATTERN = "%1$s (%2$s)";
     private static final String INVALID_PROCESS_FDD_PATTERN = "Invalid Finished Due Date for %1$s process in %2$s test.";
@@ -697,18 +697,6 @@ public class ChangeFDDTest extends BaseTestCase {
         plannersViewPage.selectProcess(audit1_1_code).terminateProcess("CLEAN");
     }
 
-    private void assertSystemMessage(String messageContent, SystemMessageContainer.MessageType messageType, String systemMessageLog) {
-        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(30)));
-        Optional<SystemMessageContainer.Message> messageOptional = systemMessage.getFirstMessage();
-        softAssert.assertTrue(messageOptional.isPresent(), systemMessageLog);
-        messageOptional.ifPresent(message -> {
-            softAssert.assertEquals(message.getText(), messageContent, systemMessageLog);
-            softAssert.assertEquals(message.getMessageType(), messageType, systemMessageLog);
-            systemMessage.close();
-        });
-        waitForPageToLoad();
-    }
-
     private ChangeFDDWizardPage openChangeFDDWizard(String processCode) {
         return plannersViewPage.selectProcess(processCode).openChangeFDDWizard();
     }
@@ -728,13 +716,24 @@ public class ChangeFDDTest extends BaseTestCase {
 
         togetherProcessesList.forEach(processIdentifier -> softAssert.assertTrue(wizardInfo.get(1).contains(processIdentifier),
                 String.format(INVALID_CHANGE_FDD_WIZARD_INFO_TOGETHER_PROCESSES, processCode, testName) +
-                        "Expecting: '" + processIdentifier + "', but not found."));
+                        "Expected: [" + processIdentifier + "], but not found."));
     }
 
     private void changeFDDAndAssertMessage(LocalDate newFDD, String processCode, String... processesIds) {
+        String logMessage = String.format(INVALID_CHANGE_FDD_MESSAGE, processCode, testName);
         new ChangeFDDWizardPage(driver).setNewFDD(newFDD).setReason(CHANGE_FDD_REASON).accept();
-        assertSystemMessage(String.format(CHANGE_FDD_MESSAGE_PATTERN, newFDD, String.join(", ", processesIds)),
-                SystemMessageContainer.MessageType.SUCCESS, String.format(INVALID_CHANGE_FDD_MESSAGE, processCode, testName));
+        SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, new WebDriverWait(driver, Duration.ofSeconds(30)));
+        Optional<SystemMessageContainer.Message> messageOptional = systemMessage.getFirstMessage();
+        softAssert.assertTrue(messageOptional.isPresent(), logMessage);
+        messageOptional.ifPresent(message -> {
+            List<String> messagePart = List.of(message.getText().split(" for processes "));
+            softAssert.assertEquals(messagePart.get(0), String.format(CHANGE_FDD_MESSAGE_PATTERN, newFDD), logMessage);
+            Arrays.stream(processesIds).forEach(processesId -> softAssert.assertTrue(messagePart.get(1).contains(processesId),
+                    logMessage + " Expected: [" + processesId + "], but not found."));
+            softAssert.assertEquals(message.getMessageType(), SystemMessageContainer.MessageType.SUCCESS, logMessage);
+            systemMessage.close();
+        });
+        waitForPageToLoad();
         log.info(String.format(NEW_FDD_MESSAGE, processCode, newFDD, String.join(", ", processesIds)));
     }
 
@@ -746,8 +745,8 @@ public class ChangeFDDTest extends BaseTestCase {
     }
 
     private void assertTaskFDD(String processCode, String taskName, LocalDate fdd) {
-        softAssert.assertEquals(new TasksPageV2(driver).findTask(processCode, taskName).getIPDTaskForm().
-                        getProcessInfo(IPDTaskFormPage.FINISHED_DUE_DATE_ATTRIBUTE), fdd,
+        softAssert.assertEquals(LocalDate.parse(new TasksPageV2(driver).findTask(processCode, taskName).getIPDTaskForm().
+                        getProcessInfo(IPDTaskFormPage.FINISHED_DUE_DATE_ATTRIBUTE)), fdd,
                 String.format(INVALID_TASK_FDD_PATTERN, taskName, processCode, testName));
     }
 
