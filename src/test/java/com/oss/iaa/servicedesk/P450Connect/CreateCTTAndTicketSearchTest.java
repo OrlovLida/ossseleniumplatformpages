@@ -49,8 +49,8 @@ public class CreateCTTAndTicketSearchTest extends BaseTestCase {
     private static final String SERVICE_TYPE_ID = "GenericDictionaryField_Service_type_1";
     private static final String COMMUNICATION_CHANNEL = "Email";
     private static final String COMMUNICATION_CHANNEL_ID = "GenericDictionaryField_Communication_channel_1";
-    private static final String NUMBER_OF_SIM_ID = "GenericWizardUserAttributeField_Number of SIMs_NumberOfSIMs";
-    private static final String REASON_ID = "GenericWizardUserAttributeField_Reason of the ticket priority_TicketPriorityReason";
+    private static final String NUMBER_OF_SIM_ID = "GenericWizardUserAttributeField_Number of SIMs_numberOfSIMs";
+    private static final String REASON_ID = "GenericWizardUserAttributeField_Reason of the ticket priority_ticketPriorityReason";
 
     private TicketDashboardPage ticketDashboardPage;
     private MyGroupTicketsPage myGroupTicketsPage;

@@ -40,8 +40,6 @@ public class CreateCTTAndTicketSearchTestIoT extends BaseTestCaseIoT {
     private static final String STATUS_CLOSED = "Closed";
     private static final String TT_DOWNLOAD_FILE = "TroubleTicket*.xlsx";
     private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
-    private static final String ASSIGNEE = "sd_seleniumtest";
-    private static final String DOMAIN = "Nokia";
     private static final String DOMAIN_ID = "COMMON_WIZARD_DOMAINS_FIELD_LABEL";
     private static final String NUMBER_SIM = "000";
     private static final String REASON_PRIORITY = "selenium_test";
@@ -49,8 +47,8 @@ public class CreateCTTAndTicketSearchTestIoT extends BaseTestCaseIoT {
     private static final String SERVICE_TYPE_ID = "GenericDictionaryField_Service_type_1";
     private static final String COMMUNICATION_CHANNEL = "Email";
     private static final String COMMUNICATION_CHANNEL_ID = "GenericDictionaryField_Communication_channel_1";
-    private static final String NUMBER_OF_SIM_ID = "GenericWizardUserAttributeField_Number of SIMs_NumberOfSIMs";
-    private static final String REASON_ID = "GenericWizardUserAttributeField_Reason of the ticket priority_TicketPriorityReason";
+    private static final String NUMBER_OF_SIM_ID = "GenericWizardUserAttributeField_Number of SIMs_numberOfSIMs";
+    private static final String REASON_ID = "GenericWizardUserAttributeField_Reason of the ticket priority_ticketPriorityReason";
 
     private TicketDashboardPage ticketDashboardPage;
     private MyGroupTicketsPage myGroupTicketsPage;
@@ -73,7 +71,7 @@ public class CreateCTTAndTicketSearchTestIoT extends BaseTestCaseIoT {
     @Description("Create CTT Ticket")
     public void createIncidentTicket(
             @Optional("testBuilding-MSAN-1/ChassisID/TEST_LM_SLOT_20220207/Horizontal Card MDF") String MOIdentifier,
-            @Optional("Nokia") String Domain,
+            @Optional("CA Internal Test") String Domain,
             @Optional("Kinga Balcar-Mazur") String Assignee
     ) {
         sdWizardPage = ticketDashboardPage.openCreateTicketWizard(FLOW_TYPE);
@@ -88,7 +86,7 @@ public class CreateCTTAndTicketSearchTestIoT extends BaseTestCaseIoT {
         sdWizardPage.insertValueToComponent(COMMUNICATION_CHANNEL, COMMUNICATION_CHANNEL_ID);
         sdWizardPage.enterDescription(INCIDENT_DESCRIPTION);
         sdWizardPage.insertValueToComponent(Assignee, TT_WIZARD_ASSIGNEE);
-//        sdWizardPage.insertValueToComponent(DOMAIN, DOMAIN_ID); //TODO: usunąć zakomentowanie gdy domeny bedą już gotowe w tym projekcie
+        sdWizardPage.insertValueToComponent(Domain, DOMAIN_ID);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickAcceptButtonInWizard();
