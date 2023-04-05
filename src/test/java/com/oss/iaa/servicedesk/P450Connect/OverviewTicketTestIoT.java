@@ -69,7 +69,6 @@ public class OverviewTicketTestIoT extends BaseTestCaseIoT {
     private static final String PRIORITY_ID = "TT_WIZARD_INPUT_PRIORITY_LABEL";
     private static final String STATUS_INPROGRESS = "In Progress";
     private static final String TT_WIZARD_ASSIGNEE = "TT_WIZARD_INPUT_ASSIGNEE_LABEL";
-    private static final String ASSIGNEE = "sd_seleniumtest";
     private static final String DOMAIN_ID = "COMMON_WIZARD_DOMAINS_FIELD_LABEL";
     private static final String NUMBER_SIM = "000";
     private static final String REASON_PRIORITY = "selenium_test";
@@ -119,7 +118,7 @@ public class OverviewTicketTestIoT extends BaseTestCaseIoT {
         sdWizardPage.insertValueToComponent(SERVICE_TYPE, SERVICE_TYPE_ID);
         sdWizardPage.insertValueToComponent(COMMUNICATION_CHANNEL, COMMUNICATION_CHANNEL_ID);
         sdWizardPage.enterDescription(INCIDENT_DESCRIPTION);
-        sdWizardPage.insertValueToComponent(ASSIGNEE, TT_WIZARD_ASSIGNEE);
+        sdWizardPage.insertValueToComponent(Assignee, TT_WIZARD_ASSIGNEE);
         sdWizardPage.insertValueToComponent(Domain, DOMAIN_ID);
         sdWizardPage.clickNextButtonInWizard();
         sdWizardPage.clickNextButtonInWizard();
