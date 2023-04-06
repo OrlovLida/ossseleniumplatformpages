@@ -6,7 +6,6 @@ import com.oss.framework.components.inputs.ComponentFactory;
 import com.oss.framework.components.inputs.Input;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.framework.widgets.table.OldTable;
-import com.oss.framework.widgets.table.TableInterface;
 import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.pages.BasePage;
@@ -49,23 +48,23 @@ public class ChangeConfigurationPage extends BasePage {
     @Step("Query object for change configuration")
     public void selectObject(String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createById(driver, wait, DEVICE_SELECT_TABLE);
-        table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, value);
+        OldTable table = OldTable.createById(driver, wait, DEVICE_SELECT_TABLE);
+        table.searchByColumn(NAME, value);
         table.selectRowByAttributeValueWithLabel(NAME, value);
     }
 
     @Step("Query template with configuration")
     public void selectTemplate(String value) {
         DelayUtils.waitForPageToLoad(driver, wait);
-        TableInterface table = OldTable.createById(driver, wait, TEMPLATE_SELECT_TABLE);
-        table.searchByAttributeWithLabel(NAME, Input.ComponentType.TEXT_FIELD, value);
+        OldTable table = OldTable.createById(driver, wait, TEMPLATE_SELECT_TABLE);
+        table.searchByColumn(NAME, value);
         table.selectRowByAttributeValueWithLabel(NAME, value);
     }
 
     @Step("Click set parameters button")
     public void clickSetParameters() {
         DelayUtils.waitForPageToLoad(driver, wait);
-        createById(driver, wait, SCRIPT_EXECUTION_WINDOW).callActionByLabel(SET_PARAMETERS_BUTTON);
+        createById(driver, wait, SCRIPT_EXECUTION_WINDOW).callActionById(SET_PARAMETERS_BUTTON);
     }
 
     @Step("Deploy template immediately")

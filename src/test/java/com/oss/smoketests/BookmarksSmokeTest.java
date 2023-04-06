@@ -26,20 +26,20 @@ import static com.oss.web.NewBookmarksTest.BUTTON_SAVE_BOOKMARK;
 
 public class BookmarksSmokeTest extends BaseTestCase {
     private static final Logger LOGGER = LoggerFactory.getLogger(BookmarksSmokeTest.class);
-    NewBookmarksPage bookmarksPage;
+    private NewBookmarksPage bookmarksPage;
     private static final String ADVANCED_SEARCH_WIDGET_ID = "advancedSearch";
     private static final int INDEX_OF_FIRST_ELEMENT_IN_TABLE = 0;
-    public static final String LOCATION_ACTION = "add_to_view_group_Location-null";
-    public static final String TAB_TOOLS_ID = "tab_tab_tools";
+    private static final String LOCATION_ACTION = "add_to_view_group_Location-null";
+    private static final String TAB_TOOLS_ID = "tab_tab_tools";
     private static final String CATEGORY = "Network Domains";
     private static final String VIEW_NAME = "Network View";
-    public static final String BOOKMARKS_PAGE = "Bookmarks";
-    public static final String NETWORK_PAGE = "Network View";
+    private static final String BOOKMARKS_PAGE = "Bookmarks";
+    private static final String NETWORK_PAGE = "Network View";
     private static final String DESCRIPTION_BOOKMARK = FakeGenerator.getIdNumber();
     private static final String UPDATED_BOOKMARK_NAME = FakeGenerator.getIdNumber();
     private static final String UPDATED_BOOKMARK_DESCRIPTION = FakeGenerator.getRandomName();
-    public static final String CATEGORY_NAME = "Category " + FakeGenerator.getIdNumber();
-    public static final String DESCRIPTION_CATEGORY = FakeGenerator.getRandomName();
+    private static final String CATEGORY_NAME = "Category " + FakeGenerator.getIdNumber();
+    private static final String DESCRIPTION_CATEGORY = FakeGenerator.getRandomName();
 
     @Test(priority = 1, description = "Open Bookmarks View")
     @Description("Open Bookmarks View")

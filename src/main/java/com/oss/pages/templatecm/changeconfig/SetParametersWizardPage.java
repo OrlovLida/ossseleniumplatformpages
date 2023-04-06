@@ -11,7 +11,7 @@ import io.qameta.allure.Step;
 
 public class SetParametersWizardPage extends BasePage {
     private static final String FILL_BUTTON = "ParameterFormSubmitButtonApp-3";
-    private static final String WIZARD_ID = "changeConfigurationParameterPrompt";
+    private static final String WIZARD_ID = "changeConfigurationParameterPrompt_prompt-card";
     private static final String NEW_INVENTORY_OBJECT_PARAMETERS = "dataSourceParameterItem-header";
     private static final String DEPLOY_SERVER_SETTINGS = "deployServerParameterItem-header";
     private static final String USER_PARAMETERS = "userParameterItem-header";

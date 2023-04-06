@@ -39,6 +39,7 @@ public class Environment {
     private static final String VALIDATION_RESULTS = "validation-results-core";
     private static final String LOGICAL_FUNCTION_CORE = "logical-function-core";
     private static final String LOGICAL_INVENTORY_VIEW = "logical-inventory-view";
+    private static final String IPADDRESS_MANAGEMENT = "ipaddress-management";
     private static final String TP_SERVICE = "tp-service";
     private static final String ETHERNET_CORE = "ethernet-core";
     private static final String CONNECTIVITY_CORE = "physical-connectivity-core";
@@ -173,6 +174,10 @@ public class Environment {
 
     public RequestSpecification getTPServiceSpecification() {
         return getRequestSpecificationByName(TP_SERVICE);
+    }
+
+    public RequestSpecification getIPAddressManagementServiceSpecification() {
+        return getRequestSpecificationByName(IPADDRESS_MANAGEMENT);
     }
 
     public RequestSpecification getPhysicalConnectivityCoreSpecification() {

@@ -7,6 +7,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.HomePage;
 import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.google.common.collect.Lists;
@@ -17,7 +18,6 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.tasks.TasksPageV2;
-import com.oss.pages.platform.HomePage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.pages.radio.EditCell4GBulkWizardPage;
 import com.oss.repositories.AddressRepository;

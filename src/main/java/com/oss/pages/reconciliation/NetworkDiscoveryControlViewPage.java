@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.oss.framework.components.contextactions.ActionsContainer;
-import com.oss.framework.components.inputs.Input.ComponentType;
 import com.oss.framework.components.mainheader.Notifications;
 import com.oss.framework.components.mainheader.NotificationsInterface;
 import com.oss.framework.components.prompts.ConfirmationBox;
@@ -202,7 +201,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
     @Step("Check if there are Issues with type {errorType}")
     public boolean checkIssues(IssueLevel errorType) {
         String type = String.valueOf(errorType);
-        getIssuesTable().searchByAttributeWithLabel(ISSUE_LEVEL, ComponentType.TEXT_FIELD, type);
+        getIssuesTable().searchByColumn(ISSUE_LEVEL, type);
         DelayUtils.sleep(2000);
         DelayUtils.waitForPageToLoad(driver, wait);
         if (getIssuesTable().hasNoData()) {
@@ -220,8 +219,8 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Check if conflict event appeared during reconciliation")
     public boolean isConflictEventPresent() {
-        getIssuesTable().searchByAttributeWithLabel(ISSUE_LEVEL, ComponentType.TEXT_FIELD, "");
-        getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, CONFLICT);
+        getIssuesTable().searchByColumn(ISSUE_LEVEL, "");
+        getIssuesTable().searchByColumn(REASON, CONFLICT);
         return getIssuesTable().getCellValue(0, REASON).contains(CONFLICT);
     }
 
@@ -257,7 +256,7 @@ public class NetworkDiscoveryControlViewPage extends BasePage {
 
     @Step("Get Reconciliation start event")
     private String getRecoStartEvent() {
-        getIssuesTable().searchByAttributeWithLabel(REASON, ComponentType.TEXT_FIELD, RECONCILIATION_WITH_ID);
+        getIssuesTable().searchByColumn(REASON, RECONCILIATION_WITH_ID);
         DelayUtils.waitForPageToLoad(driver, wait);
         return getIssuesTable().getCellValue(0, REASON);
     }

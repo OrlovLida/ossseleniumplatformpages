@@ -9,6 +9,8 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.HomePage;
+import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.comarch.oss.web.pages.SearchObjectTypePage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -17,8 +19,6 @@ import com.oss.framework.components.contextactions.ActionsContainer;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.tasks.TasksPageV2;
-import com.oss.pages.platform.HomePage;
-import com.comarch.oss.web.pages.NewInventoryViewPage;
 import com.oss.pages.radio.CellSiteConfigurationPage;
 import com.oss.repositories.AddressRepository;
 import com.oss.repositories.LocationInventoryRepository;
@@ -30,6 +30,8 @@ import com.oss.untils.Environment;
 import com.oss.utils.TestListener;
 
 import io.qameta.allure.Description;
+
+import static com.oss.untils.Constants.DEVICE_MODEL_TYPE;
 
 @Listeners({TestListener.class})
 public class BucOssRan002Test extends BaseTestCase {
@@ -64,7 +66,6 @@ public class BucOssRan002Test extends BaseTestCase {
     private static final String BAND_TYPE_NAME = "NR3600-n78";
     private static final String MANUFACTURER = "HUAWEI Technology Co.,Ltd";
     private static final String BBU_MODEL = "BBU5900";
-    private static final String DEVICE_MODEL_TYPE = "DeviceModel";
     private static final String GNODEB_MODEL = "HUAWEI Technology Co.,Ltd gNodeB";
     private static final String GNODEB_DU_MODEL = "HUAWEI Technology Co.,Ltd gNodeB DU";
     private static final String BBU_NAME = "Denver41_BBU";

@@ -45,7 +45,7 @@ public class ValidationRulesManagerPage extends BasePage {
     }
 
     public void openCreateGroupWizard() {
-        callAction(ActionsContainer.CREATE_GROUP_ID, CREATE_GROUP_ACTION_ID);
+        getTreeView().callActionById(CREATE_GROUP_ACTION_ID);
     }
 
     public void deleteGroup(String groupName) {

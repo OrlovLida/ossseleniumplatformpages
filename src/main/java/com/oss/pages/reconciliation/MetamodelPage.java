@@ -95,7 +95,7 @@ public class MetamodelPage extends BasePage {
     }
 
     public void openRuleDefinitionWizard() {
-        getValidationRulesDefinitionsTabs().callActionById(ActionsContainer.CREATE_GROUP_ID, CREATE_DEFINITION_ACTION_ID);
+        getValidationRulesDefinitionsTabs().callActionById(CREATE_DEFINITION_ACTION_ID);
     }
 
     public void selectSimpleValueCheckTab() {

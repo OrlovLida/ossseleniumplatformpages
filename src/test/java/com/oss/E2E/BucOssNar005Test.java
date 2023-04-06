@@ -90,7 +90,6 @@ public class BucOssNar005Test extends BaseTestCase {
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         waitForPageToLoad();
-        samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
         samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_005/First");
     }
 

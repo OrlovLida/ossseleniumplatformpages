@@ -73,7 +73,6 @@ public class BucOssNar001Test extends BaseTestCase {
         networkDiscoveryControlViewPage.moveToSamplesManagement();
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
-        samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
         samplesManagementPage.uploadSamplesFromPath("recoSamples/UC_NAR_001/create");
     }
 

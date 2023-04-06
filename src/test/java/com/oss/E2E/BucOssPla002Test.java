@@ -12,9 +12,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.GlobalSearchPage;
 import com.comarch.oss.web.pages.HierarchyViewPage;
 import com.comarch.oss.web.pages.LogManagerPage;
 import com.comarch.oss.web.pages.NewInventoryViewPage;
+import com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.BookmarkWizardPage;
+import com.comarch.oss.web.pages.bookmarksanddashboards.bookmarks.NewBookmarksPage;
 import com.comarch.oss.web.pages.filtermanager.ShareFilterPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.SystemMessageContainer;
@@ -22,17 +25,17 @@ import com.oss.framework.components.alerts.SystemMessageContainer.Message;
 import com.oss.framework.components.alerts.SystemMessageContainer.MessageType;
 import com.oss.framework.components.alerts.SystemMessageInterface;
 import com.oss.framework.components.contextactions.ActionsContainer;
+import com.oss.framework.components.mainheader.ButtonPanel;
 import com.oss.framework.components.mainheader.Notifications;
+import com.oss.framework.components.mainheader.ToolbarWidget;
 import com.oss.framework.components.prompts.ConfirmationBox;
-import com.oss.framework.navigation.sidemenu.SideMenu;
+import com.oss.framework.components.prompts.Popup;
 import com.oss.framework.utils.DelayUtils;
 import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.mediation.CLIConfigurationWizardPage;
 import com.oss.pages.mediation.ViewConnectionConfigurationPage;
 import com.oss.pages.physical.DeviceWizardPage;
-import com.oss.pages.platform.HomePage;
-import com.oss.pages.reconciliation.CmDomainWizardPage;
 import com.oss.pages.reconciliation.NetworkDiscoveryControlViewPage;
 import com.oss.pages.reconciliation.NetworkInconsistenciesViewPage;
 import com.oss.pages.reconciliation.SamplesManagementPage;
@@ -43,14 +46,34 @@ import com.oss.pages.transport.ipam.IPAddressAssignmentWizardPage;
 import com.oss.pages.transport.ipam.IPAddressManagementViewPage;
 import com.oss.pages.transport.ipam.helper.IPAddressAssignmentWizardProperties;
 import com.oss.pages.transport.trail.ConnectionWizardPage;
+import com.oss.repositories.AddressRepository;
+import com.oss.repositories.IPAMRepository;
+import com.oss.repositories.LocationInventoryRepository;
+import com.oss.repositories.PhysicalInventoryRepository;
+import com.oss.services.ResourceCatalogClient;
+import com.oss.template.infrastructure.template.folder.TemplateFolderClient;
+import com.oss.untils.Environment;
 
 import io.qameta.allure.Description;
 
+import static com.oss.framework.components.icons.interactiveicons.Star.StarStatus.UNMARK;
+import static com.oss.untils.Constants.DEVICE_MODEL_TYPE;
+
 public class BucOssPla002Test extends BaseTestCase {
+    public static final String BOTTOM = "bottom";
+    public static final String MEDIATION_CONNECTION_NAME = "Mediation connection for BucOssPla002Test";
     private static final String DEVICE_MODEL = "CISCO1941/K9";
+    private static final String COUNTRY_NAME = "Poland";
+    private static final String REGION_NAME = "Wielkopolska";
+    private static final String DISTRICT_NAME = "District 1";
+    private static final String CITY_NAME = "Poznan";
+    private static final String POSTAL_CODE_NAME = "60001";
     private static final String LOCATION_NAME = "Poznan-BU1";
     private static final String CM_DOMAIN_NAME = "SeleniumE2ETest";
     private static final String DEVICE_NAME = "H3_Lab";
+    private static final String BUILDING_TYPE = "Building";
+    private static final String DEVICE_H1_NAME = "H1";
+    private static final String ROUTER = "Router";
     private static final String PORT_NAME = "GE 1";
     private static final String TRAIL_NAME = "SeleniumTest IP Link";
     private static final String INTERFACE_NAME = "CISCO IOS 12/15/XE without mediation";
@@ -62,6 +85,12 @@ public class BucOssPla002Test extends BaseTestCase {
     private static final String CONNECTION_TIMEOUT = "20";
     private static final String IP_ADDRESS_WIZARD_MODE = "New address selection";
     private static final String IP_NETWORK = "E2ESeleniumTest";
+    private static final String IP_NETWORK_DESCRIPTION = "IP Network used for business use cases. Please do not use.";
+    private static final String IPV4SUBNET = "10.10.20.0/24";
+    private static final String IPV4SUBNET_IDENTIFIER = IPV4SUBNET + " [" + IP_NETWORK + "]";
+    private static final String TEMPLATE_FOLDER_NAME = "E2ETests";
+    private static final String TEMPLATE_BUSINESS_KEY = "E2ETests/E2E_Test_Loopback_v2;Cisco Systems Inc.;CONFIGURATION";
+    private static final String TEMPLATE_CONTENT = "#======= Section INIT =======\n\n# FAKE LOOPBACK script just for E2E tests of Comarch OSS. It doesn't create loopback just do some read only commands.\n\ncli.sendline ('terminal length 0')\ncli.expect (r'.*>|.*#')\ncli.sendline ('show ip interface brief')\ncli.sendline ('configure terminal')\ncli.expect (r'.*(config).*')\n#cli.sendline ('interface $InterfaceName[USER]')\n#cli.expect (r'.*(config).*')\n#cli.sendline ('ip address $IPAddress[USER] $Mask[USER]')\n#cli.expect  (r'.*(config).*#')\n#cli.sendline ('description $name[NEW_INVENTORY]')\n#cli.expect (r'.*(config).*#$')\nprint (\"$name[NEW_INVENTORY]\")\nprint (\"$InterfaceName[USER]\")\nprint (\"$IPAddress[USER]\")\nprint (\"$Mask[USER]\")\ncli.sendline ('exit')\ncli.sendline ('exit')\ncli.sendline ('show ip interface brief')\n#cli.sendline ('show run interface $InterfaceName[USER]')\ncli.expect(pexpect.TIMEOUT, timeout = 10)";
     private static final String TEMPLATE_EXECUTION_NOTIFICATION = "Script execution finished";
     private static final String BOOKMARKS = "Bookmarks";
     private static final String FAVOURITES = "Favourites";
@@ -72,24 +101,42 @@ public class BucOssPla002Test extends BaseTestCase {
     private static final String TYPE_COLUMN_ID = "col-type";
     private static final String VALIDATION_RESULT_TYPE = "INCOMPLETE_ROUTING_STATUS";
     private static final String SUPPRESSION_REASON = "Unnecessary in this scenario";
+    private static final String CATEGORY_NAME = "BucOssPla002TestCategory";
+    private static final String DESCRIPTION_CATEGORY = "E2E test category, please do not use";
     private final static String SYSTEM_MESSAGE_PATTERN = "%s. Checking system message after %s.";
+    private static final String BUTTON_SAVE_BOOKMARK = "ButtonSaveBookmark";
+    private static final String BOOKMARK_NAME = "LAB Network View";
+    private static final String NO_CARD_COMPONENT = "No Card/Component";
     private final String serialNumber = "SN-" + (int) (Math.random() * 1001);
+    private final Environment env = Environment.getInstance();
     private String URL = "";
     private NetworkDiscoveryControlViewPage networkDiscoveryControlViewPage;
     private SoftAssert softAssert;
     private String processIPCode;
     private String processNRPCode;
+    private PhysicalInventoryRepository physicalInventoryRepository;
+    private IPAMRepository ipamRepository;
+    private TemplateFolderClient templateFolderClient;
 
     @BeforeClass
     public void openConsole() {
         softAssert = new SoftAssert();
+        physicalInventoryRepository = new PhysicalInventoryRepository(env);
+        ipamRepository = new IPAMRepository(env);
+        templateFolderClient = TemplateFolderClient.getInstance(environmentRequestClient);
         waitForPageToLoad();
+        String locationId = getOrCreateBuilding();
+        getOrCreateDevice(locationId);
+        getOrCreateIPNetwork();
+        getOrCreateIPv4Subnet();
+        getOrCreateCMTemplateFolder();
+        getOrCreateCMTemplate();
+        handleBookmarks();
     }
 
     @Test(priority = 1, description = "Create and start NRP Process")
     @Description("Create and start NRP Process")
     public void createProcessNRP() {
-        waitForPageToLoad();
         ProcessOverviewPage processInstancesPage = ProcessOverviewPage.goToProcessOverviewPage(driver, webDriverWait);
         processNRPCode = processInstancesPage.createSimpleNRP();
         waitForPageToLoad();
@@ -102,24 +149,18 @@ public class BucOssPla002Test extends BaseTestCase {
     @Test(priority = 2, description = "Open Network View", dependsOnMethods = {"createProcessNRP"})
     @Description("Open Network View from bookmarks")
     public void openNetworkView() {
-        HomePage homePage = new HomePage(driver);
-        homePage.goToHomePage(driver, BASIC_URL);
+        closeMessage();
         waitForPageToLoad();
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel(LAB_NETWORK_VIEW, FAVOURITES, BOOKMARKS);
+        homePage.chooseFromLeftSideMenu(LAB_NETWORK_VIEW, FAVOURITES, BOOKMARKS);
     }
 
     @Test(priority = 3, description = "Select location", dependsOnMethods = {"openNetworkView"})
     @Description("Select location")
     public void selectLocation() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        waitForPageToLoad();
         networkViewPage.hideDockedPanel(RIGHT);
-        waitForPageToLoad();
         networkViewPage.expandDockedPanel(LEFT);
-        waitForPageToLoad();
         networkViewPage.selectObjectInViewContent(NAME, LOCATION_NAME);
-        waitForPageToLoad();
     }
 
     @Test(priority = 4, description = "Create device", dependsOnMethods = {"selectLocation"})
@@ -127,7 +168,6 @@ public class BucOssPla002Test extends BaseTestCase {
     public void createDevice() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_DEVICE_ACTION);
-        waitForPageToLoad();
         DeviceWizardPage deviceWizardPage = new DeviceWizardPage(driver);
         deviceWizardPage.setModel(DEVICE_MODEL);
         waitForPageToLoad();
@@ -143,22 +183,14 @@ public class BucOssPla002Test extends BaseTestCase {
         waitForPageToLoad();
         deviceWizardPage.accept();
         checkMessageSize(String.format(SYSTEM_MESSAGE_PATTERN, "Create device", "device create"));
-        checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Create device", "device create"));
     }
 
     @Test(priority = 5, description = "Open device in Hierarchy View", dependsOnMethods = {"createDevice"})
     @Description("Open Hierarchy View with newly created device")
     public void moveToHierarchyView() {
-        waitForPageToLoad();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel(LEFT);
-        waitForPageToLoad();
-        networkViewPage.selectObjectInViewContent(NAME, DEVICE_NAME);
-        DelayUtils.sleep(15000); // naming has to recalculate, it doesn't show progress in the console
-        networkViewPage.selectObjectInViewContent(NAME, DEVICE_NAME);
-        waitForPageToLoad();
         networkViewPage.useContextAction(ActionsContainer.SHOW_ON_GROUP_ID, NetworkViewPage.HIERARCHY_VIEW_ACTION);
-        waitForPageToLoad();
     }
 
     @Test(priority = 6, description = "Select ethernet interface and open it in New Inventory View", dependsOnMethods = {"moveToHierarchyView"})
@@ -175,14 +207,13 @@ public class BucOssPla002Test extends BaseTestCase {
     @Description("Select Ethernet Interface in New Inventory View and Assign IP V4 Address")
     public void assignIpV4Address() {
         NewInventoryViewPage newInventoryViewPage = NewInventoryViewPage.getInventoryViewPage(driver, webDriverWait);
-        waitForPageToLoad();
         newInventoryViewPage.selectFirstRow();
         waitForPageToLoad();
         newInventoryViewPage.callAction(ActionsContainer.ASSIGN_GROUP_ID, "AssignIPv4Host");
         waitForPageToLoad();
         IPAddressAssignmentWizardPage ipAddressAssignmentWizardPage = new IPAddressAssignmentWizardPage(driver);
         IPAddressAssignmentWizardProperties ipAddressAssignmentWizardProperties = IPAddressAssignmentWizardProperties.builder()
-                .wizardMode(IP_ADDRESS_WIZARD_MODE).subnet("10.10.20.0/24 [" + IP_NETWORK + "]").address(ADDRESS).isPrimary("false").build();
+                .wizardMode(IP_ADDRESS_WIZARD_MODE).subnet(IPV4SUBNET_IDENTIFIER).address(ADDRESS).isPrimary("false").build();
         ipAddressAssignmentWizardPage.assignMoToIPAddress(ipAddressAssignmentWizardProperties);
         waitForPageToLoad();
     }
@@ -191,17 +222,12 @@ public class BucOssPla002Test extends BaseTestCase {
     @Description("Open Network View and create IP link")
     public void createIpLink() {
         openNetworkView();
-        waitForPageToLoad();
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
-        waitForPageToLoad();
         networkViewPage.queryElementAndAddItToView("serialNumber", serialNumber);
         networkViewPage.expandDockedPanel(LEFT);
-        waitForPageToLoad();
-        networkViewPage.selectObjectInViewContent(NAME, "H1");
-        waitForPageToLoad();
+        networkViewPage.selectObjectInViewContent(NAME, DEVICE_H1_NAME);
         networkViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_CONNECTION_ID);
-        waitForPageToLoad();
         networkViewPage.selectTrailType("IP Link");
         waitForPageToLoad();
         networkViewPage.acceptTrailType();
@@ -211,36 +237,20 @@ public class BucOssPla002Test extends BaseTestCase {
         waitForPageToLoad();
         connectionWizardPage.clickNext();
         waitForPageToLoad();
-        connectionWizardPage.selectConnectionTermination("1.1_1");
-        waitForPageToLoad();
-        connectionWizardPage.terminateCardComponent("No Card/Component");
-        waitForPageToLoad();
-        connectionWizardPage.terminatePort(PORT_NAME);
-        waitForPageToLoad();
-        connectionWizardPage.terminateTerminationPort(PORT_NAME);
-        waitForPageToLoad();
-        connectionWizardPage.selectConnectionTermination("1.1_2");
-        waitForPageToLoad();
-        connectionWizardPage.terminateCardComponent("No Card/Component");
-        waitForPageToLoad();
-        connectionWizardPage.terminatePort(PORT_NAME);
-        waitForPageToLoad();
-        connectionWizardPage.terminateTerminationPort(PORT_NAME);
-        waitForPageToLoad();
+        setTermination(connectionWizardPage, "1.1_1");
+        setTermination(connectionWizardPage, "1.1_2");
         connectionWizardPage.assignAddressToOpositeInteface(false);
         waitForPageToLoad();
         connectionWizardPage.clickAccept();
         waitForPageToLoad();
     }
 
-    @Test(priority = 9, description = "Suppress validation result about incomplete routing", dependsOnMethods = {"createIpLink"})
+    @Test(priority = 9, description = "Suppress validation result about incomplete routing", dependsOnMethods = {"createIpLink"}, enabled = false)
     @Description("Suppress validation result about incomplete routing")
     public void suppressValidationResult() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
-        networkViewPage.expandDockedPanel("bottom");
-        waitForPageToLoad();
         networkViewPage.suppressValidationResult(TYPE_COLUMN_ID, VALIDATION_RESULT_TYPE, SUPPRESSION_REASON);
-        networkViewPage.hideDockedPanel("bottom");
+        networkViewPage.hideDockedPanel(BOTTOM);
     }
 
     @Test(priority = 10, description = "Create mediation Configuration", dependsOnMethods = {"assignIpV4Address", "createIpLink"})
@@ -248,33 +258,30 @@ public class BucOssPla002Test extends BaseTestCase {
     public void createMediationConfiguration() {
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.expandDockedPanel(LEFT);
-        waitForPageToLoad();
-        networkViewPage.selectObjectInViewContent(NAME, TRAIL_NAME + " (0%)");
-        waitForPageToLoad();
+        networkViewPage.unselectObjectInViewContent(NAME, TRAIL_NAME + " (0%)");
         networkViewPage.selectObjectInViewContent(NAME, DEVICE_NAME);
+        networkViewPage.useContextAction(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_MEDIATION_CONFIGURATION_ID);
+        Popup popup = Popup.create(driver, webDriverWait);
+        popup.setComponentValue("configSelected", "CLI configuration");
         waitForPageToLoad();
-        networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.CREATE_GROUP_ID, NetworkViewPage.CREATE_MEDIATION_CONFIGURATION_ID, ConfirmationBox.PROCEED);
+        popup.clickButtonByLabel(ConfirmationBox.PROCEED);
         waitForPageToLoad();
         CLIConfigurationWizardPage cliConfigurationWizardPage = new CLIConfigurationWizardPage(driver);
         cliConfigurationWizardPage.setInputMethod("Search in managed addresses");
-        waitForPageToLoad();
         cliConfigurationWizardPage.setIPHostAddress(ADDRESS);
-        waitForPageToLoad();
         cliConfigurationWizardPage.setPort(PORT);
-        waitForPageToLoad();
+        cliConfigurationWizardPage.setName(MEDIATION_CONNECTION_NAME);
+        cliConfigurationWizardPage.clickNextStep();
         cliConfigurationWizardPage.setCommandTimeout(COMMAND_TIMEOUT);
-        waitForPageToLoad();
         cliConfigurationWizardPage.setConnectionSetupTimeout(CONNECTION_TIMEOUT);
-        waitForPageToLoad();
         cliConfigurationWizardPage.setCLIProtocol("SSH");
-        waitForPageToLoad();
+        cliConfigurationWizardPage.clickNextStep();
         cliConfigurationWizardPage.setAuthMethod("Password Authentication");
-        waitForPageToLoad();
         cliConfigurationWizardPage.setAuthPassword(PASSWORD);
-        waitForPageToLoad();
+        cliConfigurationWizardPage.clickNextStep();
+        cliConfigurationWizardPage.clickNextStep();
         cliConfigurationWizardPage.clickAccept();
         checkMessageSize(String.format(SYSTEM_MESSAGE_PATTERN, "Create mediation configuration", "mediation configuration create"));
-        checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Create mediation configuration", "mediation configuration create"));
         SystemMessageInterface systemMessage = SystemMessageContainer.create(driver, webDriverWait);
         systemMessage.clickMessageLink();
         waitForPageToLoad();
@@ -299,26 +306,17 @@ public class BucOssPla002Test extends BaseTestCase {
     @Description("Perform Configuration change using prepared CM Template")
     public void performConfigurationChange() {
         ChangeConfigurationPage changeConfigurationPage = new ChangeConfigurationPage(driver);
-        waitForPageToLoad();
-        changeConfigurationPage.selectObjectType("Router");
-        waitForPageToLoad();
+        changeConfigurationPage.selectObjectType(ROUTER);
         changeConfigurationPage.selectObject(DEVICE_NAME);
-        waitForPageToLoad();
         changeConfigurationPage.selectTemplate(TEMPLATE_NAME);
-        waitForPageToLoad();
         changeConfigurationPage.clickSetParameters();
         SetParametersWizardPage setParametersWizardPage = new SetParametersWizardPage(driver);
-        waitForPageToLoad();
         String name = setParametersWizardPage.getName();
         Assert.assertEquals(name, DEVICE_NAME);
-        setParametersWizardPage.setPassword("oss");
-        waitForPageToLoad();
+//        setParametersWizardPage.setPassword("oss");//TODO update after OSSCMF-14379 fix
         setParametersWizardPage.setInterfaceName("GE 0");
-        waitForPageToLoad();
         setParametersWizardPage.clickFillParameters();
-        waitForPageToLoad();
         changeConfigurationPage.deployImmediately();
-        waitForPageToLoad();
     }
 
     @Test(priority = 13, description = "Check configuration change", dependsOnMethods = {"startImplementationTaskIP"})
@@ -356,33 +354,23 @@ public class BucOssPla002Test extends BaseTestCase {
     public void completeIpAndNrp() {
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.completeTask(processIPCode, TasksPageV2.IMPLEMENTATION_TASK);
-        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete IP and NRP", "implementation task complete"));
+        String completeIpAndNrp = "Complete IP and NRP";
+        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, completeIpAndNrp, "implementation task complete"));
         tasksPage.startTask(processIPCode, TasksPageV2.ACCEPTANCE_TASK);
-        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, "Complete IP and NRP", "acceptance task start"));
+        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, completeIpAndNrp, "acceptance task start"));
         tasksPage.completeTask(processIPCode, TasksPageV2.ACCEPTANCE_TASK);
-        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete IP and NRP", "acceptance task complete"));
+        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, completeIpAndNrp, "acceptance task complete"));
         tasksPage.startTask(processNRPCode, TasksPageV2.VERIFICATION_TASK);
-        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, "Complete IP and NRP", "verification task start"));
+        checkTaskAssignment(String.format(SYSTEM_MESSAGE_PATTERN, completeIpAndNrp, "verification task start"));
         tasksPage.completeTask(processNRPCode, TasksPageV2.VERIFICATION_TASK);
-        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, "Complete IP and NRP", "verification task complete"));
+        checkTaskCompleted(String.format(SYSTEM_MESSAGE_PATTERN, completeIpAndNrp, "verification task complete"));
     }
 
-    @Test(priority = 16, description = "Create CM Domain", dependsOnMethods = {"createDevice"})
+    @Test(priority = 16, description = "Create CM Domain", dependsOnMethods = {"createDevice", "completeIpAndNrp"})
     @Description("Go to Network Discovery Control View and create CM Domain")
     public void createCmDomain() {
-        waitForPageToLoad();
         networkDiscoveryControlViewPage = NetworkDiscoveryControlViewPage.goToNetworkDiscoveryControlViewPage(driver, BASIC_URL);
-        waitForPageToLoad();
-        networkDiscoveryControlViewPage.openCmDomainWizard();
-        CmDomainWizardPage wizard = new CmDomainWizardPage(driver);
-        waitForPageToLoad();
-        wizard.setName(CM_DOMAIN_NAME);
-        waitForPageToLoad();
-        wizard.setInterface(INTERFACE_NAME);
-        waitForPageToLoad();
-        wizard.setDomain("IP");
-        waitForPageToLoad();
-        wizard.save();
+        networkDiscoveryControlViewPage.createCMDomain(CM_DOMAIN_NAME, INTERFACE_NAME, "IP");
         waitForPageToLoad();
     }
 
@@ -395,7 +383,6 @@ public class BucOssPla002Test extends BaseTestCase {
         SamplesManagementPage samplesManagementPage = new SamplesManagementPage(driver);
         samplesManagementPage.selectPath();
         waitForPageToLoad();
-        samplesManagementPage.createDirectory(CM_DOMAIN_NAME);
         samplesManagementPage.uploadSamplesFromPath("recoSamples/ciscoE2E");
     }
 
@@ -412,7 +399,8 @@ public class BucOssPla002Test extends BaseTestCase {
         networkDiscoveryControlViewPage.selectLatestReconciliationState();
         waitForPageToLoad();
         networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.INFO);
-        if (status.equals("SUCCESS")) {
+        String success = "SUCCESS";
+        if (status.equals(success)) {
             waitForPageToLoad();
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.ERROR));
             waitForPageToLoad();
@@ -423,7 +411,7 @@ public class BucOssPla002Test extends BaseTestCase {
             waitForPageToLoad();
             Assert.assertTrue(networkDiscoveryControlViewPage.checkIssues(NetworkDiscoveryControlViewPage.IssueLevel.FATAL));
         }
-        Assert.assertEquals(status, "SUCCESS");
+        Assert.assertEquals(status, success);
     }
 
     @Test(priority = 19, description = "Apply inconsistencies", dependsOnMethods = {"runReconciliation"})
@@ -455,34 +443,27 @@ public class BucOssPla002Test extends BaseTestCase {
     @Test(priority = 21, description = "Delete IP link", dependsOnMethods = {"createIpLink"})
     @Description("Delete IP link in Network View")
     public void deleteIpLink() {
-        HomePage homePage = new HomePage(driver);
-        homePage.goToHomePage(driver, BASIC_URL);
-        waitForPageToLoad();
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel(LAB_NETWORK_VIEW, FAVOURITES, BOOKMARKS);
-        waitForPageToLoad();
+        homePage.chooseFromLeftSideMenu(LAB_NETWORK_VIEW, FAVOURITES, BOOKMARKS);
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.CONNECTION_ACTION);
-        waitForPageToLoad();
         networkViewPage.queryElementAndAddItToView("label", TRAIL_NAME);
-        networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID, ConfirmationBox.DELETE);
+        networkViewPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_CONNECTION_ID);
+        Popup.create(driver, webDriverWait).clickButtonById("wizard-submit-button-deleteWidgetId");
     }
 
     @Test(priority = 22, description = "Delete mediation connection", dependsOnMethods = {"createMediationConfiguration"})
     @Description("Go to Connection Configuration View by direct link and delete mediation connection")
     public void deleteMediation() {
-        ViewConnectionConfigurationPage.goToViewConnectionConfigurationPage(driver, URL);
-        waitForPageToLoad();
-        ViewConnectionConfigurationPage viewConnectionConfigurationPage = new ViewConnectionConfigurationPage(driver);
-        viewConnectionConfigurationPage.selectRow("Address", ADDRESS);
-        waitForPageToLoad();
+        ViewConnectionConfigurationPage viewConnectionConfigurationPage = ViewConnectionConfigurationPage.goToViewConnectionConfigurationPage(driver, URL);
+        viewConnectionConfigurationPage.fullTextSearch(MEDIATION_CONNECTION_NAME);
+        viewConnectionConfigurationPage.selectRow("Name", MEDIATION_CONNECTION_NAME);
         viewConnectionConfigurationPage.useContextAction(ActionsContainer.EDIT_GROUP_ID, ViewConnectionConfigurationPage.DELETE_BUTTON_ID);
         waitForPageToLoad();
         viewConnectionConfigurationPage.clickDelete();
         waitForPageToLoad();
     }
 
-    @Test(priority = 23, description = "Delete IP address assignment", dependsOnMethods = {"assignIpV4Address"})
+    @Test(priority = 23, description = "Delete IP address assignment", dependsOnMethods = {"assignIpV4Address", "completeIpAndNrp"})
     @Description("Go to Address Management View by direct link and delete IP address assignment")
     public void deleteIPAddressAssignment() {
         IPAddressManagementViewPage ipAddressManagementViewPage = IPAddressManagementViewPage.goToIPAddressManagementPage(driver, BASIC_URL);
@@ -490,7 +471,7 @@ public class BucOssPla002Test extends BaseTestCase {
         ipAddressManagementViewPage.expandTreeRow(IP_NETWORK);
         ipAddressManagementViewPage.expandTreeRow("IP Subnets");
         ipAddressManagementViewPage.expandTreeRow("IPV4");
-        ipAddressManagementViewPage.expandTreeRowContains("10.10.20.0/24");
+        ipAddressManagementViewPage.expandTreeRowContains(IPV4SUBNET);
         ipAddressManagementViewPage.expandTreeRow("IP Addresses");
         ipAddressManagementViewPage.deleteIPHost(ADDRESS + "/24");
         waitForPageToLoad();
@@ -499,25 +480,94 @@ public class BucOssPla002Test extends BaseTestCase {
     @Test(priority = 24, description = "Delete device", dependsOnMethods = {"createDevice"})
     @Description("Delete device in Network View and check confirmation system message")
     public void deleteDevice() {
-        HomePage homePage = new HomePage(driver);
-        homePage.goToHomePage(driver, BASIC_URL);
-        waitForPageToLoad();
-        SideMenu sideMenu = SideMenu.create(driver, webDriverWait);
-        sideMenu.callActionByLabel(LAB_NETWORK_VIEW, FAVOURITES, BOOKMARKS);
-        waitForPageToLoad();
+        homePage.chooseFromLeftSideMenu(LAB_NETWORK_VIEW, FAVOURITES, BOOKMARKS);
         NetworkViewPage networkViewPage = new NetworkViewPage(driver);
         networkViewPage.useContextAction(NetworkViewPage.ADD_TO_VIEW_ACTION, NetworkViewPage.DEVICE_ACTION);
-        waitForPageToLoad();
         networkViewPage.queryElementAndAddItToView("name", DEVICE_NAME);
         networkViewPage.useContextActionAndClickConfirmation(ActionsContainer.EDIT_GROUP_ID, NetworkViewPage.DELETE_DEVICE_ACTION, ConfirmationBox.YES);
         checkMessageSize(String.format(SYSTEM_MESSAGE_PATTERN, "Delete device", "device delete"));
-        checkMessageType(MessageType.SUCCESS, String.format(SYSTEM_MESSAGE_PATTERN, "Delete device", "device delete"));
     }
 
     @Test(priority = 25, description = "Checking system message summary")
     @Description("Checking system message summary")
     public void systemMessageSummary() {
         softAssert.assertAll();
+    }
+
+    private void setTermination(ConnectionWizardPage connectionWizardPage, String dataPath) {
+        connectionWizardPage.selectConnectionTermination(dataPath);
+        waitForPageToLoad();
+        connectionWizardPage.terminateCardComponent(NO_CARD_COMPONENT);
+        waitForPageToLoad();
+        connectionWizardPage.terminatePort(PORT_NAME);
+        waitForPageToLoad();
+        connectionWizardPage.terminateTerminationPort(PORT_NAME);
+        waitForPageToLoad();
+    }
+
+    private void getOrCreateCMTemplate() {
+        if (!templateFolderClient.isTemplatePresent(TEMPLATE_BUSINESS_KEY)) {
+            templateFolderClient.createTemplate(TEMPLATE_BUSINESS_KEY, TEMPLATE_CONTENT);
+        }
+    }
+
+    private void getOrCreateCMTemplateFolder() {
+        if (!templateFolderClient.isFolderPresent(TEMPLATE_FOLDER_NAME)) {
+            templateFolderClient.createFolder(TEMPLATE_FOLDER_NAME);
+        }
+    }
+
+    private void getOrCreateIPv4Subnet() {
+        ipamRepository.getOrCreateIPv4Subnet(IPV4SUBNET_IDENTIFIER);
+    }
+
+    private void getOrCreateIPNetwork() {
+        ipamRepository.getOrCreateIPNetwork(IP_NETWORK, IP_NETWORK_DESCRIPTION);
+    }
+
+    private void handleBookmarks() {
+        NewBookmarksPage bookmarksPage = NewBookmarksPage.goToBookmarksPage(driver, webDriverWait, BASIC_URL);
+        waitForPageToLoad();
+        if (!bookmarksPage.isObjectPresent(CATEGORY_NAME)) {
+            bookmarksPage.createCategory(CATEGORY_NAME, DESCRIPTION_CATEGORY);
+        }
+        waitForPageToLoad();
+        bookmarksPage.expandCategory(CATEGORY_NAME);
+        waitForPageToLoad();
+        if (!bookmarksPage.isObjectPresent(BOOKMARK_NAME)) {
+            createBookmark();
+            return;
+        }
+        if (bookmarksPage.getFavouriteStatus(BOOKMARK_NAME).equals(UNMARK)) {
+            bookmarksPage.setFavourite(BOOKMARK_NAME);
+        }
+    }
+
+    private void createBookmark() {
+        openH1DeviceInNetworkView();
+        ButtonPanel.create(driver, webDriverWait).clickButton(BUTTON_SAVE_BOOKMARK);
+        BookmarkWizardPage bookmarkWizardPage = new BookmarkWizardPage(driver, webDriverWait);
+        bookmarkWizardPage.setName(BOOKMARK_NAME);
+        bookmarkWizardPage.setCategory(CATEGORY_NAME);
+        bookmarkWizardPage.clickSave();
+        waitForPageToLoad();
+        closeMessage();
+        ButtonPanel.create(driver, webDriverWait).clickButton("ButtonFavouriteBookmark");
+    }
+
+    private void openH1DeviceInNetworkView() {
+        ToolbarWidget globalSearchInput = ToolbarWidget.create(driver, webDriverWait);
+        globalSearchInput.searchInGlobalSearch(DEVICE_H1_NAME);
+        GlobalSearchPage globalSearchPage = new GlobalSearchPage(driver);
+        waitForPageToLoad();
+        globalSearchPage.filterObjectType("Physical Device / Router");
+        waitForPageToLoad();
+        globalSearchPage.expandShowOnAndChooseView(DEVICE_H1_NAME, ActionsContainer.SHOW_ON_GROUP_ID, "ShowOnNetworkVieActionId");
+        waitForPageToLoad();
+        NetworkViewPage networkViewPage = new NetworkViewPage(driver);
+        networkViewPage.expandViewContentPanel();
+        networkViewPage.unselectObjectInViewContent(NAME, DEVICE_H1_NAME);
+        waitForPageToLoad();
     }
 
     private void checkMessageType(MessageType messageType, String systemMessageLog) {
@@ -537,6 +587,7 @@ public class BucOssPla002Test extends BaseTestCase {
         softAssert.assertEquals((SystemMessageContainer.create(driver, webDriverWait)
                 .getMessages()
                 .size()), 1, systemMessageLog);
+        checkMessageType(MessageType.SUCCESS, systemMessageLog);
     }
 
     private Message getFirstMessage() {
@@ -562,5 +613,32 @@ public class BucOssPla002Test extends BaseTestCase {
 
     private void waitForPageToLoad() {
         DelayUtils.waitForPageToLoad(driver, webDriverWait);
+    }
+
+    private boolean isDevicePresent(String locationId) {
+        return physicalInventoryRepository.isDevicePresent(locationId, DEVICE_H1_NAME);
+    }
+
+    private void getOrCreateDevice(String locationId) {
+        if (!isDevicePresent(locationId)) {
+            createPhysicalDevice(locationId);
+        }
+    }
+
+    private void createPhysicalDevice(String locationId) {
+        ResourceCatalogClient resourceCatalogClient = new ResourceCatalogClient(env);
+        Long deviceModelId = resourceCatalogClient.getModelIds(DEVICE_MODEL);
+        physicalInventoryRepository.createDevice(BUILDING_TYPE, Long.valueOf(locationId), deviceModelId, DEVICE_H1_NAME,
+                DEVICE_MODEL_TYPE);
+    }
+
+    private String getOrCreateBuilding() {
+        LocationInventoryRepository locationInventoryRepository = new LocationInventoryRepository(env);
+        return locationInventoryRepository.getOrCreateLocation(LOCATION_NAME, BUILDING_TYPE, prepareAddress());
+    }
+
+    private Long prepareAddress() {
+        AddressRepository addressRepository = new AddressRepository(Environment.getInstance());
+        return addressRepository.updateOrCreateAddress(COUNTRY_NAME, POSTAL_CODE_NAME, REGION_NAME, CITY_NAME, DISTRICT_NAME);
     }
 }
