@@ -43,7 +43,7 @@ public class AttachFileWizardPage extends BasePage {
     }
 
     public void selectDirectory(String directoryName) {
-        addFileWizard.setComponentValue(DIRECTORY_COMPONENT_ID, directoryName);
+        addFileWizard.getComponent(DIRECTORY_COMPONENT_ID).setSingleStringValueContains(directoryName);
     }
 
     public void nextButton() {
