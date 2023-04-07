@@ -274,13 +274,13 @@ public class BucOssNar002Test extends BaseTestCase {
         int rowNumber = validationRulesManagerPage.getRowNumberFromSimpleValueCheckTable(CELLRADIUS);
         SimpleValueCheckDefinition a1Values1 = validationRulesManagerPage.getSimpleValueCheckTableValues(rowNumber);
         a1Values1.getInterfaceName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values1.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.CM_INTERFACE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values1.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.INTERFACE_NAME_COLUMN)));
         a1Values1.getState().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values1.getState().get(), ENABLE_VALUE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.STATE_COLUMN)));
         a1Values1.getObjectType().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values1.getObjectType().get(), CELL, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OBJECT_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values1.getObjectType().get(), CELL, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_TYPE_COLUMN)));
         a1Values1.getAttributeName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values1.getAttributeName().get(), CELLRADIUS, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.ATTRIBUTE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values1.getAttributeName().get(), CELLRADIUS, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_ATTRIBUTE_NAME_COLUMN)));
         huaweiSoftAssert.assertEquals(a1Values1.getOperator(), BETWEEN_OR_EQUAL_TO_OPERATOR, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OPERATION_COLUMN));
         a1Values1.getValue1().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values1.getValue1().get(), CELLRADIUS_VALUE1, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VALUE_1_COLUMN)));
@@ -290,13 +290,13 @@ public class BucOssNar002Test extends BaseTestCase {
         rowNumber = validationRulesManagerPage.getRowNumberFromSimpleValueCheckTable(EMCENABLE);
         SimpleValueCheckDefinition a1Values2 = validationRulesManagerPage.getSimpleValueCheckTableValues(rowNumber);
         a1Values2.getInterfaceName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values2.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.CM_INTERFACE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values2.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.INTERFACE_NAME_COLUMN)));
         a1Values2.getState().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values2.getState().get(), ENABLE_VALUE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.STATE_COLUMN)));
         a1Values2.getObjectType().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values2.getObjectType().get(), EMC, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OBJECT_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values2.getObjectType().get(), EMC, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_TYPE_COLUMN)));
         a1Values2.getAttributeName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values2.getAttributeName().get(), EMCENABLE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.ATTRIBUTE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values2.getAttributeName().get(), EMCENABLE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_ATTRIBUTE_NAME_COLUMN)));
         huaweiSoftAssert.assertEquals(a1Values2.getOperator(), NOT_FOUND_OPERATOR, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OPERATION_COLUMN));
         a1Values2.getValue1().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values2.getValue1().get(), "", String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VALUE_1_COLUMN)));
@@ -306,13 +306,13 @@ public class BucOssNar002Test extends BaseTestCase {
         rowNumber = validationRulesManagerPage.getRowNumberFromSimpleValueCheckTable(TAC);
         SimpleValueCheckDefinition a1Values3 = validationRulesManagerPage.getSimpleValueCheckTableValues(rowNumber);
         a1Values3.getInterfaceName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values3.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.CM_INTERFACE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values3.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.INTERFACE_NAME_COLUMN)));
         a1Values3.getState().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values3.getState().get(), ENABLE_VALUE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.STATE_COLUMN)));
         a1Values3.getObjectType().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values3.getObjectType().get(), EUTRANEXTERNALCELL, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OBJECT_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values3.getObjectType().get(), EUTRANEXTERNALCELL, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_TYPE_COLUMN)));
         a1Values3.getAttributeName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values3.getAttributeName().get(), TAC, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.ATTRIBUTE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values3.getAttributeName().get(), TAC, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_ATTRIBUTE_NAME_COLUMN)));
         huaweiSoftAssert.assertEquals(a1Values3.getOperator(), MORE_THAN_OPERATOR, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OPERATION_COLUMN));
         a1Values3.getValue1().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values3.getValue1().get(), TAC_VALUE1, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VALUE_1_COLUMN)));
@@ -322,13 +322,13 @@ public class BucOssNar002Test extends BaseTestCase {
         rowNumber = validationRulesManagerPage.getRowNumberFromSimpleValueCheckTable(DATE_OF_LAST_SERVICE);
         SimpleValueCheckDefinition a1Values4 = validationRulesManagerPage.getSimpleValueCheckTableValues(rowNumber);
         a1Values4.getInterfaceName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values4.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.CM_INTERFACE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values4.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.INTERFACE_NAME_COLUMN)));
         a1Values4.getState().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values4.getState().get(), ENABLE_VALUE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.STATE_COLUMN)));
         a1Values4.getObjectType().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values4.getObjectType().get(), MBTS_PORT, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OBJECT_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values4.getObjectType().get(), MBTS_PORT, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_TYPE_COLUMN)));
         a1Values4.getAttributeName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values4.getAttributeName().get(), DATE_OF_LAST_SERVICE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.ATTRIBUTE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values4.getAttributeName().get(), DATE_OF_LAST_SERVICE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_ATTRIBUTE_NAME_COLUMN)));
         huaweiSoftAssert.assertEquals(a1Values4.getOperator(), NOT_EMPTY_OPERATOR, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OPERATION_COLUMN));
         a1Values4.getValue1().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values4.getValue1().get(), "", String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VALUE_1_COLUMN)));
@@ -338,13 +338,13 @@ public class BucOssNar002Test extends BaseTestCase {
         rowNumber = validationRulesManagerPage.getRowNumberFromSimpleValueCheckTable(DLBANDWIDTH);
         SimpleValueCheckDefinition a1Values5 = validationRulesManagerPage.getSimpleValueCheckTableValues(rowNumber);
         a1Values5.getInterfaceName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values5.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.CM_INTERFACE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values5.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.INTERFACE_NAME_COLUMN)));
         a1Values5.getState().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values5.getState().get(), ENABLE_VALUE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.STATE_COLUMN)));
         a1Values5.getObjectType().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values5.getObjectType().get(), CELL, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OBJECT_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values5.getObjectType().get(), CELL, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_TYPE_COLUMN)));
         a1Values5.getAttributeName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values5.getAttributeName().get(), DLBANDWIDTH, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.ATTRIBUTE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values5.getAttributeName().get(), DLBANDWIDTH, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_ATTRIBUTE_NAME_COLUMN)));
         huaweiSoftAssert.assertEquals(a1Values5.getOperator(), LESS_THAN_OPERATOR, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OPERATION_COLUMN));
         a1Values5.getValue1().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values5.getValue1().get(), DLBANDWIDTH_VALUE1, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VALUE_1_COLUMN)));
@@ -354,13 +354,13 @@ public class BucOssNar002Test extends BaseTestCase {
         rowNumber = validationRulesManagerPage.getRowNumberFromSimpleValueCheckTable(PRODUCTVERSION);
         SimpleValueCheckDefinition a1Values6 = validationRulesManagerPage.getSimpleValueCheckTableValues(rowNumber);
         a1Values6.getInterfaceName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values6.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.CM_INTERFACE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values6.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.INTERFACE_NAME_COLUMN)));
         a1Values6.getState().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values6.getState().get(), ENABLE_VALUE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.STATE_COLUMN)));
         a1Values6.getObjectType().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values6.getObjectType().get(), ENODEB_FUNCTION_MODULE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OBJECT_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values6.getObjectType().get(), ENODEB_FUNCTION_MODULE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_TYPE_COLUMN)));
         a1Values6.getAttributeName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values6.getAttributeName().get(), PRODUCTVERSION, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.ATTRIBUTE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values6.getAttributeName().get(), PRODUCTVERSION, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_ATTRIBUTE_NAME_COLUMN)));
         huaweiSoftAssert.assertEquals(a1Values6.getOperator(), EQUAL_TO_OPERATOR, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OPERATION_COLUMN));
         a1Values6.getValue1().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values6.getValue1().get(), PRODUCTVERSION_VALUE1, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VALUE_1_COLUMN)));
@@ -370,13 +370,13 @@ public class BucOssNar002Test extends BaseTestCase {
         rowNumber = validationRulesManagerPage.getRowNumberFromSimpleValueCheckTable(PHYCELLID);
         SimpleValueCheckDefinition a1Values7 = validationRulesManagerPage.getSimpleValueCheckTableValues(rowNumber);
         a1Values7.getInterfaceName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values7.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.CM_INTERFACE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values7.getInterfaceName().get(), HUAWEI_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.INTERFACE_NAME_COLUMN)));
         a1Values7.getState().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values7.getState().get(), ENABLE_VALUE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.STATE_COLUMN)));
         a1Values7.getObjectType().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values7.getObjectType().get(), CELL, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OBJECT_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values7.getObjectType().get(), CELL, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_TYPE_COLUMN)));
         a1Values7.getAttributeName().ifPresent(value ->
-                huaweiSoftAssert.assertEquals(a1Values7.getAttributeName().get(), PHYCELLID, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.ATTRIBUTE_NAME_COLUMN)));
+                huaweiSoftAssert.assertEquals(a1Values7.getAttributeName().get(), PHYCELLID, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_ATTRIBUTE_NAME_COLUMN)));
         huaweiSoftAssert.assertEquals(a1Values7.getOperator(), OUTSIDE_OPERATOR, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OPERATION_COLUMN));
         a1Values7.getValue1().ifPresent(value ->
                 huaweiSoftAssert.assertEquals(a1Values7.getValue1().get(), PHYCELLID_VALUE1, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VALUE_1_COLUMN)));
@@ -408,13 +408,13 @@ public class BucOssNar002Test extends BaseTestCase {
         Assert.assertEquals(validationRulesManagerPage.getSimpleValueCheckTable().getTotalCount(), 1, INCORRECT_DEFINITIONS_TOTAL_A1);
         SimpleValueCheckDefinition a1Values = validationRulesManagerPage.getSimpleValueCheckTableValues(0);
         a1Values.getInterfaceName().ifPresent(value ->
-                nokiaSoftAssert.assertEquals(a1Values.getInterfaceName().get(), NOKIA_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.CM_INTERFACE_NAME_COLUMN)));
+                nokiaSoftAssert.assertEquals(a1Values.getInterfaceName().get(), NOKIA_INTERFACE_NAME, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.INTERFACE_NAME_COLUMN)));
         a1Values.getState().ifPresent(value ->
                 nokiaSoftAssert.assertEquals(a1Values.getState().get(), ENABLE_VALUE, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.STATE_COLUMN)));
         a1Values.getObjectType().ifPresent(value ->
-                nokiaSoftAssert.assertEquals(a1Values.getObjectType().get(), PLMN, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OBJECT_NAME_COLUMN)));
+                nokiaSoftAssert.assertEquals(a1Values.getObjectType().get(), PLMN, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_TYPE_COLUMN)));
         a1Values.getAttributeName().ifPresent(value ->
-                nokiaSoftAssert.assertEquals(a1Values.getAttributeName().get(), VERSION, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.ATTRIBUTE_NAME_COLUMN)));
+                nokiaSoftAssert.assertEquals(a1Values.getAttributeName().get(), VERSION, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VS_ATTRIBUTE_NAME_COLUMN)));
         nokiaSoftAssert.assertEquals(a1Values.getOperator(), EQUAL_TO_OPERATOR, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.OPERATION_COLUMN));
         a1Values.getValue1().ifPresent(value ->
                 nokiaSoftAssert.assertEquals(a1Values.getValue1().get(), VERSION_VALUE1, String.format(INCORRECT_VALUE_A1_PATTERN, ValidationRulesManagerPage.VALUE_1_COLUMN)));
@@ -424,33 +424,33 @@ public class BucOssNar002Test extends BaseTestCase {
         Assert.assertEquals(validationRulesManagerPage.getComplexValueCheckTable().getTotalCount(), 1, INCORRECT_DEFINITIONS_TOTAL_A2);
         ComplexValueCheckDefinition a2Values = validationRulesManagerPage.getComplexValueCheckTableValues(0);
         a2Values.getInterfaceName().ifPresent(value ->
-                nokiaSoftAssert.assertEquals(a2Values.getInterfaceName().get(), NOKIA_INTERFACE_NAME, String.format(INCORRECT_VALUE_A2_PATTERN, ValidationRulesManagerPage.CM_INTERFACE_NAME_COLUMN)));
+                nokiaSoftAssert.assertEquals(a2Values.getInterfaceName().get(), NOKIA_INTERFACE_NAME, String.format(INCORRECT_VALUE_A2_PATTERN, ValidationRulesManagerPage.INTERFACE_NAME_COLUMN)));
         a2Values.getState().ifPresent(value ->
                 nokiaSoftAssert.assertEquals(a2Values.getState().get(), ENABLE_VALUE, String.format(INCORRECT_VALUE_A2_PATTERN, ValidationRulesManagerPage.STATE_COLUMN)));
         a2Values.getObjectType().ifPresent(value ->
-                nokiaSoftAssert.assertEquals(a2Values.getObjectType().get(), ANR, String.format(INCORRECT_VALUE_A2_PATTERN, ValidationRulesManagerPage.OBJECT_TYPE_COLUMN)));
+                nokiaSoftAssert.assertEquals(a2Values.getObjectType().get(), ANR, String.format(INCORRECT_VALUE_A2_PATTERN, ValidationRulesManagerPage.VS_TYPE_COLUMN)));
         nokiaSoftAssert.assertEquals(Arrays.stream(a2Values.getRuleDefinitions().split(", ")).sorted().collect(Collectors.toList()), ANR_ATTRIBUTES_LIST, String.format(INCORRECT_VALUE_A2_PATTERN, ValidationRulesManagerPage.CHECKED_ATTRIBUTES_COLUMN));
 
         Assert.assertEquals(validationRulesManagerPage.getObjectCardinalityCheckTable().getTotalCount(), 1, INCORRECT_DEFINITIONS_TOTAL_B1);
         ObjectCardinalityCheckDefinition b1Values = validationRulesManagerPage.getObjectCardinalityCheckTableValues(0);
         b1Values.getInterfaceName().ifPresent(value ->
-                nokiaSoftAssert.assertEquals(b1Values.getInterfaceName().get(), NOKIA_INTERFACE_NAME, String.format(INCORRECT_VALUE_B1_PATTERN, ValidationRulesManagerPage.CM_INTERFACE_NAME_COLUMN)));
+                nokiaSoftAssert.assertEquals(b1Values.getInterfaceName().get(), NOKIA_INTERFACE_NAME, String.format(INCORRECT_VALUE_B1_PATTERN, ValidationRulesManagerPage.INTERFACE_NAME_COLUMN)));
         b1Values.getState().ifPresent(value ->
                 nokiaSoftAssert.assertEquals(b1Values.getState().get(), ENABLE_VALUE, String.format(INCORRECT_VALUE_B1_PATTERN, ValidationRulesManagerPage.STATE_COLUMN)));
-        nokiaSoftAssert.assertEquals(b1Values.getParentObjectType(), LNBTS, String.format(INCORRECT_VALUE_B1_PATTERN, ValidationRulesManagerPage.PARENT_OBJECT_TYPE_COLUMN));
+        nokiaSoftAssert.assertEquals(b1Values.getParentObjectType(), LNBTS, String.format(INCORRECT_VALUE_B1_PATTERN, ValidationRulesManagerPage.PARENT_VS_TYPE_COLUMN));
         b1Values.getChildObjectType().ifPresent(value ->
-                nokiaSoftAssert.assertEquals(b1Values.getChildObjectType().get(), LNADJ, String.format(INCORRECT_VALUE_B1_PATTERN, ValidationRulesManagerPage.CHILD_OBJECT_TYPE_COLUMN)));
+                nokiaSoftAssert.assertEquals(b1Values.getChildObjectType().get(), LNADJ, String.format(INCORRECT_VALUE_B1_PATTERN, ValidationRulesManagerPage.CHILD_VS_TYPE_COLUMN)));
         nokiaSoftAssert.assertEquals(b1Values.getExpectedCardinality(), String.valueOf(LNADJ_CARDINALITY), String.format(INCORRECT_VALUE_B1_PATTERN, ValidationRulesManagerPage.EXPECTED_CARDINALITY_COLUMN));
 
         Assert.assertEquals(validationRulesManagerPage.getCardinalityAndValuesCheckTable().getTotalCount(), 1, INCORRECT_DEFINITIONS_TOTAL_B2);
         CardinalityAndValueCheckDefinition b2Values = validationRulesManagerPage.getCardinalityAndValuesCheckTableValues(0);
         b2Values.getInterfaceName().ifPresent(value ->
-                nokiaSoftAssert.assertEquals(b2Values.getInterfaceName().get(), NOKIA_INTERFACE_NAME, String.format(INCORRECT_VALUE_B2_PATTERN, ValidationRulesManagerPage.CM_INTERFACE_NAME_COLUMN)));
+                nokiaSoftAssert.assertEquals(b2Values.getInterfaceName().get(), NOKIA_INTERFACE_NAME, String.format(INCORRECT_VALUE_B2_PATTERN, ValidationRulesManagerPage.INTERFACE_NAME_COLUMN)));
         b2Values.getState().ifPresent(value ->
                 nokiaSoftAssert.assertEquals(b2Values.getState().get(), ENABLE_VALUE, String.format(INCORRECT_VALUE_B2_PATTERN, ValidationRulesManagerPage.STATE_COLUMN)));
-        nokiaSoftAssert.assertEquals(b2Values.getParentObjectType(), APEQM, String.format(INCORRECT_VALUE_B2_PATTERN, ValidationRulesManagerPage.PARENT_OBJECT_TYPE_COLUMN));
+        nokiaSoftAssert.assertEquals(b2Values.getParentObjectType(), APEQM, String.format(INCORRECT_VALUE_B2_PATTERN, ValidationRulesManagerPage.PARENT_VS_TYPE_COLUMN));
         b2Values.getChildObjectType().ifPresent(value ->
-                nokiaSoftAssert.assertEquals(b2Values.getChildObjectType().get(), RMOD, String.format(INCORRECT_VALUE_B2_PATTERN, ValidationRulesManagerPage.CHILD_OBJECT_TYPE_COLUMN)));
+                nokiaSoftAssert.assertEquals(b2Values.getChildObjectType().get(), RMOD, String.format(INCORRECT_VALUE_B2_PATTERN, ValidationRulesManagerPage.CHILD_VS_TYPE_COLUMN)));
         nokiaSoftAssert.assertEquals(Arrays.stream(b2Values.getRuleDefinitions().split(", ")).sorted().collect(Collectors.toList()), RMOD_ATTRIBUTES_LIST, String.format(INCORRECT_VALUE_B2_PATTERN, ValidationRulesManagerPage.CHECKED_ATTRIBUTES_COLUMN));
         b2Values.getExpectedCardinality().ifPresent(value ->
                 nokiaSoftAssert.assertEquals(b2Values.getExpectedCardinality().get(), String.valueOf(RMOD_CARDINALITY), String.format(INCORRECT_VALUE_B2_PATTERN, ValidationRulesManagerPage.EXPECTED_CARDINALITY_COLUMN)));

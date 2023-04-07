@@ -23,17 +23,16 @@ public class ValidationRulesManagerPage extends BasePage {
     private static final String COMPLEX_VALUE_CHECK_TABLE_ID = "networkParametersAudit_validationRuleManagerIdmultiAttributeRulesTableId";
     private static final String OBJECT_CARDINALITY_CHECK_TABLE_ID = "networkParametersAudit_validationRuleManagerIdcardinalityRulesTableId";
     private static final String CARDINALITY_AND_VALUES_CHECK_ID = "networkParametersAudit_validationRuleManagerIdmultiAttributesAndCardinalityRulesTableId";
-    public static final String CM_INTERFACE_NAME_COLUMN = "CM Interface Name";
+    public static final String INTERFACE_NAME_COLUMN = "Interface Name";
     public static final String STATE_COLUMN = "State";
-    public static final String OBJECT_NAME_COLUMN = "Object Name";
-    public static final String ATTRIBUTE_NAME_COLUMN = "Attribute Name";
+    public static final String VS_TYPE_COLUMN = "VS Type";
+    public static final String VS_ATTRIBUTE_NAME_COLUMN = "VS Attribute Name";
     public static final String OPERATION_COLUMN = "Operation";
     public static final String VALUE_1_COLUMN = "Value 1";
     public static final String VALUE_2_COLUMN = "Value 2";
-    public static final String OBJECT_TYPE_COLUMN = "Object Type";
     public static final String CHECKED_ATTRIBUTES_COLUMN = "Checked Attributes";
-    public static final String PARENT_OBJECT_TYPE_COLUMN = "Parent Object Type";
-    public static final String CHILD_OBJECT_TYPE_COLUMN = "Child Object Type";
+    public static final String PARENT_VS_TYPE_COLUMN = "Parent VS Type";
+    public static final String CHILD_VS_TYPE_COLUMN = "Child VS Type";
     public static final String EXPECTED_CARDINALITY_COLUMN = "Expected Cardinality";
 
     public ValidationRulesManagerPage(WebDriver driver) {
@@ -78,7 +77,7 @@ public class ValidationRulesManagerPage extends BasePage {
     }
 
     public int getRowNumberFromSimpleValueCheckTable(String attributeName) {
-        return getSimpleValueCheckTable().getRowNumber(attributeName, ATTRIBUTE_NAME_COLUMN);
+        return getSimpleValueCheckTable().getRowNumber(attributeName, VS_ATTRIBUTE_NAME_COLUMN);
     }
 
     public void selectSimpleValueCheckTab() {
@@ -124,10 +123,10 @@ public class ValidationRulesManagerPage extends BasePage {
     public SimpleValueCheckDefinition getSimpleValueCheckTableValues(int rowNumber) {
         OldTable table = getSimpleValueCheckTable();
         return SimpleValueCheckDefinition.builder()
-                .setInterfaceName(table.getCellValue(rowNumber, CM_INTERFACE_NAME_COLUMN))
+                .setInterfaceName(table.getCellValue(rowNumber, INTERFACE_NAME_COLUMN))
                 .setState(table.getCellValue(rowNumber, STATE_COLUMN))
-                .setObjectType(table.getCellValue(rowNumber, OBJECT_NAME_COLUMN))
-                .setAttributeName(table.getCellValue(rowNumber, ATTRIBUTE_NAME_COLUMN))
+                .setObjectType(table.getCellValue(rowNumber, VS_TYPE_COLUMN))
+                .setAttributeName(table.getCellValue(rowNumber, VS_ATTRIBUTE_NAME_COLUMN))
                 .setOperator(table.getCellValue(rowNumber, OPERATION_COLUMN))
                 .setValue1(table.getCellValue(rowNumber, VALUE_1_COLUMN))
                 .setValue2(table.getCellValue(rowNumber, VALUE_2_COLUMN))
@@ -137,9 +136,9 @@ public class ValidationRulesManagerPage extends BasePage {
     public ComplexValueCheckDefinition getComplexValueCheckTableValues(int rowNumber) {
         OldTable table = getComplexValueCheckTable();
         return ComplexValueCheckDefinition.builder()
-                .setInterfaceName(table.getCellValue(rowNumber, CM_INTERFACE_NAME_COLUMN))
+                .setInterfaceName(table.getCellValue(rowNumber, INTERFACE_NAME_COLUMN))
                 .setState(table.getCellValue(rowNumber, STATE_COLUMN))
-                .setObjectType(table.getCellValue(rowNumber, OBJECT_TYPE_COLUMN))
+                .setObjectType(table.getCellValue(rowNumber, VS_TYPE_COLUMN))
                 .setRuleDefinitions(table.getCellValue(rowNumber, CHECKED_ATTRIBUTES_COLUMN))
                 .build();
     }
@@ -147,10 +146,10 @@ public class ValidationRulesManagerPage extends BasePage {
     public ObjectCardinalityCheckDefinition getObjectCardinalityCheckTableValues(int rowNumber) {
         OldTable table = getObjectCardinalityCheckTable();
         return ObjectCardinalityCheckDefinition.builder()
-                .setInterfaceName(table.getCellValue(rowNumber, CM_INTERFACE_NAME_COLUMN))
+                .setInterfaceName(table.getCellValue(rowNumber, INTERFACE_NAME_COLUMN))
                 .setState(table.getCellValue(rowNumber, STATE_COLUMN))
-                .setParentObjectType(table.getCellValue(rowNumber, PARENT_OBJECT_TYPE_COLUMN))
-                .setChildObjectType(table.getCellValue(rowNumber, CHILD_OBJECT_TYPE_COLUMN))
+                .setParentObjectType(table.getCellValue(rowNumber, PARENT_VS_TYPE_COLUMN))
+                .setChildObjectType(table.getCellValue(rowNumber, CHILD_VS_TYPE_COLUMN))
                 .setExpectedCardinality(table.getCellValue(rowNumber, EXPECTED_CARDINALITY_COLUMN))
                 .build();
     }
@@ -158,10 +157,10 @@ public class ValidationRulesManagerPage extends BasePage {
     public CardinalityAndValueCheckDefinition getCardinalityAndValuesCheckTableValues(int rowNumber) {
         OldTable table = getCardinalityAndValuesCheckTable();
         return CardinalityAndValueCheckDefinition.builder()
-                .setInterfaceName(table.getCellValue(rowNumber, CM_INTERFACE_NAME_COLUMN))
+                .setInterfaceName(table.getCellValue(rowNumber, INTERFACE_NAME_COLUMN))
                 .setState(table.getCellValue(rowNumber, STATE_COLUMN))
-                .setParentObjectType(table.getCellValue(rowNumber, PARENT_OBJECT_TYPE_COLUMN))
-                .setChildObjectType(table.getCellValue(rowNumber, CHILD_OBJECT_TYPE_COLUMN))
+                .setParentObjectType(table.getCellValue(rowNumber, PARENT_VS_TYPE_COLUMN))
+                .setChildObjectType(table.getCellValue(rowNumber, CHILD_VS_TYPE_COLUMN))
                 .setRuleDefinitions(table.getCellValue(rowNumber, CHECKED_ATTRIBUTES_COLUMN))
                 .setExpectedCardinality(table.getCellValue(rowNumber, EXPECTED_CARDINALITY_COLUMN))
                 .build();
