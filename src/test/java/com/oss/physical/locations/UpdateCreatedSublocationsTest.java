@@ -99,7 +99,7 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
     private static final String DIFFERENT_NAME_MESSAGE = "There is a different name of sublocation than edited value: ";
     private static final String DIFFERENT_MANUFACTURER_MODEL_NAME_MESSAGE = "There is a different value of Rack Manufacturer Model Name than edited value: ";
     private static final String DIFFERENT_MODEL_NAME_MESSAGE = "There is a different componentValue of Rack Model Name than edited value: ";
-    private static final String HIERARCHY_VIEW_HAS_SOME_DATA_MESSAGE = "There are some data on View.";
+    private static final String VIEW_HAS_NO_DATA_MESSAGE = "There is no data on View.";
     private static final String NO_SINGLE_MESSAGE = "There is no single message";
     private static final String NO_SUCCESSFUL_MESSAGE = "There is no successful message";
     private static final String DIFFERENT_CONTENT_MESSAGE = "Returned message contains different content.";
@@ -163,7 +163,7 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
         advancedSearchWidget.getTableComponent().selectRow(0);
         advancedSearchWidget.clickAdd();
 
-        Assert.assertFalse(hierarchyViewPage.hasNoData(), HIERARCHY_VIEW_HAS_SOME_DATA_MESSAGE);
+        Assert.assertFalse(hierarchyViewPage.hasNoData(), VIEW_HAS_NO_DATA_MESSAGE);
 
     }
 
@@ -385,7 +385,7 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
         hierarchyViewPage.selectNodeByPath(getSublocationsPath(rackId));
         hierarchyViewPage.callAction(ActionsContainer.SHOW_ON_GROUP_ID, INVENTORY_VIEW_ID);
 
-        Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty(), HIERARCHY_VIEW_HAS_SOME_DATA_MESSAGE);
+        Assert.assertFalse(newInventoryViewPage.checkIfTableIsEmpty(), VIEW_HAS_NO_DATA_MESSAGE);
     }
 
     @Step("Check Attributes of edited Sublocation on Property Panel in IV")
@@ -415,7 +415,7 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
                 checkSublocationAttributeByValue(SUBLOCATION_NAME + DIMENSION_VALUE, NAME_ID, DIFFERENT_NAME_MESSAGE);
             }
 
-            selectOnlyOneRow(String.valueOf(id));
+            unselectAllNodes();
         }
         softAssert.assertAll();
     }
@@ -446,6 +446,13 @@ public class UpdateCreatedSublocationsTest extends BaseTestCase {
         if (newInventoryViewPage.getMainTable().getSelectedRows().isEmpty()) {
             newInventoryViewPage.selectRow(ID_DATA_COL_ID, value);
         } else {
+            newInventoryViewPage.getMainTable().unselectAllRows();
+            newInventoryViewPage.selectRow(ID_DATA_COL_ID, value);
+        }
+    }
+
+    private void unselectAllNodes() {
+        if (!newInventoryViewPage.getMainTable().getSelectedRows().isEmpty()) {
             newInventoryViewPage.getMainTable().unselectAllRows();
         }
     }
