@@ -17,20 +17,21 @@ import com.oss.untils.Environment;
 
 import java.time.LocalDate;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @author Gabriela Zaranek
  */
 public class PlanningRepository {
-    private final Environment env;
+    private final PlanningClient planningClient;
 
     public PlanningRepository(Environment env) {
-        this.env = env;
+        this.planningClient = new PlanningClient(env);
     }
 
     public Long createProject(String projectName, String projectCode, LocalDate finishDueDate) {
-        PlanningClient planningClient = new PlanningClient(env);
         ProjectDTO projectDTO = ProjectDTO.builder()
                 .code(projectCode)
                 .name(projectName)
@@ -44,7 +45,6 @@ public class PlanningRepository {
     }
 
     public void moveToLive(Long projectId) {
-        PlanningClient planningClient = new PlanningClient(env);
         PlanningPerspectiveDTO perspectiveDTO = PlanningPerspectiveDTO.builder()
                 .perspective(PlanningPerspectiveDTO.PerspectiveEnum.LIVE)
                 .build();
@@ -52,12 +52,10 @@ public class PlanningRepository {
     }
 
     public void cancelProject(Long projectId) {
-        PlanningClient planningClient = new PlanningClient(env);
         planningClient.cancelProject(projectId);
     }
 
     public Long getFirstObjectWithType(String objectType) {
-        PlanningClient planningClient = new PlanningClient(env);
         return planningClient.getObjectByType(objectType, "1", "1")
                 .getObjectIds()
                 .get(0)
@@ -65,24 +63,29 @@ public class PlanningRepository {
     }
 
     public Optional<Long> getObjectIdByTypeAndName(String objectType, String name) {
-        PlanningClient planningClient = new PlanningClient(env);
         return planningClient.findObjectIdByNameAndType(name, objectType);
     }
 
     public void connectRoots(ObjectIdentifier parentObject, ObjectIdentifier childObject, PlanningContext planningContext) {
-        PlanningClient planningClient = new PlanningClient(env);
+        connectRoots(parentObject, Collections.singletonList(childObject), planningContext);
+    }
+
+    public void connectRoots(ObjectIdentifier parentObject, List<ObjectIdentifier> childObjects, PlanningContext planningContext) {
         ObjectIdentifierDTO parent = ObjectIdentifierDTO.builder()
                 .identifier(String.valueOf(parentObject.getId()))
                 .type(parentObject.getType())
                 .build();
-        ObjectIdentifierDTO child = ObjectIdentifierDTO.builder()
-                .identifier(String.valueOf(childObject.getId()))
-                .type(childObject.getType())
-                .build();
-        ConnectionDTO connectionDTO = ConnectionDTO.builder()
-                .parentId(parent)
-                .rootId(child)
-                .build();
-        planningClient.connectRoots(Collections.singletonList(connectionDTO), planningContext);
+        List<ConnectionDTO> connectionDTOs = childObjects.stream().map(childObject -> {
+            ObjectIdentifierDTO child = ObjectIdentifierDTO.builder()
+                    .identifier(String.valueOf(childObject.getId()))
+                    .type(childObject.getType())
+                    .build();
+            return ConnectionDTO.builder()
+                    .parentId(parent)
+                    .rootId(child)
+                    .build();
+        }).collect(Collectors.toList());
+        planningClient.connectRoots(connectionDTOs, planningContext);
     }
 }
+

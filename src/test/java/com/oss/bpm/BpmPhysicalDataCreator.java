@@ -16,6 +16,7 @@ import com.oss.untils.Environment;
 import com.oss.untils.FakeGenerator;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -148,9 +149,8 @@ public class BpmPhysicalDataCreator {
         ObjectIdentifier parentRouter = ObjectIdentifier.ipDevice(Long.valueOf(parentDeviceId));
         ObjectIdentifier childRouter = ObjectIdentifier.ipDevice(Long.valueOf(routerId));
         ObjectIdentifier childChassis = ObjectIdentifier.chassis(Long.valueOf(chassisId));
-        planningRepository.connectRoots(parentRouter, childRouter, planningContext);
-        DelayUtils.sleep(500);
-        planningRepository.connectRoots(parentRouter, childChassis, planningContext);
+        DelayUtils.sleep(1000);
+        planningRepository.connectRoots(parentRouter, Arrays.asList(childRouter, childChassis), planningContext);
         return routerId;
     }
 
