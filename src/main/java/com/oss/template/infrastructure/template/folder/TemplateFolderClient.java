@@ -9,8 +9,11 @@ import java.util.stream.Collectors;
 
 import javax.ws.rs.core.Response;
 
+import com.comarch.oss.cm.templatefiller.api.dto.ParameterValidationDTO;
 import com.comarch.oss.cm.templatefiller.api.dto.TemplateDTO;
 import com.comarch.oss.cm.templatefiller.api.dto.TemplateFolderDTO;
+import com.comarch.oss.cm.templatefiller.api.dto.TemplateParameterContentDTO;
+import com.comarch.oss.cm.templatefiller.api.dto.TemplateParameterDTO;
 import com.jayway.restassured.http.ContentType;
 import com.oss.serviceClient.EnvironmentRequestClient;
 
@@ -93,6 +96,16 @@ public class TemplateFolderClient {
                 .isRemoved(false)
                 .isRollback(false)
                 .verified(true)
+                .addParameters(templateParametersBuilder("Password", TemplateParameterDTO.ValidationTypeEnum.PASSWORD, TemplateParameterDTO.TypeEnum.SYSTEM, ParameterValidationDTO.TypeEnum.PASSWORD, null, null))
+                .addParameters(templateParametersBuilder("DeployDirectory", TemplateParameterDTO.ValidationTypeEnum.NO_VALIDATION, TemplateParameterDTO.TypeEnum.SYSTEM, null, null, "../../data/TemplateCM/deployTest"))
+                .addParameters(templateParametersBuilder("Port", TemplateParameterDTO.ValidationTypeEnum.NO_VALIDATION, TemplateParameterDTO.TypeEnum.SYSTEM, null, null, "22"))
+                .addParameters(templateParametersBuilder("InterfaceName", TemplateParameterDTO.ValidationTypeEnum.NO_VALIDATION, TemplateParameterDTO.TypeEnum.USER, null, null, null))
+                .addParameters(templateParametersBuilder("Protocol", TemplateParameterDTO.ValidationTypeEnum.ALLOWABLE_VALUES, TemplateParameterDTO.TypeEnum.SYSTEM, ParameterValidationDTO.TypeEnum.ALLOWABLE_VALUES, "sftp://", "sftp://"))
+                .addParameters(templateParametersBuilder("DeployFileName", TemplateParameterDTO.ValidationTypeEnum.NO_VALIDATION, TemplateParameterDTO.TypeEnum.SYSTEM, null, null, "ExampleScript.cli"))
+                .addParameters(templateParametersBuilder("Username", TemplateParameterDTO.ValidationTypeEnum.NO_VALIDATION, TemplateParameterDTO.TypeEnum.SYSTEM, null, null, "oss"))
+                .addParameters(templateParametersBuilder("Host", TemplateParameterDTO.ValidationTypeEnum.NO_VALIDATION, TemplateParameterDTO.TypeEnum.SYSTEM, null, null, "10.132.118.207"))
+                .addParameters(templateParametersBuilder("IPAddress", TemplateParameterDTO.ValidationTypeEnum.NO_VALIDATION, TemplateParameterDTO.TypeEnum.USER, null, null, "10.101.10.10"))
+                .addParameters(templateParametersBuilder("Mask", TemplateParameterDTO.ValidationTypeEnum.NO_VALIDATION, TemplateParameterDTO.TypeEnum.USER, null, null, "255.255.255.240"))
                 .folderId(getTemplateFolderId(folderName).orElseThrow(() -> new NoSuchElementException("Cannot get ID from template folder")))
                 .build();
 
@@ -103,6 +116,34 @@ public class TemplateFolderClient {
                 .post(TEMPLATE_REPOSITORY)
                 .then()
                 .statusCode(Response.Status.OK.getStatusCode()).assertThat();
+    }
+
+    private TemplateParameterDTO templateParametersBuilder(String name, TemplateParameterDTO.ValidationTypeEnum validationTypeEnum, TemplateParameterDTO.TypeEnum typeEnum, ParameterValidationDTO.TypeEnum validationType, String validation, String content) {
+        ParameterValidationDTO parameterValidationDTO = null;
+        if (validationType != null) {
+            if (validation != null) {
+                parameterValidationDTO = ParameterValidationDTO.builder()
+                        .type(validationType)
+                        .addAllowableValues(validation)
+                        .build();
+            } else {
+                parameterValidationDTO = ParameterValidationDTO.builder()
+                        .type(validationType)
+                        .build();
+            }
+        }
+
+        TemplateParameterContentDTO templateParameterContentDTO = TemplateParameterContentDTO.builder()
+                .content(Optional.ofNullable(content))
+                .build();
+
+        return TemplateParameterDTO.builder()
+                .name(name)
+                .validationType(validationTypeEnum)
+                .type(typeEnum)
+                .addContent(templateParameterContentDTO)
+                .validation(Optional.ofNullable(parameterValidationDTO))
+                .build();
     }
 
     private Optional<String> getTemplateFolderId(String folderName) {

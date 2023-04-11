@@ -313,7 +313,7 @@ public class BucOssPla002Test extends BaseTestCase {
         SetParametersWizardPage setParametersWizardPage = new SetParametersWizardPage(driver);
         String name = setParametersWizardPage.getName();
         Assert.assertEquals(name, DEVICE_NAME);
-//        setParametersWizardPage.setPassword("oss");//TODO update after OSSCMF-14379 fix
+        setParametersWizardPage.setPassword("oss");
         setParametersWizardPage.setInterfaceName("GE 0");
         setParametersWizardPage.clickFillParameters();
         changeConfigurationPage.deployImmediately();
