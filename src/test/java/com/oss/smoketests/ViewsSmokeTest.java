@@ -90,6 +90,7 @@ public class ViewsSmokeTest extends BaseTestCase {
     @Step("Checking {viewName} page from {groupName}.")
     public void checkView(String viewName, String groupName, String path) {
         if (viewName.equals("Floor Plan and Elevation View") || //View not in OSS Console
+                viewName.equals("Service Monitoring Management") || //opens popup wizard
                 viewName.equals("Network View") || //OSSWEB-10879
                 viewName.equals("Packet Viewer") || //BIGDATA-7857
                 viewName.equals("BPM Workspace") || //OSSPLA-15614
