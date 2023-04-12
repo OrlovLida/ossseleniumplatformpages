@@ -75,7 +75,7 @@ public class GisMapSmokeTest extends BaseTestCase {
     @Description("Check Canvas object bytes size")
     public void checkCanvasObjectSize() {
         String canvasObject = GisViewPage.getGisViewPage(driver, webDriverWait).getCanvasObject();
-        Assert.assertTrue(canvasObject.length() > 2000000, CANVAS_LENGTH_EXCEPTION_PATTERN);
+        Assert.assertTrue(canvasObject.length() > 2000000, String.format(CANVAS_LENGTH_EXCEPTION_PATTERN, canvasObject.length()));
         Assert.assertTrue(generateImage(canvasObject), GENERATE_IMAGE_EXCEPTION);
     }
 
