@@ -15,6 +15,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
+import com.comarch.oss.web.pages.HomePage;
 import com.comarch.oss.web.pages.LoginPage;
 import com.oss.BaseTestCase;
 import com.oss.framework.components.alerts.GlobalNotificationContainer;
@@ -24,7 +25,6 @@ import com.oss.framework.navigation.toolsmanager.Application;
 import com.oss.framework.navigation.toolsmanager.Subcategory;
 import com.oss.framework.navigation.toolsmanager.ToolsManagerWindow;
 import com.oss.framework.utils.DelayUtils;
-import com.oss.pages.platform.HomePage;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
@@ -33,8 +33,8 @@ public class ViewsSmokeTest extends BaseTestCase {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ViewsSmokeTest.class);
     private static final String NOT_RESOLVED_LABEL = "navigation_";
-    private List<String> categories;
     private final List<View> viewList = new ArrayList<>();
+    private List<String> categories;
 
     @BeforeClass
     public void openWebConsole() {
@@ -89,7 +89,11 @@ public class ViewsSmokeTest extends BaseTestCase {
 
     @Step("Checking {viewName} page from {groupName}.")
     public void checkView(String viewName, String groupName, String path) {
-        if (viewName.equals("Floor Plan and Elevation View") || viewName.equals("Network View") || viewName.equals("Packet Viewer") || viewName.equals("Service Monitoring Management")) {
+        if (viewName.equals("Floor Plan and Elevation View") || //View not in OSS Console
+                viewName.equals("Network View") || //OSSWEB-10879
+                viewName.equals("Packet Viewer") || //BIGDATA-7857
+                viewName.equals("BPM Workspace") || //OSSPLA-15614
+                viewName.equals("Workspace")) { //OSSPLA-15614
             LOGGER.warn("{} is on ignored list.", viewName);
             return;
         }
