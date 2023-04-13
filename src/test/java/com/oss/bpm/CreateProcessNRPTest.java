@@ -16,6 +16,7 @@ import com.oss.pages.bpm.processinstances.ProcessOverviewPage;
 import com.oss.pages.bpm.tasks.SetupIntegrationProperties;
 import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.dms.AttachFileWizardPage;
+import com.oss.planning.ObjectIdentifier;
 import com.oss.planning.PlanningContext;
 import com.oss.utils.TestListener;
 import io.qameta.allure.Description;
@@ -39,12 +40,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.oss.bpm.BpmPhysicalDataCreator.CHASSIS_NAME;
 import static com.oss.bpm.BpmPhysicalDataCreator.createBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.createIPDevice;
-import static com.oss.bpm.BpmPhysicalDataCreator.deleteBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.deleteIPDevice;
-import static com.oss.bpm.BpmPhysicalDataCreator.getDeviceChassisId;
+import static com.oss.bpm.BpmPhysicalDataCreator.deleteLocation;
+import static com.oss.bpm.BpmPhysicalDataCreator.getDeviceChassis;
 import static com.oss.bpm.BpmPhysicalDataCreator.nextMaxInt;
 import static com.oss.bpm.BpmPhysicalDataCreator.nextRandomBuildingName;
 import static com.oss.pages.bpm.tasks.TasksPageV2.ACCEPTANCE_TASK;
@@ -63,7 +63,7 @@ import static com.oss.pages.bpm.tasks.TasksPageV2.VERIFICATION_TASK;
 @Listeners({TestListener.class})
 public class CreateProcessNRPTest extends BaseTestCase {
     private static final String DEVICE_MODEL = "7705 SAR-8";
-    private static final String CHASSIS_IDENTIFIER1 = CHASSIS_NAME + " (%s )";
+    private static final String CHASSIS_IDENTIFIER1 = ObjectIdentifier.CHASSIS_TYPE + " (%s )";
     private static final String PLAN_PERSPECTIVE = "PLAN";
     private static final String UPLOAD_FILE_PATH = "bpm/SeleniumTest.txt";
     private static final String CANNOT_LOAD_FILE_EXCEPTION = "Cannot get file path.";
@@ -102,18 +102,18 @@ public class CreateProcessNRPTest extends BaseTestCase {
     private PlanningContext processNRPContext;
     private String processIPCode1;
     private String processIPCode2;
-    private String buildingId;
-    private String device1Id;
-    private String chassis1Id;
-    private String device2Id;
-    private String chassis2Id;
+    private ObjectIdentifier building_main;
+    private ObjectIdentifier device1;
+    private ObjectIdentifier chassis1;
+    private ObjectIdentifier device2;
+    private ObjectIdentifier chassis2;
 
     @BeforeClass
     public void openProcessInstancesPage() {
         softAssert = new SoftAssert();
         ProcessOverviewPage.goToProcessOverviewPage(driver, BASIC_URL).clearAllColumnFilters();
-        buildingId = createBuilding(BUILDING_NAME, LIVE);
-        log.info("Building id: " + buildingId);
+        building_main = createBuilding(BUILDING_NAME, LIVE);
+        log.info("Building: " + building_main);
     }
 
     @Test(priority = 1, description = "Create Network Resource Process")
@@ -148,10 +148,10 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Test(priority = 3, description = "Create First Physical Device", dependsOnMethods = {"startHLPTask"})
     @Description("Create First Physical Device")
     public void createFirstPhysicalDevice() {
-        device1Id = createIPDevice(ROUTER_1_NAME, DEVICE_MODEL, buildingId, processNRPContext);
-        chassis1Id = getDeviceChassisId(device1Id, processNRPContext);
+        device1 = createIPDevice(ROUTER_1_NAME, DEVICE_MODEL, building_main, processNRPContext);
+        chassis1 = getDeviceChassis(device1, processNRPContext);
 
-        log.info(String.format("Device 1 ID: %1$s \nChassis 1 ID: %2$s", device1Id, chassis1Id));
+        log.info(String.format("Device 1: %1$s \nChassis 1: %2$s", device1, chassis1));
 
         ProcessDetailsPage processDetailsPage =
                 ProcessDetailsPage.goToProcessDetailsView(driver, BASIC_URL, processNRPContext.getProjectId());
@@ -218,10 +218,10 @@ public class CreateProcessNRPTest extends BaseTestCase {
     @Test(priority = 7, description = "Create Second Physical Device", dependsOnMethods = {"startLLPTask"})
     @Description("Create Second Physical Device")
     public void createSecondPhysicalDevice() {
-        device2Id = createIPDevice(ROUTER_2_NAME, DEVICE_MODEL, buildingId, processNRPContext);
-        chassis2Id = getDeviceChassisId(device2Id, processNRPContext);
+        device2 = createIPDevice(ROUTER_2_NAME, DEVICE_MODEL, building_main, processNRPContext);
+        chassis2 = getDeviceChassis(device2, processNRPContext);
 
-        log.info(String.format("Device 2 ID: %1$s \nChassis 2 ID: %2$s", device2Id, chassis2Id));
+        log.info(String.format("Device 2: %1$s \nChassis 2: %2$s", device2, chassis2));
 
         ProcessDetailsPage processDetailsPage = ProcessDetailsPage.goToProcessDetailsView(driver, BASIC_URL, processNRPContext.getProjectId());
         Assert.assertEquals(processDetailsPage.getObjectsAmount(), 4, INVALID_OBJECTS_AMOUNT);
@@ -262,13 +262,13 @@ public class CreateProcessNRPTest extends BaseTestCase {
         SetupIntegrationProperties setupIntegrationProperties_IP_1 = SetupIntegrationProperties.builder()
                 .integrationProcessName(processIPName1)
                 .finishedDueDate(TODAY.plusDays(2L))
-                .objectIdentifiers(Arrays.asList(String.format(CHASSIS_IDENTIFIER1, chassis1Id), ROUTER_1_NAME))
+                .objectIdentifiers(Arrays.asList(String.format(CHASSIS_IDENTIFIER1, chassis1.getId()), ROUTER_1_NAME))
                 .build();
 
         SetupIntegrationProperties setupIntegrationProperties_IP_2 = SetupIntegrationProperties.builder()
                 .integrationProcessName(processIPName2)
                 .finishedDueDate(TODAY.plusDays(3L))
-                .objectIdentifiers(Arrays.asList(ROUTER_2_NAME, String.format(CHASSIS_IDENTIFIER1, chassis2Id)))
+                .objectIdentifiers(Arrays.asList(ROUTER_2_NAME, String.format(CHASSIS_IDENTIFIER1, chassis2.getId())))
                 .build();
 
         // given
@@ -525,9 +525,9 @@ public class CreateProcessNRPTest extends BaseTestCase {
         if (!perspectiveChooser.getCurrentPerspective().equalsIgnoreCase(LIVE_PERSPECTIVE))
             perspectiveChooser.setLivePerspective();
 
-        deleteIPDevice(device1Id, LIVE);
-        deleteIPDevice(device2Id, LIVE);
-        deleteBuilding(buildingId, LIVE);
+        deleteIPDevice(device1, LIVE);
+        deleteIPDevice(device2, LIVE);
+        deleteLocation(building_main, LIVE);
     }
 
     private void waitForPageToLoad() {

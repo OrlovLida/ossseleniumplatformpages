@@ -9,6 +9,7 @@ import com.oss.pages.bpm.planning.ProcessDetailsPage;
 import com.oss.pages.bpm.processinstances.PlannersViewPage;
 import com.oss.pages.bpm.tasks.SetupIntegrationProperties;
 import com.oss.pages.bpm.tasks.TasksPageV2;
+import com.oss.planning.ObjectIdentifier;
 import com.oss.planning.PlanningContext;
 import com.oss.planning.validationresults.ValidationResult;
 import io.qameta.allure.Description;
@@ -32,25 +33,22 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.oss.bpm.BpmPhysicalDataCreator.CARD_NAME;
-import static com.oss.bpm.BpmPhysicalDataCreator.CHASSIS_NAME;
-import static com.oss.bpm.BpmPhysicalDataCreator.IP_DEVICE_NAME;
-import static com.oss.bpm.BpmPhysicalDataCreator.LOCATION_TYPE_BUILDING;
 import static com.oss.bpm.BpmPhysicalDataCreator.cancelProject;
 import static com.oss.bpm.BpmPhysicalDataCreator.createBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.createCardForDevice;
 import static com.oss.bpm.BpmPhysicalDataCreator.createIPDevice;
-import static com.oss.bpm.BpmPhysicalDataCreator.createTechnicalIPDeviceInPlan;
-import static com.oss.bpm.BpmPhysicalDataCreator.createValidationResultForRouter;
-import static com.oss.bpm.BpmPhysicalDataCreator.deleteBuilding;
+import static com.oss.bpm.BpmPhysicalDataCreator.createTechnicalPlaTestResource;
+import static com.oss.bpm.BpmPhysicalDataCreator.createValidationResultForObject;
 import static com.oss.bpm.BpmPhysicalDataCreator.deleteIPDevice;
-import static com.oss.bpm.BpmPhysicalDataCreator.getDeviceChassisId;
-import static com.oss.bpm.BpmPhysicalDataCreator.isDeviceVisibleInLIVE;
+import static com.oss.bpm.BpmPhysicalDataCreator.deleteLocation;
+import static com.oss.bpm.BpmPhysicalDataCreator.getDeviceChassis;
+import static com.oss.bpm.BpmPhysicalDataCreator.isObjectPresent;
 import static com.oss.bpm.BpmPhysicalDataCreator.nextMaxInt;
 import static com.oss.bpm.BpmPhysicalDataCreator.nextRandomBuildingName;
+import static com.oss.bpm.BpmPhysicalDataCreator.removeObject;
 import static com.oss.bpm.BpmPhysicalDataCreator.suppressValidationResult;
-import static com.oss.bpm.BpmPhysicalDataCreator.updateBuildingInPlan;
 import static com.oss.bpm.BpmPhysicalDataCreator.updateIPDeviceSerialNumberInPlan;
+import static com.oss.bpm.BpmPhysicalDataCreator.updateLocationInPlan;
 import static com.oss.pages.bpm.planning.ProcessDetailsPage.ACTIVATED_STATUS;
 import static com.oss.pages.bpm.planning.ProcessDetailsPage.OBJECT_TYPE_ATTRIBUTE_NAME;
 import static com.oss.pages.bpm.processinstances.PlannersViewPage.COMPLETED_STATUS;
@@ -82,7 +80,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     private static final String ROUTER_TC3_2_NAME = "TC_3_2_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
     private static final String ROUTER_TC3_3_NAME = "TC_3_3_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
     private static final String ROUTER_TC4_1_NAME = "TC_4_1_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
-    private static final String ROUTER_TC4_T1_NAME = "TC_4_T1_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
+    private static final String RESOURCE_TC4_T1_NAME = "TC_4_T1_Partial_I_Resource_BPM_Selenium_" + nextMaxInt();
     private static final String ROUTER_TC5_1_NAME = "TC_5_1_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
     private static final String ROUTER_TC5_2_NAME = "TC_5_2_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
     private static final String ROUTER_TC5_3_NAME = "TC_5_3_Partial_I_Router_BPM_Selenium_" + nextMaxInt();
@@ -92,12 +90,8 @@ public class PartialIntegrationTest extends BaseTestCase {
     private static final String SELENIUM_VR_TEST_DESCRIPTION = "Selenium vr test description ";
     private static final String UPDATE_DESCRIPTION = "BPM Selenium Update description";
     private static final String UPDATE_SERIAL_NUMBER = "BPM Selenium Update serialNumber " + nextMaxInt();
-    private static final String CHASSIS_IDENTIFIER1 = CHASSIS_NAME + " (%s )";
-    private static final String CARD_IDENTIFIER1 = CARD_NAME + " (%s )";
-    private static final String CHASSIS_IDENTIFIER = CHASSIS_NAME + " (%s)";
-    private static final String CARD_IDENTIFIER = CARD_NAME + " (%s)";
-    private static final String DEVICE_IDENTIFIER = "IP Device (%s)";
-    private static final String BUILDING_IDENTIFIER = LOCATION_TYPE_BUILDING + " (%s)";
+    private static final String CHASSIS_IDENTIFIER1 = ObjectIdentifier.CHASSIS_TYPE + " (%s )";
+    private static final String CARD_IDENTIFIER1 = ObjectIdentifier.CARD_TYPE + " (%s )";
     private static final String CHECKING_PLANNED_OBJECTS_PRESENCE_PATTERN =
             "Object %1$s is not present on Planned Objects Table in '%2$s' test.";
     private static final String CHECKING_OBJECTS_TO_INTEGRATE_PRESENCE_PATTERN =
@@ -109,7 +103,7 @@ public class PartialIntegrationTest extends BaseTestCase {
     private static final String INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN = "Invalid size of Objects to Integrate table in '%s' test.";
     private static final String INVALID_PLANNED_OBJECTS_SIZE_PATTERN = "Invalid size of Planned Objects table in '%s' test.";
     private static final String TASK_COMPLETED_MESSAGE = "Task properly completed.";
-    private static final String DEVICE_NOT_FOUND_IN_LIVE_LOG_PATTERN = "Device %1$s is not found in LIVE perspective in %2$s.";
+    private static final String Object_NOT_FOUND_IN_LIVE_LOG_PATTERN = "Object %1$s is not found in LIVE perspective in %2$s.";
     private static final String PARTIAL_INTEGRATION_ACTION_VISIBLE_LOG_PATTERN = "'Integrate planned changes' context action is available for %s.";
     private static final String UNABLE_ACTIVATE_OBJECTS_MESSAGE = "Unable to accept objects to LIVE perspective due to:\n" +
             "Exist blocking validation results related with objects:\n" +
@@ -119,7 +113,6 @@ public class PartialIntegrationTest extends BaseTestCase {
     private static final String INVALID_PROCESS_STATUS_LOG_PATTERN = "Invalid Process Status for %s.";
     private static final String DEVICE_MODEL = "7705 SAR-8";
     private static final String DEVICE_SLOT_NAME = "MDA 1";
-    private static final String DEVICE_IDENTIFIER1 = IP_DEVICE_NAME + "(%s)";
     private static final String PARTIAL_INTEGRATION_WIZARD_OPEN = "Partial Integration wizard is still opened after '%s' test. It will be closed now.";
     private static final String OBJECTS_NOT_MOVED_TO_IP_MESSAGE = "Some objects are not moved from %s to IPs.";
     private static final String INVALID_OBJECTS_AMOUNT = "Invalid objects amount in Process Details View for %1$s in '%2$s' test.";
@@ -127,35 +120,35 @@ public class PartialIntegrationTest extends BaseTestCase {
     private String testName;
     private SoftAssert softAssert;
     private String nrp_Code_TC_MAIN;
-    private String buildingId_TC_MAIN;
+    private ObjectIdentifier building_TC_MAIN;
     //For TC1
     private String ip_Code_TC1;
-    private String buildingId_TC1_1;        //plan create
-    private String buildingId_TC1_2;        //live create -> plan update
-    private String buildingId_TC1_3;        //live create -> plan delete
+    private ObjectIdentifier building_TC1_1;        //plan create
+    private ObjectIdentifier building_TC1_2;        //live create -> plan update
+    private ObjectIdentifier building_TC1_3;        //live create -> plan delete
     //For TC2
     private String ip_Code_TC2;
-    private String deviceId_TC2_1;          //D1 plan create
-    private String chassisId_TC2_1;
-    private String cardId_TC2_1;            //C1 plan create with deviceId_TC2_1
-    private String deviceId_TC2_2;          //D2 live create -> plan update
-    private String cardId_TC2_2;            //C2 plan add deviceId_TC2_2
-    private String deviceId_TC2_3;          //D3 live create -> plan delete
-    private String chassisId_TC2_3;
+    private ObjectIdentifier device_TC2_1;          //D1 plan create
+    private ObjectIdentifier chassis_TC2_1;
+    private ObjectIdentifier card_TC2_1;            //C1 plan create with deviceId_TC2_1
+    private ObjectIdentifier device_TC2_2;          //D2 live create -> plan update
+    private ObjectIdentifier card_TC2_2;            //C2 plan add deviceId_TC2_2
+    private ObjectIdentifier device_TC2_3;          //D3 live create -> plan delete
+    private ObjectIdentifier chassis_TC2_3;
     //For TC3
     private String ip_Code_TC3_1;           //IP1 FDD = today + 2
     private String ip_Code_TC3_2;           //IP1 FDD = today + 3
-    private String deviceId_TC3_1;          //D1 plan create (IP1)
-    private String chassisId_TC3_1;         //CH1 created with D1 (IP2)
-    private String deviceId_TC3_2;          //D2 live create -> plan update (IP1)
-    private String deviceId_TC3_3;          //D3 live create -> plan delete (IP2)
-    private String chassisId_TC3_3;         //CH3 IP1
-    private String cardId_TC3_2;            //C2 plan add deviceId_TC3_2 (IP2)
+    private ObjectIdentifier device_TC3_1;          //D1 plan create (IP1)
+    private ObjectIdentifier chassis_TC3_1;         //CH1 created with D1 (IP2)
+    private ObjectIdentifier device_TC3_2;          //D2 live create -> plan update (IP1)
+    private ObjectIdentifier device_TC3_3;          //D3 live create -> plan delete (IP2)
+    private ObjectIdentifier chassis_TC3_3;         //CH3 IP1
+    private ObjectIdentifier card_TC3_2;            //C2 plan add deviceId_TC3_2 (IP2)
     //For TC4
     private String ip_Code_TC4;
-    private String deviceId_TC4_1;          //D1 plan create
-    private String chassisId_TC4_1;
-    private String deviceId_TC4_T1;         //D1_1 plan create (TPA for D1)
+    private ObjectIdentifier device_TC4_1;          //D1 plan create
+    private ObjectIdentifier chassis_TC4_1;
+    private ObjectIdentifier plaResource_TC4_T1;  //D1_1 plan create (TPA for D1)
     //For TC5
     private String nrp_Code_TC5_1;
     private PlanningContext nrp_TC5_1_plan;
@@ -165,10 +158,10 @@ public class PartialIntegrationTest extends BaseTestCase {
     private PlanningContext drp_TC5_3_plan;
     //For TC6
     private String ip_Code_TC6;
-    private String deviceId_TC6_1;          //D1 plan create
-    private String chassisId_TC6_1;
-    private String deviceId_TC6_2;          //D2 live create -> plan update
-    private String cardId_TC6_2;            //C2 plan add deviceId_TC6_2
+    private ObjectIdentifier device_TC6_1;          //D1 plan create
+    private ObjectIdentifier chassis_TC6_1;
+    private ObjectIdentifier device_TC6_2;          //D2 live create -> plan update
+    private ObjectIdentifier card_TC6_2;            //C2 plan add deviceId_TC6_2
     private UUID vrId_TC6_1;
     private ValidationResult vr_TC6_1;
 
@@ -199,63 +192,64 @@ public class PartialIntegrationTest extends BaseTestCase {
         log.info("TC5_2 DCP project ID: " + dcp_TC5_2_plan.getProjectId());
 
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
-        buildingId_TC_MAIN = createBuilding(BUILDING_NAME_TC_MAIN, LIVE);
-        log.info("Main Building id: " + buildingId_TC_MAIN);
+        building_TC_MAIN = createBuilding(BUILDING_NAME_TC_MAIN, LIVE);
+        log.info("Main Building: " + building_TC_MAIN);
         tasksPage.startTask(nrp_Code_TC_MAIN, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
         homePage.goToHomePage(driver, BASIC_URL);
 
         //FOR TC1
         waitForPageToLoad();
-        buildingId_TC1_1 = createBuilding(BUILDING_NAME_TC1_1, nrp_TC_MAIN_plan);
-        log.info("TC1_1 Building id: " + buildingId_TC1_1);
-        buildingId_TC1_2 = createBuilding(BUILDING_NAME_TC1_2, LIVE);
-        log.info("TC1_2 Building id: " + buildingId_TC1_2);
-        updateBuildingInPlan(BUILDING_NAME_TC1_2, buildingId_TC1_2, UPDATE_DESCRIPTION, nrp_TC_MAIN_plan);
-        buildingId_TC1_3 = createBuilding(BUILDING_NAME_TC1_3, LIVE);
-        log.info("TC1_3 Building id: " + buildingId_TC1_3);
-        deleteBuilding(buildingId_TC1_3, nrp_TC_MAIN_plan);
+        building_TC1_1 = createBuilding(BUILDING_NAME_TC1_1, nrp_TC_MAIN_plan);
+        log.info("TC1_1 Building: " + building_TC1_1);
+        building_TC1_2 = createBuilding(BUILDING_NAME_TC1_2, LIVE);
+        log.info("TC1_2 Building: " + building_TC1_2);
+        updateLocationInPlan(building_TC1_2, BUILDING_NAME_TC1_2, UPDATE_DESCRIPTION, nrp_TC_MAIN_plan);
+        building_TC1_3 = createBuilding(BUILDING_NAME_TC1_3, LIVE);
+        log.info("TC1_3 Building: " + building_TC1_3);
+        deleteLocation(building_TC1_3, nrp_TC_MAIN_plan);
 
         //FOR TC2
-        deviceId_TC2_1 = createIPDevice(ROUTER_TC2_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
-        chassisId_TC2_1 = getDeviceChassisId(deviceId_TC2_1, nrp_TC_MAIN_plan);
-        cardId_TC2_1 = createCardForDevice(deviceId_TC2_1, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
-        log.info(String.format("TC2_1 Device ID: %1$s, Chassis ID: %2$s, Card ID: %3$s", deviceId_TC2_1, chassisId_TC2_1, cardId_TC2_1));
-        deviceId_TC2_2 = createIPDevice(ROUTER_TC2_2_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
-        updateIPDeviceSerialNumberInPlan(ROUTER_TC2_2_NAME, deviceId_TC2_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
-        cardId_TC2_2 = createCardForDevice(deviceId_TC2_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
-        log.info(String.format("TC2_2 Device ID: %1$s, Card ID: %2$s", deviceId_TC2_2, cardId_TC2_2));
-        deviceId_TC2_3 = createIPDevice(ROUTER_TC2_3_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
-        chassisId_TC2_3 = getDeviceChassisId(deviceId_TC2_3, LIVE);
-        log.info(String.format("TC2_3 Device ID: %1$s, Chassis ID: %2$s", deviceId_TC2_3, chassisId_TC2_3));
-        deleteIPDevice(deviceId_TC2_3, nrp_TC_MAIN_plan);
+        device_TC2_1 = createIPDevice(ROUTER_TC2_1_NAME, DEVICE_MODEL, building_TC_MAIN, nrp_TC_MAIN_plan);
+        chassis_TC2_1 = getDeviceChassis(device_TC2_1, nrp_TC_MAIN_plan);
+        card_TC2_1 = createCardForDevice(device_TC2_1, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
+        log.info(String.format("TC2_1 Device: %1$s, Chassis: %2$s, Card: %3$s", device_TC2_1, chassis_TC2_1, card_TC2_1));
+        device_TC2_2 = createIPDevice(ROUTER_TC2_2_NAME, DEVICE_MODEL, building_TC_MAIN, LIVE);
+        updateIPDeviceSerialNumberInPlan(ROUTER_TC2_2_NAME, device_TC2_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, building_TC_MAIN, nrp_TC_MAIN_plan);
+        card_TC2_2 = createCardForDevice(device_TC2_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
+        log.info(String.format("TC2_2 Device: %1$s, Card: %2$s", device_TC2_2, card_TC2_2));
+        device_TC2_3 = createIPDevice(ROUTER_TC2_3_NAME, DEVICE_MODEL, building_TC_MAIN, LIVE);
+        chassis_TC2_3 = getDeviceChassis(device_TC2_3, LIVE);
+        log.info(String.format("TC2_3 Device: %1$s, Chassis: %2$s", device_TC2_3, chassis_TC2_3));
+        deleteIPDevice(device_TC2_3, nrp_TC_MAIN_plan);
 
         //FOR TC3
-        deviceId_TC3_1 = createIPDevice(ROUTER_TC3_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
-        chassisId_TC3_1 = getDeviceChassisId(deviceId_TC3_1, nrp_TC_MAIN_plan);
-        log.info(String.format("TC3_1 Device ID: %1$s, Chassis ID: %2$s", deviceId_TC3_1, chassisId_TC3_1));
-        deviceId_TC3_2 = createIPDevice(ROUTER_TC3_2_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
-        updateIPDeviceSerialNumberInPlan(ROUTER_TC3_2_NAME, deviceId_TC3_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
-        cardId_TC3_2 = createCardForDevice(deviceId_TC3_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
-        log.info(String.format("TC3_2 Device ID: %1$s, Card ID: %2$s", deviceId_TC3_2, cardId_TC3_2));
-        deviceId_TC3_3 = createIPDevice(ROUTER_TC3_3_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
-        chassisId_TC3_3 = getDeviceChassisId(deviceId_TC3_3, LIVE);
-        log.info(String.format("TC3_3 Device ID: %1$s, Chassis ID: %2$s", deviceId_TC3_3, chassisId_TC3_3));
-        deleteIPDevice(deviceId_TC3_3, nrp_TC_MAIN_plan);
+        device_TC3_1 = createIPDevice(ROUTER_TC3_1_NAME, DEVICE_MODEL, building_TC_MAIN, nrp_TC_MAIN_plan);
+        chassis_TC3_1 = getDeviceChassis(device_TC3_1, nrp_TC_MAIN_plan);
+        log.info(String.format("TC3_1 Device: %1$s, Chassis: %2$s", device_TC3_1, chassis_TC3_1));
+        device_TC3_2 = createIPDevice(ROUTER_TC3_2_NAME, DEVICE_MODEL, building_TC_MAIN, LIVE);
+        updateIPDeviceSerialNumberInPlan(ROUTER_TC3_2_NAME, device_TC3_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, building_TC_MAIN, nrp_TC_MAIN_plan);
+        card_TC3_2 = createCardForDevice(device_TC3_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
+        log.info(String.format("TC3_2 Device: %1$s, Card: %2$s", device_TC3_2, card_TC3_2));
+        device_TC3_3 = createIPDevice(ROUTER_TC3_3_NAME, DEVICE_MODEL, building_TC_MAIN, LIVE);
+        chassis_TC3_3 = getDeviceChassis(device_TC3_3, LIVE);
+        log.info(String.format("TC3_3 Device: %1$s, Chassis: %2$s", device_TC3_3, chassis_TC3_3));
+        deleteIPDevice(device_TC3_3, nrp_TC_MAIN_plan);
 
         //FOR TC4
-        deviceId_TC4_1 = createIPDevice(ROUTER_TC4_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
-        chassisId_TC4_1 = getDeviceChassisId(deviceId_TC4_1, nrp_TC_MAIN_plan);
-        deviceId_TC4_T1 = createTechnicalIPDeviceInPlan(ROUTER_TC4_T1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, deviceId_TC4_1, nrp_TC_MAIN_plan);
-        log.info(String.format("TC4_1 Device ID: %1$s, Chassis ID: %2$s, Technical Device ID: %3$s", deviceId_TC4_1, chassisId_TC4_1, deviceId_TC4_T1));
+        device_TC4_1 = createIPDevice(ROUTER_TC4_1_NAME, DEVICE_MODEL, building_TC_MAIN, nrp_TC_MAIN_plan);
+        chassis_TC4_1 = getDeviceChassis(device_TC4_1, nrp_TC_MAIN_plan);
+        plaResource_TC4_T1 = createTechnicalPlaTestResource(RESOURCE_TC4_T1_NAME, device_TC4_1, nrp_TC_MAIN_plan);
+        log.info(String.format("TC4_1 Device: %1$s, Chassis: %2$s, Technical Resource: %3$s",
+                device_TC4_1, chassis_TC4_1, plaResource_TC4_T1));
 
         //FOR TC6
-        deviceId_TC6_1 = createIPDevice(ROUTER_TC6_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
-        chassisId_TC6_1 = getDeviceChassisId(deviceId_TC6_1, nrp_TC_MAIN_plan);
-        log.info(String.format("TC6_1 Device ID: %1$s, Chassis ID: %2$s", deviceId_TC6_1, chassisId_TC6_1));
-        deviceId_TC6_2 = createIPDevice(ROUTER_TC6_2_NAME, DEVICE_MODEL, buildingId_TC_MAIN, LIVE);
-        updateIPDeviceSerialNumberInPlan(ROUTER_TC6_2_NAME, deviceId_TC6_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, buildingId_TC_MAIN, nrp_TC_MAIN_plan);
-        cardId_TC6_2 = createCardForDevice(deviceId_TC6_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
-        log.info(String.format("TC6_2 Device ID: %1$s, Card ID: %2$s", deviceId_TC6_2, cardId_TC6_2));
+        device_TC6_1 = createIPDevice(ROUTER_TC6_1_NAME, DEVICE_MODEL, building_TC_MAIN, nrp_TC_MAIN_plan);
+        chassis_TC6_1 = getDeviceChassis(device_TC6_1, nrp_TC_MAIN_plan);
+        log.info(String.format("TC6_1 Device: %1$s, Chassis: %2$s", device_TC6_1, chassis_TC6_1));
+        device_TC6_2 = createIPDevice(ROUTER_TC6_2_NAME, DEVICE_MODEL, building_TC_MAIN, LIVE);
+        updateIPDeviceSerialNumberInPlan(ROUTER_TC6_2_NAME, device_TC6_2, DEVICE_MODEL, UPDATE_SERIAL_NUMBER, building_TC_MAIN, nrp_TC_MAIN_plan);
+        card_TC6_2 = createCardForDevice(device_TC6_2, DEVICE_SLOT_NAME, nrp_TC_MAIN_plan);
+        log.info(String.format("TC6_2 Device: %1$s, Card: %2$s", device_TC6_2, card_TC6_2));
 
         TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         tasksPage.proceedNRPToReadyForIntegrationTask(nrp_Code_TC_MAIN);
@@ -271,12 +265,12 @@ public class PartialIntegrationTest extends BaseTestCase {
                 .finishedDueDate(TODAY)
                 .objectIdentifiers(Arrays.asList(
                         ROUTER_TC2_1_NAME,
-                        String.format(CHASSIS_IDENTIFIER1, chassisId_TC2_1),
-                        String.format(CARD_IDENTIFIER1, cardId_TC2_1),
+                        String.format(CHASSIS_IDENTIFIER1, chassis_TC2_1.getId()),
+                        String.format(CARD_IDENTIFIER1, card_TC2_1.getId()),
                         ROUTER_TC2_2_NAME,
-                        String.format(CARD_IDENTIFIER1, cardId_TC2_2),
+                        String.format(CARD_IDENTIFIER1, card_TC2_2.getId()),
                         ROUTER_TC2_3_NAME,
-                        String.format(CHASSIS_IDENTIFIER1, chassisId_TC2_3)))
+                        String.format(CHASSIS_IDENTIFIER1, chassis_TC2_3.getId())))
                 .build();
 
         SetupIntegrationProperties setupIntegrationProperties_IP_TC3_1 = SetupIntegrationProperties.builder()
@@ -285,22 +279,22 @@ public class PartialIntegrationTest extends BaseTestCase {
                 .objectIdentifiers(Arrays.asList(
                         ROUTER_TC3_1_NAME,
                         ROUTER_TC3_2_NAME,
-                        String.format(CHASSIS_IDENTIFIER1, chassisId_TC3_3)))
+                        String.format(CHASSIS_IDENTIFIER1, chassis_TC3_3.getId())))
                 .build();
 
         SetupIntegrationProperties setupIntegrationProperties_IP_TC3_2 = SetupIntegrationProperties.builder()
                 .integrationProcessName(IP_TC3_2_NAME)
                 .finishedDueDate(TODAY.plusDays(3L))
                 .objectIdentifiers(Arrays.asList(
-                        String.format(CHASSIS_IDENTIFIER1, chassisId_TC3_1),
-                        String.format(CARD_IDENTIFIER1, cardId_TC3_2),
+                        String.format(CHASSIS_IDENTIFIER1, chassis_TC3_1.getId()),
+                        String.format(CARD_IDENTIFIER1, card_TC3_2.getId()),
                         ROUTER_TC3_3_NAME))
                 .build();
 
         SetupIntegrationProperties setupIntegrationProperties_IP_TC4 = SetupIntegrationProperties.builder()
                 .integrationProcessName(IP_TC4_NAME)
                 .finishedDueDate(TODAY)
-                .objectIdentifiers(Arrays.asList(ROUTER_TC4_1_NAME, String.format(CHASSIS_IDENTIFIER1, chassisId_TC4_1)))
+                .objectIdentifiers(Arrays.asList(ROUTER_TC4_1_NAME, String.format(CHASSIS_IDENTIFIER1, chassis_TC4_1.getId())))
                 .build();
 
         SetupIntegrationProperties setupIntegrationProperties_IP_TC6 = SetupIntegrationProperties.builder()
@@ -308,9 +302,9 @@ public class PartialIntegrationTest extends BaseTestCase {
                 .finishedDueDate(TODAY)
                 .objectIdentifiers(Arrays.asList(
                         ROUTER_TC6_1_NAME,
-                        String.format(CHASSIS_IDENTIFIER1, chassisId_TC6_1),
+                        String.format(CHASSIS_IDENTIFIER1, chassis_TC6_1.getId()),
                         ROUTER_TC6_2_NAME,
-                        String.format(CARD_IDENTIFIER1, cardId_TC6_2)))
+                        String.format(CARD_IDENTIFIER1, card_TC6_2.getId())))
                 .build();
 
         List<String> ipCodes = tasksPage.setupIntegration(nrp_Code_TC_MAIN, NRP_TC_MAIN_NAME,
@@ -337,11 +331,11 @@ public class PartialIntegrationTest extends BaseTestCase {
         tasksPage.startTask(dcp_Code_TC5_2, TasksPageV2.CORRECT_DATA_TASK);
         waitForPageToLoad();
         //D2 plan create in dcp
-        createIPDevice(ROUTER_TC5_2_NAME, DEVICE_MODEL, buildingId_TC_MAIN, dcp_TC5_2_plan);
+        createIPDevice(ROUTER_TC5_2_NAME, DEVICE_MODEL, building_TC_MAIN, dcp_TC5_2_plan);
         tasksPage.startTask(nrp_Code_TC5_1, TasksPageV2.HIGH_LEVEL_PLANNING_TASK);
         waitForPageToLoad();
         //D1 plan create in nrp
-        createIPDevice(ROUTER_TC5_1_NAME, DEVICE_MODEL, buildingId_TC_MAIN, nrp_TC5_1_plan);
+        createIPDevice(ROUTER_TC5_1_NAME, DEVICE_MODEL, building_TC_MAIN, nrp_TC5_1_plan);
         drp_Code_TC5_3 = tasksPage.createDRPProcess(nrp_Code_TC5_1, TasksPageV2.HIGH_LEVEL_PLANNING_TASK, DRP_TC5_NAME);
         log.info(String.format("TC5_3 DRP Code: %s", drp_Code_TC5_3));
         tasksPage.startTask(drp_Code_TC5_3, TasksPageV2.PLANNING_TASK);
@@ -349,7 +343,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         drp_TC5_3_plan = PlanningContext.plan(plannersViewPage.getProjectId(drp_Code_TC5_3));
         //D3 plan create in drp
-        createIPDevice(ROUTER_TC5_3_NAME, DEVICE_MODEL, buildingId_TC_MAIN, drp_TC5_3_plan);
+        createIPDevice(ROUTER_TC5_3_NAME, DEVICE_MODEL, building_TC_MAIN, drp_TC5_3_plan);
 
         //GET IP6 plan context
         PlanningContext ip_TC6_plan = PlanningContext.plan(plannersViewPage.getProjectId(ip_Code_TC6));
@@ -365,9 +359,9 @@ public class PartialIntegrationTest extends BaseTestCase {
                 .description(SELENIUM_VR_TEST_DESCRIPTION + nextMaxInt())
                 .severity(ValidationResult.Severity.LOW)
                 .build();
-        vrId_TC6_1 = createValidationResultForRouter(deviceId_TC6_1, vr_TC6_1, ip_TC6_plan);
+        vrId_TC6_1 = createValidationResultForObject(device_TC6_1, vr_TC6_1, ip_TC6_plan);
         log.info("TC6_1 VR uuid: " + vrId_TC6_1);
-        UUID vrId_TC6_2 = createValidationResultForRouter(deviceId_TC6_2, vr_TC6_2, ip_TC6_plan);
+        UUID vrId_TC6_2 = createValidationResultForObject(device_TC6_2, vr_TC6_2, ip_TC6_plan);
         log.info("TC6_2 VR uuid: " + vrId_TC6_2);
     }
 
@@ -393,9 +387,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         List<String> plannedObjectsIdentifiers = partialIntegrationWizardPage.getPlannedObjectsIdentifiers();
         Assert.assertEquals(plannedObjectsIdentifiers.size(), 3,
                 String.format(INVALID_PLANNED_OBJECTS_SIZE_PATTERN, testName));
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, buildingId_TC1_1, BUILDING_IDENTIFIER);
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, buildingId_TC1_2, BUILDING_IDENTIFIER);
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, buildingId_TC1_3, BUILDING_IDENTIFIER);
+        assertPlannedObjectsPresence(plannedObjectsIdentifiers, building_TC1_1, building_TC1_2, building_TC1_3);
 
         partialIntegrationWizardPage.moveObjectsToIntegration(
                 Arrays.asList(BUILDING_NAME_TC1_1, BUILDING_NAME_TC1_2, BUILDING_NAME_TC1_3));
@@ -403,9 +395,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         List<String> objectsToIntegrateIdentifiers = partialIntegrationWizardPage.getObjectsToIntegrationIdentifiers();
         Assert.assertEquals(objectsToIntegrateIdentifiers.size(), 3,
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, testName));
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, buildingId_TC1_1, BUILDING_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, buildingId_TC1_2, BUILDING_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, buildingId_TC1_3, BUILDING_IDENTIFIER);
+        assertObjectsToIntegratePresence(objectsToIntegrateIdentifiers, building_TC1_1, building_TC1_2, building_TC1_3);
 
         partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
@@ -416,9 +406,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         tasksPage.startTask(ip_Code_TC1, TasksPageV2.SCOPE_DEFINITION_TASK);
         ProcessDetailsPage processDetailsPage =
                 tasksPage.findTask(ip_Code_TC1, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton();
-        assertActivatedObjectStatus(buildingId_TC1_1, BUILDING_IDENTIFIER);
-        assertActivatedObjectStatus(buildingId_TC1_2, BUILDING_IDENTIFIER);
-        assertActivatedObjectStatus(buildingId_TC1_3, BUILDING_IDENTIFIER);
+        assertActivatedObjectsStatuses(building_TC1_1, building_TC1_2, building_TC1_3);
         processDetailsPage.closeProcessDetailsPromt();
 
         //Complete IP
@@ -444,20 +432,15 @@ public class PartialIntegrationTest extends BaseTestCase {
         List<String> plannedObjectsIdentifiers = partialIntegrationWizardPage.getPlannedObjectsIdentifiers();
         Assert.assertEquals(plannedObjectsIdentifiers.size(), 4,
                 String.format(INVALID_PLANNED_OBJECTS_SIZE_PATTERN, testName));
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, deviceId_TC2_1, DEVICE_IDENTIFIER);
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, deviceId_TC2_2, DEVICE_IDENTIFIER);
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, cardId_TC2_2, CARD_IDENTIFIER);
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, chassisId_TC2_3, CHASSIS_IDENTIFIER);
+        assertPlannedObjectsPresence(plannedObjectsIdentifiers, device_TC2_1, device_TC2_2, card_TC2_2, chassis_TC2_3);
 
-        partialIntegrationWizardPage.moveObjectToIntegration(cardId_TC2_1);
+        partialIntegrationWizardPage.moveObjectToIntegration(getObjectID(card_TC2_1));
 
         // check if the 2_1 router and chassis moved also with card
         List<String> objectsToIntegrateIdentifiers = partialIntegrationWizardPage.getObjectsToIntegrationIdentifiers();
         Assert.assertEquals(objectsToIntegrateIdentifiers.size(), 3,
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, testName));
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, cardId_TC2_1, CARD_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, chassisId_TC2_1, CHASSIS_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC2_1, DEVICE_IDENTIFIER);
+        assertObjectsToIntegratePresence(objectsToIntegrateIdentifiers, card_TC2_1, chassis_TC2_1, device_TC2_1);
 
         //activate router, chassis and card 2_1
         partialIntegrationWizardPage.apply();
@@ -465,14 +448,13 @@ public class PartialIntegrationTest extends BaseTestCase {
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
         partialIntegrationWizardPage = plannersViewPage.selectProcess(ip_Code_TC2).openIntegratePlannedChangesWizard();
-        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(deviceId_TC2_2, chassisId_TC2_3));
+        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(getObjectID(device_TC2_2), getObjectID(chassis_TC2_3)));
 
         // check if the 2_2 router and 2_3 chassis moved alone
         objectsToIntegrateIdentifiers = partialIntegrationWizardPage.getObjectsToIntegrationIdentifiers();
         Assert.assertEquals(objectsToIntegrateIdentifiers.size(), 2,
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, testName));
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC2_2, DEVICE_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, chassisId_TC2_3, CHASSIS_IDENTIFIER);
+        assertObjectsToIntegratePresence(objectsToIntegrateIdentifiers, device_TC2_2, chassis_TC2_3);
 
         //activate router 2_2 and chassis 2_3
         partialIntegrationWizardPage.apply();
@@ -482,12 +464,11 @@ public class PartialIntegrationTest extends BaseTestCase {
         partialIntegrationWizardPage = plannersViewPage.selectProcess(ip_Code_TC2).openIntegratePlannedChangesWizard();
 
         //activate rest objects
-        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(cardId_TC2_2, deviceId_TC2_3));
+        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(getObjectID(card_TC2_2), getObjectID(device_TC2_3)));
         objectsToIntegrateIdentifiers = partialIntegrationWizardPage.getObjectsToIntegrationIdentifiers();
         Assert.assertEquals(objectsToIntegrateIdentifiers.size(), 2,
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, testName));
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, cardId_TC2_2, CARD_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC2_3, DEVICE_IDENTIFIER);
+        assertObjectsToIntegratePresence(objectsToIntegrateIdentifiers, card_TC2_2, device_TC2_3);
 
         partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
@@ -498,13 +479,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         tasksPage.startTask(ip_Code_TC2, TasksPageV2.SCOPE_DEFINITION_TASK);
         ProcessDetailsPage processDetailsPage =
                 tasksPage.findTask(ip_Code_TC2, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton();
-        assertActivatedObjectStatus(deviceId_TC2_1, DEVICE_IDENTIFIER);
-        assertActivatedObjectStatus(chassisId_TC2_1, CHASSIS_IDENTIFIER);
-        assertActivatedObjectStatus(cardId_TC2_1, CARD_IDENTIFIER);
-        assertActivatedObjectStatus(deviceId_TC2_2, DEVICE_IDENTIFIER);
-        assertActivatedObjectStatus(cardId_TC2_2, CARD_IDENTIFIER);
-        assertActivatedObjectStatus(deviceId_TC2_3, DEVICE_IDENTIFIER);
-        assertActivatedObjectStatus(chassisId_TC2_3, CHASSIS_IDENTIFIER);
+        assertActivatedObjectsStatuses(device_TC2_1, chassis_TC2_1, card_TC2_1, device_TC2_2, card_TC2_2, device_TC2_3, chassis_TC2_3);
         processDetailsPage.closeProcessDetailsPromt();
 
         //Complete IP
@@ -532,7 +507,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         List<String> plannedObjectsIdentifiers = partialIntegrationWizardPage.getPlannedObjectsIdentifiers();
         Assert.assertEquals(plannedObjectsIdentifiers.size(), 1,
                 String.format(INVALID_PLANNED_OBJECTS_SIZE_PATTERN, testName));
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, cardId_TC3_2, CARD_IDENTIFIER);
+        assertPlannedObjectsPresence(plannedObjectsIdentifiers, card_TC3_2);
         partialIntegrationWizardPage.closePrompt();
 
         //check if prerequisites: router 3_1 and chassis 3_3 are visible in wizard
@@ -540,18 +515,15 @@ public class PartialIntegrationTest extends BaseTestCase {
         plannedObjectsIdentifiers = partialIntegrationWizardPage.getPlannedObjectsIdentifiers();
         Assert.assertEquals(plannedObjectsIdentifiers.size(), 3,
                 String.format(INVALID_PLANNED_OBJECTS_SIZE_PATTERN, testName));
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, deviceId_TC3_1, DEVICE_IDENTIFIER);
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, deviceId_TC3_2, DEVICE_IDENTIFIER);
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, chassisId_TC3_3, CHASSIS_IDENTIFIER);
+        assertPlannedObjectsPresence(plannedObjectsIdentifiers, device_TC3_1, device_TC3_2, chassis_TC3_3);
 
         //activate objects from IP1
-        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(deviceId_TC3_1, deviceId_TC3_2, chassisId_TC3_3));
+        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(
+                getObjectID(device_TC3_1), getObjectID(device_TC3_2), getObjectID(chassis_TC3_3)));
         List<String> objectsToIntegrateIdentifiers = partialIntegrationWizardPage.getObjectsToIntegrationIdentifiers();
         Assert.assertEquals(objectsToIntegrateIdentifiers.size(), 3,
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, testName));
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC3_1, DEVICE_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC3_2, DEVICE_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, chassisId_TC3_3, CHASSIS_IDENTIFIER);
+        assertObjectsToIntegratePresence(objectsToIntegrateIdentifiers, device_TC3_1, device_TC3_2, chassis_TC3_3);
         partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
@@ -561,18 +533,15 @@ public class PartialIntegrationTest extends BaseTestCase {
         plannedObjectsIdentifiers = partialIntegrationWizardPage.getPlannedObjectsIdentifiers();
         Assert.assertEquals(plannedObjectsIdentifiers.size(), 3,
                 String.format(INVALID_PLANNED_OBJECTS_SIZE_PATTERN, testName));
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, chassisId_TC3_1, CHASSIS_IDENTIFIER);
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, cardId_TC3_2, CARD_IDENTIFIER);
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, deviceId_TC3_3, DEVICE_IDENTIFIER);
+        assertPlannedObjectsPresence(plannedObjectsIdentifiers, chassis_TC3_1, card_TC3_2, device_TC3_3);
 
         //activate objects from IP2
-        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(chassisId_TC3_1, cardId_TC3_2, deviceId_TC3_3));
+        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(
+                getObjectID(chassis_TC3_1), getObjectID(card_TC3_2), getObjectID(device_TC3_3)));
         objectsToIntegrateIdentifiers = partialIntegrationWizardPage.getObjectsToIntegrationIdentifiers();
         Assert.assertEquals(objectsToIntegrateIdentifiers.size(), 3,
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, testName));
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, chassisId_TC3_1, CHASSIS_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, cardId_TC3_2, CARD_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC3_3, DEVICE_IDENTIFIER);
+        assertObjectsToIntegratePresence(objectsToIntegrateIdentifiers, chassis_TC3_1, card_TC3_2, device_TC3_3);
         partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
@@ -582,9 +551,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         tasksPage.startTask(ip_Code_TC3_1, TasksPageV2.SCOPE_DEFINITION_TASK);
         ProcessDetailsPage processDetailsPage =
                 tasksPage.findTask(ip_Code_TC3_1, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton();
-        assertActivatedObjectStatus(deviceId_TC3_1, DEVICE_IDENTIFIER);
-        assertActivatedObjectStatus(deviceId_TC3_2, DEVICE_IDENTIFIER);
-        assertActivatedObjectStatus(chassisId_TC3_3, CHASSIS_IDENTIFIER);
+        assertActivatedObjectsStatuses(device_TC3_1, device_TC3_2, chassis_TC3_3);
         processDetailsPage.closeProcessDetailsPromt();
         completeIP(ip_Code_TC3_1);
 
@@ -592,9 +559,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         tasksPage.startTask(ip_Code_TC3_2, TasksPageV2.SCOPE_DEFINITION_TASK);
         processDetailsPage =
                 tasksPage.findTask(ip_Code_TC3_2, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton().clearAllColumnFilters();
-        assertActivatedObjectStatus(chassisId_TC3_1, CHASSIS_IDENTIFIER);
-        assertActivatedObjectStatus(cardId_TC3_2, CARD_IDENTIFIER);
-        assertActivatedObjectStatus(deviceId_TC3_3, DEVICE_IDENTIFIER);
+        assertActivatedObjectsStatuses(chassis_TC3_1, card_TC3_2, device_TC3_3);
         processDetailsPage.closeProcessDetailsPromt();
         completeIP(ip_Code_TC3_2);
     }
@@ -604,10 +569,10 @@ public class PartialIntegrationTest extends BaseTestCase {
     public void integrateObjectsWithTechnicalPlannedActions() {
         /*
                 Objects:
-                - Router 2_1 CREATE
-                    - Chassis 2_1 CREATE
-                - Router 2_2 CREATE (hidden, as TechnicalPA of Router 2_1)
-                    - Chassis 2_1 CREATE (hidden, as TechnicalPA of Router 2_1)
+                - Router 4_1 CREATE
+                    - Chassis 4_1 CREATE
+                - PlaTestResource 4_T1 CREATE (hidden, as TechnicalPA of Router 4_1)
+
          */
         PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         PartialIntegrationWizardPage partialIntegrationWizardPage = plannersViewPage.selectProcess(ip_Code_TC4).openIntegratePlannedChangesWizard();
@@ -616,15 +581,14 @@ public class PartialIntegrationTest extends BaseTestCase {
         List<String> plannedObjectsIdentifiers = partialIntegrationWizardPage.getPlannedObjectsIdentifiers();
         Assert.assertEquals(plannedObjectsIdentifiers.size(), 1,
                 String.format(INVALID_PLANNED_OBJECTS_SIZE_PATTERN, testName));
-        assertPlannedObjectPresence(plannedObjectsIdentifiers, deviceId_TC4_1, DEVICE_IDENTIFIER);
+        assertPlannedObjectsPresence(plannedObjectsIdentifiers, device_TC4_1);
 
         //activate objects
-        partialIntegrationWizardPage.moveObjectToIntegration(chassisId_TC4_1);
+        partialIntegrationWizardPage.moveObjectToIntegration(getObjectID(chassis_TC4_1));
         List<String> objectsToIntegrateIdentifiers = partialIntegrationWizardPage.getObjectsToIntegrationIdentifiers();
         Assert.assertEquals(objectsToIntegrateIdentifiers.size(), 2,
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, testName));
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC4_1, DEVICE_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, chassisId_TC4_1, CHASSIS_IDENTIFIER);
+        assertObjectsToIntegratePresence(objectsToIntegrateIdentifiers, device_TC4_1, chassis_TC4_1);
         partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
@@ -636,13 +600,12 @@ public class PartialIntegrationTest extends BaseTestCase {
                 tasksPage.findTask(ip_Code_TC4, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton();
         softAssert.assertEquals(processDetailsPage.getObjectsAmount(), 2,
                 String.format(INVALID_OBJECTS_AMOUNT, ip_Code_TC4, testName));
-        assertActivatedObjectStatus(deviceId_TC4_1, DEVICE_IDENTIFIER);
-        assertActivatedObjectStatus(chassisId_TC4_1, CHASSIS_IDENTIFIER);
+        assertActivatedObjectsStatuses(device_TC4_1, chassis_TC4_1);
         processDetailsPage.closeProcessDetailsPromt();
 
-        //check if Technical router 2_2 is activated too
-        softAssert.assertTrue(isDeviceVisibleInLIVE(ROUTER_TC4_T1_NAME, buildingId_TC_MAIN),
-                String.format(DEVICE_NOT_FOUND_IN_LIVE_LOG_PATTERN, ROUTER_TC4_T1_NAME, testName));
+        //check if Technical resource 2_2 is activated too
+        softAssert.assertTrue(isObjectPresent(plaResource_TC4_T1, LIVE),
+                String.format(Object_NOT_FOUND_IN_LIVE_LOG_PATTERN, plaResource_TC4_T1, testName));
 
         completeIP(ip_Code_TC4);
     }
@@ -676,14 +639,14 @@ public class PartialIntegrationTest extends BaseTestCase {
         PartialIntegrationWizardPage partialIntegrationWizardPage = plannersViewPage.selectProcess(ip_Code_TC6).openIntegratePlannedChangesWizard();
 
         //try to activate Router 6_1 (Error message should appear)
-        partialIntegrationWizardPage.moveObjectToIntegration(deviceId_TC6_1);
+        partialIntegrationWizardPage.moveObjectToIntegration(getObjectID(device_TC6_1));
         List<String> objectsToIntegrateIdentifiers = partialIntegrationWizardPage.getObjectsToIntegrationIdentifiers();
         Assert.assertEquals(objectsToIntegrateIdentifiers.size(), 1,
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, testName));
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC6_1, DEVICE_IDENTIFIER);
+        assertObjectsToIntegratePresence(objectsToIntegrateIdentifiers, device_TC6_1);
         partialIntegrationWizardPage.partialIntegrationWizard.clickButtonById(PartialIntegrationWizardPage.APPLY_BUTTON_ID);
 
-        assertSystemMessage(String.format(UNABLE_ACTIVATE_OBJECTS_MESSAGE, String.format(DEVICE_IDENTIFIER1, deviceId_TC6_1),
+        assertSystemMessage(String.format(UNABLE_ACTIVATE_OBJECTS_MESSAGE, device_TC6_1.toString(),
                         vr_TC6_1.getType(), vr_TC6_1.getDescription()),
                 SystemMessageContainer.MessageType.DANGER, String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
@@ -695,13 +658,12 @@ public class PartialIntegrationTest extends BaseTestCase {
 
         //activate rest objects
         partialIntegrationWizardPage = plannersViewPage.selectProcess(ip_Code_TC6).openIntegratePlannedChangesWizard();
-        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(chassisId_TC6_1, deviceId_TC6_2, cardId_TC6_2));
+        partialIntegrationWizardPage.moveObjectsToIntegration(Arrays.asList(
+                getObjectID(chassis_TC6_1), getObjectID(device_TC6_2), getObjectID(card_TC6_2)));
         objectsToIntegrateIdentifiers = partialIntegrationWizardPage.getObjectsToIntegrationIdentifiers();
         Assert.assertEquals(objectsToIntegrateIdentifiers.size(), 3,
                 String.format(INVALID_OBJECTS_TO_INTEGRATE_SIZE_PATTERN, testName));
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, chassisId_TC6_1, CHASSIS_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, deviceId_TC6_2, DEVICE_IDENTIFIER);
-        assertObjectToIntegratePresence(objectsToIntegrateIdentifiers, cardId_TC6_2, CARD_IDENTIFIER);
+        assertObjectsToIntegratePresence(objectsToIntegrateIdentifiers, chassis_TC6_1, device_TC6_2, card_TC6_2);
         partialIntegrationWizardPage.apply();
         assertSystemMessage(SUCCESS_INTEGRATE_MESSAGE, SystemMessageContainer.MessageType.SUCCESS,
                 String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
@@ -711,10 +673,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         tasksPage.startTask(ip_Code_TC6, TasksPageV2.SCOPE_DEFINITION_TASK);
         ProcessDetailsPage processDetailsPage =
                 tasksPage.findTask(ip_Code_TC6, TasksPageV2.SCOPE_DEFINITION_TASK).clickPlanViewButton();
-        assertActivatedObjectStatus(deviceId_TC6_1, DEVICE_IDENTIFIER);
-        assertActivatedObjectStatus(chassisId_TC6_1, CHASSIS_IDENTIFIER);
-        assertActivatedObjectStatus(deviceId_TC6_2, DEVICE_IDENTIFIER);
-        assertActivatedObjectStatus(cardId_TC6_2, CARD_IDENTIFIER);
+        assertActivatedObjectsStatuses(device_TC6_1, chassis_TC6_1, device_TC6_2, card_TC6_2);
         processDetailsPage.closeProcessDetailsPromt();
         completeIP(ip_Code_TC6);
     }
@@ -764,20 +723,20 @@ public class PartialIntegrationTest extends BaseTestCase {
         PlannersViewPage plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
 
         //TC1 clean
-        deleteBuilding(buildingId_TC1_1, LIVE);
-        deleteBuilding(buildingId_TC1_2, LIVE);
+        deleteLocation(building_TC1_1, LIVE);
+        deleteLocation(building_TC1_2, LIVE);
 
         //TC2 clean
-        deleteIPDevice(deviceId_TC2_1, LIVE);
-        deleteIPDevice(deviceId_TC2_2, LIVE);
+        deleteIPDevice(device_TC2_1, LIVE);
+        deleteIPDevice(device_TC2_2, LIVE);
 
         //TC3 clean
-        deleteIPDevice(deviceId_TC3_1, LIVE);
-        deleteIPDevice(deviceId_TC3_2, LIVE);
+        deleteIPDevice(device_TC3_1, LIVE);
+        deleteIPDevice(device_TC3_2, LIVE);
 
         //TC4 clean
-        deleteIPDevice(deviceId_TC4_1, LIVE);
-        deleteIPDevice(deviceId_TC4_T1, LIVE);
+        deleteIPDevice(device_TC4_1, LIVE);
+        removeObject(plaResource_TC4_T1, LIVE);
 
         //TC5 clean
         cancelProject(String.valueOf(drp_TC5_3_plan.getProjectId()));
@@ -788,9 +747,10 @@ public class PartialIntegrationTest extends BaseTestCase {
         plannersViewPage.selectProcess(dcp_Code_TC5_2).terminateProcess("CLEAN");
 
         //TC6 clean
-        deleteIPDevice(deviceId_TC6_1, LIVE);
-        deleteIPDevice(deviceId_TC6_2, LIVE);
+        deleteIPDevice(device_TC6_1, LIVE);
+        deleteIPDevice(device_TC6_2, LIVE);
 
+        deleteLocation(building_TC_MAIN, LIVE);
     }
 
     private void completeIP(String ipCode) {
@@ -799,21 +759,30 @@ public class PartialIntegrationTest extends BaseTestCase {
                 String.format(INVALID_TASK_COMPLETE_SYSTEM_MESSAGE_LOG_PATTERN, ipCode));
     }
 
-    private void assertObjectToIntegratePresence(List<String> objetsIdentifiers, String objectId, String identifier) {
-        Assert.assertTrue(objetsIdentifiers.contains(String.format(identifier, objectId)),
-                String.format(CHECKING_OBJECTS_TO_INTEGRATE_PRESENCE_PATTERN, String.format(identifier, objectId), testName));
+    private void assertObjectsToIntegratePresence(List<String> objetsIdentifiers, ObjectIdentifier... objects) {
+        Arrays.stream(objects).forEach(object -> {
+            String objectIdentifier = object.toStringWithLabel();
+            Assert.assertTrue(objetsIdentifiers.contains(objectIdentifier),
+                    String.format(CHECKING_OBJECTS_TO_INTEGRATE_PRESENCE_PATTERN, objectIdentifier, testName));
+        });
     }
 
-    private void assertPlannedObjectPresence(List<String> objetsIdentifiers, String objectId, String identifier) {
-        Assert.assertTrue(objetsIdentifiers.contains(String.format(identifier, objectId)),
-                String.format(CHECKING_PLANNED_OBJECTS_PRESENCE_PATTERN, String.format(identifier, objectId), testName));
+    private void assertPlannedObjectsPresence(List<String> objetsIdentifiers, ObjectIdentifier... objects) {
+        Arrays.stream(objects).forEach(object -> {
+            String objectIdentifier = object.toStringWithLabel();
+            Assert.assertTrue(objetsIdentifiers.contains(objectIdentifier),
+                    String.format(CHECKING_PLANNED_OBJECTS_PRESENCE_PATTERN, objectIdentifier, testName));
+        });
     }
 
-    private void assertActivatedObjectStatus(String objectId, String identifier) {
-        ProcessDetailsPage processDetailsPage = new ProcessDetailsPage(driver);
-        String objectStatus = processDetailsPage.selectObject(OBJECT_TYPE_ATTRIBUTE_NAME, String.format(identifier, objectId)).getObjectStatus();
-        softAssert.assertEquals(objectStatus, ACTIVATED_STATUS,
-                String.format(INVALID_OBJECT_STATUS_LOG_PATTERN, String.format(identifier, objectId), testName));
+    private void assertActivatedObjectsStatuses(ObjectIdentifier... objects) {
+        Arrays.stream(objects).forEach(object -> {
+            String objectIdentifier = object.toStringWithLabel();
+            ProcessDetailsPage processDetailsPage = new ProcessDetailsPage(driver);
+            String objectStatus = processDetailsPage.selectObject(OBJECT_TYPE_ATTRIBUTE_NAME, objectIdentifier).getObjectStatus();
+            softAssert.assertEquals(objectStatus, ACTIVATED_STATUS,
+                    String.format(INVALID_OBJECT_STATUS_LOG_PATTERN, objectIdentifier, testName));
+        });
     }
 
     private void assertSystemMessage(String messageContent, SystemMessageContainer.MessageType messageType, String systemMessageLog) {
@@ -826,5 +795,9 @@ public class PartialIntegrationTest extends BaseTestCase {
             systemMessage.close();
         });
         waitForPageToLoad();
+    }
+
+    private String getObjectID(ObjectIdentifier object) {
+        return object.getId().toString();
     }
 }

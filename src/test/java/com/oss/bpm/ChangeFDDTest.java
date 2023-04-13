@@ -10,6 +10,7 @@ import com.oss.pages.bpm.processinstances.edition.ChangeFDDWizardPage;
 import com.oss.pages.bpm.tasks.SetupIntegrationProperties;
 import com.oss.pages.bpm.tasks.TasksPageV2;
 import com.oss.pages.bpm.tasks.taskforms.IPDTaskFormPage;
+import com.oss.planning.ObjectIdentifier;
 import com.oss.planning.PlanningContext;
 import io.qameta.allure.Description;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -30,12 +31,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static com.oss.bpm.BpmPhysicalDataCreator.CHASSIS_NAME;
 import static com.oss.bpm.BpmPhysicalDataCreator.createBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.createIPDevice;
-import static com.oss.bpm.BpmPhysicalDataCreator.deleteBuilding;
 import static com.oss.bpm.BpmPhysicalDataCreator.deleteIPDevice;
-import static com.oss.bpm.BpmPhysicalDataCreator.getDeviceChassisId;
+import static com.oss.bpm.BpmPhysicalDataCreator.deleteLocation;
+import static com.oss.bpm.BpmPhysicalDataCreator.getDeviceChassis;
 import static com.oss.bpm.BpmPhysicalDataCreator.nextMaxInt;
 import static com.oss.bpm.BpmPhysicalDataCreator.nextRandomBuildingName;
 import static com.oss.bpm.BpmPhysicalDataCreator.updateIPDeviceSerialNumberInPlan;
@@ -82,9 +82,7 @@ public class ChangeFDDTest extends BaseTestCase {
     private static final String INVALID_PROCESS_STATUS_LOG_PATTERN = "Invalid Process Status for %1$s in %2$s test.";
     private static final String INVALID_OBJECT_STATUS_LOG_PATTERN = "Object %1$s has invalid status in '%2$s' test.";
     private static final String CHANGE_FDD_ACTION_VISIBLE_LOG_PATTERN = "'Change Finished Due Date' context action is available for %s.";
-    private static final String CHASSIS_IDENTIFIER1 = CHASSIS_NAME + " (%s )";
-    private static final String CHASSIS_IDENTIFIER = CHASSIS_NAME + " (%s)";
-    private static final String DEVICE_IDENTIFIER = "IP Device (%s)";
+    private static final String CHASSIS_IDENTIFIER1 = ObjectIdentifier.CHASSIS_TYPE + " (%s )";
     private static final String SHIFT_UNAVAILABLE_MESSAGE = "Shift operation for given process is not available.";
     private static final String NEW_FDD_MESSAGE = "From %1$s Finished Due Date is changed to %2$s. FDD changed for processes: %3$s";
     private final Logger log = LoggerFactory.getLogger(ChangeFDDTest.class);
@@ -92,11 +90,11 @@ public class ChangeFDDTest extends BaseTestCase {
     private SoftAssert softAssert;
     private String testName;
 
-    private String building_main_ID;
-    private String device_1_ID;
-    private String chassis_1_ID;
-    private String device_2_ID;
-    private String chassis_2_ID;
+    private ObjectIdentifier building_main;
+    private ObjectIdentifier device_1;
+    private ObjectIdentifier chassis_1;
+    private ObjectIdentifier device_2;
+    private ObjectIdentifier chassis_2;
 
 
     private String nrp_1_code;
@@ -133,7 +131,7 @@ public class ChangeFDDTest extends BaseTestCase {
     public void prepare() {
         softAssert = new SoftAssert();
         waitForPageToLoad();
-        building_main_ID = createBuilding(BUILDING_NAME_TC_MAIN, LIVE);
+        building_main = createBuilding(BUILDING_NAME_TC_MAIN, LIVE);
     }
 
     @BeforeMethod
@@ -177,9 +175,9 @@ public class ChangeFDDTest extends BaseTestCase {
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
 
         //create device D1 in NRP 1 plan
-        device_1_ID = createIPDevice(DEVICE_1_NAME, DEVICE_MODEL, building_main_ID, nrp_1_plan);
-        chassis_1_ID = getDeviceChassisId(device_1_ID, nrp_1_plan);
-        log.info(String.format("D1 Device ID: %1$s, Chassis ID: %2$s", device_1_ID, chassis_1_ID));
+        device_1 = createIPDevice(DEVICE_1_NAME, DEVICE_MODEL, building_main, nrp_1_plan);
+        chassis_1 = getDeviceChassis(device_1, nrp_1_plan);
+        log.info(String.format("D1 Device: %1$s, Chassis: %2$s", device_1, chassis_1));
 
         //check FDD shift wizard info for NRP1 (earlier than TODAY)
         openChangeFDDWizard(nrp_1_code);
@@ -221,13 +219,13 @@ public class ChangeFDDTest extends BaseTestCase {
         drp_2_plan = PlanningContext.plan(plannersViewPage.getProjectId(drp_2_code));
         log.info("DRP 2 Process: " + String.format(PROCESS_IDENTIFIER_PATTERN, drp_2_code, drp_2_ID) + " FDD: " + TODAY.plusDays(3));
 
-        device_2_ID = createIPDevice(DEVICE_2_NAME, DEVICE_MODEL, building_main_ID, drp_1_plan);
-        chassis_2_ID = getDeviceChassisId(device_2_ID, drp_1_plan);
-        log.info(String.format("D1 Device ID: %1$s, Chassis ID: %2$s", device_2_ID, chassis_2_ID));
+        device_2 = createIPDevice(DEVICE_2_NAME, DEVICE_MODEL, building_main, drp_1_plan);
+        chassis_2 = getDeviceChassis(device_2, drp_1_plan);
+        log.info(String.format("D1 Device: %1$s, Chassis: %2$s", device_2, chassis_2));
 
-        String device_3_ID = createIPDevice(DEVICE_3_NAME, DEVICE_MODEL, building_main_ID, drp_2_plan);
-        String chassis_3_ID = getDeviceChassisId(device_3_ID, drp_2_plan);
-        log.info(String.format("D2 Device ID: %1$s, Chassis ID: %2$s", device_3_ID, chassis_3_ID));
+        ObjectIdentifier device_3 = createIPDevice(DEVICE_3_NAME, DEVICE_MODEL, building_main, drp_2_plan);
+        ObjectIdentifier chassis_3 = getDeviceChassis(device_3, drp_2_plan);
+        log.info(String.format("D2 Device: %1$s, Chassis: %2$s", device_3, chassis_3));
 
         //check FDD shift wizard info for NRP1 (earlier than TODAY together with DRP1, DRP2)
         openChangeFDDWizard(nrp_1_code);
@@ -361,8 +359,8 @@ public class ChangeFDDTest extends BaseTestCase {
         waitForPageToLoad();
 
         //edit D1 device in DCP 1 context
-        updateIPDeviceSerialNumberInPlan(DEVICE_1_NAME, device_1_ID, DEVICE_MODEL,
-                String.format(UPDATE_SERIAL_NUMBER, dcp_1_code), building_main_ID, dcp_1_plan);
+        updateIPDeviceSerialNumberInPlan(DEVICE_1_NAME, device_1, DEVICE_MODEL,
+                String.format(UPDATE_SERIAL_NUMBER, dcp_1_code), building_main, dcp_1_plan);
 
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         //check FDD shift wizard info for NRP1 (between TODAY and DRP1)
@@ -424,8 +422,8 @@ public class ChangeFDDTest extends BaseTestCase {
         waitForPageToLoad();
 
         //edit D1 device in DCP 2 context
-        updateIPDeviceSerialNumberInPlan(DEVICE_1_NAME, device_1_ID, DEVICE_MODEL,
-                String.format(UPDATE_SERIAL_NUMBER, dcp_2_code), building_main_ID, dcp_2_plan);
+        updateIPDeviceSerialNumberInPlan(DEVICE_1_NAME, device_1, DEVICE_MODEL,
+                String.format(UPDATE_SERIAL_NUMBER, dcp_2_code), building_main, dcp_2_plan);
 
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         //check FDD shift wizard info for DCP 1 (between NRP1 and DCP2)
@@ -456,12 +454,12 @@ public class ChangeFDDTest extends BaseTestCase {
         SetupIntegrationProperties setupIntegrationProperties_IP_1 = SetupIntegrationProperties.builder()
                 .integrationProcessName(IP_1_NAME)
                 .finishedDueDate(TODAY.plusDays(5))
-                .objectIdentifiers(Arrays.asList(DEVICE_1_NAME, String.format(CHASSIS_IDENTIFIER1, chassis_1_ID)))
+                .objectIdentifiers(Arrays.asList(DEVICE_1_NAME, String.format(CHASSIS_IDENTIFIER1, chassis_1.getId())))
                 .build();
         SetupIntegrationProperties setupIntegrationProperties_IP_2 = SetupIntegrationProperties.builder()
                 .integrationProcessName(IP_2_NAME)
                 .finishedDueDate(TODAY.plusDays(7))
-                .objectIdentifiers(Arrays.asList(DEVICE_2_NAME, String.format(CHASSIS_IDENTIFIER1, chassis_2_ID)))
+                .objectIdentifiers(Arrays.asList(DEVICE_2_NAME, String.format(CHASSIS_IDENTIFIER1, chassis_2.getId())))
                 .build();
         TasksPageV2 tasksPage = TasksPageV2.goToTasksPage(driver, webDriverWait, BASIC_URL);
         List<String> ipCodes = tasksPage.setupIntegration(nrp_1_code, NRP_1_NAME,
@@ -590,10 +588,7 @@ public class ChangeFDDTest extends BaseTestCase {
         ProcessDetailsPage processDetailsPage = tasksPage.findTask(nrp_1_code, TasksPageV2.VERIFICATION_TASK).clickPlanViewButton();
         Assert.assertEquals(processDetailsPage.getObjectsAmount(), 4,
                 String.format(INVALID_OBJECTS_AMOUNT, nrp_1_code, testName));
-        assertActivatedObjectStatus(device_1_ID, DEVICE_IDENTIFIER);
-        assertActivatedObjectStatus(chassis_1_ID, CHASSIS_IDENTIFIER);
-        assertActivatedObjectStatus(device_2_ID, DEVICE_IDENTIFIER);
-        assertActivatedObjectStatus(chassis_2_ID, CHASSIS_IDENTIFIER);
+        assertActivatedObjectsStatuses(device_1, chassis_1, device_2, chassis_2);
 
         //check FDD shift wizard info for NRP1 (between TODAY and DCP1)
         openChangeFDDWizard(nrp_1_code);
@@ -690,9 +685,9 @@ public class ChangeFDDTest extends BaseTestCase {
 
     @AfterClass
     public void clean() {
-        deleteIPDevice(device_1_ID, LIVE);
-        deleteIPDevice(device_2_ID, LIVE);
-        deleteBuilding(building_main_ID, LIVE);
+        deleteIPDevice(device_1, LIVE);
+        deleteIPDevice(device_2, LIVE);
+        deleteLocation(building_main, LIVE);
         plannersViewPage = PlannersViewPage.goToPlannersViewPage(driver, BASIC_URL);
         plannersViewPage.selectProcess(audit1_1_code).terminateProcess("CLEAN");
     }
@@ -750,10 +745,13 @@ public class ChangeFDDTest extends BaseTestCase {
                 String.format(INVALID_TASK_FDD_PATTERN, taskName, processCode, testName));
     }
 
-    private void assertActivatedObjectStatus(String objectId, String identifier) {
-        String objectStatus = new ProcessDetailsPage(driver).selectObject(OBJECT_TYPE_ATTRIBUTE_NAME,
-                String.format(identifier, objectId)).getObjectStatus();
-        Assert.assertEquals(objectStatus, ACTIVATED_STATUS,
-                String.format(INVALID_OBJECT_STATUS_LOG_PATTERN, String.format(identifier, objectId), testName));
+    private void assertActivatedObjectsStatuses(ObjectIdentifier... objects) {
+        Arrays.stream(objects).forEach(object -> {
+            String objectIdentifier = object.toStringWithLabel();
+            ProcessDetailsPage processDetailsPage = new ProcessDetailsPage(driver);
+            String objectStatus = processDetailsPage.selectObject(OBJECT_TYPE_ATTRIBUTE_NAME, objectIdentifier).getObjectStatus();
+            softAssert.assertEquals(objectStatus, ACTIVATED_STATUS,
+                    String.format(INVALID_OBJECT_STATUS_LOG_PATTERN, objectIdentifier, testName));
+        });
     }
 }

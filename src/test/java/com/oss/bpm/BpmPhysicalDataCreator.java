@@ -16,7 +16,6 @@ import com.oss.untils.Environment;
 import com.oss.untils.FakeGenerator;
 
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -29,11 +28,6 @@ public class BpmPhysicalDataCreator {
     public static final String BPM_ADMIN_USER_PASSWORD = "Webtests123!";
     public static final String BPM_BASIC_USER_LOGIN = "bpm_basic_webselenium";
     public static final String BPM_BASIC_USER_PASSWORD = "Webtests123!";
-    public static final String CHASSIS_NAME = "Chassis";
-    public static final String CARD_NAME = "Card";
-    public static final String IP_DEVICE_NAME = "IPDevice";
-    public static final String LOCATION_TYPE_BUILDING = "Building";
-    private static final String CARD_MODEL = "Card";
     private static final String DEVICE_MODEL_TYPE = "IPDeviceModel";
     private static final String CARD_MODEL_TYPE = "CardModel";
 
@@ -46,7 +40,9 @@ public class BpmPhysicalDataCreator {
     private static final PhysicalInventoryRepository physicalInventoryRepository = new PhysicalInventoryRepository(env);
     private static final PhysicalInventoryClient physicalInventoryClient = new PhysicalInventoryClient(env);
     private static final ValidationResultsRepository validationResultsRepository = new ValidationResultsRepository(env);
-    private static final String NOT_IN_PLAN_CONTEXT_EXCEPTION = "Planning Context is not in PLAN context.";
+    private static final String INVALID_PLANNING_CONTEXT = "Invalid Planning Context";
+    private static final String NOT_IN_PLAN_CONTEXT_EXCEPTION = INVALID_PLANNING_CONTEXT + " Planning Context is not in PLAN context.";
+    private static final String NETWORK_NOT_SUPPORTED = INVALID_PLANNING_CONTEXT + " Network context is not supported.";
 
     public static int nextMaxInt() {
         return RANDOM.nextInt(Integer.MAX_VALUE);
@@ -68,17 +64,14 @@ public class BpmPhysicalDataCreator {
         planningRepository.cancelProject(Long.parseLong(projectId));
     }
 
-    public static UUID createValidationResultForRouter(String routerId, ValidationResult validationResult, PlanningContext planningContext) {
-        validationResultsRepository.saveValidationResults(ObjectIdentifier.ipDevice(Long.valueOf(routerId)),
-                Collections.singletonList(validationResult), planningContext);
+    public static UUID createValidationResultForObject(ObjectIdentifier object, ValidationResult validationResult, PlanningContext planningContext) {
+        validationResultsRepository.saveValidationResults(object, Collections.singletonList(validationResult), planningContext);
         return validationResultsRepository.getValidationResultsByObject(
-                        ObjectIdentifier.ipDevice(Long.valueOf(routerId)), planningContext, true, true).get(0).
-                getValidationResultId().get();
+                object, planningContext, true, true).get(0).getValidationResultId().get();
     }
 
-    public static List<ValidationResult> getValidationResultsForRouter(String routerId, PlanningContext planningContext) {
-        return validationResultsRepository.getValidationResultsByObject(
-                ObjectIdentifier.ipDevice(Long.valueOf(routerId)), planningContext, true, true);
+    public static List<ValidationResult> getValidationResultsForObject(ObjectIdentifier object, PlanningContext planningContext) {
+        return validationResultsRepository.getValidationResultsByObject(object, planningContext, true, true);
     }
 
     public static void suppressValidationResult(UUID validationResultId, String suppressionReason) {
@@ -93,29 +86,35 @@ public class BpmPhysicalDataCreator {
         return addressRepository.getFirstGeographicalAddressId();
     }
 
-    public static String createBuilding(String buildingName, PlanningContext planningContext) {
+    public static ObjectIdentifier createBuilding(String buildingName, PlanningContext planningContext) {
         if (planningContext.isPlanContext()) {
-            return locationInventoryRepository.
-                    createLocation(buildingName, LOCATION_TYPE_BUILDING, getGeographicalAddress(), planningContext.getProjectId());
+            return ObjectIdentifier.building(Long.valueOf(locationInventoryRepository.
+                    createLocation(buildingName, ObjectIdentifier.BUILDING_TYPE, getGeographicalAddress(), planningContext.getProjectId())));
+        } else if (planningContext.isLiveContext()) {
+            return ObjectIdentifier.building(Long.valueOf(locationInventoryRepository.
+                    createLocation(buildingName, ObjectIdentifier.BUILDING_TYPE, getGeographicalAddress())));
+        } else if (planningContext.isNetworkContext()) {
+            throw new IllegalArgumentException(NETWORK_NOT_SUPPORTED);
         } else {
-            return locationInventoryRepository.
-                    createLocation(buildingName, LOCATION_TYPE_BUILDING, getGeographicalAddress());
+            throw new IllegalArgumentException(INVALID_PLANNING_CONTEXT);
         }
     }
 
-    public static void updateBuildingInPlan(String buildingName, String buildingId, String description, PlanningContext planningContext) {
+    public static void updateLocationInPlan(ObjectIdentifier location, String buildingName, String description, PlanningContext planningContext) {
         Preconditions.checkArgument(planningContext.isPlanContext(), NOT_IN_PLAN_CONTEXT_EXCEPTION);
-        locationInventoryRepository.updateLocation(buildingName, LOCATION_TYPE_BUILDING,
-                buildingId, getGeographicalAddress(), description, planningContext.getProjectId());
+        locationInventoryRepository.updateLocation(buildingName, location.getType(),
+                location.getId().toString(), getGeographicalAddress(), description, planningContext.getProjectId());
     }
 
-    public static void deleteBuilding(String buildingId, PlanningContext planningContext) {
+    public static void deleteLocation(ObjectIdentifier location, PlanningContext planningContext) {
         if (planningContext.isPlanContext()) {
-            locationInventoryRepository.deleteLocation(
-                    Long.valueOf(buildingId), LOCATION_TYPE_BUILDING, planningContext.getProjectId());
+            locationInventoryRepository.deleteLocation(location.getId(), location.getType(), planningContext.getProjectId());
+        } else if (planningContext.isLiveContext()) {
+            locationInventoryRepository.deleteLocation(location.getId(), location.getType());
+        } else if (planningContext.isNetworkContext()) {
+            throw new IllegalArgumentException(NETWORK_NOT_SUPPORTED);
         } else {
-            locationInventoryRepository.deleteLocation(
-                    Long.valueOf(buildingId), LOCATION_TYPE_BUILDING);
+            throw new IllegalArgumentException(INVALID_PLANNING_CONTEXT);
         }
     }
 
@@ -123,78 +122,117 @@ public class BpmPhysicalDataCreator {
         return resourceCatalogClient.getModelIds(objectModelName);
     }
 
-    public static boolean isDeviceVisibleInLIVE(String deviceName, String buildingId) {
-        return physicalInventoryRepository.isDevicePresent(buildingId, deviceName);
+    public static boolean isObjectPresent(ObjectIdentifier objectIdentifier, PlanningContext planningContext) {
+        return planningRepository.isObjectPresent(objectIdentifier, planningContext);
     }
 
-    public static String createIPDevice(String deviceName, String deviceModel, String buildingId, PlanningContext planningContext) {
+    public static ObjectIdentifier createIPDevice(String deviceName, String deviceModel, ObjectIdentifier location, PlanningContext planningContext) {
         Long deviceModelId = getObjectModelId(deviceModel);
         if (planningContext.isPlanContext()) {
-            return String.valueOf(physicalInventoryRepository.createDevice(LOCATION_TYPE_BUILDING,
-                    Long.parseLong(buildingId), deviceModelId, deviceName, DEVICE_MODEL_TYPE, planningContext.getProjectId()));
+            return ObjectIdentifier.ipDevice(physicalInventoryRepository.createDevice(location.getType(), location.getId(),
+                    deviceModelId, deviceName, DEVICE_MODEL_TYPE, planningContext.getProjectId()));
+        } else if (planningContext.isLiveContext()) {
+            return ObjectIdentifier.ipDevice(physicalInventoryRepository.createDevice(location.getType(), location.getId(),
+                    deviceModelId, deviceName, DEVICE_MODEL_TYPE));
+        } else if (planningContext.isNetworkContext()) {
+            throw new IllegalArgumentException(NETWORK_NOT_SUPPORTED);
         } else {
-            return String.valueOf(physicalInventoryRepository.createDevice(LOCATION_TYPE_BUILDING,
-                    Long.parseLong(buildingId), deviceModelId, deviceName, DEVICE_MODEL_TYPE));
+            throw new IllegalArgumentException(INVALID_PLANNING_CONTEXT);
         }
-
     }
 
-    public static String createTechnicalIPDeviceInPlan(String deviceName, String deviceModel, String buildingId,
-                                                       String parentDeviceId, PlanningContext planningContext) {
+    public static ObjectIdentifier createTechnicalPlaTestResource(String technicalResourceName, ObjectIdentifier parentObject, PlanningContext planningContext) {
+        ObjectIdentifier technicalResource = createObject(technicalResourceName, ObjectIdentifier.PLA_TEST_RESOURCE_TYPE, planningContext);
+        DelayUtils.sleep(100);
+        planningRepository.connectRoots(parentObject, technicalResource, planningContext);
+        return technicalResource;
+    }
+
+    public static void updateIPDeviceSerialNumberInPlan(String deviceName, ObjectIdentifier device, String deviceModel, String serialNumber,
+                                                        ObjectIdentifier location, PlanningContext planningContext) {
         Preconditions.checkArgument(planningContext.isPlanContext(), NOT_IN_PLAN_CONTEXT_EXCEPTION);
         Long deviceModelId = getObjectModelId(deviceModel);
-        String routerId = String.valueOf(physicalInventoryRepository.createDevice(LOCATION_TYPE_BUILDING,
-                Long.parseLong(buildingId), deviceModelId, deviceName, DEVICE_MODEL_TYPE, planningContext.getProjectId()));
-        String chassisId = getDeviceChassisId(routerId, planningContext);
-        ObjectIdentifier parentRouter = ObjectIdentifier.ipDevice(Long.valueOf(parentDeviceId));
-        ObjectIdentifier childRouter = ObjectIdentifier.ipDevice(Long.valueOf(routerId));
-        ObjectIdentifier childChassis = ObjectIdentifier.chassis(Long.valueOf(chassisId));
-        DelayUtils.sleep(1000);
-        planningRepository.connectRoots(parentRouter, Arrays.asList(childRouter, childChassis), planningContext);
-        return routerId;
+        physicalInventoryRepository.updateDeviceSerialNumber(device.getId(), deviceName, location.getType(), location.getId(),
+                serialNumber, deviceModelId, DEVICE_MODEL_TYPE, planningContext.getProjectId());
     }
 
-    public static void updateIPDeviceSerialNumberInPlan(String deviceName, String deviceId, String deviceModel, String serialNumber,
-                                                        String buildingId, PlanningContext planningContext) {
-        Preconditions.checkArgument(planningContext.isPlanContext(), NOT_IN_PLAN_CONTEXT_EXCEPTION);
-        Long deviceModelId = getObjectModelId(deviceModel);
-        physicalInventoryRepository.updateDeviceSerialNumber(Long.parseLong(deviceId), deviceName,
-                LOCATION_TYPE_BUILDING, Long.parseLong(buildingId), serialNumber,
-                deviceModelId, DEVICE_MODEL_TYPE, planningContext.getProjectId());
-    }
-
-    public static void deleteIPDevice(String deviceId, PlanningContext planningContext) {
+    public static void deleteIPDevice(ObjectIdentifier device, PlanningContext planningContext) {
         if (planningContext.isPlanContext()) {
-            physicalInventoryRepository.deleteDevice(deviceId, planningContext.getProjectId());
+            physicalInventoryRepository.deleteDevice(device.getId().toString(), planningContext.getProjectId());
+        } else if (planningContext.isLiveContext()) {
+            physicalInventoryRepository.deleteDevice(device.getId().toString());
+        } else if (planningContext.isNetworkContext()) {
+            throw new IllegalArgumentException(NETWORK_NOT_SUPPORTED);
         } else {
-            physicalInventoryRepository.deleteDevice(deviceId);
+            throw new IllegalArgumentException(INVALID_PLANNING_CONTEXT);
         }
     }
 
-    public static String createCardForDevice(String deviceId, String deviceSlotName, PlanningContext planningContext) {
-        Long cardModelId = getObjectModelId(CARD_MODEL);
+    public static ObjectIdentifier createCardForDevice(ObjectIdentifier device, String deviceSlotName, PlanningContext planningContext) {
+        Long cardModelId = getObjectModelId(ObjectIdentifier.CARD_TYPE);
         if (planningContext.isPlanContext()) {
-            physicalInventoryRepository.createCard(Long.parseLong(deviceId), deviceSlotName,
-                    cardModelId, CARD_MODEL_TYPE, planningContext.getProjectId());
-            return String.valueOf(physicalInventoryClient.getDeviceCardUnderChassisId(
-                    physicalInventoryClient.getDeviceChassisId(Long.parseLong(deviceId), CHASSIS_NAME,
-                            planningContext.getProjectId()), CARD_NAME, planningContext.getProjectId()));
+            physicalInventoryRepository.createCard(device.getId(), deviceSlotName, cardModelId, CARD_MODEL_TYPE, planningContext.getProjectId());
+            return ObjectIdentifier.card(physicalInventoryClient.getDeviceCardUnderChassisId(
+                    physicalInventoryClient.getDeviceChassisId(device.getId(), ObjectIdentifier.CHASSIS_TYPE,
+                            planningContext.getProjectId()), ObjectIdentifier.CARD_TYPE, planningContext.getProjectId()));
+        } else if (planningContext.isLiveContext()) {
+            physicalInventoryRepository.createCard(device.getId(), deviceSlotName, cardModelId, CARD_MODEL_TYPE);
+            return ObjectIdentifier.card(physicalInventoryClient.getDeviceCardUnderChassisId(
+                    physicalInventoryClient.getDeviceChassisId(device.getId(), ObjectIdentifier.CHASSIS_TYPE), ObjectIdentifier.CARD_TYPE));
+        } else if (planningContext.isNetworkContext()) {
+            throw new IllegalArgumentException(NETWORK_NOT_SUPPORTED);
         } else {
-            physicalInventoryRepository.createCard(Long.parseLong(deviceId), deviceSlotName,
-                    cardModelId, CARD_MODEL_TYPE);
-            return String.valueOf(physicalInventoryClient.getDeviceCardUnderChassisId(
-                    physicalInventoryClient.getDeviceChassisId(Long.parseLong(deviceId), CHASSIS_NAME), CARD_NAME));
+            throw new IllegalArgumentException(INVALID_PLANNING_CONTEXT);
         }
     }
 
-    public static String getDeviceChassisId(String deviceId, PlanningContext planningContext) {
+    public static ObjectIdentifier getDeviceChassis(ObjectIdentifier device, PlanningContext planningContext) {
         if (planningContext.isPlanContext()) {
-            return String.valueOf(physicalInventoryClient.getDeviceChassisId(
-                    Long.parseLong(deviceId), CHASSIS_NAME, planningContext.getProjectId()));
+            return ObjectIdentifier.chassis(physicalInventoryClient.getDeviceChassisId(device.getId(),
+                    ObjectIdentifier.CHASSIS_TYPE, planningContext.getProjectId()));
+        } else if (planningContext.isLiveContext()) {
+            return ObjectIdentifier.chassis(physicalInventoryClient.getDeviceChassisId(device.getId(), ObjectIdentifier.CHASSIS_TYPE));
+        } else if (planningContext.isNetworkContext()) {
+            throw new IllegalArgumentException(NETWORK_NOT_SUPPORTED);
         } else {
-            return String.valueOf(physicalInventoryClient.getDeviceChassisId(
-                    Long.parseLong(deviceId), CHASSIS_NAME));
+            throw new IllegalArgumentException(INVALID_PLANNING_CONTEXT);
         }
+    }
+
+    public static void removeObject(ObjectIdentifier objectIdentifier, PlanningContext planningContext) {
+        if (planningContext.isLiveContext()) {
+            planningRepository.removeObjectInLive(objectIdentifier);
+        } else if (planningContext.isPlanContext()) {
+            planningRepository.removeObjectInPlan(planningContext.getProjectId(), objectIdentifier);
+        } else if (planningContext.isNetworkContext()) {
+            planningRepository.removeObjectInNetwork(objectIdentifier);
+        }
+    }
+
+    public static void updateObjectDescription(ObjectIdentifier objectIdentifier, String description, PlanningContext planningContext) {
+        if (planningContext.isLiveContext()) {
+            planningRepository.updateObjectDescriptionInLive(objectIdentifier, description);
+        } else if (planningContext.isPlanContext()) {
+            planningRepository.updateObjectDescriptionInPlan(planningContext.getProjectId(), objectIdentifier, description);
+        } else if (planningContext.isNetworkContext()) {
+            planningRepository.updateObjectDescriptionInNetwork(objectIdentifier, description);
+        }
+    }
+
+    public static ObjectIdentifier createObject(String objectName, String objectType, PlanningContext planningContext) {
+        if (planningContext.isLiveContext()) {
+            return planningRepository.createObjectInLive(objectName, objectType);
+        } else if (planningContext.isPlanContext()) {
+            return planningRepository.createObjectInPlan(planningContext.getProjectId(), objectName, objectType);
+        } else if (planningContext.isNetworkContext()) {
+            return planningRepository.createObjectInNetwork(objectName, objectType);
+        } else {
+            throw new IllegalArgumentException(INVALID_PLANNING_CONTEXT);
+        }
+    }
+
+    public static void setPrerequisite(ObjectIdentifier prerequisite, ObjectIdentifier subsequent, PlanningContext planningContext) {
+        planningRepository.setPrerequisite(prerequisite, subsequent, planningContext);
     }
 
 
