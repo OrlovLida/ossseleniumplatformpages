@@ -14,11 +14,13 @@ public class ObjectIdentifier {
 
     private final Long id;
     private final String typeName;
+    private final String typeLabel;
 
 
     public ObjectIdentifier(Long id, String typeName) {
         this.id = id;
         this.typeName = typeName;
+        this.typeLabel = new PlanningRepository(Environment.getInstance()).getTypeLabel(typeName);
     }
 
     public static ObjectIdentifier ipDevice(Long id) {
@@ -55,7 +57,7 @@ public class ObjectIdentifier {
     }
 
     public String getTypeLabel() {
-        return new PlanningRepository(Environment.getInstance()).getTypeLabel(typeName);
+        return typeLabel;
     }
 
     @Override
@@ -64,6 +66,6 @@ public class ObjectIdentifier {
     }
 
     public String toStringWithLabel() {
-        return String.format("%s (%d)", getTypeLabel(), id);
+        return String.format("%s (%d)", typeLabel, id);
     }
 }

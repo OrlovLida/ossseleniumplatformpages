@@ -300,8 +300,7 @@ public class TasksPageV2 extends BasePage {
     }
 
     public ProcessDetailsPage clickPlanViewButton() {
-        getIPDTaskForm().clickPlanViewButton();
-        return new ProcessDetailsPage(driver);
+        return getIPDTaskForm().clickPlanViewButton();
     }
 
     public IPDTaskFormPage getIPDTaskForm() {

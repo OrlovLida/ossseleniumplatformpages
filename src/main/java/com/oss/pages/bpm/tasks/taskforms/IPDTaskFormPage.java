@@ -16,6 +16,7 @@ import com.oss.framework.widgets.tabs.TabsInterface;
 import com.oss.framework.widgets.tabs.TabsWidget;
 import com.oss.framework.widgets.treetable.OldTreeTableWidget;
 import com.oss.pages.BasePage;
+import com.oss.pages.bpm.planning.ProcessDetailsPage;
 import com.oss.pages.bpm.processinstances.creation.ProcessWizardPage;
 import com.oss.pages.bpm.tasks.SetupIntegrationWizardPage;
 import com.oss.pages.dms.AttachFileWizardPage;
@@ -149,9 +150,10 @@ public class IPDTaskFormPage extends BasePage {
         button.click();
     }
 
-    public void clickPlanViewButton() {
+    public ProcessDetailsPage clickPlanViewButton() {
         Button button = Button.createByLabel(driver, tabsId, PLAN_VIEW_BUTTON_LABEL);
-        button.click();
+        button.clickWithRetry(ProcessDetailsPage.OBJECTS_TABLE_ID);
+        return new ProcessDetailsPage(driver);
     }
 
     public void setTransition(String transitionName) {

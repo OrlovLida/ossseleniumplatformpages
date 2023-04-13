@@ -28,7 +28,7 @@ public class ProcessDetailsPage extends BasePage {
     private static final String VALIDATION_TABLE_DATA_ATTRIBUTE_NAME = "plaPlanView_validationTable";
     private static final String PROJECT_DESCRIPTION_TABLE_ID = "plaPlanView_descriptionApp";
     private static final String PROJECT_INFORMATION_TABLE_ID = "plaPlanView_informationApp";
-    private static final String OBJECT_TABLE_DATA_ATTRIBUTE_NAME = "plaPlanView_objectsApp";
+    public static final String OBJECTS_TABLE_ID = "plaPlanView_objectsApp";
     private static final String PROCEED_WITH_CANCELLATION_ID = "ConfirmationBox_plaCancelObjectsWizard_confirmBox_action_button";
     private static final String CANCEL_ID = "objectsRemoveAction";
     private static final String TAB_ID = "plaPlanView_leftSideWindow";
@@ -93,7 +93,7 @@ public class ProcessDetailsPage extends BasePage {
     }
 
     private OldTable getObjectsTable() {
-        return OldTable.createById(driver, wait, OBJECT_TABLE_DATA_ATTRIBUTE_NAME);
+        return OldTable.createById(driver, wait, OBJECTS_TABLE_ID);
     }
 
     private OldTable getValidationResultsTable() {

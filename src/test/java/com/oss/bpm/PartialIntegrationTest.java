@@ -646,7 +646,7 @@ public class PartialIntegrationTest extends BaseTestCase {
         assertObjectsToIntegratePresence(objectsToIntegrateIdentifiers, device_TC6_1);
         partialIntegrationWizardPage.partialIntegrationWizard.clickButtonById(PartialIntegrationWizardPage.APPLY_BUTTON_ID);
 
-        assertSystemMessage(String.format(UNABLE_ACTIVATE_OBJECTS_MESSAGE, device_TC6_1.toString(),
+        assertSystemMessage(String.format(UNABLE_ACTIVATE_OBJECTS_MESSAGE, device_TC6_1.toString().replaceAll(" ", ""),
                         vr_TC6_1.getType(), vr_TC6_1.getDescription()),
                 SystemMessageContainer.MessageType.DANGER, String.format(INVALID_PI_SYSTEM_MESSAGE_LOG_PATTERN, testName));
 
